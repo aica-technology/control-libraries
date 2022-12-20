@@ -32,12 +32,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-IMAGE_NAME=epfl-lasa/control-libraries/protocol/testing:"${BASE_TAG}"
+IMAGE_NAME=aica-technology/control-libraries/protocol/testing:"${BASE_TAG}"
 BUILD_FLAGS+=(--build-arg BASE_TAG="${BASE_TAG}")
 BUILD_FLAGS+=(-t "${IMAGE_NAME}")
 
 echo "Using control libraries branch ${BRANCH}"
 BUILD_FLAGS+=(--build-arg BRANCH="${BRANCH}")
 
-docker pull ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
+docker pull ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
 DOCKER_BUILDKIT=1 docker build . --file ./Dockerfile.protocol "${BUILD_FLAGS[@]}"

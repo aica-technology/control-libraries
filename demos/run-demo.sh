@@ -2,7 +2,7 @@
 
 BASE_TAG="latest"
 
-IMAGE_NAME=epfl-lasa/control-libraries/control-loop-examples
+IMAGE_NAME=aica-technology/control-libraries/control-loop-examples
 BRANCH=$(git branch --show-current)
 
 HELP_MESSAGE="Usage: run-demo.sh [-b <branch>] [--base-tag <base-tag>] [-r] [-v]
@@ -37,7 +37,7 @@ echo "Using control libraries branch ${BRANCH}"
 BUILD_FLAGS+=(--build-arg BRANCH="${BRANCH}")
 BUILD_FLAGS+=(--build-arg BASE_TAG="${BASE_TAG}")
 
-docker pull ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
+docker pull ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
 DOCKER_BUILDKIT=1 docker build "${BUILD_FLAGS[@]}" . -t "${IMAGE_NAME}":"${BASE_TAG}" || exit 1
 
 docker run -it --rm "${IMAGE_NAME}":${BASE_TAG}

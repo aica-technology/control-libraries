@@ -1,5 +1,5 @@
 ARG BASE_TAG=latest
-FROM ghcr.io/epfl-lasa/control-libraries/development-dependencies:${BASE_TAG} as build
+FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as build
 ARG BUILD_CONTROLLERS=ON
 ARG BUILD_DYNAMICAL_SYSTEMS=ON
 ARG BUILD_ROBOT_MODEL=ON

@@ -13,7 +13,7 @@ Additionally, the installation of the bindings requires the following prerequisi
 
 The installation itself is then quite straightforward:
 ```shell
-git clone https://github.com/epfl-lasa/control-libraries
+git clone https://github.com/aica-technology/control-libraries
 
 ## install control-libraries (skip this stage if already done)
 sudo control-libraries/source/install.sh

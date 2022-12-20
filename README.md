@@ -4,16 +4,16 @@
         <td width="75%">Status</td>
     </tr>
     <tr>
-        <td width="25%"><a href="https://github.com/epfl-lasa/control-libraries/tree/main">Main</a></td>
+        <td width="25%"><a href="https://github.com/aica-technology/control-libraries/tree/main">Main</a></td>
         <td width="75%">
-            <img src="https://github.com/epfl-lasa/control-libraries/actions/workflows/build-test.yml/badge.svg?branch=main">
+            <img src="https://github.com/aica-technology/control-libraries/actions/workflows/build-test.yml/badge.svg?branch=main">
             <br>
-            <img src="https://github.com/epfl-lasa/control-libraries/actions/workflows/build-push.yml/badge.svg?branch=main">
+            <img src="https://github.com/aica-technology/control-libraries/actions/workflows/build-push.yml/badge.svg?branch=main">
         </td>
     </tr>
     <tr>
-        <td width="25%"><a href="https://github.com/epfl-lasa/control-libraries/tree/develop">Develop</a></td>
-        <td width="75%"><img src="https://github.com/epfl-lasa/control-libraries/actions/workflows/build-test.yml/badge.svg?branch=develop"></td>
+        <td width="25%"><a href="https://github.com/aica-technology/control-libraries/tree/develop">Develop</a></td>
+        <td width="75%"><img src="https://github.com/aica-technology/control-libraries/actions/workflows/build-test.yml/badge.svg?branch=develop"></td>
     </tr>
 </table>
 
@@ -21,7 +21,7 @@
 A set of libraries to facilitate the creation of full control loop algorithms,
 including trajectory planning, kinematics, dynamics and control.
 
-Documentation is available at <a href="https://epfl-lasa.github.io/control-libraries">epfl-lasa.github.io/control-libraries</a>.
+Documentation is available at <a href="https://aica-technology.github.io/control-libraries">aica-technology.github.io/control-libraries</a>.
 
 ## Core libraries
 
