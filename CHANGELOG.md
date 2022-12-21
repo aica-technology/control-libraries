@@ -7,11 +7,11 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- Remove timestamp setter and rename getter (#2)
-- Transfer repository ownership to AICA (#1)
 - Add pkg-config files for control libraries (epfl-lasa#326)
 - Add pkg-config files for clproto (epfl-lasa#327)
 - Use pkg-config to check for dependencies (epfl-lasa#328)
+- Transfer repository ownership to AICA (#1)
+- Remove timestamp setter and rename getter (#2)
 
 ## 6.3.1
 
