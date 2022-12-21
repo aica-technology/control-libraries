@@ -90,12 +90,12 @@ public:
   void set_filled();
 
   /**
-   * @brief Getter of the timestamp attribute
+   * @brief Getter of the time since last modification attribute
    */
-  const std::chrono::time_point<std::chrono::steady_clock>& get_timestamp() const;
+  const std::chrono::time_point<std::chrono::steady_clock>& get_epoch() const;
 
   /**
-   * @brief Reset the timestamp attribute to now
+   * @brief Reset the timestamp attribute to the current time
    */
   void reset_timestamp();
 

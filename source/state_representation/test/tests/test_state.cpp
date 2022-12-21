@@ -56,6 +56,8 @@ TEST(StateTest, Timestamp) {
   EXPECT_TRUE(state.is_deprecated(std::chrono::milliseconds(100)));
   state.reset_timestamp();
   EXPECT_FALSE(state.is_deprecated(std::chrono::milliseconds(100)));
+  std::this_thread::sleep_for(std::chrono::milliseconds(200));
+  EXPECT_TRUE(state.get_epoch().time_since_epoch() > std::chrono::milliseconds(200));
 }
 
 TEST(StateTest, Swap) {
