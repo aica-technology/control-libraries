@@ -90,6 +90,11 @@ public:
   void set_filled();
 
   /**
+   * @brief Get the age of the state, i.e. the time since the last modification
+   */
+   double get_age() const;
+
+  /**
    * @brief Getter of the timestamp attribute
    */
   const std::chrono::time_point<std::chrono::steady_clock>& get_timestamp() const;
@@ -108,6 +113,12 @@ public:
    * @brief Setter of the name
    */
   virtual void set_name(const std::string& name);
+
+  /**
+   * @brief Check if the state is deprecated given a certain time delay
+   * @param time_delay the timer after which to consider the state as deprecated
+   */
+  bool is_deprecated(double time_delay);
 
   /**
    * @brief Check if the state is deprecated given a certain time delay

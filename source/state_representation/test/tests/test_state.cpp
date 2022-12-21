@@ -50,14 +50,19 @@ TEST(StateTest, Timestamp) {
   State state(StateType::STATE, "test", false);
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
   EXPECT_TRUE(state.is_deprecated(std::chrono::milliseconds(100)));
+  EXPECT_TRUE(state.is_deprecated(0.1));
   state.reset_timestamp();
   EXPECT_FALSE(state.is_deprecated(std::chrono::milliseconds(100)));
+  EXPECT_FALSE(state.is_deprecated(0.1));
+  EXPECT_TRUE(state.get_age() < 0.1);
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
   EXPECT_TRUE(state.is_deprecated(std::chrono::milliseconds(100)));
+  EXPECT_TRUE(state.is_deprecated(0.1));
   state.reset_timestamp();
   EXPECT_FALSE(state.is_deprecated(std::chrono::milliseconds(100)));
+  EXPECT_FALSE(state.is_deprecated(0.1));
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
-  EXPECT_TRUE(state.get_epoch().time_since_epoch() > std::chrono::milliseconds(200));
+  EXPECT_TRUE(state.get_age() > 0.2);
 }
 
 TEST(StateTest, Swap) {
