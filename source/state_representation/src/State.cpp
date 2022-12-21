@@ -33,7 +33,7 @@ void State::set_filled() {
   this->reset_timestamp();
 }
 
-const std::chrono::time_point<std::chrono::steady_clock>& State::get_epoch() const {
+const std::chrono::time_point<std::chrono::steady_clock>& State::get_timestamp() const {
   return this->timestamp_;
 }
 
