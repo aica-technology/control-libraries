@@ -1,9 +1,9 @@
 ARG BASE_TAG=latest
-FROM ghcr.io/epfl-lasa/control-libraries/development-dependencies:${BASE_TAG} as build
+FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as build
 ARG BRANCH=develop
 
 WORKDIR /source
-RUN git clone --depth 1 --branch ${BRANCH} https://github.com/epfl-lasa/control-libraries
+RUN git clone --depth 1 --branch ${BRANCH} https://github.com/aica-technology/control-libraries
 RUN bash control-libraries/source/install.sh --auto
 RUN bash control-libraries/protocol/install.sh --auto
 RUN pip3 install control-libraries/python

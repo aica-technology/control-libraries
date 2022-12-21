@@ -33,19 +33,19 @@ The easiest way to install `clproto` is to use the included install script in au
 By supplying the `--auto` flag to this script, it will automatically and recursively install any dependencies.
 If Protobuf is not yet installed, this step will take some time.
 ```shell
-git clone https://github.com/epfl-lasa/control-libraries.git
+git clone https://github.com/aica-technology/control-libraries.git
 sudo control-libraries/protocol/install.sh --auto
 ```
 
 ### Copying protobuf dependencies
 
-If you are using Docker, the Protobuf dependencies are already built in the [`development-dependencies`](ghcr.io/epfl-lasa/control-libraries/development-dependencies:latest) image.
+If you are using Docker, the Protobuf dependencies are already built in the [`development-dependencies`](ghcr.io/aica-technology/control-libraries/development-dependencies:latest) image.
 Since building and installing Protobuf from source takes quite a long time, you can instead copy the final artefacts
 from this image into your image using docker `COPY` functionality:
 
 ```Dockerfile
-COPY --from=ghcr.io/epfl-lasa/control-libraries/development-dependencies:latest /usr/local/include/google /usr/local/include/google
-COPY --from=ghcr.io/epfl-lasa/control-libraries/development-dependencies:latest /usr/local/lib/libproto* /usr/local/lib
-COPY --from=ghcr.io/epfl-lasa/control-libraries/development-dependencies:latest /usr/local/bin/protoc /usr/local/bin
+COPY --from=ghcr.io/aica-technology/control-libraries/development-dependencies:latest /usr/local/include/google /usr/local/include/google
+COPY --from=ghcr.io/aica-technology/control-libraries/development-dependencies:latest /usr/local/lib/libproto* /usr/local/lib
+COPY --from=ghcr.io/aica-technology/control-libraries/development-dependencies:latest /usr/local/bin/protoc /usr/local/bin
 RUN ldconfig
 ```

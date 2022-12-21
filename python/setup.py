@@ -11,7 +11,7 @@ from setuptools import setup
 # names of the environment variables that define osqp and openrobots include directories
 osqp_path_var = 'OSQP_INCLUDE_DIR'
 
-__version__ = "6.3.4"
+__version__ = "6.3.5"
 __libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model']
 __include_dirs__ = ['include']
 
@@ -122,8 +122,8 @@ setup(
     name='control-libraries',
     version=__version__,
     author='Enrico Eberhard',
-    author_email='enrico.eberhard@epfl.ch',
-    url='https://github.com/epfl-lasa/control-libraries',
+    author_email='enrico@aica.tech',
+    url='https://github.com/aica-technology/control-libraries',
     description='Python bindings for the C++ control libraries',
     long_description='',
     ext_modules=ext_modules,

@@ -45,7 +45,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-IMAGE_NAME=ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}"
+IMAGE_NAME=ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}"
 
 PUBLIC_KEY=$(cat "${SSH_KEY_FILE}")
 
