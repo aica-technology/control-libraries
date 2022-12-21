@@ -92,7 +92,7 @@ public:
   /**
    * @brief Get the age of the state, i.e. the time since the last modification
    */
-   double get_age() const;
+  double get_age() const;
 
   /**
    * @brief Getter of the timestamp attribute

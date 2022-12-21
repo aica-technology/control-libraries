@@ -10,7 +10,8 @@ STATE_METHOD_EXPECTS = [
     'is_empty',
     'set_empty',
     'set_filled',
-    'get_epoch',
+    'get_age',
+    'get_timestamp',
     'reset_timestamp',
     'get_name',
     'set_name',
@@ -68,15 +69,20 @@ class TestState(unittest.TestCase):
     def test_timestamp(self):
         state = State(StateType.STATE, "test", False)
         time.sleep(0.2)
+        self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertTrue(state.is_deprecated(0.1))
         state.reset_timestamp()
+        self.assertFalse(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertFalse(state.is_deprecated(0.1))
+        self.assertTrue(state.get_age() < 0.1)
         time.sleep(0.2)
+        self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertTrue(state.is_deprecated(0.1))
         state.reset_timestamp()
+        self.assertFalse(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertFalse(state.is_deprecated(0.1))
         time.sleep(0.2)
-        self.assertTrue(state.get_epoch().total_seconds() > 0.2)
+        self.assertTrue(state.get_age() > 0.2)
 
     def test_copy(self):
         state = State(StateType.STATE, "test", False)

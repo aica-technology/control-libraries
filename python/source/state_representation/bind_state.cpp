@@ -38,7 +38,8 @@ void state(py::module_& m) {
   c.def("is_empty", &State::is_empty, "Getter of the empty attribute");
   c.def("set_empty", &State::set_empty, "Setter of the empty attribute", "empty"_a=true);
   c.def("set_filled", &State::set_filled, "Setter of the empty attribute to false and also reset the timestamp");
-  c.def("get_epoch", &State::get_epoch, "Getter of the time since last modification attribute");
+  c.def("get_age", &State::get_age, "Get the age of the state, i.e. the time since last modification");
+  c.def("get_timestamp", &State::get_timestamp, "Getter of the timestamp attribute");
   c.def("reset_timestamp", &State::reset_timestamp, "Reset the timestamp attribute to the current time");
   c.def("get_name", &State::get_name, "Getter of the name");
   c.def("set_name", &State::set_name, "Setter of the name");
