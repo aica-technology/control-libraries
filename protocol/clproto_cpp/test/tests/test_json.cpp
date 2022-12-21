@@ -54,19 +54,16 @@ TEST(JsonProtoTest, JsonToFromInvalid) {
 
 TEST(JsonProtoTest, JsonStringComparison) {
   auto json = clproto::to_json(CartesianPose("A", 1.0, 0.5, 3.0, "B"));
-  json.erase(json.find(",\"timestamp"), int(json.find("},\"referenceFrame")) - int(json.find(",\"timestamp")));
   EXPECT_EQ(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\",\"type\":\"CARTESIAN_POSE\"},"
                   "\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,\"z\":3},\"orientation\":{\"w\":1,\"vec\":{}}}}");
 
   auto joint_state = JointState("robot", 3);
   joint_state.set_velocities(Eigen::Vector3d(0.3, 0.1, 0.6));
   json = clproto::to_json(joint_state);
-  json.erase(json.find(",\"timestamp"), int(json.find("},\"jointNames")) - int(json.find(",\"timestamp")));
   EXPECT_EQ(json, "{\"jointState\":{\"state\":{\"name\":\"robot\",\"type\":\"JOINT_STATE\"},\"jointNames\":[\"joint0\","
                   "\"joint1\",\"joint2\"],\"positions\":[0,0,0],\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":[0,0,0]}}");
 
   json = clproto::to_json(Jacobian("robot", 3, "test"));
-  json.erase(json.find(",\"timestamp"), json.size() - 3 - int(json.find(",\"timestamp")));
   EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true}}}");
 }
 
