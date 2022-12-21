@@ -34,9 +34,9 @@ void State::set_filled() {
 }
 
 double State::get_age() const {
-  return
-      std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - this->timestamp_).count()
-          / 1e9;
+  return static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::steady_clock::now() - this->timestamp_
+  ).count()) / 1e9;
 }
 
 const std::chrono::time_point<std::chrono::steady_clock>& State::get_timestamp() const {
