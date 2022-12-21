@@ -30,7 +30,6 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'get_pose',
     'get_position',
     'get_reference_frame',
-    'get_timestamp',
     'get_torque',
     'get_transformation_matrix',
     'get_twist',

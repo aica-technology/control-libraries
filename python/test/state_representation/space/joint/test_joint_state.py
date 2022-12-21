@@ -21,7 +21,6 @@ JOINT_STATE_METHOD_EXPECTS = [
     'get_positions',
     'get_position',
     'get_size',
-    'get_timestamp',
     'get_torques',
     'get_torque',
     'get_type',
