@@ -95,12 +95,6 @@ public:
   const std::chrono::time_point<std::chrono::steady_clock>& get_timestamp() const;
 
   /**
-   * @brief Setter of the timestamp attribute
-   * @param timepoint the new value for the timestamp
-   */
-  void set_timestamp(const std::chrono::time_point<std::chrono::steady_clock>& timepoint);
-
-  /**
    * @brief Reset the timestamp attribute to now
    */
   void reset_timestamp();
