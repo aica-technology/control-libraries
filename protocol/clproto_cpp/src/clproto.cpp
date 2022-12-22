@@ -186,8 +186,6 @@ bool decode(const std::string& msg, State& obj) {
 
     auto state = message.state();
     obj = State(decoder(state.type()), state.name(), state.empty());
-    std::chrono::time_point<std::chrono::steady_clock> timepoint(timestamp_duration_t(state.timestamp()));
-    obj.set_timestamp(timepoint);
 
     return true;
   } catch (...) {

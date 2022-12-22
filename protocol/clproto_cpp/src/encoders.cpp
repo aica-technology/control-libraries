@@ -17,8 +17,6 @@ proto::State encoder(const State& state) {
   message.set_name(state.get_name());
   message.set_type(encoder(state.get_type()));
   message.set_empty(state.is_empty());
-  auto timestamp = std::chrono::duration_cast<timestamp_duration_t>(state.get_timestamp().time_since_epoch());
-  message.set_timestamp(timestamp.count());
   return message;
 }
 

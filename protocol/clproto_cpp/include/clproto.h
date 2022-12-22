@@ -24,13 +24,6 @@ namespace clproto {
 typedef uint32_t field_length_t;
 
 /**
- * @typedef timestamp_duration_t
- * @brief Duration type to use when representing
- * chrono timestamps as integer count since epoch
- */
-typedef std::chrono::nanoseconds timestamp_duration_t;
-
-/**
  * @class DecodingException
  * @brief A DecodingException is raised whenever a
  * decoding operation fails due to invalid encoding.

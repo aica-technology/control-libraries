@@ -30,15 +30,18 @@ void State::set_empty(bool empty) {
 
 void State::set_filled() {
   this->empty_ = false;
+  // FIXME: resetting the timestamp should be done explicitly, not within set_filled
   this->reset_timestamp();
+}
+
+double State::get_age() const {
+  return static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::steady_clock::now() - this->timestamp_
+  ).count()) / 1e9;
 }
 
 const std::chrono::time_point<std::chrono::steady_clock>& State::get_timestamp() const {
   return this->timestamp_;
-}
-
-void State::set_timestamp(const std::chrono::time_point<std::chrono::steady_clock>& timepoint) {
-  this->timestamp_ = timepoint;
 }
 
 void State::reset_timestamp() {
@@ -51,6 +54,10 @@ const std::string& State::get_name() const {
 
 void State::set_name(const std::string& name) {
   this->name_ = name;
+}
+
+bool State::is_deprecated(double time_delay) {
+  return this->get_age() >= time_delay;
 }
 
 bool State::is_compatible(const State& state) const {
