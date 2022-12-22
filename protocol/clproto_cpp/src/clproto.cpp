@@ -210,7 +210,7 @@ std::string encode<SpatialState>(const SpatialState& obj) {
 }
 template<>
 SpatialState decode(const std::string& msg) {
-  SpatialState obj(StateType::STATE);
+  SpatialState obj;
   if (!decode(msg, obj)) {
     throw DecodingException("Could not decode the message into a SpatialState");
   }
@@ -226,9 +226,7 @@ bool decode(const std::string& msg, SpatialState& obj) {
     }
 
     auto spatial_state = message.spatial_state();
-    obj = SpatialState(
-        decoder(spatial_state.state().type()), spatial_state.state().name(), spatial_state.reference_frame(),
-        spatial_state.state().empty());
+    obj = SpatialState(spatial_state.state().name(), spatial_state.reference_frame(), spatial_state.state().empty());
 
     return true;
   } catch (...) {
