@@ -128,74 +128,19 @@ public:
   CartesianAcceleration& operator=(const CartesianAcceleration& acceleration) = default;
 
   /**
-   * @brief Overload the += operator
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
-   */
-  CartesianAcceleration& operator+=(const CartesianAcceleration& acceleration);
+ * @brief Returns the acceleration data as an Eigen vector
+ */
+  Eigen::VectorXd data() const override;
 
   /**
-   * @brief Overload the + operator with an acceleration
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   * @brief Set the acceleration data from an Eigen vector
    */
-  CartesianAcceleration operator+(const CartesianAcceleration& acceleration) const;
+  void set_data(const Eigen::VectorXd& data) override;
 
   /**
-   * @brief Overload the -= operator
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   * @brief Set the acceleration data from a std vector
    */
-  CartesianAcceleration& operator-=(const CartesianAcceleration& acceleration);
-
-  /**
-   * @brief Overload the - operator with an acceleration
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
-   */
-  CartesianAcceleration operator-(const CartesianAcceleration& acceleration) const;
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
-   */
-  CartesianAcceleration& operator*=(double lambda);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
-   */
-  CartesianAcceleration operator*(double lambda) const;
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian acceleration divided by lambda
-   */
-  CartesianAcceleration& operator/=(double lambda);
-
-  /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian acceleration divided by lambda
-   */
-  CartesianAcceleration operator/(double lambda) const;
-
-  /**
-   * @brief Overload the *= operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
-   */
-  CartesianAcceleration& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian twist corresponding to the twist over the time period
-   */
-  CartesianTwist operator*(const std::chrono::nanoseconds& dt) const;
+  void set_data(const std::vector<double>& data) override;
 
   /**
    * @brief Clamp inplace the magnitude of the acceleration to the values in argument
@@ -228,32 +173,9 @@ public:
   CartesianAcceleration copy() const;
 
   /**
-   * @brief Returns the acceleration data as an Eigen vector
-   */
-  Eigen::VectorXd data() const override;
-
-  /**
-   * @brief Set the acceleration data from an Eigen vector
-   */
-  void set_data(const Eigen::VectorXd& data) override;
-
-  /**
-   * @brief Set the acceleration data from a std vector
-   */
-  void set_data(const std::vector<double>& data) override;
-
-  /**
    * @brief Compute the inverse of the current Cartesian acceleration
    */
   CartesianAcceleration inverse() const;
-
-  /**
-   * @brief Compute the norms of the state variable specified by the input type (default is full twist)
-   * @param state_variable_type The type of state variable to compute the norms on
-   * @return The norms of the state variables as a vector
-   */
-  std::vector<double>
-  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const override;
 
   /**
    * @brief Compute the normalized acceleration at the state variable given in argument (default is full acceleration)
@@ -264,12 +186,12 @@ public:
   normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const;
 
   /**
-   * @brief Overload the ostream operator for printing
-   * @param os The ostream to append the string representing the Cartesian acceleration to
-   * @param acceleration The Cartesian acceleration to print
-   * @return The appended ostream
+   * @brief Compute the norms of the state variable specified by the input type (default is full twist)
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The norms of the state variables as a vector
    */
-  friend std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration);
+  std::vector<double>
+  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const override;
 
   /**
    * @brief Overload the * operator with a Cartesian state
@@ -279,11 +201,32 @@ public:
   friend CartesianAcceleration operator*(const CartesianState& state, const CartesianAcceleration& acceleration);
 
   /**
+   * @brief Overload the *= operator with a scalar
+   * @param lambda The scalar to multiply with
+   * @return The Cartesian acceleration multiplied by lambda
+   */
+  CartesianAcceleration& operator*=(double lambda);
+
+  /**
+   * @brief Overload the * operator with a scalar
+   * @param lambda The scalar to multiply with
+   * @return The Cartesian acceleration multiplied by lambda
+   */
+  CartesianAcceleration operator*(double lambda) const;
+
+  /**
    * @brief Overload the * operator with a scalar
    * @param lambda The scalar to multiply with
    * @return The Cartesian acceleration provided multiplied by lambda
    */
   friend CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration);
+
+  /**
+   * @brief Overload the *= operator with a gain matrix
+   * @param lambda The matrix to multiply with
+   * @return The Cartesian acceleration multiplied by lambda
+   */
+  CartesianAcceleration& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
 
   /**
    * @brief Overload the * operator with a gain matrix
@@ -296,19 +239,69 @@ public:
   /**
    * @brief Overload the * operator with a time period
    * @param dt The time period to multiply with
+   * @return The Cartesian twist corresponding to the twist over the time period
+   */
+  CartesianTwist operator*(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Overload the * operator with a time period
+   * @param dt The time period to multiply with
    * @return The Cartesian twist corresponding to the velocity over the time period
    */
   friend CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration);
+
+  /**
+   * @brief Overload the /= operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return The Cartesian acceleration divided by lambda
+   */
+  CartesianAcceleration& operator/=(double lambda);
+
+  /**
+   * @brief Overload the / operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return The Cartesian acceleration divided by lambda
+   */
+  CartesianAcceleration operator/(double lambda) const;
+
+  /**
+   * @brief Overload the += operator
+   * @param acceleration The Cartesian acceleration to add to
+   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   */
+  CartesianAcceleration& operator+=(const CartesianAcceleration& acceleration);
+
+  /**
+   * @brief Overload the + operator with an acceleration
+   * @param acceleration The Cartesian acceleration to add to
+   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   */
+  CartesianAcceleration operator+(const CartesianAcceleration& acceleration) const;
+
+  /**
+   * @brief Overload the -= operator
+   * @param acceleration The Cartesian acceleration to subtract
+   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   */
+  CartesianAcceleration& operator-=(const CartesianAcceleration& acceleration);
+
+  /**
+   * @brief Overload the - operator with an acceleration
+   * @param acceleration The Cartesian acceleration to subtract
+   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   */
+  CartesianAcceleration operator-(const CartesianAcceleration& acceleration) const;
+
+  /**
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the Cartesian acceleration to
+   * @param acceleration The Cartesian acceleration to print
+   * @return The appended ostream
+   */
+  friend std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration);
 
 private:
   using CartesianState::clamp_state_variable;
 };
 
-inline std::vector<double> CartesianAcceleration::norms(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::norms(state_variable_type);
-}
-
-inline CartesianAcceleration CartesianAcceleration::normalized(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::normalized(state_variable_type);
-}
 }// namespace state_representation
