@@ -46,60 +46,6 @@ double dist(
  * @brief Class to represent a state in Cartesian space
  */
 class CartesianState : public SpatialState {
-private:
-  Eigen::Vector3d position_;            ///< position of the point
-  Eigen::Quaterniond orientation_;      ///< orientation of the point
-  Eigen::Vector3d linear_velocity_;     ///< linear velocity of the point
-  Eigen::Vector3d angular_velocity_;    ///< angular velocity of the point
-  Eigen::Vector3d linear_acceleration_; ///< linear acceleration of the point
-  Eigen::Vector3d angular_acceleration_;///< angular acceleration of the point
-  Eigen::Vector3d force_;               ///< force applied at the point
-  Eigen::Vector3d torque_;              ///< torque applied at the point
-
-  /**
-   * @brief Set new values in all the state variables
-   */
-  void set_all_state_variables(const Eigen::VectorXd& new_values);
-
-  /**
-   * @brief Set new values in the provided state variable
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::Vector3d& state_variable, const Eigen::Vector3d& new_value);
-
-  /**
-   * @brief Set new values in the provided state variable
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::Vector3d& state_variable, const std::vector<double>& new_value);
-
-  /**
-   * @brief Set new values in the provided state variables
-   * @param linear_state_variable The linear part of the state variable to fill
-   * @param angular_state_variable The angular part of the state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(
-      Eigen::Vector3d& linear_state_variable, Eigen::Vector3d& angular_state_variable,
-      const Eigen::Matrix<double, 6, 1>& new_value
-  );
-
-protected:
-  /**
-   * @brief Getter of the variable value corresponding to the input
-   * @param state_variable_type The type of variable to get
-   */
-  Eigen::VectorXd get_state_variable(const CartesianStateVariable& state_variable_type) const;
-
-  /**
-   * @brief Setter of the variable value corresponding to the input
-   * @param new_value The new value of the variable
-   * @param state_variable_type The type of variable to get
-   */
-  void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
-
 public:
   /**
    * @brief Empty constructor
@@ -213,6 +159,21 @@ public:
    * @brief Getter of the 6d wrench from force and torque attributes
    */
   Eigen::Matrix<double, 6, 1> get_wrench() const;
+
+  /**
+   * @brief Return the data as the concatenation of all the state variables in a single vector
+   */
+  virtual Eigen::VectorXd data() const;
+
+  /**
+   * @brief Return the data vector as an Eigen Array
+   */
+  Eigen::ArrayXd array() const;
+
+  /**
+   * @brief Return the state as a std vector
+   */
+  std::vector<double> to_std_vector() const;
 
   /**
    * @brief Setter of the position
@@ -393,9 +354,14 @@ public:
   void set_wrench(const std::vector<double>& wrench);
 
   /**
-   * @brief Initialize the CartesianState to a zero value
+   * @brief Set the data of the state from all the state variables in a single Eigen vector
    */
-  void initialize() override;
+  virtual void set_data(const Eigen::VectorXd& data) override;
+
+  /**
+   * @brief Set the data of the state from all the state variables in a single std vector
+   */
+  virtual void set_data(const std::vector<double>& data) override;
 
   /**
    * @brief Set the State to a zero value
@@ -417,24 +383,59 @@ public:
   CartesianState copy() const;
 
   /**
-   * @brief Return the data as the concatenation of all the state variables in a single vector
+   * @brief Compute the distance to another state as the sum of distances between each features
+   * @param state The second state
+   * @param state_variable_type The name of the variable from the CartesianStateVariable structure to apply
+   * the distance on. Default ALL for full distance across all dimensions
+   * @return dist The distance value as a double
    */
-  virtual Eigen::VectorXd data() const;
+  double dist(
+      const CartesianState& state, const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL
+  ) const;
 
   /**
-   * @brief Return the data vector as an Eigen Array
+   * @brief Compute the distance between two Cartesian states
+   * @param s1 The first Cartesian state
+   * @param s2 The second Cartesian state
+   * @param state_variable_type Type of the distance between position, orientation, linear_velocity, etc.
+   * Default ALL for full distance across all dimensions
+   * @return The distance between the two states
    */
-  Eigen::ArrayXd array() const;
+  friend double dist(
+      const CartesianState& s1, const CartesianState& s2, const CartesianStateVariable& state_variable_type
+  );
 
   /**
-   * @brief Set the data of the state from all the state variables in a single Eigen vector
+   * @brief Initialize the CartesianState to a zero value
    */
-  virtual void set_data(const Eigen::VectorXd& data) override;
+  void initialize() override;
 
   /**
-   * @brief Set the data of the state from all the state variables in a single std vector
+   * @brief Compute the inverse of the current Cartesian state
+   * @return The inverse corresponding to b_S_f (assuming this is f_S_b)
    */
-  virtual void set_data(const std::vector<double>& data) override;
+  CartesianState inverse() const;
+
+  /**
+   * @brief Normalize inplace the state at the state variable given in argument. Default is full state
+   * @param state_variable_type The type of state variable to compute the norms on
+   */
+  void normalize(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL);
+
+  /**
+   * @brief Compute the normalized state at the state variable given in argument. Default is full state
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The normalized state
+   */
+  CartesianState normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL) const;
+
+  /**
+   * @brief Compute the norms of the state variable specified by the input type. Default is full state
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The norms of the state variables as a vector
+   */
+  virtual std::vector<double>
+  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL) const;
 
   /**
    * @brief Overload the *= operator with another state by deriving the equations of motions
@@ -463,6 +464,13 @@ public:
    * @return The Cartesian state multiplied by lambda
    */
   CartesianState operator*(double lambda) const;
+
+  /**
+   * @brief Overload the * operator with a scalar
+   * @param lambda The scalar to multiply with
+   * @return The Cartesian state provided multiplied by lambda
+   */
+  friend CartesianState operator*(double lambda, const CartesianState& state);
 
   /**
    * @brief Overload the /= operator with a scalar
@@ -507,44 +515,6 @@ public:
   CartesianState operator-(const CartesianState& state) const;
 
   /**
-   * @brief Compute the inverse of the current Cartesian state
-   * @return The inverse corresponding to b_S_f (assuming this is f_S_b)
-   */
-  CartesianState inverse() const;
-
-  /**
-   * @brief Compute the distance to another state as the sum of distances between each features
-   * @param state The second state
-   * @param state_variable_type The name of the variable from the CartesianStateVariable structure to apply
-   * the distance on. Default ALL for full distance across all dimensions
-   * @return dist The distance value as a double
-   */
-  double dist(
-      const CartesianState& state, const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL
-  ) const;
-
-  /**
-   * @brief Compute the norms of the state variable specified by the input type. Default is full state
-   * @param state_variable_type The type of state variable to compute the norms on
-   * @return The norms of the state variables as a vector
-   */
-  virtual std::vector<double>
-  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL) const;
-
-  /**
-   * @brief Normalize inplace the state at the state variable given in argument. Default is full state
-   * @param state_variable_type The type of state variable to compute the norms on
-   */
-  void normalize(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL);
-
-  /**
-   * @brief Compute the normalized state at the state variable given in argument. Default is full state
-   * @param state_variable_type The type of state variable to compute the norms on
-   * @return The normalized state
-   */
-  CartesianState normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL) const;
-
-  /**
    * @brief Overload the ostream operator for printing
    * @param os The ostream to append the string representing the state to
    * @param state The state to print
@@ -552,29 +522,59 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const CartesianState& state);
 
+protected:
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian state provided multiplied by lambda
+   * @brief Getter of the variable value corresponding to the input
+   * @param state_variable_type The type of variable to get
    */
-  friend CartesianState operator*(double lambda, const CartesianState& state);
+  Eigen::VectorXd get_state_variable(const CartesianStateVariable& state_variable_type) const;
 
   /**
-   * @brief Compute the distance between two Cartesian states
-   * @param s1 The first Cartesian state
-   * @param s2 The second Cartesian state
-   * @param state_variable_type Type of the distance between position, orientation, linear_velocity, etc.
-   * Default ALL for full distance across all dimensions
-   * @return The distance between the two states
+   * @brief Setter of the variable value corresponding to the input
+   * @param new_value The new value of the variable
+   * @param state_variable_type The type of variable to get
    */
-  friend double dist(
-      const CartesianState& s1, const CartesianState& s2, const CartesianStateVariable& state_variable_type
+  void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
+
+private:
+  Eigen::Vector3d position_;            ///< position of the point
+  Eigen::Quaterniond orientation_;      ///< orientation of the point
+  Eigen::Vector3d linear_velocity_;     ///< linear velocity of the point
+  Eigen::Vector3d angular_velocity_;    ///< angular velocity of the point
+  Eigen::Vector3d linear_acceleration_; ///< linear acceleration of the point
+  Eigen::Vector3d angular_acceleration_;///< angular acceleration of the point
+  Eigen::Vector3d force_;               ///< force applied at the point
+  Eigen::Vector3d torque_;              ///< torque applied at the point
+
+  /**
+   * @brief Set new values in all the state variables
+   */
+  void set_all_state_variables(const Eigen::VectorXd& new_values);
+
+  /**
+   * @brief Set new values in the provided state variable
+   * @param state_variable The state variable to fill
+   * @param new_value The new value of the state variable
+   */
+  void set_state_variable(Eigen::Vector3d& state_variable, const Eigen::Vector3d& new_value);
+
+  /**
+   * @brief Set new values in the provided state variable
+   * @param state_variable The state variable to fill
+   * @param new_value The new value of the state variable
+   */
+  void set_state_variable(Eigen::Vector3d& state_variable, const std::vector<double>& new_value);
+
+  /**
+   * @brief Set new values in the provided state variables
+   * @param linear_state_variable The linear part of the state variable to fill
+   * @param angular_state_variable The angular part of the state variable to fill
+   * @param new_value The new value of the state variable
+   */
+  void set_state_variable(
+      Eigen::Vector3d& linear_state_variable, Eigen::Vector3d& angular_state_variable,
+      const Eigen::Matrix<double, 6, 1>& new_value
   );
-
-  /**
-   * @brief Return the state as a std vector
-   */
-  std::vector<double> to_std_vector() const;
 };
 
 inline void swap(CartesianState& state1, CartesianState& state2) {
@@ -587,12 +587,6 @@ inline void swap(CartesianState& state1, CartesianState& state2) {
   std::swap(state1.angular_acceleration_, state2.angular_acceleration_);
   std::swap(state1.force_, state2.force_);
   std::swap(state1.torque_, state2.torque_);
-}
-
-inline CartesianState& CartesianState::operator=(const CartesianState& state) {
-  CartesianState tmp(state);
-  swap(*this, tmp);
-  return *this;
 }
 
 inline Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable& state_variable_type) const {
@@ -735,8 +729,4 @@ inline void CartesianState::set_state_variable(
   }
 }
 
-inline std::vector<double> CartesianState::to_std_vector() const {
-  Eigen::VectorXd data = this->data();
-  return std::vector<double>(data.data(), data.data() + data.size());
-}
 }// namespace state_representation

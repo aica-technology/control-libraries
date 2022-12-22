@@ -124,14 +124,15 @@ public:
   virtual void set_data(const Eigen::MatrixXd& data);
 
   /**
-   * @brief Initialize the state to a zero value
-   */
-  virtual void initialize();
-
-  /**
    * @brief Get the age of the state, i.e. the time since the last modification
    */
   double get_age() const;
+
+  /**
+   * @brief Check if the state is compatible for operations with the state given as argument
+   * @param state The state to check compatibility with
+   */
+  virtual bool is_compatible(const State& state) const;
 
   /**
    * @brief Check if the state is deprecated given a certain time delay
@@ -147,10 +148,9 @@ public:
   bool is_deprecated(const std::chrono::duration<int64_t, DurationT>& time_delay) const;
 
   /**
-   * @brief Check if the state is compatible for operations with the state given as argument
-   * @param state The state to check compatibility with
+   * @brief Initialize the state to a zero value
    */
-  virtual bool is_compatible(const State& state) const;
+  virtual void initialize();
 
   /**
    * @brief Boolean operator for the truthiness of a state
