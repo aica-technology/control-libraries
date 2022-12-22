@@ -30,6 +30,7 @@ void State::set_empty(bool empty) {
 
 void State::set_filled() {
   this->empty_ = false;
+  // FIXME: resetting the timestamp should be done explicitly, not within set_filled
   this->reset_timestamp();
 }
 
