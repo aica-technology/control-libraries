@@ -6,6 +6,7 @@
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
+
 class CartesianTwist;
 class CartesianAcceleration;
 class CartesianWrench;
@@ -15,9 +16,6 @@ class CartesianWrench;
  * @brief Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation
  */
 class CartesianPose : public CartesianState {
-private:
-  using CartesianState::clamp_state_variable;
-
 public:
   // delete inaccessible getter and setters
   const Eigen::Vector3d& get_linear_velocity() const = delete;
@@ -151,11 +149,49 @@ public:
   CartesianPose& operator=(const CartesianPose& pose) = default;
 
   /**
-   * @brief Overload the * operator for a vector input
-   * @param vector vector to multiply with, representing either a position, velocity or acceleration
-   * @return the vector multiplied by the current CartesianPose
+   * @brief Returns the pose data as an Eigen vector
+   * @return the pose data vector
    */
-  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
+  Eigen::VectorXd data() const override;
+
+  /**
+   * @brief Set the pose data from an Eigen vector
+   * @param the pose data vector
+   */
+  void set_data(const Eigen::VectorXd& data) override;
+
+  /**
+   * @brief Set the pose data from a std vector
+   * @param the pose data vector
+   */
+  void set_data(const std::vector<double>& data) override;
+
+  /**
+   * @brief Return a copy of the CartesianPose
+   * @return the copy
+   */
+  CartesianPose copy() const;
+
+  /**
+   * @brief Compute the inverse of the current CartesianPose
+   * @return the inverse corresponding to b_S_f (assuming this is f_S_b)
+   */
+  CartesianPose inverse() const;
+
+  /**
+   * @brief Compute the normalized pose at the state variable given in argument (default is full pose)
+   * @param state_variable_type the type of state variable to compute the norms on
+   * @return the normalized pose
+   */
+  CartesianPose normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const;
+
+  /**
+   * @brief Compute the norms of the state variable specified by the input type (default is full pose)
+   * @param state_variable_type the type of state variable to compute the norms on
+   * @return the norms of the state variables as a vector
+   */
+  std::vector<double>
+  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
 
   /**
    * @brief Overload the *= operator
@@ -214,6 +250,27 @@ public:
   CartesianPose operator*(double lambda) const;
 
   /**
+   * @brief Overload the * operator for a vector input
+   * @param vector vector to multiply with, representing either a position, velocity or acceleration
+   * @return the vector multiplied by the current CartesianPose
+   */
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
+
+  /**
+   * @brief Overload the * operator with a CartesianState
+   * @param state the state to multiply with
+   * @return the CartesianPose provided multiplied by the state
+   */
+  friend CartesianPose operator*(const CartesianState& state, const CartesianPose& pose);
+
+  /**
+   * @brief Overload the * operator with a scalar
+   * @param lambda the scalar to multiply with
+   * @return the CartesianPose provided multiplied by lambda
+   */
+  friend CartesianPose operator*(double lambda, const CartesianPose& pose);
+
+  /**
    * @brief Overload the /= operator with a scalar
    * @param lambda the scalar to divide with
    * @return the CartesianPose divided by lambda
@@ -226,6 +283,13 @@ public:
    * @return the CartesianPose divided by lambda
    */
   CartesianPose operator/(double lambda) const;
+
+  /**
+   * @brief Overload the / operator with a time period
+   * @param dt the time period to divide by
+   * @return the corresponding CartesianTwist
+   */
+  CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
 
   /**
    * @brief Overload the += operator
@@ -256,58 +320,6 @@ public:
   CartesianPose operator-(const CartesianPose& pose) const;
 
   /**
-   * @brief Overload the / operator with a time period
-   * @param dt the time period to divide by
-   * @return the corresponding CartesianTwist
-   */
-  CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
-
-  /**
-   * @brief Return a copy of the CartesianPose
-   * @return the copy
-   */
-  CartesianPose copy() const;
-
-  /**
-   * @brief Returns the pose data as an Eigen vector
-   * @return the pose data vector
-   */
-  Eigen::VectorXd data() const override;
-
-  /**
-   * @brief Set the pose data from an Eigen vector
-   * @param the pose data vector
-   */
-  void set_data(const Eigen::VectorXd& data) override;
-
-  /**
-   * @brief Set the pose data from a std vector
-   * @param the pose data vector
-   */
-  void set_data(const std::vector<double>& data) override;
-
-  /**
-   * @brief Compute the norms of the state variable specified by the input type (default is full pose)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the norms of the state variables as a vector
-   */
-  std::vector<double>
-  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
-
-  /**
-   * @brief Compute the inverse of the current CartesianPose
-   * @return the inverse corresponding to b_S_f (assuming this is f_S_b)
-   */
-  CartesianPose inverse() const;
-
-  /**
-   * @brief Compute the normalized pose at the state variable given in argument (default is full pose)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the normalized pose
-   */
-  CartesianPose normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const;
-
-  /**
    * @brief Overload the ostream operator for printing
    * @param os the ostream to append the string representing the CartesianPose to
    * @param CartesianPose the CartesianPose to print
@@ -315,26 +327,8 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const CartesianPose& pose);
 
-  /**
-   * @brief Overload the * operator with a CartesianState
-   * @param state the state to multiply with
-   * @return the CartesianPose provided multiplied by the state
-   */
-  friend CartesianPose operator*(const CartesianState& state, const CartesianPose& pose);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianPose provided multiplied by lambda
-   */
-  friend CartesianPose operator*(double lambda, const CartesianPose& pose);
+private:
+  using CartesianState::clamp_state_variable;
 };
 
-inline std::vector<double> CartesianPose::norms(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::norms(state_variable_type);
-}
-
-inline CartesianPose CartesianPose::normalized(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::normalized(state_variable_type);
-}
 }// namespace state_representation
