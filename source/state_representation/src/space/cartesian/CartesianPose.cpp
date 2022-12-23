@@ -5,6 +5,7 @@
 using namespace state_representation::exceptions;
 
 namespace state_representation {
+
 CartesianPose::CartesianPose() {
   this->set_type(StateType::CARTESIAN_POSE);
 }
@@ -62,8 +63,37 @@ CartesianPose CartesianPose::Random(const std::string& name, const std::string& 
   return CartesianPose(name, Eigen::Vector3d::Random(), Eigen::Quaterniond::UnitRandom(), reference);
 }
 
-Eigen::Vector3d CartesianPose::operator*(const Eigen::Vector3d& vector) const {
-  return this->get_orientation() * vector + this->get_position();
+Eigen::VectorXd CartesianPose::data() const {
+  return this->get_pose();
+}
+
+void CartesianPose::set_data(const Eigen::VectorXd& data) {
+  if (data.size() != 7) {
+    throw IncompatibleSizeException(
+        "Input is of incorrect size: expected 7, given " + std::to_string(data.size()));
+  }
+  this->set_pose(data);
+}
+
+void CartesianPose::set_data(const std::vector<double>& data) {
+  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
+}
+
+CartesianPose CartesianPose::copy() const {
+  CartesianPose result(*this);
+  return result;
+}
+
+CartesianPose CartesianPose::inverse() const {
+  return this->CartesianState::inverse();
+}
+
+CartesianPose CartesianPose::normalized(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::normalized(state_variable_type);
+}
+
+std::vector<double> CartesianPose::norms(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::norms(state_variable_type);
 }
 
 CartesianPose& CartesianPose::operator*=(const CartesianPose& pose) {
@@ -100,6 +130,18 @@ CartesianPose CartesianPose::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
 }
 
+Eigen::Vector3d CartesianPose::operator*(const Eigen::Vector3d& vector) const {
+  return this->get_orientation() * vector + this->get_position();
+}
+
+CartesianPose operator*(const CartesianState& state, const CartesianPose& pose) {
+  return state.operator*(pose);
+}
+
+CartesianPose operator*(double lambda, const CartesianPose& pose) {
+  return pose * lambda;
+}
+
 CartesianPose& CartesianPose::operator/=(double lambda) {
   this->CartesianState::operator/=(lambda);
   return (*this);
@@ -107,24 +149,6 @@ CartesianPose& CartesianPose::operator/=(double lambda) {
 
 CartesianPose CartesianPose::operator/(double lambda) const {
   return this->CartesianState::operator/(lambda);
-}
-
-CartesianPose& CartesianPose::operator+=(const CartesianPose& pose) {
-  this->CartesianState::operator+=(pose);
-  return (*this);
-}
-
-CartesianPose CartesianPose::operator+(const CartesianPose& pose) const {
-  return this->CartesianState::operator+(pose);
-}
-
-CartesianPose& CartesianPose::operator-=(const CartesianPose& pose) {
-  this->CartesianState::operator-=(pose);
-  return (*this);
-}
-
-CartesianPose CartesianPose::operator-(const CartesianPose& pose) const {
-  return this->CartesianState::operator-(pose);
 }
 
 CartesianTwist CartesianPose::operator/(const std::chrono::nanoseconds& dt) const {
@@ -148,29 +172,22 @@ CartesianTwist CartesianPose::operator/(const std::chrono::nanoseconds& dt) cons
   return twist;
 }
 
-CartesianPose CartesianPose::copy() const {
-  CartesianPose result(*this);
-  return result;
+CartesianPose& CartesianPose::operator+=(const CartesianPose& pose) {
+  this->CartesianState::operator+=(pose);
+  return (*this);
 }
 
-Eigen::VectorXd CartesianPose::data() const {
-  return this->get_pose();
+CartesianPose CartesianPose::operator+(const CartesianPose& pose) const {
+  return this->CartesianState::operator+(pose);
 }
 
-void CartesianPose::set_data(const Eigen::VectorXd& data) {
-  if (data.size() != 7) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 7, given " + std::to_string(data.size()));
-  }
-  this->set_pose(data);
+CartesianPose& CartesianPose::operator-=(const CartesianPose& pose) {
+  this->CartesianState::operator-=(pose);
+  return (*this);
 }
 
-void CartesianPose::set_data(const std::vector<double>& data) {
-  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
-CartesianPose CartesianPose::inverse() const {
-  return this->CartesianState::inverse();
+CartesianPose CartesianPose::operator-(const CartesianPose& pose) const {
+  return this->CartesianState::operator-(pose);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
@@ -194,11 +211,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
   return os;
 }
 
-CartesianPose operator*(const CartesianState& state, const CartesianPose& pose) {
-  return state.operator*(pose);
-}
-
-CartesianPose operator*(double lambda, const CartesianPose& pose) {
-  return pose * lambda;
-}
 }// namespace state_representation

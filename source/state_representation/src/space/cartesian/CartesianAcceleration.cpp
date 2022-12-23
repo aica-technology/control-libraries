@@ -4,6 +4,7 @@
 using namespace state_representation::exceptions;
 
 namespace state_representation {
+
 CartesianAcceleration::CartesianAcceleration() {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
 }
@@ -59,67 +60,20 @@ CartesianAcceleration CartesianAcceleration::Random(const std::string& name, con
   return CartesianAcceleration(name, random, reference);
 }
 
-CartesianAcceleration& CartesianAcceleration::operator+=(const CartesianAcceleration& acceleration) {
-  this->CartesianState::operator+=(acceleration);
-  return (*this);
+Eigen::VectorXd CartesianAcceleration::data() const {
+  return this->get_acceleration();
 }
 
-CartesianAcceleration CartesianAcceleration::operator+(const CartesianAcceleration& acceleration) const {
-  return this->CartesianState::operator+(acceleration);
-}
-
-CartesianAcceleration& CartesianAcceleration::operator-=(const CartesianAcceleration& acceleration) {
-  this->CartesianState::operator-=(acceleration);
-  return (*this);
-}
-
-CartesianAcceleration CartesianAcceleration::operator-(const CartesianAcceleration& acceleration) const {
-  return this->CartesianState::operator-(acceleration);
-}
-
-CartesianAcceleration& CartesianAcceleration::operator*=(double lambda) {
-  this->CartesianState::operator*=(lambda);
-  return (*this);
-}
-
-CartesianAcceleration CartesianAcceleration::operator*(double lambda) const {
-  return this->CartesianState::operator*(lambda);
-}
-
-CartesianAcceleration& CartesianAcceleration::operator/=(double lambda) {
-  this->CartesianState::operator/=(lambda);
-  return (*this);
-}
-
-CartesianAcceleration CartesianAcceleration::operator/(double lambda) const {
-  return this->CartesianState::operator/(lambda);
-}
-
-CartesianAcceleration& CartesianAcceleration::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
+void CartesianAcceleration::set_data(const Eigen::VectorXd& data) {
+  if (data.size() != 6) {
+    throw IncompatibleSizeException(
+        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
   }
-  // operation
-  this->set_linear_acceleration(lambda.block<3, 3>(0, 0) * this->get_linear_acceleration());
-  this->set_angular_acceleration(lambda.block<3, 3>(3, 3) * this->get_angular_acceleration());
-  return (*this);
+  this->set_acceleration(data);
 }
 
-CartesianTwist CartesianAcceleration::operator*(const std::chrono::nanoseconds& dt) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  // operations
-  CartesianTwist twist(this->get_name(), this->get_reference_frame());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // convert the acceleration into a twist
-  twist.set_linear_velocity(period * this->get_linear_acceleration());
-  twist.set_angular_velocity(period * this->get_angular_acceleration());
-  return twist;
+void CartesianAcceleration::set_data(const std::vector<double>& data) {
+  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
 void CartesianAcceleration::clamp(
@@ -144,24 +98,98 @@ CartesianAcceleration CartesianAcceleration::copy() const {
   return result;
 }
 
-Eigen::VectorXd CartesianAcceleration::data() const {
-  return this->get_acceleration();
-}
-
-void CartesianAcceleration::set_data(const Eigen::VectorXd& data) {
-  if (data.size() != 6) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
-  }
-  this->set_acceleration(data);
-}
-
-void CartesianAcceleration::set_data(const std::vector<double>& data) {
-  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
 CartesianAcceleration CartesianAcceleration::inverse() const {
   return this->CartesianState::inverse();
+}
+
+CartesianAcceleration CartesianAcceleration::normalized(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::normalized(state_variable_type);
+}
+
+std::vector<double> CartesianAcceleration::norms(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::norms(state_variable_type);
+}
+
+CartesianAcceleration operator*(const CartesianState& state, const CartesianAcceleration& acceleration) {
+  return state.operator*(acceleration);
+}
+
+CartesianAcceleration& CartesianAcceleration::operator*=(double lambda) {
+  this->CartesianState::operator*=(lambda);
+  return (*this);
+}
+
+CartesianAcceleration CartesianAcceleration::operator*(double lambda) const {
+  return this->CartesianState::operator*(lambda);
+}
+
+CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration) {
+  return acceleration * lambda;
+}
+
+CartesianAcceleration& CartesianAcceleration::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
+  // sanity check
+  if (this->is_empty()) {
+    throw EmptyStateException(this->get_name() + " state is empty");
+  }
+  // operation
+  this->set_linear_acceleration(lambda.block<3, 3>(0, 0) * this->get_linear_acceleration());
+  this->set_angular_acceleration(lambda.block<3, 3>(3, 3) * this->get_angular_acceleration());
+  return (*this);
+}
+
+CartesianAcceleration operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration) {
+  CartesianAcceleration result(acceleration);
+  result *= lambda;
+  return result;
+}
+
+CartesianTwist CartesianAcceleration::operator*(const std::chrono::nanoseconds& dt) const {
+  // sanity check
+  if (this->is_empty()) {
+    throw EmptyStateException(this->get_name() + " state is empty");
+  }
+  // operations
+  CartesianTwist twist(this->get_name(), this->get_reference_frame());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // convert the acceleration into a twist
+  twist.set_linear_velocity(period * this->get_linear_acceleration());
+  twist.set_angular_velocity(period * this->get_angular_acceleration());
+  return twist;
+}
+
+
+CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration) {
+  return acceleration * dt;
+}
+
+CartesianAcceleration& CartesianAcceleration::operator/=(double lambda) {
+  this->CartesianState::operator/=(lambda);
+  return (*this);
+}
+
+CartesianAcceleration CartesianAcceleration::operator/(double lambda) const {
+  return this->CartesianState::operator/(lambda);
+}
+
+CartesianAcceleration& CartesianAcceleration::operator+=(const CartesianAcceleration& acceleration) {
+  this->CartesianState::operator+=(acceleration);
+  return (*this);
+}
+
+CartesianAcceleration CartesianAcceleration::operator+(const CartesianAcceleration& acceleration) const {
+  return this->CartesianState::operator+(acceleration);
+}
+
+CartesianAcceleration& CartesianAcceleration::operator-=(const CartesianAcceleration& acceleration) {
+  this->CartesianState::operator-=(acceleration);
+  return (*this);
+}
+
+CartesianAcceleration CartesianAcceleration::operator-(const CartesianAcceleration& acceleration) const {
+  return this->CartesianState::operator-(acceleration);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration) {
@@ -180,21 +208,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& accelera
   return os;
 }
 
-CartesianAcceleration operator*(const CartesianState& state, const CartesianAcceleration& acceleration) {
-  return state.operator*(acceleration);
-}
-
-CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration) {
-  return acceleration * lambda;
-}
-
-CartesianAcceleration operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration) {
-  CartesianAcceleration result(acceleration);
-  result *= lambda;
-  return result;
-}
-
-CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration) {
-  return acceleration * dt;
-}
 }// namespace state_representation

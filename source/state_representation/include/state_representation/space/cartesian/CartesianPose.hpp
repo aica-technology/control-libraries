@@ -6,18 +6,16 @@
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
+
 class CartesianTwist;
 class CartesianAcceleration;
 class CartesianWrench;
 
 /**
  * @class CartesianPose
- * @brief Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation
+ * @brief Class to define Cartesian pose in Cartesian space as 3D position and quaternion based orientation
  */
 class CartesianPose : public CartesianState {
-private:
-  using CartesianState::clamp_state_variable;
-
 public:
   // delete inaccessible getter and setters
   const Eigen::Vector3d& get_linear_velocity() const = delete;
@@ -63,8 +61,8 @@ public:
 
   /**
    * @brief Constructor with name and reference frame provided
-   * @param name the name of the state
-   * @param reference the name of the reference frame (default is "world")
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(const std::string& name, const std::string& reference = "world");
 
@@ -74,53 +72,51 @@ public:
   CartesianPose(const CartesianPose& pose);
 
   /**
-   * @brief Copy constructor from a CartesianState
+   * @brief Copy constructor from a Cartesian state
    */
   CartesianPose(const CartesianState& state);
 
   /**
-   * @brief Copy constructor from a CartesianTwist by considering that it is a displacement over 1 second
+   * @brief Copy constructor from a Cartesian twist by considering that it is a displacement over 1 second
    */
   CartesianPose(const CartesianTwist& twist);
 
   /**
-   * @brief Constructor of a CartesianPose from a position given as a vector of coordinates
-   * @param name the name of the state
-   * @param position the position data given as Eigen vector
-   * @param reference the name of the reference frame (default is "world")
+   * @brief Constructor of a Cartesian pose from a position given as a vector of coordinates
+   * @param name The name of the state
+   * @param position The position data given as Eigen vector
+   * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(
       const std::string& name, const Eigen::Vector3d& position, const std::string& reference = "world"
   );
 
   /**
-   * @brief Constructor of a CartesianPose from a position given as three scalar coordinates
-   * @param name the name of the state
-   * @param x the x coordinate of the position
-   * @param y the y coordinate of the position
-   * @param z the z coordinate of the position
-   * @param reference the name of the reference frame (default is "world")
+   * @brief Constructor of a Cartesian pose from a position given as three scalar coordinates
+   * @param name The name of the state
+   * @param x The x coordinate of the position
+   * @param y The y coordinate of the position
+   * @param z The z coordinate of the position
+   * @param reference The name of the reference frame (default is "world")
    */
-  explicit CartesianPose(
-      const std::string& name, double x, double y, double z, const std::string& reference = "world"
-  );
+  explicit CartesianPose(const std::string& name, double x, double y, double z, const std::string& reference = "world");
 
   /**
-   * @brief Constructor of a CartesianPose from a quaternion
-   * @param name the name of the state
-   * @param orientation the orientation given as Eigen quaternion
-   * @param reference the name of the reference frame (default is "world")
+   * @brief Constructor of a Cartesian pose from a quaternion
+   * @param name The name of the state
+   * @param orientation The orientation given as Eigen quaternion
+   * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(
       const std::string& name, const Eigen::Quaterniond& orientation, const std::string& reference = "world"
   );
 
   /**
-   * @brief Constructor of a CartesianPose from a position given as a vector of coordinates and a quaternion
-   * @param name the name of the state
-   * @param position the position data given as Eigen vector
-   * @param orientation the orientation given as Eigen quaternion
-   * @param reference the name of the reference frame (default is "world")
+   * @brief Constructor of a Cartesian pose from a position given as a vector of coordinates and a quaternion
+   * @param name The name of the state
+   * @param position The position data given as Eigen vector
+   * @param orientation The orientation given as Eigen quaternion
+   * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(
       const std::string& name, const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation,
@@ -129,212 +125,205 @@ public:
 
   /**
    * @brief Constructor for the identity pose
-   * @param name the name of the state
-   * @param reference the name of the reference frame (default is "world")
-   * @return CartesianPose identity pose
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
+   * @return Cartesian identity pose
    */
   static CartesianPose Identity(const std::string& name, const std::string& reference = "world");
 
   /**
    * @brief Constructor for a random pose
-   * @param name the name of the state
-   * @param reference the name of the reference frame (default is "world")
-   * @return CartesianPose random pose
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
+   * @return Cartesian random pose
    */
   static CartesianPose Random(const std::string& name, const std::string& reference = "world");
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator
-   * @param pose the pose with value to assign
-   * @return reference to the current pose with new values
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param pose The pose with value to assign
+   * @return Reference to the current pose with new values
    */
   CartesianPose& operator=(const CartesianPose& pose) = default;
 
   /**
-   * @brief Overload the * operator for a vector input
-   * @param vector vector to multiply with, representing either a position, velocity or acceleration
-   * @return the vector multiplied by the current CartesianPose
+   * @brief Returns the pose data as an Eigen vector
    */
-  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
+  Eigen::VectorXd data() const override;
+
+  /**
+   * @brief Set the pose data from an Eigen vector
+   */
+  void set_data(const Eigen::VectorXd& data) override;
+
+  /**
+   * @brief Set the pose data from a std vector
+   */
+  void set_data(const std::vector<double>& data) override;
+
+  /**
+   * @brief Return a copy of the Cartesian pose
+   */
+  CartesianPose copy() const;
+
+  /**
+   * @brief Compute the inverse of the current Cartesian pose
+   * @return The inverse corresponding to b_S_f (assuming this is f_S_b)
+   */
+  CartesianPose inverse() const;
+
+  /**
+   * @brief Compute the normalized pose at the state variable given in argument (default is full pose)
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The normalized pose
+   * FIXME: state variable type doesnt make sense here
+   */
+  CartesianPose normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const;
+
+  /**
+   * @brief Compute the norms of the state variable specified by the input type (default is full pose)
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The norms of the state variables as a vector
+   */
+  std::vector<double>
+  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
 
   /**
    * @brief Overload the *= operator
-   * @param pose CartesianPose to multiply with
-   * @return the current CartesianPose multiplied by the CartesianPose given in argument
+   * @param pose Cartesian pose to multiply with
+   * @return the Cartesian pose multiplied with the current Cartesian pose
    */
   CartesianPose& operator*=(const CartesianPose& pose);
 
   /**
    * @brief Overload the * operator
    * @param pose CartesianPose to multiply with
-   * @return the current CartesianPose multiplied by the CartesianPose given in argument
+   * @return the Cartesian pose multiplied with the current Cartesian pose
    */
   CartesianPose operator*(const CartesianPose& pose) const;
 
   /**
    * @brief Overload the * operator
-   * @param state CartesianState to multiply with
-   * @return the current CartesianPose multiplied by the CartesianState given in argument
+   * @param state Cartesian state to multiply with
+   * @return the Cartesian state multiplied with the current Cartesian pose
    */
   CartesianState operator*(const CartesianState& state) const;
 
   /**
    * @brief Overload the * operator
-   * @param twist CartesianTwist to multiply with
-   * @return the current CartesianPose multiplied by the CartesianTwist given in argument
+   * @param twist Cartesian twist to multiply with
+   * @return the Cartesian twist multiplied with the current Cartesian pose
    */
   CartesianTwist operator*(const CartesianTwist& twist) const;
 
   /**
    * @brief Overload the * operator
-   * @param acceleration CartesianAcceleration to multiply with
-   * @return the current CartesianPose multiplied by the CartesianAcceleration given in argument
+   * @param acceleration Cartesian acceleration to multiply with
+   * @return the Cartesian acceleration multiplied with the current Cartesian pose
    */
   CartesianAcceleration operator*(const CartesianAcceleration& acceleration) const;
 
   /**
    * @brief Overload the * operator
-   * @param wrench CartesianWrench to multiply with
-   * @return the current CartesianPose multiplied by the CartesianWrench given in argument
+   * @param wrench Cartesian wrench to multiply with
+   * @return the Cartesian wrench multiplied with the current Cartesian pose
    */
   CartesianWrench operator*(const CartesianWrench& wrench) const;
 
   /**
    * @brief Overload the *= operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianPose multiplied by lambda
+   * @param lambda The scalar to multiply with
+   * @return the Cartesian pose multiplied by lambda
    */
   CartesianPose& operator*=(double lambda);
 
   /**
    * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianPose multiplied by lambda
+   * @param lambda The scalar to multiply with
+   * @return the Cartesian pose multiplied by lambda
    */
   CartesianPose operator*(double lambda) const;
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianPose divided by lambda
+   * @brief Overload the * operator for a vector input
+   * @param vector Vector to multiply with, representing either a position, velocity or acceleration
+   * @return The vector multiplied by the current Cartesian pose
    */
-  CartesianPose& operator/=(double lambda);
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianPose divided by lambda
-   */
-  CartesianPose operator/(double lambda) const;
-
-  /**
-   * @brief Overload the += operator
-   * @param pose CartesianPose to add to
-   * @return the current CartesianPose added the CartesianPose given in argument
-   */
-  CartesianPose& operator+=(const CartesianPose& pose);
-
-  /**
-   * @brief Overload the + operator with a pose
-   * @param pose CartesianPose to add to
-   * @return the current CartesianPose added the CartesianPose given in argument
-   */
-  CartesianPose operator+(const CartesianPose& pose) const;
-
-  /**
-   * @brief Overload the -= operator
-   * @param pose CartesianPose to subtract
-   * @return the current CartesianPose minus the CartesianPose given in argument
-   */
-  CartesianPose& operator-=(const CartesianPose& pose);
-
-  /**
-   * @brief Overload the - operator with a pose
-   * @param pose CartesianPose to subtract
-   * @return the current CartesianPose minus the CartesianPose given in argument
-   */
-  CartesianPose operator-(const CartesianPose& pose) const;
-
-  /**
-   * @brief Overload the / operator with a time period
-   * @param dt the time period to divide by
-   * @return the corresponding CartesianTwist
-   */
-  CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
-
-  /**
-   * @brief Return a copy of the CartesianPose
-   * @return the copy
-   */
-  CartesianPose copy() const;
-
-  /**
-   * @brief Returns the pose data as an Eigen vector
-   * @return the pose data vector
-   */
-  Eigen::VectorXd data() const override;
-
-  /**
-   * @brief Set the pose data from an Eigen vector
-   * @param the pose data vector
-   */
-  void set_data(const Eigen::VectorXd& data) override;
-
-  /**
-   * @brief Set the pose data from a std vector
-   * @param the pose data vector
-   */
-  void set_data(const std::vector<double>& data) override;
-
-  /**
-   * @brief Compute the norms of the state variable specified by the input type (default is full pose)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the norms of the state variables as a vector
-   */
-  std::vector<double>
-  norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
-
-  /**
-   * @brief Compute the inverse of the current CartesianPose
-   * @return the inverse corresponding to b_S_f (assuming this is f_S_b)
-   */
-  CartesianPose inverse() const;
-
-  /**
-   * @brief Compute the normalized pose at the state variable given in argument (default is full pose)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the normalized pose
-   */
-  CartesianPose normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const;
-
-  /**
-   * @brief Overload the ostream operator for printing
-   * @param os the ostream to append the string representing the CartesianPose to
-   * @param CartesianPose the CartesianPose to print
-   * @return the appended ostream
-   */
-  friend std::ostream& operator<<(std::ostream& os, const CartesianPose& pose);
-
-  /**
-   * @brief Overload the * operator with a CartesianState
-   * @param state the state to multiply with
-   * @return the CartesianPose provided multiplied by the state
+   * @brief Overload the * operator with a Cartesian state
+   * @param state The state to multiply with
+   * @return The Cartesian pose provided multiplied by the state
    */
   friend CartesianPose operator*(const CartesianState& state, const CartesianPose& pose);
 
   /**
    * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianPose provided multiplied by lambda
+   * @param lambda The scalar to multiply with
+   * @return The Cartesian pose provided multiplied by lambda
    */
   friend CartesianPose operator*(double lambda, const CartesianPose& pose);
+
+  /**
+   * @brief Overload the /= operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return The Cartesian pose divided by lambda
+   */
+  CartesianPose& operator/=(double lambda);
+
+  /**
+   * @brief Overload the / operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return the Cartesian pose divided by lambda
+   */
+  CartesianPose operator/(double lambda) const;
+
+  /**
+   * @brief Overload the / operator with a time period
+   * @param dt The time period to divide by
+   * @return The corresponding Cartesian twist
+   */
+  CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Overload the += operator
+   * @param pose The Cartesian pose to add to
+   * @return The current Cartesian pose added the Cartesian pose given in argument
+   */
+  CartesianPose& operator+=(const CartesianPose& pose);
+
+  /**
+   * @brief Overload the + operator with a pose
+   * @param pose The Cartesian pose to add to
+   * @return the current Cartesian pose added the Cartesian pose given in argument
+   */
+  CartesianPose operator+(const CartesianPose& pose) const;
+
+  /**
+   * @brief Overload the -= operator
+   * @param pose The Cartesian pose to subtract
+   * @return The current Cartesian pose minus the Cartesian pose given in argument
+   */
+  CartesianPose& operator-=(const CartesianPose& pose);
+
+  /**
+   * @brief Overload the - operator with a pose
+   * @param pose The Cartesian pose to subtract
+   * @return The current Cartesian pose minus the Cartesian pose given in argument
+   */
+  CartesianPose operator-(const CartesianPose& pose) const;
+
+  /**
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the Cartesian pose to
+   * @param CartesianPose The Cartesian pose to print
+   * @return The appended ostream
+   */
+  friend std::ostream& operator<<(std::ostream& os, const CartesianPose& pose);
+
+private:
+  using CartesianState::clamp_state_variable;
 };
 
-inline std::vector<double> CartesianPose::norms(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::norms(state_variable_type);
-}
-
-inline CartesianPose CartesianPose::normalized(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::normalized(state_variable_type);
-}
 }// namespace state_representation

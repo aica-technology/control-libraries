@@ -8,7 +8,7 @@ namespace state_representation {
 
 /**
  * @enum StateType
- * @brief The class types inheriting from State.
+ * @brief The class types inheriting from State
  */
 enum class StateType {
   NONE,
@@ -35,4 +35,5 @@ enum class StateType {
   DUAL_QUATERNION_TWIST
 #endif
 };
-}
+
+}// namespace state_representation

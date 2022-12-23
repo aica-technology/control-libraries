@@ -1,9 +1,10 @@
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 CartesianTwist::CartesianTwist() {
   this->set_type(StateType::CARTESIAN_TWIST);
 }
@@ -62,22 +63,58 @@ CartesianTwist CartesianTwist::Random(const std::string& name, const std::string
   return CartesianTwist(name, random, reference);
 }
 
-CartesianTwist& CartesianTwist::operator+=(const CartesianTwist& twist) {
-  this->CartesianState::operator+=(twist);
-  return (*this);
+Eigen::VectorXd CartesianTwist::data() const {
+  return this->get_twist();
 }
 
-CartesianTwist CartesianTwist::operator+(const CartesianTwist& twist) const {
-  return this->CartesianState::operator+(twist);
+void CartesianTwist::set_data(const Eigen::VectorXd& data) {
+  if (data.size() != 6) {
+    throw IncompatibleSizeException(
+        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
+  }
+  this->set_twist(data);
 }
 
-CartesianTwist& CartesianTwist::operator-=(const CartesianTwist& twist) {
-  this->CartesianState::operator-=(twist);
-  return (*this);
+void CartesianTwist::set_data(const std::vector<double>& data) {
+  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
-CartesianTwist CartesianTwist::operator-(const CartesianTwist& twist) const {
-  return this->CartesianState::operator-(twist);
+void CartesianTwist::clamp(
+    double max_linear, double max_angular, double linear_noise_ratio, double angular_noise_ratio
+) {
+  // clamp linear
+  this->clamp_state_variable(max_linear, CartesianStateVariable::LINEAR_VELOCITY, linear_noise_ratio);
+  // clamp angular
+  this->clamp_state_variable(max_angular, CartesianStateVariable::ANGULAR_VELOCITY, angular_noise_ratio);
+}
+
+CartesianTwist CartesianTwist::clamped(
+    double max_linear, double max_angular, double linear_noise_ratio, double angular_noise_ratio
+) const {
+  CartesianTwist result(*this);
+  result.clamp(max_linear, max_angular, linear_noise_ratio, angular_noise_ratio);
+  return result;
+}
+
+CartesianTwist CartesianTwist::copy() const {
+  CartesianTwist result(*this);
+  return result;
+}
+
+CartesianTwist CartesianTwist::inverse() const {
+  return this->CartesianState::inverse();
+}
+
+CartesianTwist CartesianTwist::normalized(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::normalized(state_variable_type);
+}
+
+std::vector<double> CartesianTwist::norms(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::norms(state_variable_type);
+}
+
+CartesianTwist operator*(const CartesianState& state, const CartesianTwist& twist) {
+  return state.operator*(twist);
 }
 
 CartesianTwist& CartesianTwist::operator*=(double lambda) {
@@ -89,13 +126,8 @@ CartesianTwist CartesianTwist::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
 }
 
-CartesianTwist& CartesianTwist::operator/=(double lambda) {
-  this->CartesianState::operator/=(lambda);
-  return (*this);
-}
-
-CartesianTwist CartesianTwist::operator/(double lambda) const {
-  return this->CartesianState::operator/(lambda);
+CartesianTwist operator*(double lambda, const CartesianTwist& twist) {
+  return twist * lambda;
 }
 
 CartesianTwist& CartesianTwist::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
@@ -107,6 +139,12 @@ CartesianTwist& CartesianTwist::operator*=(const Eigen::Matrix<double, 6, 6>& la
   this->set_linear_velocity(lambda.block<3, 3>(0, 0) * this->get_linear_velocity());
   this->set_angular_velocity(lambda.block<3, 3>(3, 3) * this->get_angular_velocity());
   return (*this);
+}
+
+CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist) {
+  CartesianTwist result(twist);
+  result *= lambda;
+  return result;
 }
 
 CartesianPose CartesianTwist::operator*(const std::chrono::nanoseconds& dt) const {
@@ -132,6 +170,19 @@ CartesianPose CartesianTwist::operator*(const std::chrono::nanoseconds& dt) cons
   return displacement;
 }
 
+CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist) {
+  return twist * dt;
+}
+
+CartesianTwist& CartesianTwist::operator/=(double lambda) {
+  this->CartesianState::operator/=(lambda);
+  return (*this);
+}
+
+CartesianTwist CartesianTwist::operator/(double lambda) const {
+  return this->CartesianState::operator/(lambda);
+}
+
 CartesianAcceleration CartesianTwist::operator/(const std::chrono::nanoseconds& dt) const {
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
@@ -145,46 +196,22 @@ CartesianAcceleration CartesianTwist::operator/(const std::chrono::nanoseconds& 
   return acceleration;
 }
 
-void CartesianTwist::clamp(
-    double max_linear, double max_angular, double linear_noise_ratio, double angular_noise_ratio
-) {
-  // clamp linear
-  this->clamp_state_variable(max_linear, CartesianStateVariable::LINEAR_VELOCITY, linear_noise_ratio);
-  // clamp angular
-  this->clamp_state_variable(max_angular, CartesianStateVariable::ANGULAR_VELOCITY, angular_noise_ratio);
+CartesianTwist& CartesianTwist::operator+=(const CartesianTwist& twist) {
+  this->CartesianState::operator+=(twist);
+  return (*this);
 }
 
-CartesianTwist CartesianTwist::clamped(
-    double max_linear, double max_angular, double linear_noise_ratio, double angular_noise_ratio
-) const {
-  CartesianTwist result(*this);
-  result.clamp(max_linear, max_angular, linear_noise_ratio, angular_noise_ratio);
-  return result;
+CartesianTwist CartesianTwist::operator+(const CartesianTwist& twist) const {
+  return this->CartesianState::operator+(twist);
 }
 
-CartesianTwist CartesianTwist::copy() const {
-  CartesianTwist result(*this);
-  return result;
+CartesianTwist& CartesianTwist::operator-=(const CartesianTwist& twist) {
+  this->CartesianState::operator-=(twist);
+  return (*this);
 }
 
-Eigen::VectorXd CartesianTwist::data() const {
-  return this->get_twist();
-}
-
-void CartesianTwist::set_data(const Eigen::VectorXd& data) {
-  if (data.size() != 6) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
-  }
-  this->set_twist(data);
-}
-
-void CartesianTwist::set_data(const std::vector<double>& data) {
-  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
-CartesianTwist CartesianTwist::inverse() const {
-  return this->CartesianState::inverse();
+CartesianTwist CartesianTwist::operator-(const CartesianTwist& twist) const {
+  return this->CartesianState::operator-(twist);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
@@ -202,21 +229,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
   return os;
 }
 
-CartesianTwist operator*(const CartesianState& state, const CartesianTwist& twist) {
-  return state.operator*(twist);
-}
-
-CartesianTwist operator*(double lambda, const CartesianTwist& twist) {
-  return twist * lambda;
-}
-
-CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist) {
-  CartesianTwist result(twist);
-  result *= lambda;
-  return result;
-}
-
-CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist) {
-  return twist * dt;
-}
 }// namespace state_representation
