@@ -15,6 +15,7 @@ State::State(const State& state) :
     type_(state.type_),
     name_(state.name_),
     empty_(state.empty_),
+    // FIXME: do we keep this or copy the timestamp too?
     timestamp_(std::chrono::steady_clock::now()) {}
 
 State& State::operator=(const State& state) {
@@ -49,12 +50,6 @@ void State::set_name(const std::string& name) {
 
 void State::set_empty(bool empty) {
   this->empty_ = empty;
-}
-
-void State::set_filled() {
-  this->empty_ = false;
-  // FIXME: resetting the timestamp should be done explicitly, not within set_filled
-  this->reset_timestamp();
 }
 
 void State::reset_timestamp() {
