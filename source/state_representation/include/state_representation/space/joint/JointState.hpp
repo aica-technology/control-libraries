@@ -622,7 +622,7 @@ inline void JointState::set_state_variable(Eigen::VectorXd& state_variable, cons
         "Input vector is of incorrect size: expected " + std::to_string(this->get_size()) + ", given "
             + std::to_string(new_value.size()));
   }
-  this->set_filled();
+  this->set_empty(false);
   state_variable = new_value;
 }
 

@@ -9,7 +9,7 @@ Ellipsoid::Ellipsoid() : Shape(StateType::GEOMETRY_ELLIPSOID), axis_lengths_({1.
 
 Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :
     Shape(StateType::GEOMETRY_ELLIPSOID, name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
-  this->set_filled();
+  this->set_empty(false);
 }
 
 Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) :

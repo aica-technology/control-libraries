@@ -400,7 +400,7 @@ inline void Jacobian::set_data(const Eigen::MatrixXd& data) {
                                                     + " got " + std::to_string(data.rows()) + "x"
                                                     + std::to_string(data.cols()));
   }
-  this->set_filled();
+  this->set_empty(false);
   this->data_ = data;
 }
 

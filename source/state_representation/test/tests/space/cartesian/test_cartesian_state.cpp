@@ -265,8 +265,6 @@ TEST(CartesianStateTest, GetSetFields) {
   cs.set_zero();
   EXPECT_FLOAT_EQ(cs.data().norm(), 1);
   EXPECT_EQ(cs.is_empty(), false);
-  cs.set_empty();
-  EXPECT_EQ(cs.is_empty(), true);
 }
 
 TEST(CartesianStateTest, Compatibility) {
@@ -282,8 +280,10 @@ TEST(CartesianStateTest, Compatibility) {
 
 TEST(CartesianStateTest, SetZero) {
   CartesianState random1 = CartesianState::Random("test");
+  EXPECT_FALSE(random1.is_empty());
   random1.initialize();
   EXPECT_FLOAT_EQ(random1.data().norm(), 1);
+  EXPECT_TRUE(random1.is_empty());
 
   CartesianState random2 = CartesianState::Random("test");
   random2.set_zero();

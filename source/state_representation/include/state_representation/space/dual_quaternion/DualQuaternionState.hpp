@@ -124,12 +124,12 @@ inline const Eigen::Quaterniond& DualQuaternionState::get_dual() const {
 }
 
 inline void DualQuaternionState::set_primary(const Eigen::Quaterniond& primary) {
-  this->set_filled();
+  this->set_empty(false);
   this->primary = primary;
 }
 
 inline void DualQuaternionState::set_dual(const Eigen::Quaterniond& dual) {
-  this->set_filled();
+  this->set_empty(false);
   this->dual = dual;
 }
 }

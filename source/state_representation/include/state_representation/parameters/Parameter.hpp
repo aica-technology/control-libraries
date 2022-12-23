@@ -113,7 +113,7 @@ inline T& Parameter<T>::get_value() {
 
 template<typename T>
 inline void Parameter<T>::set_value(const T& value) {
-  this->set_filled();
+  this->set_empty(false);
   this->value_ = value;
 }
 
