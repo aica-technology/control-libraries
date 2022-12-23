@@ -3,9 +3,9 @@
 
 namespace state_representation {
 
-State::State() : type_(StateType::STATE), name_(""), empty_(true) {}
+State::State() : type_(StateType::STATE), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
-State::State(const StateType& type) : type_(type), name_(""), empty_(true) {}
+State::State(const StateType& type) : type_(type), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
 State::State(const StateType& type, const std::string& name, const bool& empty) :
     type_(type), name_(name), empty_(empty), timestamp_(std::chrono::steady_clock::now()) {}
