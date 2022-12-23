@@ -14,8 +14,7 @@ public:
   SpatialState();
 
   /**
-   * @brief Constructor with name and reference frame specification
-   * @param type The type of the State
+   * @brief Constructor with name and reference frame specification.
    * @param name The name of the State
    * @param reference_frame The reference frame in which the state is expressed, by default world
    * @param empty Specify if the state is initialized as empty, default true
