@@ -78,7 +78,8 @@ public:
   CartesianAcceleration(const CartesianState& state);
 
   /**
-   * @brief Copy constructor from a Cartesian twist by considering that it is equivalent to dividing the twist by 1 second
+   * @brief Copy constructor from a Cartesian twist by considering
+   * that it is equivalent to dividing the twist by 1 second
    */
   CartesianAcceleration(const CartesianTwist& pose);
 
@@ -186,7 +187,7 @@ public:
   normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const;
 
   /**
-   * @brief Compute the norms of the state variable specified by the input type (default is full twist)
+   * @brief Compute the norms of the state variable specified by the input type (default is full acceleration)
    * @param state_variable_type The type of state variable to compute the norms on
    * @return The norms of the state variables as a vector
    */
