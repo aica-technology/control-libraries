@@ -13,6 +13,7 @@ Release Versions:
 - Transfer repository ownership to AICA (#1)
 - Get the age of a state and remove timestamp setter (#2)
 - Remove type from SpatialState constructor (#3)
+- Reorganize function declarations and implementations (#4)
 
 ## 6.3.1
 
