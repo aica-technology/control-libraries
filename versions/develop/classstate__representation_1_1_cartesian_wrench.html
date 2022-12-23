@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.7</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.8</span>
    </div>
   </td>
  </tr>
@@ -82,7 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Class to define wrench in cartesian space as 3D force and torque vectors.  
+<p>Class to define wrench in Cartesian space as 3D force and torque vectors.  
  <a href="classstate__representation_1_1_cartesian_wrench.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_cartesian_wrench_8hpp_source.html">CartesianWrench.hpp</a>&gt;</code></p>
@@ -227,32 +227,47 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memdesc:acd0027a0bd3f06089d5591a28b993579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classstate__representation_1_1_cartesian_wrench.html#acd0027a0bd3f06089d5591a28b993579">More...</a><br /></td></tr>
 <tr class="separator:acd0027a0bd3f06089d5591a28b993579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00e9547171c94d24bf605406cb4bbd58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a00e9547171c94d24bf605406cb4bbd58">CartesianWrench</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
-<tr class="memdesc:a00e9547171c94d24bf605406cb4bbd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_wrench.html#a00e9547171c94d24bf605406cb4bbd58">More...</a><br /></td></tr>
+<tr class="memdesc:a00e9547171c94d24bf605406cb4bbd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a Cartesian state.  <a href="classstate__representation_1_1_cartesian_wrench.html#a00e9547171c94d24bf605406cb4bbd58">More...</a><br /></td></tr>
 <tr class="separator:a00e9547171c94d24bf605406cb4bbd58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55cb6517b28a4025317457fca1dde2fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a55cb6517b28a4025317457fca1dde2fc">CartesianWrench</a> (const std::string &amp;name, const Eigen::Vector3d &amp;force, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a55cb6517b28a4025317457fca1dde2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a force given as a vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a55cb6517b28a4025317457fca1dde2fc">More...</a><br /></td></tr>
+<tr class="memdesc:a55cb6517b28a4025317457fca1dde2fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian wrench from a force given as a vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a55cb6517b28a4025317457fca1dde2fc">More...</a><br /></td></tr>
 <tr class="separator:a55cb6517b28a4025317457fca1dde2fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f282fbe6ce2307b12b5162aecb4093"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a20f282fbe6ce2307b12b5162aecb4093">CartesianWrench</a> (const std::string &amp;name, const Eigen::Vector3d &amp;force, const Eigen::Vector3d &amp;torque, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a20f282fbe6ce2307b12b5162aecb4093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a force and torque given as vectors.  <a href="classstate__representation_1_1_cartesian_wrench.html#a20f282fbe6ce2307b12b5162aecb4093">More...</a><br /></td></tr>
+<tr class="memdesc:a20f282fbe6ce2307b12b5162aecb4093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian wrench from a force and torque given as vectors.  <a href="classstate__representation_1_1_cartesian_wrench.html#a20f282fbe6ce2307b12b5162aecb4093">More...</a><br /></td></tr>
 <tr class="separator:a20f282fbe6ce2307b12b5162aecb4093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1d53483836ac7ea6e572ee856886294"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#aa1d53483836ac7ea6e572ee856886294">CartesianWrench</a> (const std::string &amp;name, const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;wrench, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:aa1d53483836ac7ea6e572ee856886294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a single 6d wrench vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#aa1d53483836ac7ea6e572ee856886294">More...</a><br /></td></tr>
+<tr class="memdesc:aa1d53483836ac7ea6e572ee856886294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian wrench from a single 6d wrench vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#aa1d53483836ac7ea6e572ee856886294">More...</a><br /></td></tr>
 <tr class="separator:aa1d53483836ac7ea6e572ee856886294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c685b27dccb0489d568a476133c34e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a5c685b27dccb0489d568a476133c34e3">operator=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)=default</td></tr>
-<tr class="memdesc:a5c685b27dccb0489d568a476133c34e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a5c685b27dccb0489d568a476133c34e3">More...</a><br /></td></tr>
+<tr class="memdesc:a5c685b27dccb0489d568a476133c34e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a5c685b27dccb0489d568a476133c34e3">More...</a><br /></td></tr>
 <tr class="separator:a5c685b27dccb0489d568a476133c34e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a03a7d5e85eba51856e6acdde6b2b4ce3">operator+=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
-<tr class="memdesc:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the += operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a03a7d5e85eba51856e6acdde6b2b4ce3">More...</a><br /></td></tr>
-<tr class="separator:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b37a713a2426e1e403c9e18b6140aca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a9b37a713a2426e1e403c9e18b6140aca">operator+</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench) const</td></tr>
-<tr class="memdesc:a9b37a713a2426e1e403c9e18b6140aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the + operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a9b37a713a2426e1e403c9e18b6140aca">More...</a><br /></td></tr>
-<tr class="separator:a9b37a713a2426e1e403c9e18b6140aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f8da4359c00ce9e28533cf4b64012cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a0f8da4359c00ce9e28533cf4b64012cc">operator-=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
-<tr class="memdesc:a0f8da4359c00ce9e28533cf4b64012cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the -= operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a0f8da4359c00ce9e28533cf4b64012cc">More...</a><br /></td></tr>
-<tr class="separator:a0f8da4359c00ce9e28533cf4b64012cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a6bb46aab6d6c926772c6f12409ba3dd0">operator-</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench) const</td></tr>
-<tr class="memdesc:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the - operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a6bb46aab6d6c926772c6f12409ba3dd0">More...</a><br /></td></tr>
-<tr class="separator:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a> () const override</td></tr>
+<tr class="memdesc:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the wrench data as an Eigen vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">More...</a><br /></td></tr>
+<tr class="separator:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4943b17e26c414913427afcc103699f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4943b17e26c414913427afcc103699f8">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a>) override</td></tr>
+<tr class="memdesc:a4943b17e26c414913427afcc103699f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the wrench data from an Eigen vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4943b17e26c414913427afcc103699f8">More...</a><br /></td></tr>
+<tr class="separator:a4943b17e26c414913427afcc103699f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace183de9d68dbe66f881414a95b468ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#ace183de9d68dbe66f881414a95b468ce">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a>) override</td></tr>
+<tr class="memdesc:ace183de9d68dbe66f881414a95b468ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the wrench data from a std vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#ace183de9d68dbe66f881414a95b468ce">More...</a><br /></td></tr>
+<tr class="separator:ace183de9d68dbe66f881414a95b468ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7aecb31632175ae942ac499dc53ac89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#ab7aecb31632175ae942ac499dc53ac89">clamp</a> (double max_force, double max_torque, double force_noise_ratio=0, double torque_noise_ratio=0)</td></tr>
+<tr class="memdesc:ab7aecb31632175ae942ac499dc53ac89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the magnitude of the wrench to the values in argument.  <a href="classstate__representation_1_1_cartesian_wrench.html#ab7aecb31632175ae942ac499dc53ac89">More...</a><br /></td></tr>
+<tr class="separator:ab7aecb31632175ae942ac499dc53ac89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a71429763d3bea299341aebe820e3c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4a71429763d3bea299341aebe820e3c7">clamped</a> (double max_force, double max_torque, double force_noise_ratio=0, double torque_noise_ratio=0) const</td></tr>
+<tr class="memdesc:a4a71429763d3bea299341aebe820e3c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clamped wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4a71429763d3bea299341aebe820e3c7">More...</a><br /></td></tr>
+<tr class="separator:a4a71429763d3bea299341aebe820e3c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">copy</a> () const</td></tr>
+<tr class="memdesc:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">More...</a><br /></td></tr>
+<tr class="separator:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">inverse</a> () const</td></tr>
+<tr class="memdesc:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">More...</a><br /></td></tr>
+<tr class="separator:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::WRENCH) const</td></tr>
+<tr class="memdesc:a356f382caa1b1fbf3fd01908db02e8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized wrench at the state variable given in argument (default is full wrench)  <a href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">More...</a><br /></td></tr>
+<tr class="separator:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5584c6d706a3773df0cb292ea78e8af8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a5584c6d706a3773df0cb292ea78e8af8">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::WRENCH) const override</td></tr>
+<tr class="memdesc:a5584c6d706a3773df0cb292ea78e8af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full wrench)  <a href="classstate__representation_1_1_cartesian_wrench.html#a5584c6d706a3773df0cb292ea78e8af8">More...</a><br /></td></tr>
+<tr class="separator:a5584c6d706a3773df0cb292ea78e8af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9b04907d3778eb657aa6be68a6e9ebc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#aa9b04907d3778eb657aa6be68a6e9ebc">operator*=</a> (double lambda)</td></tr>
 <tr class="memdesc:aa9b04907d3778eb657aa6be68a6e9ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with a scalar.  <a href="classstate__representation_1_1_cartesian_wrench.html#aa9b04907d3778eb657aa6be68a6e9ebc">More...</a><br /></td></tr>
 <tr class="separator:aa9b04907d3778eb657aa6be68a6e9ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,33 +280,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memitem:a38fa3a0e07ab518943a98d1a4b3c8af3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a38fa3a0e07ab518943a98d1a4b3c8af3">operator/</a> (double lambda) const</td></tr>
 <tr class="memdesc:a38fa3a0e07ab518943a98d1a4b3c8af3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the / operator with a scalar.  <a href="classstate__representation_1_1_cartesian_wrench.html#a38fa3a0e07ab518943a98d1a4b3c8af3">More...</a><br /></td></tr>
 <tr class="separator:a38fa3a0e07ab518943a98d1a4b3c8af3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7aecb31632175ae942ac499dc53ac89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#ab7aecb31632175ae942ac499dc53ac89">clamp</a> (double max_force, double max_torque, double force_noise_ratio=0, double torque_noise_ratio=0)</td></tr>
-<tr class="memdesc:ab7aecb31632175ae942ac499dc53ac89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the magnitude of the wrench to the values in argument.  <a href="classstate__representation_1_1_cartesian_wrench.html#ab7aecb31632175ae942ac499dc53ac89">More...</a><br /></td></tr>
-<tr class="separator:ab7aecb31632175ae942ac499dc53ac89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a71429763d3bea299341aebe820e3c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4a71429763d3bea299341aebe820e3c7">clamped</a> (double max_force, double max_torque, double force_noise_ratio=0, double torque_noise_ratio=0) const</td></tr>
-<tr class="memdesc:a4a71429763d3bea299341aebe820e3c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clamped wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4a71429763d3bea299341aebe820e3c7">More...</a><br /></td></tr>
-<tr class="separator:a4a71429763d3bea299341aebe820e3c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">copy</a> () const</td></tr>
-<tr class="memdesc:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a>.  <a href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">More...</a><br /></td></tr>
-<tr class="separator:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a> () const override</td></tr>
-<tr class="memdesc:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the wrench data as an Eigen vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">More...</a><br /></td></tr>
-<tr class="separator:a14e9b1701b4a2556badc9fd5a0456ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4943b17e26c414913427afcc103699f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4943b17e26c414913427afcc103699f8">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a>) override</td></tr>
-<tr class="memdesc:a4943b17e26c414913427afcc103699f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the wrench data from an Eigen vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4943b17e26c414913427afcc103699f8">More...</a><br /></td></tr>
-<tr class="separator:a4943b17e26c414913427afcc103699f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace183de9d68dbe66f881414a95b468ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#ace183de9d68dbe66f881414a95b468ce">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14e9b1701b4a2556badc9fd5a0456ef7">data</a>) override</td></tr>
-<tr class="memdesc:ace183de9d68dbe66f881414a95b468ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the wrench data from a std vector.  <a href="classstate__representation_1_1_cartesian_wrench.html#ace183de9d68dbe66f881414a95b468ce">More...</a><br /></td></tr>
-<tr class="separator:ace183de9d68dbe66f881414a95b468ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">inverse</a> () const</td></tr>
-<tr class="memdesc:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a>.  <a href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">More...</a><br /></td></tr>
-<tr class="separator:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5584c6d706a3773df0cb292ea78e8af8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a5584c6d706a3773df0cb292ea78e8af8">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::WRENCH) const override</td></tr>
-<tr class="memdesc:a5584c6d706a3773df0cb292ea78e8af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full wrench)  <a href="classstate__representation_1_1_cartesian_wrench.html#a5584c6d706a3773df0cb292ea78e8af8">More...</a><br /></td></tr>
-<tr class="separator:a5584c6d706a3773df0cb292ea78e8af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::WRENCH) const</td></tr>
-<tr class="memdesc:a356f382caa1b1fbf3fd01908db02e8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized wrench at the state variable given in argument (default is full wrench)  <a href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">More...</a><br /></td></tr>
-<tr class="separator:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a03a7d5e85eba51856e6acdde6b2b4ce3">operator+=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
+<tr class="memdesc:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the += operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a03a7d5e85eba51856e6acdde6b2b4ce3">More...</a><br /></td></tr>
+<tr class="separator:a03a7d5e85eba51856e6acdde6b2b4ce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b37a713a2426e1e403c9e18b6140aca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a9b37a713a2426e1e403c9e18b6140aca">operator+</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench) const</td></tr>
+<tr class="memdesc:a9b37a713a2426e1e403c9e18b6140aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the + operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a9b37a713a2426e1e403c9e18b6140aca">More...</a><br /></td></tr>
+<tr class="separator:a9b37a713a2426e1e403c9e18b6140aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f8da4359c00ce9e28533cf4b64012cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a0f8da4359c00ce9e28533cf4b64012cc">operator-=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
+<tr class="memdesc:a0f8da4359c00ce9e28533cf4b64012cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the -= operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a0f8da4359c00ce9e28533cf4b64012cc">More...</a><br /></td></tr>
+<tr class="separator:a0f8da4359c00ce9e28533cf4b64012cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a6bb46aab6d6c926772c6f12409ba3dd0">operator-</a> (const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench) const</td></tr>
+<tr class="memdesc:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the - operator.  <a href="classstate__representation_1_1_cartesian_wrench.html#a6bb46aab6d6c926772c6f12409ba3dd0">More...</a><br /></td></tr>
+<tr class="separator:a6bb46aab6d6c926772c6f12409ba3dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classstate__representation_1_1_cartesian_state"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classstate__representation_1_1_cartesian_state')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a></td></tr>
 <tr class="memitem:a6b907a7a60bcb90c68684a6bad9b153f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a6b907a7a60bcb90c68684a6bad9b153f">CartesianState</a> ()</td></tr>
 <tr class="memdesc:a6b907a7a60bcb90c68684a6bad9b153f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="classstate__representation_1_1_cartesian_state.html#a6b907a7a60bcb90c68684a6bad9b153f">More...</a><br /></td></tr>
@@ -301,10 +301,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="separator:a3ea716b149c36629fb9f6b5915d55e66 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a id="ad5dd5aec2724541e66448412fbacf8a0" name="ad5dd5aec2724541e66448412fbacf8a0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CartesianState</b> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)=default</td></tr>
-<tr class="memdesc:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. <br /></td></tr>
+<tr class="memdesc:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of a Cartesian state. <br /></td></tr>
 <tr class="separator:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">operator=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
-<tr class="memdesc:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">More...</a><br /></td></tr>
+<tr class="memdesc:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">More...</a><br /></td></tr>
 <tr class="separator:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43cd6447377a25955a4d5397325ab3fb inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">const Eigen::Vector3d &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a43cd6447377a25955a4d5397325ab3fb">get_position</a> () const</td></tr>
 <tr class="memdesc:a43cd6447377a25955a4d5397325ab3fb inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the position attribute.  <a href="classstate__representation_1_1_cartesian_state.html#a43cd6447377a25955a4d5397325ab3fb">More...</a><br /></td></tr>
@@ -313,10 +313,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memdesc:a97a6b4c430a570436e227ff7e90906b9 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute.  <a href="classstate__representation_1_1_cartesian_state.html#a97a6b4c430a570436e227ff7e90906b9">More...</a><br /></td></tr>
 <tr class="separator:a97a6b4c430a570436e227ff7e90906b9 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Vector4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">get_orientation_coefficients</a> () const</td></tr>
-<tr class="memdesc:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute as Vector4d of coefficients Beware, quaternion coefficients are returned using the (w, x, y, z) convention.  <a href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">More...</a><br /></td></tr>
+<tr class="memdesc:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute as Vector4d of coefficients.  <a href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">More...</a><br /></td></tr>
 <tr class="separator:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 7, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">get_pose</a> () const</td></tr>
-<tr class="memdesc:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of a pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">More...</a><br /></td></tr>
+<tr class="memdesc:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">More...</a><br /></td></tr>
 <tr class="separator:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a772e865cf44c4d748f0aba32be9f7cf0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a772e865cf44c4d748f0aba32be9f7cf0">get_transformation_matrix</a> () const</td></tr>
 <tr class="memdesc:a772e865cf44c4d748f0aba32be9f7cf0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of a pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a772e865cf44c4d748f0aba32be9f7cf0">More...</a><br /></td></tr>
@@ -348,6 +348,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memitem:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9d10c755440bd1c51a44a6392b1866b0">get_wrench</a> () const</td></tr>
 <tr class="memdesc:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the 6d wrench from force and torque attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a9d10c755440bd1c51a44a6392b1866b0">More...</a><br /></td></tr>
 <tr class="separator:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a> () const</td></tr>
+<tr class="memdesc:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data as the concatenation of all the state variables in a single vector.  <a href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">More...</a><br /></td></tr>
+<tr class="separator:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::ArrayXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">array</a> () const</td></tr>
+<tr class="memdesc:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data vector as an Eigen Array.  <a href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">More...</a><br /></td></tr>
+<tr class="separator:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">to_std_vector</a> () const</td></tr>
+<tr class="memdesc:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the state as a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">More...</a><br /></td></tr>
+<tr class="separator:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a84b4b0771aae40b7ab602bb879e585e2">set_position</a> (const Eigen::Vector3d &amp;position)</td></tr>
 <tr class="memdesc:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the position.  <a href="classstate__representation_1_1_cartesian_state.html#a84b4b0771aae40b7ab602bb879e585e2">More...</a><br /></td></tr>
 <tr class="separator:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,9 +459,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memitem:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5ed0918940d7cf455d228b4558f6193f">set_wrench</a> (const std::vector&lt; double &gt; &amp;wrench)</td></tr>
 <tr class="memdesc:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the force and torque from a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a5ed0918940d7cf455d228b4558f6193f">More...</a><br /></td></tr>
 <tr class="separator:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">initialize</a> () override</td></tr>
-<tr class="memdesc:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">More...</a><br /></td></tr>
-<tr class="separator:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
+<tr class="memdesc:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single Eigen vector.  <a href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">More...</a><br /></td></tr>
+<tr class="separator:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
+<tr class="memdesc:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">More...</a><br /></td></tr>
+<tr class="separator:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a07a7dbc44ec54973f4c6800dfe06069e">set_zero</a> ()</td></tr>
 <tr class="memdesc:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#a07a7dbc44ec54973f4c6800dfe06069e">More...</a><br /></td></tr>
 <tr class="separator:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,20 +472,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memdesc:a7f565718082645b493c2449006101b7a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the norm of the a specific state variable.  <a href="classstate__representation_1_1_cartesian_state.html#a7f565718082645b493c2449006101b7a">More...</a><br /></td></tr>
 <tr class="separator:a7f565718082645b493c2449006101b7a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">copy</a> () const</td></tr>
-<tr class="memdesc:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">More...</a><br /></td></tr>
+<tr class="memdesc:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian state.  <a href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">More...</a><br /></td></tr>
 <tr class="separator:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a> () const</td></tr>
-<tr class="memdesc:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data as the concatenation of all the state variables in a single vector.  <a href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">More...</a><br /></td></tr>
-<tr class="separator:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::ArrayXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">array</a> () const</td></tr>
-<tr class="memdesc:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data vector as an Eigen Array.  <a href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">More...</a><br /></td></tr>
-<tr class="separator:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
-<tr class="memdesc:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single Eigen vector.  <a href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">More...</a><br /></td></tr>
-<tr class="separator:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
-<tr class="memdesc:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">More...</a><br /></td></tr>
-<tr class="separator:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance to another state as the sum of distances between each features.  <a href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">More...</a><br /></td></tr>
+<tr class="separator:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">initialize</a> () override</td></tr>
+<tr class="memdesc:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">More...</a><br /></td></tr>
+<tr class="separator:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">inverse</a> () const</td></tr>
+<tr class="memdesc:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian state.  <a href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">More...</a><br /></td></tr>
+<tr class="separator:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">normalize</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
+<tr class="memdesc:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize inplace the state at the state variable given in argument. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">More...</a><br /></td></tr>
+<tr class="separator:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized state at the state variable given in argument. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">More...</a><br /></td></tr>
+<tr class="separator:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">More...</a><br /></td></tr>
+<tr class="separator:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad3e52be84f61d32e1154146ccdfc595a">operator*=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
 <tr class="memdesc:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with another state by deriving the equations of motions.  <a href="classstate__representation_1_1_cartesian_state.html#ad3e52be84f61d32e1154146ccdfc595a">More...</a><br /></td></tr>
 <tr class="separator:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -504,24 +522,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memitem:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4e5982ef6b5b49e6298fbb718e68e2ea">operator-</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state) const</td></tr>
 <tr class="memdesc:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the - operator.  <a href="classstate__representation_1_1_cartesian_state.html#a4e5982ef6b5b49e6298fbb718e68e2ea">More...</a><br /></td></tr>
 <tr class="separator:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">inverse</a> () const</td></tr>
-<tr class="memdesc:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">More...</a><br /></td></tr>
-<tr class="separator:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance to another state as the sum of distances between each features.  <a href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">More...</a><br /></td></tr>
-<tr class="separator:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">More...</a><br /></td></tr>
-<tr class="separator:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">normalize</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
-<tr class="memdesc:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize inplace the state at the state variable given in argument (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">More...</a><br /></td></tr>
-<tr class="separator:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized state at the state variable given in argument (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">More...</a><br /></td></tr>
-<tr class="separator:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">to_std_vector</a> () const</td></tr>
-<tr class="memdesc:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the state as a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">More...</a><br /></td></tr>
-<tr class="separator:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classstate__representation_1_1_spatial_state"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classstate__representation_1_1_spatial_state')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_spatial_state.html">state_representation::SpatialState</a></td></tr>
 <tr class="memitem:ad998780300b647ccf9768d4c393a5920 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#ad998780300b647ccf9768d4c393a5920">SpatialState</a> ()</td></tr>
 <tr class="memdesc:ad998780300b647ccf9768d4c393a5920 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="classstate__representation_1_1_spatial_state.html#ad998780300b647ccf9768d4c393a5920">More...</a><br /></td></tr>
@@ -531,10 +531,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="separator:aadb78c2041e3a0eaae03e40ee098047f inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top"><a id="a05cba139aa993c6e7fba30cc9c5bf598" name="a05cba139aa993c6e7fba30cc9c5bf598"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SpatialState</b> (const <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state)=default</td></tr>
-<tr class="memdesc:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a>. <br /></td></tr>
+<tr class="memdesc:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another spatial state. <br /></td></tr>
 <tr class="separator:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">operator=</a> (const <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state)</td></tr>
-<tr class="memdesc:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">More...</a><br /></td></tr>
+<tr class="memdesc:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">More...</a><br /></td></tr>
 <tr class="separator:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5918d6279f226d9ccb2f2f50d6ce321 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#ad5918d6279f226d9ccb2f2f50d6ce321">get_reference_frame</a> () const</td></tr>
 <tr class="memdesc:ad5918d6279f226d9ccb2f2f50d6ce321 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the reference frame as const reference.  <a href="classstate__representation_1_1_spatial_state.html#ad5918d6279f226d9ccb2f2f50d6ce321">More...</a><br /></td></tr>
@@ -556,64 +556,64 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memdesc:a52300a1a91ba9080674d44ad7e2296ba inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with name specification.  <a href="classstate__representation_1_1_state.html#a52300a1a91ba9080674d44ad7e2296ba">More...</a><br /></td></tr>
 <tr class="separator:a52300a1a91ba9080674d44ad7e2296ba inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">State</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state)</td></tr>
-<tr class="memdesc:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a>.  <a href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">More...</a><br /></td></tr>
+<tr class="memdesc:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another state.  <a href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">More...</a><br /></td></tr>
 <tr class="separator:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top"><a id="ac03ca28c3da82a798ba215bc6ff6772e" name="ac03ca28c3da82a798ba215bc6ff6772e"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=default</td></tr>
 <tr class="memdesc:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br /></td></tr>
 <tr class="separator:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">operator=</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state)</td></tr>
-<tr class="memdesc:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">More...</a><br /></td></tr>
+<tr class="memdesc:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">More...</a><br /></td></tr>
 <tr class="separator:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87">StateType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a2fa59b99044e740b3a21695f1818ff65">get_type</a> () const</td></tr>
 <tr class="memdesc:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the type attribute.  <a href="classstate__representation_1_1_state.html#a2fa59b99044e740b3a21695f1818ff65">More...</a><br /></td></tr>
 <tr class="separator:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">get_name</a> () const</td></tr>
+<tr class="memdesc:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the name attribute.  <a href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">More...</a><br /></td></tr>
+<tr class="separator:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#aee8b6cd83e0d44bca7f900ae0731f26c">is_empty</a> () const</td></tr>
 <tr class="memdesc:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the empty attribute.  <a href="classstate__representation_1_1_state.html#aee8b6cd83e0d44bca7f900ae0731f26c">More...</a><br /></td></tr>
 <tr class="separator:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">get_timestamp</a> () const</td></tr>
+<tr class="memdesc:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the timestamp attribute.  <a href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">More...</a><br /></td></tr>
+<tr class="separator:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">set_name</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the name attribute.  <a href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">More...</a><br /></td></tr>
+<tr class="separator:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">set_empty</a> (bool empty=true)</td></tr>
 <tr class="memdesc:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the empty attribute.  <a href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">More...</a><br /></td></tr>
 <tr class="separator:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">set_filled</a> ()</td></tr>
 <tr class="memdesc:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the empty attribute to false and also reset the timestamp.  <a href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">More...</a><br /></td></tr>
 <tr class="separator:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
-<tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
-<tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">get_timestamp</a> () const</td></tr>
-<tr class="memdesc:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the timestamp attribute.  <a href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">More...</a><br /></td></tr>
-<tr class="separator:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a001cb2b235481442ca4d904b39b8f0d2">reset_timestamp</a> ()</td></tr>
 <tr class="memdesc:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the timestamp attribute to now.  <a href="classstate__representation_1_1_state.html#a001cb2b235481442ca4d904b39b8f0d2">More...</a><br /></td></tr>
 <tr class="separator:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">get_name</a> () const</td></tr>
-<tr class="memdesc:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the name as const reference.  <a href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">More...</a><br /></td></tr>
-<tr class="separator:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">set_name</a> (const std::string &amp;name)</td></tr>
-<tr class="memdesc:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the name.  <a href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">More...</a><br /></td></tr>
-<tr class="separator:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#acbcb448dd5e560f55533cb882015703e">is_deprecated</a> (double time_delay)</td></tr>
-<tr class="memdesc:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#acbcb448dd5e560f55533cb882015703e">More...</a><br /></td></tr>
-<tr class="separator:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplParams" colspan="2">template&lt;typename DurationT &gt; </td></tr>
-<tr class="memitem:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a04fcec9e30d2008f5968e4898c614edf">is_deprecated</a> (const std::chrono::duration&lt; int64_t, DurationT &gt; &amp;time_delay)</td></tr>
-<tr class="memdesc:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#a04fcec9e30d2008f5968e4898c614edf">More...</a><br /></td></tr>
-<tr class="separator:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
-<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">initialize</a> ()</td></tr>
-<tr class="memdesc:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a> to a zero value.  <a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">More...</a><br /></td></tr>
-<tr class="separator:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">set_data</a> (const Eigen::VectorXd &amp;data)</td></tr>
-<tr class="memdesc:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a single Eigen vector.  <a href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">More...</a><br /></td></tr>
+<tr class="memdesc:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from an Eigen vector.  <a href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">More...</a><br /></td></tr>
 <tr class="separator:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">set_data</a> (const std::vector&lt; double &gt; &amp;data)</td></tr>
-<tr class="memdesc:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a single std vector.  <a href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">More...</a><br /></td></tr>
+<tr class="memdesc:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a std vector.  <a href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">More...</a><br /></td></tr>
 <tr class="separator:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab5c9438a6d681eb4c03550bb66d6606a">set_data</a> (const Eigen::MatrixXd &amp;data)</td></tr>
 <tr class="memdesc:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from an Eigen matrix.  <a href="classstate__representation_1_1_state.html#ab5c9438a6d681eb4c03550bb66d6606a">More...</a><br /></td></tr>
 <tr class="separator:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
+<tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
+<tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
+<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
+<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">is_deprecated</a> (double time_delay) const</td></tr>
+<tr class="memdesc:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">More...</a><br /></td></tr>
+<tr class="separator:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplParams" colspan="2">template&lt;typename DurationT &gt; </td></tr>
+<tr class="memitem:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">is_deprecated</a> (const std::chrono::duration&lt; int64_t, DurationT &gt; &amp;time_delay) const</td></tr>
+<tr class="memdesc:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">More...</a><br /></td></tr>
+<tr class="separator:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">initialize</a> ()</td></tr>
+<tr class="memdesc:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the state to a zero value.  <a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">More...</a><br /></td></tr>
+<tr class="separator:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">operator bool</a> () const noexcept</td></tr>
 <tr class="memdesc:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator for the truthiness of a state.  <a href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">More...</a><br /></td></tr>
 <tr class="separator:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -628,10 +628,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:af1dd07f6c658a9ce27eec31eac6ee4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classstate__representation_1_1_cartesian_state"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classstate__representation_1_1_cartesian_state')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a></td></tr>
 <tr class="memitem:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">Identity</a> (const std::string &amp;name, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the identity <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> (identity pose and 0 for the rest)  <a href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">More...</a><br /></td></tr>
+<tr class="memdesc:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the identity Cartesian state (identity pose and 0 for the rest)  <a href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">More...</a><br /></td></tr>
 <tr class="separator:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">Random</a> (const std::string &amp;name, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a random state.  <a href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">More...</a><br /></td></tr>
+<tr class="memdesc:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a random Cartsian state.  <a href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">More...</a><br /></td></tr>
 <tr class="separator:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -639,15 +639,15 @@ Friends</h2></td></tr>
 <tr class="memitem:a65f0cb865892809ed6e6c08d42fe18c9"><td class="memItemLeft" align="right" valign="top"><a id="a65f0cb865892809ed6e6c08d42fe18c9" name="a65f0cb865892809ed6e6c08d42fe18c9"></a>
 <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)=delete</td></tr>
 <tr class="separator:a65f0cb865892809ed6e6c08d42fe18c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8efb75b563111c8711a75a9848868658"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a8efb75b563111c8711a75a9848868658">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
-<tr class="memdesc:a8efb75b563111c8711a75a9848868658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_cartesian_wrench.html#a8efb75b563111c8711a75a9848868658">More...</a><br /></td></tr>
-<tr class="separator:a8efb75b563111c8711a75a9848868658"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a0a175610922544505b0aaf918b2289"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4a0a175610922544505b0aaf918b2289">operator*</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
-<tr class="memdesc:a4a0a175610922544505b0aaf918b2289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4a0a175610922544505b0aaf918b2289">More...</a><br /></td></tr>
+<tr class="memdesc:a4a0a175610922544505b0aaf918b2289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a Cartesian state.  <a href="classstate__representation_1_1_cartesian_wrench.html#a4a0a175610922544505b0aaf918b2289">More...</a><br /></td></tr>
 <tr class="separator:a4a0a175610922544505b0aaf918b2289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14f452c2d4bf4d229ebad8905287f45b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a14f452c2d4bf4d229ebad8905287f45b">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
 <tr class="memdesc:a14f452c2d4bf4d229ebad8905287f45b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a scalar.  <a href="classstate__representation_1_1_cartesian_wrench.html#a14f452c2d4bf4d229ebad8905287f45b">More...</a><br /></td></tr>
 <tr class="separator:a14f452c2d4bf4d229ebad8905287f45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8efb75b563111c8711a75a9848868658"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a8efb75b563111c8711a75a9848868658">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> &amp;wrench)</td></tr>
+<tr class="memdesc:a8efb75b563111c8711a75a9848868658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_cartesian_wrench.html#a8efb75b563111c8711a75a9848868658">More...</a><br /></td></tr>
+<tr class="separator:a8efb75b563111c8711a75a9848868658"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -660,13 +660,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a2b58efb6b21d5e77e30adb368f31bbda inherit pro_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classstate__representation_1_1_state"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classstate__representation_1_1_state')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classstate__representation_1_1_state.html">state_representation::State</a></td></tr>
 <tr class="memitem:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">set_type</a> (const <a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87">StateType</a> &amp;type)</td></tr>
-<tr class="memdesc:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override the state type.  <a href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">More...</a><br /></td></tr>
+<tr class="memdesc:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the state type attribute.  <a href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">More...</a><br /></td></tr>
 <tr class="separator:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Class to define wrench in cartesian space as 3D force and torque vectors. </p>
+<div class="textblock"><p >Class to define wrench in Cartesian space as 3D force and torque vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8hpp_source.html#l00014">14</a> of file <a class="el" href="_cartesian_wrench_8hpp_source.html">CartesianWrench.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8hpp_source.html#l00015">15</a> of file <a class="el" href="_cartesian_wrench_8hpp_source.html">CartesianWrench.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1feaa280f98a1accda8963150e0ae0f1" name="a1feaa280f98a1accda8963150e0ae0f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1feaa280f98a1accda8963150e0ae0f1">&#9670;&#160;</a></span>CartesianWrench() <span class="overload">[1/7]</span></h2>
@@ -693,7 +693,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00006">6</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00007">7</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -734,13 +734,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor with name and reference frame provided. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world") </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00010">10</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00011">11</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -762,7 +762,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Copy constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00044">44</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00045">45</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -782,9 +782,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. </p>
+<p>Copy constructor from a Cartesian state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00036">36</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00037">37</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -828,9 +828,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a force given as a vector. </p>
+<p>Construct a Cartesian wrench from a force given as a vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00015">15</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00016">16</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -880,9 +880,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a force and torque given as vectors. </p>
+<p>Construct a Cartesian wrench from a force and torque given as vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00021">21</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00022">22</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -926,9 +926,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> from a single 6d wrench vector. </p>
+<p>Construct a Cartesian wrench from a single 6d wrench vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00029">29</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00030">30</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -974,15 +974,15 @@ Additional Inherited Members</h2></td></tr>
 <p>Clamp inplace the magnitude of the wrench to the values in argument. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max_force</td><td>the maximum magnitude of the force </td></tr>
-    <tr><td class="paramname">max_torque</td><td>the maximum magnitude of the torque </td></tr>
-    <tr><td class="paramname">force_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the force will be set to 0 </td></tr>
-    <tr><td class="paramname">torque_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the torque will be set to 0 </td></tr>
+    <tr><td class="paramname">max_force</td><td>The maximum magnitude of the force </td></tr>
+    <tr><td class="paramname">max_torque</td><td>The maximum magnitude of the torque </td></tr>
+    <tr><td class="paramname">force_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the force will be set to 0 </td></tr>
+    <tr><td class="paramname">torque_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the torque will be set to 0 </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00093">93</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00074">74</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1027,16 +1027,16 @@ Additional Inherited Members</h2></td></tr>
 <p>Return the clamped wrench. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max_force</td><td>the maximum magnitude of the force </td></tr>
-    <tr><td class="paramname">max_torque</td><td>the maximum magnitude of the torque </td></tr>
-    <tr><td class="paramname">force_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the force will be set to 0 </td></tr>
-    <tr><td class="paramname">torque_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the torque will be set to 0 </td></tr>
+    <tr><td class="paramname">max_force</td><td>The maximum magnitude of the force </td></tr>
+    <tr><td class="paramname">max_torque</td><td>The maximum magnitude of the torque </td></tr>
+    <tr><td class="paramname">force_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the force will be set to 0 </td></tr>
+    <tr><td class="paramname">torque_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the torque will be set to 0 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the clamped wrench </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The clamped wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00100">100</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00081">81</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1055,10 +1055,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>the copy </dd></dl>
+<p>Return a copy of the Cartesian wrench. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00089">89</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1086,11 +1085,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the wrench data as an Eigen vector. </p>
-<dl class="section return"><dt>Returns</dt><dd>the wrench data vector </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00113">113</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00058">58</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1109,10 +1107,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>the inverse corresponding to b_S_f (assuming this is f_S_b) </dd></dl>
+<p>Compute the inverse of the current Cartesian wrench. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00129">129</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00094">94</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1121,9 +1118,6 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> state_representation::CartesianWrench::normalized </td>
@@ -1133,23 +1127,18 @@ Additional Inherited Members</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Compute the normalized wrench at the state variable given in argument (default is full wrench) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state_variable_type</td><td>the type of state variable to compute the norms on </td></tr>
+    <tr><td class="paramname">state_variable_type</td><td>The type of state variable to compute the norms on </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the normalized wrench </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The normalized wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8hpp_source.html#l00281">281</a> of file <a class="el" href="_cartesian_wrench_8hpp_source.html">CartesianWrench.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00098">98</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1172,7 +1161,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1180,15 +1169,15 @@ Additional Inherited Members</h2></td></tr>
 <p>Compute the norms of the state variable specified by the input type (default is full wrench) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state_variable_type</td><td>the type of state variable to compute the norms on </td></tr>
+    <tr><td class="paramname">state_variable_type</td><td>The type of state variable to compute the norms on </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the norms of the state variables as a vector </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The norms of the state variables as a vector </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8hpp_source.html#l00277">277</a> of file <a class="el" href="_cartesian_wrench_8hpp_source.html">CartesianWrench.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00102">102</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1211,13 +1200,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00080">80</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00119">119</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1240,13 +1229,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the *= operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00075">75</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00106">106</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1269,13 +1258,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the + operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wrench</td><td><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to add </td></tr>
+    <tr><td class="paramname">wrench</td><td>The Cartesian wrench to add </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> added the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian wrench added the Cartesian wrench given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00062">62</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00137">137</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1298,13 +1287,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the += operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wrench</td><td><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to add </td></tr>
+    <tr><td class="paramname">wrench</td><td>The Cartesian wrench to add </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> added the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian wrench added the Cartesian wrench given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00057">57</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00132">132</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1327,13 +1316,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the - operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wrench</td><td><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to subtract </td></tr>
+    <tr><td class="paramname">wrench</td><td>The Cartesian wrench to subtract </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> minus the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian wrench minus the Cartesian wrench given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00071">71</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00146">146</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1356,13 +1345,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the -= operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wrench</td><td><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to subtract </td></tr>
+    <tr><td class="paramname">wrench</td><td>The Cartesian wrench to subtract </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> minus the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian wrench minus the Cartesian wrench given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00066">66</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00141">141</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1385,13 +1374,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the / operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to divide with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to divide with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> divided by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00089">89</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00128">128</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1414,13 +1403,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the /= operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to divide with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to divide with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> divided by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00084">84</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00123">123</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1448,14 +1437,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy assignment operator that have to be defined to the custom assignment operator. </p>
+<p>Copy assignment operator that has to be defined to the custom assignment operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">wrench</td><td>the wrench with value to assign </td></tr>
+    <tr><td class="paramname">wrench</td><td>The wrench with value to assign </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>reference to the current wrench with new values </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current wrench with new values </dd></dl>
 
 </div>
 </div>
@@ -1496,14 +1485,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor for a random wrench. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> random wrench </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The random Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00051">51</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00052">52</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1532,16 +1521,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the wrench data from an Eigen vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">the</td><td>wrench data vector </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00117">117</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00062">62</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1570,16 +1553,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the wrench data from a std vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">the</td><td>wrench data vector </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00125">125</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00070">70</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1620,14 +1597,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor for the zero wrench. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> with zero values </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The zero Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00047">47</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00048">48</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1666,16 +1643,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Overload the * operator with a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. </p>
+<p>Overload the * operator with a Cartesian state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>the state to multiply with </td></tr>
+    <tr><td class="paramname">state</td><td>The state to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> provided multiplied by the state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench provided multiplied by the state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00149">149</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00111">111</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1716,13 +1693,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> provided multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian wrench provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00153">153</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00115">115</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1763,14 +1740,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the ostream operator for printing. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to </td></tr>
-    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a></td><td>the <a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in cartesian space as 3D force and torque vectors.">CartesianWrench</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the Cartesian wrench to </td></tr>
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html" title="Class to define wrench in Cartesian space as 3D force and torque vectors.">CartesianWrench</a></td><td>The Cartesian wrench to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00133">133</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00150">150</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>

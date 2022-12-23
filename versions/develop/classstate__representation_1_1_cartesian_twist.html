@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.7</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.8</span>
    </div>
   </td>
  </tr>
@@ -82,7 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Class to define twist in cartesian space as 3D linear and angular velocity vectors.  
+<p>Class to define twist in Cartesian space as 3D linear and angular velocity vectors.  
  <a href="classstate__representation_1_1_cartesian_twist.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_cartesian_twist_8hpp_source.html">CartesianTwist.hpp</a>&gt;</code></p>
@@ -227,26 +227,74 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memdesc:a5bb0ff4279527773189ff31b79f0abad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classstate__representation_1_1_cartesian_twist.html#a5bb0ff4279527773189ff31b79f0abad">More...</a><br /></td></tr>
 <tr class="separator:a5bb0ff4279527773189ff31b79f0abad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a642f7e02c0427e44cac46d1c2b614c52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a642f7e02c0427e44cac46d1c2b614c52">CartesianTwist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
-<tr class="memdesc:a642f7e02c0427e44cac46d1c2b614c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_twist.html#a642f7e02c0427e44cac46d1c2b614c52">More...</a><br /></td></tr>
+<tr class="memdesc:a642f7e02c0427e44cac46d1c2b614c52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a Cartesian state.  <a href="classstate__representation_1_1_cartesian_twist.html#a642f7e02c0427e44cac46d1c2b614c52">More...</a><br /></td></tr>
 <tr class="separator:a642f7e02c0427e44cac46d1c2b614c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b68620fb61b5cc1a4735928b946f42f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a1b68620fb61b5cc1a4735928b946f42f">CartesianTwist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> &amp;pose)</td></tr>
-<tr class="memdesc:a1b68620fb61b5cc1a4735928b946f42f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> by considering that it is equivalent to dividing the pose by 1 second.  <a href="classstate__representation_1_1_cartesian_twist.html#a1b68620fb61b5cc1a4735928b946f42f">More...</a><br /></td></tr>
+<tr class="memdesc:a1b68620fb61b5cc1a4735928b946f42f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a Cartesian pose by considering that it is equivalent to dividing the pose by 1 second.  <a href="classstate__representation_1_1_cartesian_twist.html#a1b68620fb61b5cc1a4735928b946f42f">More...</a><br /></td></tr>
 <tr class="separator:a1b68620fb61b5cc1a4735928b946f42f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34b8c6a8a0a294835fb0013027e5ab96"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a34b8c6a8a0a294835fb0013027e5ab96">CartesianTwist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a> &amp;acceleration)</td></tr>
-<tr class="memdesc:a34b8c6a8a0a294835fb0013027e5ab96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html" title="Class to define acceleration in cartesian space as 3D linear and angular acceleration vectors.">CartesianAcceleration</a> by considering that it is a twist over 1 second.  <a href="classstate__representation_1_1_cartesian_twist.html#a34b8c6a8a0a294835fb0013027e5ab96">More...</a><br /></td></tr>
+<tr class="memdesc:a34b8c6a8a0a294835fb0013027e5ab96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from a Cartesian acceleration by considering that it is a twist over 1 second.  <a href="classstate__representation_1_1_cartesian_twist.html#a34b8c6a8a0a294835fb0013027e5ab96">More...</a><br /></td></tr>
 <tr class="separator:a34b8c6a8a0a294835fb0013027e5ab96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d4fd4db6792acefef58a43101bf3945"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a0d4fd4db6792acefef58a43101bf3945">CartesianTwist</a> (const std::string &amp;name, const Eigen::Vector3d &amp;linear_velocity, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a0d4fd4db6792acefef58a43101bf3945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a linear velocity given as a vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a0d4fd4db6792acefef58a43101bf3945">More...</a><br /></td></tr>
+<tr class="memdesc:a0d4fd4db6792acefef58a43101bf3945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian twist from a linear velocity given as a vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a0d4fd4db6792acefef58a43101bf3945">More...</a><br /></td></tr>
 <tr class="separator:a0d4fd4db6792acefef58a43101bf3945"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff04ce8e08ab892f247ddc157a94e396"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#aff04ce8e08ab892f247ddc157a94e396">CartesianTwist</a> (const std::string &amp;name, const Eigen::Vector3d &amp;linear_velocity, const Eigen::Vector3d &amp;angular_velocity, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:aff04ce8e08ab892f247ddc157a94e396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a linear velocity and angular velocity given as vectors.  <a href="classstate__representation_1_1_cartesian_twist.html#aff04ce8e08ab892f247ddc157a94e396">More...</a><br /></td></tr>
+<tr class="memdesc:aff04ce8e08ab892f247ddc157a94e396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian twist from a linear velocity and angular velocity given as vectors.  <a href="classstate__representation_1_1_cartesian_twist.html#aff04ce8e08ab892f247ddc157a94e396">More...</a><br /></td></tr>
 <tr class="separator:aff04ce8e08ab892f247ddc157a94e396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a841c677d0f5e19f2c3722148df7fc972"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a841c677d0f5e19f2c3722148df7fc972">CartesianTwist</a> (const std::string &amp;name, const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;twist, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a841c677d0f5e19f2c3722148df7fc972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a single 6d twist vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a841c677d0f5e19f2c3722148df7fc972">More...</a><br /></td></tr>
+<tr class="memdesc:a841c677d0f5e19f2c3722148df7fc972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a Cartesian twist from a single 6d twist vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a841c677d0f5e19f2c3722148df7fc972">More...</a><br /></td></tr>
 <tr class="separator:a841c677d0f5e19f2c3722148df7fc972"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae984073da2336af9e37e742ea8479704"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ae984073da2336af9e37e742ea8479704">operator=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)=default</td></tr>
-<tr class="memdesc:ae984073da2336af9e37e742ea8479704"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_twist.html#ae984073da2336af9e37e742ea8479704">More...</a><br /></td></tr>
+<tr class="memdesc:ae984073da2336af9e37e742ea8479704"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_twist.html#ae984073da2336af9e37e742ea8479704">More...</a><br /></td></tr>
 <tr class="separator:ae984073da2336af9e37e742ea8479704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a> () const override</td></tr>
+<tr class="memdesc:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the twist data as an Eigen vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">More...</a><br /></td></tr>
+<tr class="separator:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9446402fd9fbd54f58ef63d21cf54d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a9446402fd9fbd54f58ef63d21cf54d00">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a>) override</td></tr>
+<tr class="memdesc:a9446402fd9fbd54f58ef63d21cf54d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the twist data from an Eigen vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a9446402fd9fbd54f58ef63d21cf54d00">More...</a><br /></td></tr>
+<tr class="separator:a9446402fd9fbd54f58ef63d21cf54d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a861b50cb560c73775637e1a2a29df823"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a861b50cb560c73775637e1a2a29df823">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a>) override</td></tr>
+<tr class="memdesc:a861b50cb560c73775637e1a2a29df823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the twist data from a std vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a861b50cb560c73775637e1a2a29df823">More...</a><br /></td></tr>
+<tr class="separator:a861b50cb560c73775637e1a2a29df823"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#aa6b1a54c0ee94bb39b329d67fa7138b4">clamp</a> (double max_linear, double max_angular, double linear_noise_ratio=0, double angular_noise_ratio=0)</td></tr>
+<tr class="memdesc:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the magnitude of the twist to the values in argument.  <a href="classstate__representation_1_1_cartesian_twist.html#aa6b1a54c0ee94bb39b329d67fa7138b4">More...</a><br /></td></tr>
+<tr class="separator:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a5e1e46b20f7ce4ad4eb523abb9180718">clamped</a> (double max_linear, double max_angular, double noise_ratio=0, double angular_noise_ratio=0) const</td></tr>
+<tr class="memdesc:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clamped twist.  <a href="classstate__representation_1_1_cartesian_twist.html#a5e1e46b20f7ce4ad4eb523abb9180718">More...</a><br /></td></tr>
+<tr class="separator:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab92f57637965980b870215f2c43e8b98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ab92f57637965980b870215f2c43e8b98">copy</a> () const</td></tr>
+<tr class="memdesc:ab92f57637965980b870215f2c43e8b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian twist.  <a href="classstate__representation_1_1_cartesian_twist.html#ab92f57637965980b870215f2c43e8b98">More...</a><br /></td></tr>
+<tr class="separator:ab92f57637965980b870215f2c43e8b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#adeb354a3fb8a9f6f2efa8f441fb12489">inverse</a> () const</td></tr>
+<tr class="memdesc:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian twist.  <a href="classstate__representation_1_1_cartesian_twist.html#adeb354a3fb8a9f6f2efa8f441fb12489">More...</a><br /></td></tr>
+<tr class="separator:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5638298b6ea67ab430f4f8cb8533696"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad5638298b6ea67ab430f4f8cb8533696">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::TWIST) const</td></tr>
+<tr class="memdesc:ad5638298b6ea67ab430f4f8cb8533696"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized twist at the state variable given in argument (default is full twist)  <a href="classstate__representation_1_1_cartesian_twist.html#ad5638298b6ea67ab430f4f8cb8533696">More...</a><br /></td></tr>
+<tr class="separator:ad5638298b6ea67ab430f4f8cb8533696"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e33c54e1665325e51cf9c73c42fba14"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a3e33c54e1665325e51cf9c73c42fba14">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::TWIST) const override</td></tr>
+<tr class="memdesc:a3e33c54e1665325e51cf9c73c42fba14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full twist)  <a href="classstate__representation_1_1_cartesian_twist.html#a3e33c54e1665325e51cf9c73c42fba14">More...</a><br /></td></tr>
+<tr class="separator:a3e33c54e1665325e51cf9c73c42fba14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8c356b535a498d9bf6512099fb34684"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ae8c356b535a498d9bf6512099fb34684">operator*=</a> (double lambda)</td></tr>
+<tr class="memdesc:ae8c356b535a498d9bf6512099fb34684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#ae8c356b535a498d9bf6512099fb34684">More...</a><br /></td></tr>
+<tr class="separator:ae8c356b535a498d9bf6512099fb34684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab38fb69dab2fad5effd15168d39d9ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#aab38fb69dab2fad5effd15168d39d9ce">operator*</a> (double lambda) const</td></tr>
+<tr class="memdesc:aab38fb69dab2fad5effd15168d39d9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#aab38fb69dab2fad5effd15168d39d9ce">More...</a><br /></td></tr>
+<tr class="separator:aab38fb69dab2fad5effd15168d39d9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68e7f9846c427ef1d94142c466fbafca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a68e7f9846c427ef1d94142c466fbafca">operator*=</a> (const Eigen::Matrix&lt; double, 6, 6 &gt; &amp;lambda)</td></tr>
+<tr class="memdesc:a68e7f9846c427ef1d94142c466fbafca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with a gain matrix.  <a href="classstate__representation_1_1_cartesian_twist.html#a68e7f9846c427ef1d94142c466fbafca">More...</a><br /></td></tr>
+<tr class="separator:a68e7f9846c427ef1d94142c466fbafca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad58e7f9e21673b8a0faaebcceaa3e1dc">operator*</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a time period.  <a href="classstate__representation_1_1_cartesian_twist.html#ad58e7f9e21673b8a0faaebcceaa3e1dc">More...</a><br /></td></tr>
+<tr class="separator:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#af328dd0dea57a4c864e13d0f8b8e0cf0">operator/=</a> (double lambda)</td></tr>
+<tr class="memdesc:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the /= operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#af328dd0dea57a4c864e13d0f8b8e0cf0">More...</a><br /></td></tr>
+<tr class="separator:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8793825372ad10a2368d46d49d539c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad8793825372ad10a2368d46d49d539c5">operator/</a> (double lambda) const</td></tr>
+<tr class="memdesc:ad8793825372ad10a2368d46d49d539c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the / operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#ad8793825372ad10a2368d46d49d539c5">More...</a><br /></td></tr>
+<tr class="separator:ad8793825372ad10a2368d46d49d539c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db9518cda20c2a55a498ac64edb551e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a3db9518cda20c2a55a498ac64edb551e">operator/</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:a3db9518cda20c2a55a498ac64edb551e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the / operator with a time period.  <a href="classstate__representation_1_1_cartesian_twist.html#a3db9518cda20c2a55a498ac64edb551e">More...</a><br /></td></tr>
+<tr class="separator:a3db9518cda20c2a55a498ac64edb551e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09a3d6d323379c411f38a9de3f5567b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a09a3d6d323379c411f38a9de3f5567b2">operator+=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
 <tr class="memdesc:a09a3d6d323379c411f38a9de3f5567b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the += operator.  <a href="classstate__representation_1_1_cartesian_twist.html#a09a3d6d323379c411f38a9de3f5567b2">More...</a><br /></td></tr>
 <tr class="separator:a09a3d6d323379c411f38a9de3f5567b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,54 +307,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memitem:a10f13e61d4606c7f2b135a95b9580fa2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a10f13e61d4606c7f2b135a95b9580fa2">operator-</a> (const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist) const</td></tr>
 <tr class="memdesc:a10f13e61d4606c7f2b135a95b9580fa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the - operator with a twist.  <a href="classstate__representation_1_1_cartesian_twist.html#a10f13e61d4606c7f2b135a95b9580fa2">More...</a><br /></td></tr>
 <tr class="separator:a10f13e61d4606c7f2b135a95b9580fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8c356b535a498d9bf6512099fb34684"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ae8c356b535a498d9bf6512099fb34684">operator*=</a> (double lambda)</td></tr>
-<tr class="memdesc:ae8c356b535a498d9bf6512099fb34684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#ae8c356b535a498d9bf6512099fb34684">More...</a><br /></td></tr>
-<tr class="separator:ae8c356b535a498d9bf6512099fb34684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab38fb69dab2fad5effd15168d39d9ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#aab38fb69dab2fad5effd15168d39d9ce">operator*</a> (double lambda) const</td></tr>
-<tr class="memdesc:aab38fb69dab2fad5effd15168d39d9ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#aab38fb69dab2fad5effd15168d39d9ce">More...</a><br /></td></tr>
-<tr class="separator:aab38fb69dab2fad5effd15168d39d9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#af328dd0dea57a4c864e13d0f8b8e0cf0">operator/=</a> (double lambda)</td></tr>
-<tr class="memdesc:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the /= operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#af328dd0dea57a4c864e13d0f8b8e0cf0">More...</a><br /></td></tr>
-<tr class="separator:af328dd0dea57a4c864e13d0f8b8e0cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8793825372ad10a2368d46d49d539c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad8793825372ad10a2368d46d49d539c5">operator/</a> (double lambda) const</td></tr>
-<tr class="memdesc:ad8793825372ad10a2368d46d49d539c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the / operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#ad8793825372ad10a2368d46d49d539c5">More...</a><br /></td></tr>
-<tr class="separator:ad8793825372ad10a2368d46d49d539c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68e7f9846c427ef1d94142c466fbafca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a68e7f9846c427ef1d94142c466fbafca">operator*=</a> (const Eigen::Matrix&lt; double, 6, 6 &gt; &amp;lambda)</td></tr>
-<tr class="memdesc:a68e7f9846c427ef1d94142c466fbafca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with a gain matrix.  <a href="classstate__representation_1_1_cartesian_twist.html#a68e7f9846c427ef1d94142c466fbafca">More...</a><br /></td></tr>
-<tr class="separator:a68e7f9846c427ef1d94142c466fbafca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad58e7f9e21673b8a0faaebcceaa3e1dc">operator*</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
-<tr class="memdesc:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a time period.  <a href="classstate__representation_1_1_cartesian_twist.html#ad58e7f9e21673b8a0faaebcceaa3e1dc">More...</a><br /></td></tr>
-<tr class="separator:ad58e7f9e21673b8a0faaebcceaa3e1dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3db9518cda20c2a55a498ac64edb551e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a3db9518cda20c2a55a498ac64edb551e">operator/</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
-<tr class="memdesc:a3db9518cda20c2a55a498ac64edb551e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the / operator with a time period.  <a href="classstate__representation_1_1_cartesian_twist.html#a3db9518cda20c2a55a498ac64edb551e">More...</a><br /></td></tr>
-<tr class="separator:a3db9518cda20c2a55a498ac64edb551e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#aa6b1a54c0ee94bb39b329d67fa7138b4">clamp</a> (double max_linear, double max_angular, double linear_noise_ratio=0, double angular_noise_ratio=0)</td></tr>
-<tr class="memdesc:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the magnitude of the twist to the values in argument.  <a href="classstate__representation_1_1_cartesian_twist.html#aa6b1a54c0ee94bb39b329d67fa7138b4">More...</a><br /></td></tr>
-<tr class="separator:aa6b1a54c0ee94bb39b329d67fa7138b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a5e1e46b20f7ce4ad4eb523abb9180718">clamped</a> (double max_linear, double max_angular, double noise_ratio=0, double angular_noise_ratio=0) const</td></tr>
-<tr class="memdesc:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the clamped twist.  <a href="classstate__representation_1_1_cartesian_twist.html#a5e1e46b20f7ce4ad4eb523abb9180718">More...</a><br /></td></tr>
-<tr class="separator:a5e1e46b20f7ce4ad4eb523abb9180718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab92f57637965980b870215f2c43e8b98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ab92f57637965980b870215f2c43e8b98">copy</a> () const</td></tr>
-<tr class="memdesc:ab92f57637965980b870215f2c43e8b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a>.  <a href="classstate__representation_1_1_cartesian_twist.html#ab92f57637965980b870215f2c43e8b98">More...</a><br /></td></tr>
-<tr class="separator:ab92f57637965980b870215f2c43e8b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="memItemLeft" align="right" valign="top">Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a> () const override</td></tr>
-<tr class="memdesc:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the twist data as an Eigen vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">More...</a><br /></td></tr>
-<tr class="separator:a4aff63293a0dc0a9c0035a1e3eb9ed65"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9446402fd9fbd54f58ef63d21cf54d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a9446402fd9fbd54f58ef63d21cf54d00">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a>) override</td></tr>
-<tr class="memdesc:a9446402fd9fbd54f58ef63d21cf54d00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the twist data from an Eigen vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a9446402fd9fbd54f58ef63d21cf54d00">More...</a><br /></td></tr>
-<tr class="separator:a9446402fd9fbd54f58ef63d21cf54d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a861b50cb560c73775637e1a2a29df823"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a861b50cb560c73775637e1a2a29df823">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_twist.html#a4aff63293a0dc0a9c0035a1e3eb9ed65">data</a>) override</td></tr>
-<tr class="memdesc:a861b50cb560c73775637e1a2a29df823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the twist data from a std vector.  <a href="classstate__representation_1_1_cartesian_twist.html#a861b50cb560c73775637e1a2a29df823">More...</a><br /></td></tr>
-<tr class="separator:a861b50cb560c73775637e1a2a29df823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#adeb354a3fb8a9f6f2efa8f441fb12489">inverse</a> () const</td></tr>
-<tr class="memdesc:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a>.  <a href="classstate__representation_1_1_cartesian_twist.html#adeb354a3fb8a9f6f2efa8f441fb12489">More...</a><br /></td></tr>
-<tr class="separator:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e33c54e1665325e51cf9c73c42fba14"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a3e33c54e1665325e51cf9c73c42fba14">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::TWIST) const override</td></tr>
-<tr class="memdesc:a3e33c54e1665325e51cf9c73c42fba14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full twist)  <a href="classstate__representation_1_1_cartesian_twist.html#a3e33c54e1665325e51cf9c73c42fba14">More...</a><br /></td></tr>
-<tr class="separator:a3e33c54e1665325e51cf9c73c42fba14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5638298b6ea67ab430f4f8cb8533696"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad5638298b6ea67ab430f4f8cb8533696">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::TWIST) const</td></tr>
-<tr class="memdesc:ad5638298b6ea67ab430f4f8cb8533696"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized twist at the state variable given in argument (default is full twist)  <a href="classstate__representation_1_1_cartesian_twist.html#ad5638298b6ea67ab430f4f8cb8533696">More...</a><br /></td></tr>
-<tr class="separator:ad5638298b6ea67ab430f4f8cb8533696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classstate__representation_1_1_cartesian_state"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classstate__representation_1_1_cartesian_state')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a></td></tr>
 <tr class="memitem:a6b907a7a60bcb90c68684a6bad9b153f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a6b907a7a60bcb90c68684a6bad9b153f">CartesianState</a> ()</td></tr>
 <tr class="memdesc:a6b907a7a60bcb90c68684a6bad9b153f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="classstate__representation_1_1_cartesian_state.html#a6b907a7a60bcb90c68684a6bad9b153f">More...</a><br /></td></tr>
@@ -316,10 +316,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="separator:a3ea716b149c36629fb9f6b5915d55e66 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a id="ad5dd5aec2724541e66448412fbacf8a0" name="ad5dd5aec2724541e66448412fbacf8a0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CartesianState</b> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)=default</td></tr>
-<tr class="memdesc:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. <br /></td></tr>
+<tr class="memdesc:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of a Cartesian state. <br /></td></tr>
 <tr class="separator:ad5dd5aec2724541e66448412fbacf8a0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">operator=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
-<tr class="memdesc:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">More...</a><br /></td></tr>
+<tr class="memdesc:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_cartesian_state.html#aaa732243b10302cc44dba384cb979ef2">More...</a><br /></td></tr>
 <tr class="separator:aaa732243b10302cc44dba384cb979ef2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43cd6447377a25955a4d5397325ab3fb inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">const Eigen::Vector3d &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a43cd6447377a25955a4d5397325ab3fb">get_position</a> () const</td></tr>
 <tr class="memdesc:a43cd6447377a25955a4d5397325ab3fb inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the position attribute.  <a href="classstate__representation_1_1_cartesian_state.html#a43cd6447377a25955a4d5397325ab3fb">More...</a><br /></td></tr>
@@ -328,10 +328,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memdesc:a97a6b4c430a570436e227ff7e90906b9 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute.  <a href="classstate__representation_1_1_cartesian_state.html#a97a6b4c430a570436e227ff7e90906b9">More...</a><br /></td></tr>
 <tr class="separator:a97a6b4c430a570436e227ff7e90906b9 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Vector4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">get_orientation_coefficients</a> () const</td></tr>
-<tr class="memdesc:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute as Vector4d of coefficients Beware, quaternion coefficients are returned using the (w, x, y, z) convention.  <a href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">More...</a><br /></td></tr>
+<tr class="memdesc:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the orientation attribute as Vector4d of coefficients.  <a href="classstate__representation_1_1_cartesian_state.html#ad0cfdbe6c628a9d5009cfd0be4b143ea">More...</a><br /></td></tr>
 <tr class="separator:ad0cfdbe6c628a9d5009cfd0be4b143ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 7, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">get_pose</a> () const</td></tr>
-<tr class="memdesc:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of a pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">More...</a><br /></td></tr>
+<tr class="memdesc:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a819273da79b3754ba600970fe37a30d5">More...</a><br /></td></tr>
 <tr class="separator:a819273da79b3754ba600970fe37a30d5 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a772e865cf44c4d748f0aba32be9f7cf0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix4d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a772e865cf44c4d748f0aba32be9f7cf0">get_transformation_matrix</a> () const</td></tr>
 <tr class="memdesc:a772e865cf44c4d748f0aba32be9f7cf0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of a pose from position and orientation attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a772e865cf44c4d748f0aba32be9f7cf0">More...</a><br /></td></tr>
@@ -363,6 +363,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memitem:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::Matrix&lt; double, 6, 1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9d10c755440bd1c51a44a6392b1866b0">get_wrench</a> () const</td></tr>
 <tr class="memdesc:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the 6d wrench from force and torque attributes.  <a href="classstate__representation_1_1_cartesian_state.html#a9d10c755440bd1c51a44a6392b1866b0">More...</a><br /></td></tr>
 <tr class="separator:a9d10c755440bd1c51a44a6392b1866b0 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a> () const</td></tr>
+<tr class="memdesc:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data as the concatenation of all the state variables in a single vector.  <a href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">More...</a><br /></td></tr>
+<tr class="separator:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::ArrayXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">array</a> () const</td></tr>
+<tr class="memdesc:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data vector as an Eigen Array.  <a href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">More...</a><br /></td></tr>
+<tr class="separator:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">to_std_vector</a> () const</td></tr>
+<tr class="memdesc:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the state as a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">More...</a><br /></td></tr>
+<tr class="separator:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a84b4b0771aae40b7ab602bb879e585e2">set_position</a> (const Eigen::Vector3d &amp;position)</td></tr>
 <tr class="memdesc:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the position.  <a href="classstate__representation_1_1_cartesian_state.html#a84b4b0771aae40b7ab602bb879e585e2">More...</a><br /></td></tr>
 <tr class="separator:a84b4b0771aae40b7ab602bb879e585e2 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -465,9 +474,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memitem:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5ed0918940d7cf455d228b4558f6193f">set_wrench</a> (const std::vector&lt; double &gt; &amp;wrench)</td></tr>
 <tr class="memdesc:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the force and torque from a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a5ed0918940d7cf455d228b4558f6193f">More...</a><br /></td></tr>
 <tr class="separator:a5ed0918940d7cf455d228b4558f6193f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">initialize</a> () override</td></tr>
-<tr class="memdesc:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">More...</a><br /></td></tr>
-<tr class="separator:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
+<tr class="memdesc:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single Eigen vector.  <a href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">More...</a><br /></td></tr>
+<tr class="separator:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
+<tr class="memdesc:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">More...</a><br /></td></tr>
+<tr class="separator:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a07a7dbc44ec54973f4c6800dfe06069e">set_zero</a> ()</td></tr>
 <tr class="memdesc:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#a07a7dbc44ec54973f4c6800dfe06069e">More...</a><br /></td></tr>
 <tr class="separator:a07a7dbc44ec54973f4c6800dfe06069e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -475,20 +487,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memdesc:a7f565718082645b493c2449006101b7a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp inplace the norm of the a specific state variable.  <a href="classstate__representation_1_1_cartesian_state.html#a7f565718082645b493c2449006101b7a">More...</a><br /></td></tr>
 <tr class="separator:a7f565718082645b493c2449006101b7a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">copy</a> () const</td></tr>
-<tr class="memdesc:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">More...</a><br /></td></tr>
+<tr class="memdesc:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian state.  <a href="classstate__representation_1_1_cartesian_state.html#ac2f87ff125ebb8c4814cb636d812004e">More...</a><br /></td></tr>
 <tr class="separator:ac2f87ff125ebb8c4814cb636d812004e inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual Eigen::VectorXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a> () const</td></tr>
-<tr class="memdesc:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data as the concatenation of all the state variables in a single vector.  <a href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">More...</a><br /></td></tr>
-<tr class="separator:aae9da252546714d1081530c510951d67 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">Eigen::ArrayXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">array</a> () const</td></tr>
-<tr class="memdesc:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the data vector as an Eigen Array.  <a href="classstate__representation_1_1_cartesian_state.html#a11ea7c924d991cf98ba6155ed52dfbaa">More...</a><br /></td></tr>
-<tr class="separator:a11ea7c924d991cf98ba6155ed52dfbaa inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">set_data</a> (const Eigen::VectorXd &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
-<tr class="memdesc:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single Eigen vector.  <a href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">More...</a><br /></td></tr>
-<tr class="separator:aca0b123c7aa41d601015cb30efbde7db inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">set_data</a> (const std::vector&lt; double &gt; &amp;<a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">data</a>) override</td></tr>
-<tr class="memdesc:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from all the state variables in a single std vector.  <a href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">More...</a><br /></td></tr>
-<tr class="separator:a9c7dbe882ed09dbcc9c82007af6d4a7f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance to another state as the sum of distances between each features.  <a href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">More...</a><br /></td></tr>
+<tr class="separator:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">initialize</a> () override</td></tr>
+<tr class="memdesc:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> to a zero value.  <a href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">More...</a><br /></td></tr>
+<tr class="separator:adbd4630f5cb7fae236b150338b4299e7 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">inverse</a> () const</td></tr>
+<tr class="memdesc:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian state.  <a href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">More...</a><br /></td></tr>
+<tr class="separator:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">normalize</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
+<tr class="memdesc:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize inplace the state at the state variable given in argument. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">More...</a><br /></td></tr>
+<tr class="separator:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized state at the state variable given in argument. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">More...</a><br /></td></tr>
+<tr class="separator:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
+<tr class="memdesc:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type. Default is full state.  <a href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">More...</a><br /></td></tr>
+<tr class="separator:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad3e52be84f61d32e1154146ccdfc595a">operator*=</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)</td></tr>
 <tr class="memdesc:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the *= operator with another state by deriving the equations of motions.  <a href="classstate__representation_1_1_cartesian_state.html#ad3e52be84f61d32e1154146ccdfc595a">More...</a><br /></td></tr>
 <tr class="separator:ad3e52be84f61d32e1154146ccdfc595a inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,24 +537,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memitem:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4e5982ef6b5b49e6298fbb718e68e2ea">operator-</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state) const</td></tr>
 <tr class="memdesc:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the - operator.  <a href="classstate__representation_1_1_cartesian_state.html#a4e5982ef6b5b49e6298fbb718e68e2ea">More...</a><br /></td></tr>
 <tr class="separator:a4e5982ef6b5b49e6298fbb718e68e2ea inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">inverse</a> () const</td></tr>
-<tr class="memdesc:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_state.html#a1138edbfa06c30a491c9053ca9bdb73f">More...</a><br /></td></tr>
-<tr class="separator:a1138edbfa06c30a491c9053ca9bdb73f inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance to another state as the sum of distances between each features.  <a href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">More...</a><br /></td></tr>
-<tr class="separator:ad92a099fc98096c080dbc574f6b16230 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the norms of the state variable specified by the input type (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">More...</a><br /></td></tr>
-<tr class="separator:a4ef6fcae833ef73901d174b4a7e84b76 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">normalize</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
-<tr class="memdesc:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normalize inplace the state at the state variable given in argument (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">More...</a><br /></td></tr>
-<tr class="separator:a4c066e4fdd6a5eda3579ce5ec8e80a01 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</td></tr>
-<tr class="memdesc:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized state at the state variable given in argument (default is full state)  <a href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">More...</a><br /></td></tr>
-<tr class="separator:a5bb2f9b6fd726f2c1d36d4a7dfbf0007 inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">to_std_vector</a> () const</td></tr>
-<tr class="memdesc:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the state as a std vector.  <a href="classstate__representation_1_1_cartesian_state.html#adc77a180af3eac7ce0d4c21dc8730fee">More...</a><br /></td></tr>
-<tr class="separator:adc77a180af3eac7ce0d4c21dc8730fee inherit pub_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classstate__representation_1_1_spatial_state"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classstate__representation_1_1_spatial_state')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_spatial_state.html">state_representation::SpatialState</a></td></tr>
 <tr class="memitem:ad998780300b647ccf9768d4c393a5920 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#ad998780300b647ccf9768d4c393a5920">SpatialState</a> ()</td></tr>
 <tr class="memdesc:ad998780300b647ccf9768d4c393a5920 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="classstate__representation_1_1_spatial_state.html#ad998780300b647ccf9768d4c393a5920">More...</a><br /></td></tr>
@@ -546,10 +546,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="separator:aadb78c2041e3a0eaae03e40ee098047f inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top"><a id="a05cba139aa993c6e7fba30cc9c5bf598" name="a05cba139aa993c6e7fba30cc9c5bf598"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SpatialState</b> (const <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state)=default</td></tr>
-<tr class="memdesc:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a>. <br /></td></tr>
+<tr class="memdesc:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another spatial state. <br /></td></tr>
 <tr class="separator:a05cba139aa993c6e7fba30cc9c5bf598 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">operator=</a> (const <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state)</td></tr>
-<tr class="memdesc:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">More...</a><br /></td></tr>
+<tr class="memdesc:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_spatial_state.html#a5d12908a7c5107e667166f5abed8f201">More...</a><br /></td></tr>
 <tr class="separator:a5d12908a7c5107e667166f5abed8f201 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5918d6279f226d9ccb2f2f50d6ce321 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_spatial_state.html#ad5918d6279f226d9ccb2f2f50d6ce321">get_reference_frame</a> () const</td></tr>
 <tr class="memdesc:ad5918d6279f226d9ccb2f2f50d6ce321 inherit pub_methods_classstate__representation_1_1_spatial_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the reference frame as const reference.  <a href="classstate__representation_1_1_spatial_state.html#ad5918d6279f226d9ccb2f2f50d6ce321">More...</a><br /></td></tr>
@@ -571,64 +571,64 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memdesc:a52300a1a91ba9080674d44ad7e2296ba inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with name specification.  <a href="classstate__representation_1_1_state.html#a52300a1a91ba9080674d44ad7e2296ba">More...</a><br /></td></tr>
 <tr class="separator:a52300a1a91ba9080674d44ad7e2296ba inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">State</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state)</td></tr>
-<tr class="memdesc:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a>.  <a href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">More...</a><br /></td></tr>
+<tr class="memdesc:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another state.  <a href="classstate__representation_1_1_state.html#a7e9bf75e97d85a123dc0d25091af6a36">More...</a><br /></td></tr>
 <tr class="separator:a7e9bf75e97d85a123dc0d25091af6a36 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top"><a id="ac03ca28c3da82a798ba215bc6ff6772e" name="ac03ca28c3da82a798ba215bc6ff6772e"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=default</td></tr>
 <tr class="memdesc:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual destructor. <br /></td></tr>
 <tr class="separator:ac03ca28c3da82a798ba215bc6ff6772e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">operator=</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state)</td></tr>
-<tr class="memdesc:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">More...</a><br /></td></tr>
+<tr class="memdesc:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_state.html#a895d07b3fb9d9dd8c70ae93b23ac133c">More...</a><br /></td></tr>
 <tr class="separator:a895d07b3fb9d9dd8c70ae93b23ac133c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87">StateType</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a2fa59b99044e740b3a21695f1818ff65">get_type</a> () const</td></tr>
 <tr class="memdesc:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the type attribute.  <a href="classstate__representation_1_1_state.html#a2fa59b99044e740b3a21695f1818ff65">More...</a><br /></td></tr>
 <tr class="separator:a2fa59b99044e740b3a21695f1818ff65 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">get_name</a> () const</td></tr>
+<tr class="memdesc:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the name attribute.  <a href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">More...</a><br /></td></tr>
+<tr class="separator:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#aee8b6cd83e0d44bca7f900ae0731f26c">is_empty</a> () const</td></tr>
 <tr class="memdesc:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the empty attribute.  <a href="classstate__representation_1_1_state.html#aee8b6cd83e0d44bca7f900ae0731f26c">More...</a><br /></td></tr>
 <tr class="separator:aee8b6cd83e0d44bca7f900ae0731f26c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">get_timestamp</a> () const</td></tr>
+<tr class="memdesc:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the timestamp attribute.  <a href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">More...</a><br /></td></tr>
+<tr class="separator:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">set_name</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the name attribute.  <a href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">More...</a><br /></td></tr>
+<tr class="separator:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">set_empty</a> (bool empty=true)</td></tr>
 <tr class="memdesc:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the empty attribute.  <a href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">More...</a><br /></td></tr>
 <tr class="separator:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">set_filled</a> ()</td></tr>
 <tr class="memdesc:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the empty attribute to false and also reset the timestamp.  <a href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">More...</a><br /></td></tr>
 <tr class="separator:a3f90a544f00c588dc5be2ecfee418f37 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
-<tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
-<tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::chrono::time_point&lt; std::chrono::steady_clock &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">get_timestamp</a> () const</td></tr>
-<tr class="memdesc:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the timestamp attribute.  <a href="classstate__representation_1_1_state.html#a72fb2a85c36f9e6fe1785df043f240e8">More...</a><br /></td></tr>
-<tr class="separator:a72fb2a85c36f9e6fe1785df043f240e8 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a001cb2b235481442ca4d904b39b8f0d2">reset_timestamp</a> ()</td></tr>
 <tr class="memdesc:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the timestamp attribute to now.  <a href="classstate__representation_1_1_state.html#a001cb2b235481442ca4d904b39b8f0d2">More...</a><br /></td></tr>
 <tr class="separator:a001cb2b235481442ca4d904b39b8f0d2 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">get_name</a> () const</td></tr>
-<tr class="memdesc:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the name as const reference.  <a href="classstate__representation_1_1_state.html#a08f3a92142170bd9e92627f569589d82">More...</a><br /></td></tr>
-<tr class="separator:a08f3a92142170bd9e92627f569589d82 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">set_name</a> (const std::string &amp;name)</td></tr>
-<tr class="memdesc:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the name.  <a href="classstate__representation_1_1_state.html#a0c581971f4d39b983c9ee687b70eb92c">More...</a><br /></td></tr>
-<tr class="separator:a0c581971f4d39b983c9ee687b70eb92c inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#acbcb448dd5e560f55533cb882015703e">is_deprecated</a> (double time_delay)</td></tr>
-<tr class="memdesc:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#acbcb448dd5e560f55533cb882015703e">More...</a><br /></td></tr>
-<tr class="separator:acbcb448dd5e560f55533cb882015703e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplParams" colspan="2">template&lt;typename DurationT &gt; </td></tr>
-<tr class="memitem:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a04fcec9e30d2008f5968e4898c614edf">is_deprecated</a> (const std::chrono::duration&lt; int64_t, DurationT &gt; &amp;time_delay)</td></tr>
-<tr class="memdesc:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#a04fcec9e30d2008f5968e4898c614edf">More...</a><br /></td></tr>
-<tr class="separator:a04fcec9e30d2008f5968e4898c614edf inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
-<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">initialize</a> ()</td></tr>
-<tr class="memdesc:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a> to a zero value.  <a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">More...</a><br /></td></tr>
-<tr class="separator:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">set_data</a> (const Eigen::VectorXd &amp;data)</td></tr>
-<tr class="memdesc:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a single Eigen vector.  <a href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">More...</a><br /></td></tr>
+<tr class="memdesc:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from an Eigen vector.  <a href="classstate__representation_1_1_state.html#ae85ad3ef2900de9e5201d4b37ac24206">More...</a><br /></td></tr>
 <tr class="separator:ae85ad3ef2900de9e5201d4b37ac24206 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">set_data</a> (const std::vector&lt; double &gt; &amp;data)</td></tr>
-<tr class="memdesc:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a single std vector.  <a href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">More...</a><br /></td></tr>
+<tr class="memdesc:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from a std vector.  <a href="classstate__representation_1_1_state.html#a46976c67cb7ba4fca047e957dd621c1a">More...</a><br /></td></tr>
 <tr class="separator:a46976c67cb7ba4fca047e957dd621c1a inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab5c9438a6d681eb4c03550bb66d6606a">set_data</a> (const Eigen::MatrixXd &amp;data)</td></tr>
 <tr class="memdesc:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the data of the state from an Eigen matrix.  <a href="classstate__representation_1_1_state.html#ab5c9438a6d681eb4c03550bb66d6606a">More...</a><br /></td></tr>
 <tr class="separator:ab5c9438a6d681eb4c03550bb66d6606a inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
+<tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
+<tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
+<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
+<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">is_deprecated</a> (double time_delay) const</td></tr>
+<tr class="memdesc:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">More...</a><br /></td></tr>
+<tr class="separator:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplParams" colspan="2">template&lt;typename DurationT &gt; </td></tr>
+<tr class="memitem:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">is_deprecated</a> (const std::chrono::duration&lt; int64_t, DurationT &gt; &amp;time_delay) const</td></tr>
+<tr class="memdesc:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">More...</a><br /></td></tr>
+<tr class="separator:af9999161c78b496fe18ca56883ed7fda inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">initialize</a> ()</td></tr>
+<tr class="memdesc:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the state to a zero value.  <a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">More...</a><br /></td></tr>
+<tr class="separator:a08938479ccdd3286b2fb1e13795c5ee7 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">operator bool</a> () const noexcept</td></tr>
 <tr class="memdesc:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator for the truthiness of a state.  <a href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">More...</a><br /></td></tr>
 <tr class="separator:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -643,10 +643,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a66d6821fbb85857c8917a13576eaa138"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classstate__representation_1_1_cartesian_state"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classstate__representation_1_1_cartesian_state')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a></td></tr>
 <tr class="memitem:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">Identity</a> (const std::string &amp;name, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the identity <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> (identity pose and 0 for the rest)  <a href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">More...</a><br /></td></tr>
+<tr class="memdesc:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the identity Cartesian state (identity pose and 0 for the rest)  <a href="classstate__representation_1_1_cartesian_state.html#a6c86224b5fed66d56e17f6772d247b59">More...</a><br /></td></tr>
 <tr class="separator:a6c86224b5fed66d56e17f6772d247b59 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">Random</a> (const std::string &amp;name, const std::string &amp;reference=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a random state.  <a href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">More...</a><br /></td></tr>
+<tr class="memdesc:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a random Cartsian state.  <a href="classstate__representation_1_1_cartesian_state.html#a25b526d9023e1c101256faf26eb741e3">More...</a><br /></td></tr>
 <tr class="separator:a25b526d9023e1c101256faf26eb741e3 inherit pub_static_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -654,11 +654,8 @@ Friends</h2></td></tr>
 <tr class="memitem:a70984fa2a7f97599508e5e2a433666ad"><td class="memItemLeft" align="right" valign="top"><a id="a70984fa2a7f97599508e5e2a433666ad" name="a70984fa2a7f97599508e5e2a433666ad"></a>
 <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)=delete</td></tr>
 <tr class="separator:a70984fa2a7f97599508e5e2a433666ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ca53027326866f885d5e5bfd0f0d983"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a2ca53027326866f885d5e5bfd0f0d983">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
-<tr class="memdesc:a2ca53027326866f885d5e5bfd0f0d983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_cartesian_twist.html#a2ca53027326866f885d5e5bfd0f0d983">More...</a><br /></td></tr>
-<tr class="separator:a2ca53027326866f885d5e5bfd0f0d983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00706665ae805c1e15ac162bc75b154d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a00706665ae805c1e15ac162bc75b154d">operator*</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
-<tr class="memdesc:a00706665ae805c1e15ac162bc75b154d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>.  <a href="classstate__representation_1_1_cartesian_twist.html#a00706665ae805c1e15ac162bc75b154d">More...</a><br /></td></tr>
+<tr class="memdesc:a00706665ae805c1e15ac162bc75b154d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a Cartesian state.  <a href="classstate__representation_1_1_cartesian_twist.html#a00706665ae805c1e15ac162bc75b154d">More...</a><br /></td></tr>
 <tr class="separator:a00706665ae805c1e15ac162bc75b154d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a708811eb667479710c72ad83134f8148"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a708811eb667479710c72ad83134f8148">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
 <tr class="memdesc:a708811eb667479710c72ad83134f8148"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a scalar.  <a href="classstate__representation_1_1_cartesian_twist.html#a708811eb667479710c72ad83134f8148">More...</a><br /></td></tr>
@@ -669,6 +666,9 @@ Friends</h2></td></tr>
 <tr class="memitem:abe18bf16a41a317de8c1adb86436b252"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#abe18bf16a41a317de8c1adb86436b252">operator*</a> (const std::chrono::nanoseconds &amp;dt, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
 <tr class="memdesc:abe18bf16a41a317de8c1adb86436b252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the * operator with a time period.  <a href="classstate__representation_1_1_cartesian_twist.html#abe18bf16a41a317de8c1adb86436b252">More...</a><br /></td></tr>
 <tr class="separator:abe18bf16a41a317de8c1adb86436b252"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ca53027326866f885d5e5bfd0f0d983"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a2ca53027326866f885d5e5bfd0f0d983">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> &amp;twist)</td></tr>
+<tr class="memdesc:a2ca53027326866f885d5e5bfd0f0d983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_cartesian_twist.html#a2ca53027326866f885d5e5bfd0f0d983">More...</a><br /></td></tr>
+<tr class="separator:a2ca53027326866f885d5e5bfd0f0d983"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -681,13 +681,13 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a2b58efb6b21d5e77e30adb368f31bbda inherit pro_methods_classstate__representation_1_1_cartesian_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classstate__representation_1_1_state"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classstate__representation_1_1_state')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classstate__representation_1_1_state.html">state_representation::State</a></td></tr>
 <tr class="memitem:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">set_type</a> (const <a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87">StateType</a> &amp;type)</td></tr>
-<tr class="memdesc:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override the state type.  <a href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">More...</a><br /></td></tr>
+<tr class="memdesc:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the state type attribute.  <a href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">More...</a><br /></td></tr>
 <tr class="separator:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Class to define twist in cartesian space as 3D linear and angular velocity vectors. </p>
+<div class="textblock"><p >Class to define twist in Cartesian space as 3D linear and angular velocity vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8hpp_source.html#l00015">15</a> of file <a class="el" href="_cartesian_twist_8hpp_source.html">CartesianTwist.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8hpp_source.html#l00016">16</a> of file <a class="el" href="_cartesian_twist_8hpp_source.html">CartesianTwist.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab9bb720de98f4c35891a823cffb84ca9" name="ab9bb720de98f4c35891a823cffb84ca9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab9bb720de98f4c35891a823cffb84ca9">&#9670;&#160;</a></span>CartesianTwist() <span class="overload">[1/9]</span></h2>
@@ -714,7 +714,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00007">7</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00008">8</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -755,13 +755,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor with name and reference frame provided. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world") </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00011">11</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00012">12</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +783,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Copy constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00047">47</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00048">48</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -803,9 +803,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. </p>
+<p>Copy constructor from a Cartesian state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00039">39</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00040">40</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -825,9 +825,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> by considering that it is equivalent to dividing the pose by 1 second. </p>
+<p>Copy constructor from a Cartesian pose by considering that it is equivalent to dividing the pose by 1 second. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00050">50</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00051">51</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -847,9 +847,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copy constructor from a <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html" title="Class to define acceleration in cartesian space as 3D linear and angular acceleration vectors.">CartesianAcceleration</a> by considering that it is a twist over 1 second. </p>
+<p>Copy constructor from a Cartesian acceleration by considering that it is a twist over 1 second. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00052">52</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00053">53</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -893,9 +893,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a linear velocity given as a vector. </p>
+<p>Construct a Cartesian twist from a linear velocity given as a vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00016">16</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00017">17</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -945,9 +945,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a linear velocity and angular velocity given as vectors. </p>
+<p>Construct a Cartesian twist from a linear velocity and angular velocity given as vectors. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00023">23</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00024">24</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -991,9 +991,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Construct a <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> from a single 6d twist vector. </p>
+<p>Construct a Cartesian twist from a single 6d twist vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00032">32</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00033">33</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1039,15 +1039,15 @@ Additional Inherited Members</h2></td></tr>
 <p>Clamp inplace the magnitude of the twist to the values in argument. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max_linear</td><td>the maximum magnitude of the linear velocity </td></tr>
-    <tr><td class="paramname">max_angular</td><td>the maximum magnitude of the angular velocity </td></tr>
-    <tr><td class="paramname">linear_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the linear velocity will be set to 0 </td></tr>
-    <tr><td class="paramname">angular_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the angular velocity will be set to 0 </td></tr>
+    <tr><td class="paramname">max_linear</td><td>The maximum magnitude of the linear velocity </td></tr>
+    <tr><td class="paramname">max_angular</td><td>The maximum magnitude of the angular velocity </td></tr>
+    <tr><td class="paramname">linear_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the linear velocity will be set to 0 </td></tr>
+    <tr><td class="paramname">angular_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the angular velocity will be set to 0 </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00148">148</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00082">82</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1092,16 +1092,16 @@ Additional Inherited Members</h2></td></tr>
 <p>Return the clamped twist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max_linear</td><td>the maximum magnitude of the linear velocity </td></tr>
-    <tr><td class="paramname">max_angular</td><td>the maximum magnitude of the angular velocity </td></tr>
-    <tr><td class="paramname">noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the linear velocity will be set to 0 </td></tr>
-    <tr><td class="paramname">angular_noise_ratio</td><td>if provided, this value will be used to apply a deadzone under which the angular velocity will be set to 0 </td></tr>
+    <tr><td class="paramname">max_linear</td><td>The maximum magnitude of the linear velocity </td></tr>
+    <tr><td class="paramname">max_angular</td><td>The maximum magnitude of the angular velocity </td></tr>
+    <tr><td class="paramname">noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the linear velocity will be set to 0 </td></tr>
+    <tr><td class="paramname">angular_noise_ratio</td><td>If provided, this value will be used to apply a deadzone under which the angular velocity will be set to 0 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the clamped twist </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The clamped twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00157">157</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00091">91</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1120,10 +1120,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Return a copy of the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>the copy </dd></dl>
+<p>Return a copy of the Cartesian twist. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00165">165</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00099">99</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1151,11 +1150,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the twist data as an Eigen vector. </p>
-<dl class="section return"><dt>Returns</dt><dd>the twist data vector </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#aae9da252546714d1081530c510951d67">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00170">170</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00066">66</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1174,10 +1172,9 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Compute the inverse of the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a>. </p>
-<dl class="section return"><dt>Returns</dt><dd>the inverse corresponding to b_S_f (assuming this is f_S_b) </dd></dl>
+<p>Compute the inverse of the current Cartesian twist. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00186">186</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00104">104</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1186,9 +1183,6 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> state_representation::CartesianTwist::normalized </td>
@@ -1198,23 +1192,18 @@ Additional Inherited Members</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Compute the normalized twist at the state variable given in argument (default is full twist) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state_variable_type</td><td>the type of state variable to compute the norms on </td></tr>
+    <tr><td class="paramname">state_variable_type</td><td>The type of state variable to compute the norms on </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the normalized twist </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The normalized twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8hpp_source.html#l00327">327</a> of file <a class="el" href="_cartesian_twist_8hpp_source.html">CartesianTwist.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1226,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1245,15 +1234,15 @@ Additional Inherited Members</h2></td></tr>
 <p>Compute the norms of the state variable specified by the input type (default is full twist) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state_variable_type</td><td>the type of state variable to compute the norms on </td></tr>
+    <tr><td class="paramname">state_variable_type</td><td>The type of state variable to compute the norms on </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the norms of the state variables as a vector </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The norms of the state variables as a vector </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8hpp_source.html#l00323">323</a> of file <a class="el" href="_cartesian_twist_8hpp_source.html">CartesianTwist.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1276,13 +1265,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a time period. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>the time period to multiply with </td></tr>
+    <tr><td class="paramname">dt</td><td>The time period to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> corresponding to the displacement over the time period </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian pose corresponding to the displacement over the time period </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00150">150</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1305,13 +1294,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00088">88</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00125">125</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1334,13 +1323,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the *= operator with a gain matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00101">101</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00133">133</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1363,13 +1352,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the *= operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00083">83</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00120">120</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1392,13 +1381,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the + operator with a twist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">twist</td><td><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to add to </td></tr>
+    <tr><td class="paramname">twist</td><td>The Cartesian twist to add to </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> added the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian twist added the Cartesian twist given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00070">70</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00204">204</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1421,13 +1410,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the += operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">twist</td><td><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to add to </td></tr>
+    <tr><td class="paramname">twist</td><td>The Cartesian twist to add to </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> added the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian twist added the Cartesian twist given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00065">65</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00199">199</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1450,13 +1439,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the - operator with a twist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">twist</td><td><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to subtract </td></tr>
+    <tr><td class="paramname">twist</td><td>The Cartesian twist to subtract </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> minus the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian twist minus the Cartesian twist given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00079">79</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00213">213</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1479,13 +1468,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the -= operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">twist</td><td><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to subtract </td></tr>
+    <tr><td class="paramname">twist</td><td>The Cartesian twist to subtract </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the current <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> minus the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> given in argument </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The current Cartesian twist minus the Cartesian twist given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00074">74</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00208">208</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1508,13 +1497,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the / operator with a time period. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>the time period to divide by </td></tr>
+    <tr><td class="paramname">dt</td><td>The time period to divide by </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the corresponding <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html" title="Class to define acceleration in cartesian space as 3D linear and angular acceleration vectors.">CartesianAcceleration</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The corresponding Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00135">135</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00186">186</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1537,13 +1526,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the / operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to divide with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to divide with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> divided by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00097">97</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00182">182</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1566,13 +1555,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the /= operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to divide with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to divide with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> divided by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00092">92</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00177">177</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1600,14 +1589,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy assignment operator that have to be defined to the custom assignment operator. </p>
+<p>Copy assignment operator that has to be defined to the custom assignment operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">twist</td><td>the twist with value to assign </td></tr>
+    <tr><td class="paramname">twist</td><td>The twist with value to assign </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>reference to the current twist with new values </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current twist with new values </dd></dl>
 
 </div>
 </div>
@@ -1648,14 +1637,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor for a random twist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world") </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> random twist </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The random Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00059">59</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00060">60</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1684,16 +1673,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the twist data from an Eigen vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">the</td><td>twist data vector </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#aca0b123c7aa41d601015cb30efbde7db">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00174">174</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00070">70</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1722,16 +1705,10 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set the twist data from a std vector. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">the</td><td>twist data vector </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a9c7dbe882ed09dbcc9c82007af6d4a7f">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00182">182</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00078">78</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1772,14 +1749,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Constructor for the zero twist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>the name of the state </td></tr>
-    <tr><td class="paramname">reference</td><td>the name of the reference frame </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the state </td></tr>
+    <tr><td class="paramname">reference</td><td>The name of the reference frame (default is "world") </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> with zero values </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The zero Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00055">55</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00056">56</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1818,16 +1795,16 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Overload the * operator with a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a>. </p>
+<p>Overload the * operator with a Cartesian state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>the state to multiply with </td></tr>
+    <tr><td class="paramname">state</td><td>The state to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> provided multiplied by the state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist provided multiplied by the state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00205">205</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00116">116</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1868,13 +1845,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a gain matrix. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> provided multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00213">213</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00144">144</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1915,13 +1892,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a time period. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>the time period to multiply with </td></tr>
+    <tr><td class="paramname">dt</td><td>The time period to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define CartesianPose in cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> corresponding to the displacement over the time period </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian pose corresponding to the displacement over the time period </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00219">219</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00173">173</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1962,13 +1939,13 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the * operator with a scalar. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> provided multiplied by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Cartesian twist provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00209">209</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00129">129</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -2009,14 +1986,14 @@ Additional Inherited Members</h2></td></tr>
 <p>Overload the ostream operator for printing. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to </td></tr>
-    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a></td><td>the <a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the Cartesian twist to </td></tr>
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html" title="Class to define twist in Cartesian space as 3D linear and angular velocity vectors.">CartesianTwist</a></td><td>The Cartesian twist to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00190">190</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00217">217</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
