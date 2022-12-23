@@ -8,8 +8,6 @@ from state_representation import State, StateType
 STATE_METHOD_EXPECTS = [
     'get_type',
     'is_empty',
-    'set_empty',
-    'set_filled',
     'get_age',
     'get_timestamp',
     'reset_timestamp',
@@ -43,14 +41,10 @@ class TestState(unittest.TestCase):
         self.assertEqual(empty3.get_type(), StateType.CARTESIAN_STATE)
         self.assertEqual(empty3.get_name(), "test")
         self.assertTrue(empty3.is_empty())
-        empty3.set_filled()
-        self.assertFalse(empty3.is_empty())
 
         state = State(empty3)
         self.assertEqual(state.get_type(), StateType.CARTESIAN_STATE)
         self.assertEqual(state.get_name(), "test")
-        self.assertFalse(state.is_empty())
-        state.set_empty()
         self.assertTrue(state.is_empty())
 
     def test_compatibility(self):
@@ -93,10 +87,6 @@ class TestState(unittest.TestCase):
         state = State()
         self.assertTrue(state.is_empty())
         self.assertFalse(state)
-
-        state.set_filled()
-        self.assertFalse(state.is_empty())
-        self.assertTrue(state)
 
 if __name__ == '__main__':
     unittest.main()

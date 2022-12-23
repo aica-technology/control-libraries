@@ -47,8 +47,6 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'set_acceleration',
     'set_angular_acceleration',
     'set_angular_velocity',
-    'set_empty',
-    'set_filled',
     'set_force',
     'set_linear_acceleration',
     'set_linear_velocity',
@@ -257,7 +255,7 @@ class TestCartesianState(unittest.TestCase):
         cs.set_zero()
         self.assertAlmostEqual(np.linalg.norm(cs.data()), 1)
         self.assertFalse(cs.is_empty())
-        cs.set_empty()
+        cs.initialize()
         self.assertTrue(cs.is_empty())
 
     def test_compatibility(self):

@@ -32,8 +32,6 @@ JOINT_STATE_METHOD_EXPECTS = [
     'is_empty',
     'reset_timestamp',
     'set_accelerations',
-    'set_empty',
-    'set_filled',
     'set_name',
     'set_names',
     'set_positions',
