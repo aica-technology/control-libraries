@@ -19,7 +19,6 @@ Ring::Ring() :
     field_strength_(std::make_shared<Parameter<double>>("field_strength", 1.0)),
     normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
     angular_gain_(std::make_shared<Parameter<double>>("angular_gain", 1.0)) {
-  this->center_->get_value().set_empty();
   this->rotation_offset_->set_value(
       CartesianPose("rotation", Eigen::Quaterniond::Identity(), this->center_->get_value().get_name()));
   this->parameters_.insert(std::make_pair("center", this->center_));

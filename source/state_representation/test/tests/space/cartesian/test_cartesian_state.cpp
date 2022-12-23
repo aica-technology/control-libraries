@@ -265,6 +265,9 @@ TEST(CartesianStateTest, GetSetFields) {
   cs.set_zero();
   EXPECT_FLOAT_EQ(cs.data().norm(), 1);
   EXPECT_EQ(cs.is_empty(), false);
+  cs.initialize();
+  EXPECT_FLOAT_EQ(cs.data().norm(), 1);
+  EXPECT_EQ(cs.is_empty(), true);
 }
 
 TEST(CartesianStateTest, Compatibility) {
