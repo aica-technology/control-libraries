@@ -58,12 +58,12 @@ static void test_encode_decode_empty_cartesian(const T& state) {
 }
 
 TEST(CartesianProtoTest, EncodeDecodeSpatialState) {
-  auto send_state = SpatialState(StateType::SPATIAL_STATE, "A", "B", false);
+  auto send_state = SpatialState("A", "B", false);
   std::string msg = clproto::encode(send_state);
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_TRUE(clproto::check_message_type(msg) == clproto::SPATIAL_STATE_MESSAGE);
 
-  SpatialState recv_state(StateType::SPATIAL_STATE);
+  SpatialState recv_state;
   EXPECT_NO_THROW(clproto::decode<SpatialState>(msg));
   EXPECT_TRUE(clproto::decode(msg, recv_state));
 
@@ -77,7 +77,7 @@ TEST(CartesianProtoTest, EncodeDecodeSpatialState) {
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_TRUE(clproto::check_message_type(msg) == clproto::SPATIAL_STATE_MESSAGE);
 
-  SpatialState recv_state_2(StateType::SPATIAL_STATE);
+  SpatialState recv_state_2;
   auto recv_state_ptr = make_shared_state(recv_state_2);
   EXPECT_NO_THROW(clproto::decode<std::shared_ptr<State>>(msg));
   EXPECT_TRUE(clproto::decode(msg, recv_state_ptr));

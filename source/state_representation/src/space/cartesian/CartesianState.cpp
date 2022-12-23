@@ -6,12 +6,13 @@
 using namespace state_representation::exceptions;
 
 namespace state_representation {
-CartesianState::CartesianState() : SpatialState(StateType::CARTESIAN_STATE) {
+CartesianState::CartesianState() : SpatialState() {
+  this->set_type(StateType::CARTESIAN_STATE);
   this->initialize();
 }
 
-CartesianState::CartesianState(const std::string& name, const std::string& reference) :
-    SpatialState(StateType::CARTESIAN_STATE, name, reference) {
+CartesianState::CartesianState(const std::string& name, const std::string& reference) : SpatialState(name, reference) {
+  this->set_type(StateType::CARTESIAN_STATE);
   this->initialize();
 }
 

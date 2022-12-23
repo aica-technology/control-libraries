@@ -21,14 +21,14 @@ class TestState(unittest.TestCase):
             self.assertIn(expected, methods)
 
     def test_constructors(self):
-        state1 = SpatialState(StateType.JOINT_STATE)
-        self.assertEqual(state1.get_type(), StateType.JOINT_STATE)
+        state1 = SpatialState()
+        self.assertEqual(state1.get_type(), StateType.SPATIAL_STATE)
         self.assertEqual(state1.get_name(), "")
         self.assertEqual(state1.get_reference_frame(), "world")
         self.assertTrue(state1.is_empty())
 
-        state2 = SpatialState(StateType.CARTESIAN_STATE, "test", "robot", False)
-        self.assertEqual(state2.get_type(), StateType.CARTESIAN_STATE)
+        state2 = SpatialState("test", "robot", False)
+        self.assertEqual(state2.get_type(), StateType.SPATIAL_STATE)
         self.assertEqual(state2.get_name(), "test")
         self.assertEqual(state2.get_reference_frame(), "robot")
         self.assertFalse(state2.is_empty())
@@ -40,7 +40,7 @@ class TestState(unittest.TestCase):
         self.assertEqual(state2.is_empty(), state3.is_empty())
 
     def test_copy(self):
-        state = SpatialState(StateType.CARTESIAN_STATE, "test", "robot", False)
+        state = SpatialState("test", "robot", False)
         for state_copy in [copy.copy(state), copy.deepcopy(state)]:
             self.assertEqual(state.get_type(), state_copy.get_type())
             self.assertEqual(state.get_name(), state_copy.get_name())
@@ -48,8 +48,8 @@ class TestState(unittest.TestCase):
             self.assertEqual(state.is_empty(), state_copy.is_empty())
 
     def test_compatibility(self):
-        state1 = SpatialState(StateType.CARTESIAN_STATE, "test", "robot", True)
-        state2 = SpatialState(StateType.STATE, "test")
+        state1 = SpatialState("test", "robot", True)
+        state2 = SpatialState("test")
         self.assertFalse(state1.is_compatible(state2))
         state2.set_reference_frame("robot")
         self.assertTrue(state1.is_compatible(state2))
