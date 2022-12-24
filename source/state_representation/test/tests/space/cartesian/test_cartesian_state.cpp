@@ -516,3 +516,13 @@ TEST(CartesianStateTest, ScalarDivision) {
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);
 }
+
+TEST(CartesianStateTest, Truthiness) {
+  CartesianState empty("test");
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
+
+  empty.set_data(Eigen::VectorXd::Random(25));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
+}

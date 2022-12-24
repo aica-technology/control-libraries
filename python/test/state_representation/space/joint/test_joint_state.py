@@ -66,5 +66,15 @@ class TestJointState(unittest.TestCase):
             self.assertListEqual(state.get_names(), state_copy.get_names())
             self.assert_np_array_equal(state.data(), state_copy.data())
 
+    def test_truthiness(self):
+        empty = JointState("test", 3)
+        self.assertTrue(empty.is_empty())
+        self.assertFalse(empty)
+
+        empty.set_data(JointState().Random("test", 3).data())
+        self.assertFalse(empty.is_empty())
+        self.assertTrue(empty)
+
+
 if __name__ == '__main__':
     unittest.main()

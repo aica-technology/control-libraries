@@ -38,12 +38,14 @@ class TestParameters(unittest.TestCase):
 
     def test_param_int(self):
         param = sr.Parameter("int", sr.ParameterType.INT)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "int")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.INT)
         self.assertEqual(param.get_parameter_state_type(), sr.StateType.NONE)
         self.assertEqual(param.get_value(), 0)
         param.set_value(1)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assertEqual(param.get_value(), 1)
         param1 = sr.Parameter("int", 1, sr.ParameterType.INT)
@@ -52,6 +54,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_int_array(self):
         param = sr.Parameter("int_array", sr.ParameterType.INT_ARRAY)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "int_array")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.INT_ARRAY)
@@ -59,6 +62,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value(), [])
         values = [2, 3, 4]
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         [self.assertEqual(param.get_value()[i], values[i]) for i in range(len(values))]
         param1 = sr.Parameter("int_array", values, sr.ParameterType.INT_ARRAY)
@@ -67,12 +71,14 @@ class TestParameters(unittest.TestCase):
 
     def test_param_double(self):
         param = sr.Parameter("double", sr.ParameterType.DOUBLE)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "double")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.DOUBLE)
         self.assertEqual(param.get_parameter_state_type(), sr.StateType.NONE)
         self.assertEqual(param.get_value(), 0.0)
         param.set_value(1.5)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assertEqual(param.get_value(), 1.5)
         param1 = sr.Parameter("double", 1.5, sr.ParameterType.DOUBLE)
@@ -81,6 +87,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_double_array(self):
         param = sr.Parameter("double_array", sr.ParameterType.DOUBLE_ARRAY)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "double_array")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.DOUBLE_ARRAY)
@@ -88,6 +95,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value(), [])
         values = [2.2, 3.3, 4.4]
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         [self.assertEqual(param.get_value()[i], values[i]) for i in range(len(values))]
         param1 = sr.Parameter("double_array", values, sr.ParameterType.DOUBLE_ARRAY)
@@ -96,12 +104,14 @@ class TestParameters(unittest.TestCase):
 
     def test_param_bool(self):
         param = sr.Parameter("bool", sr.ParameterType.BOOL)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "bool")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.BOOL)
         self.assertEqual(param.get_parameter_state_type(), sr.StateType.NONE)
         self.assertEqual(param.get_value(), False)
         param.set_value(True)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assertEqual(param.get_value(), True)
         param1 = sr.Parameter("bool", True, sr.ParameterType.BOOL)
@@ -110,6 +120,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_bool_array(self):
         param = sr.Parameter("bool_array", sr.ParameterType.BOOL_ARRAY)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "bool_array")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.BOOL_ARRAY)
@@ -117,6 +128,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value(), [])
         values = [True, False, False]
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         [self.assertEqual(param.get_value()[i], values[i]) for i in range(len(values))]
         param1 = sr.Parameter("bool_array", values, sr.ParameterType.BOOL_ARRAY)
@@ -125,12 +137,14 @@ class TestParameters(unittest.TestCase):
 
     def test_param_string(self):
         param = sr.Parameter("string", sr.ParameterType.STRING)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "string")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STRING)
         self.assertEqual(param.get_parameter_state_type(), sr.StateType.NONE)
         self.assertEqual(param.get_value(), "")
         param.set_value("parameter")
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assertEqual(param.get_value(), "parameter")
         param1 = sr.Parameter("string", "parameter", sr.ParameterType.STRING)
@@ -139,6 +153,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_string_array(self):
         param = sr.Parameter("string_array", sr.ParameterType.STRING_ARRAY)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "string_array")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STRING_ARRAY)
@@ -146,6 +161,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value(), [])
         values = ["test", "parameter", "bindings"]
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         [self.assertEqual(param.get_value()[i], values[i]) for i in range(len(values))]
         param1 = sr.Parameter("string_array", values, sr.ParameterType.STRING_ARRAY)
@@ -154,6 +170,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_cartesian_state(self):
         param = sr.Parameter("cartesian_state", sr.ParameterType.STATE, sr.StateType.CARTESIAN_STATE)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "cartesian_state")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STATE)
@@ -162,6 +179,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value().get_type(), sr.StateType.CARTESIAN_STATE)
         values = sr.CartesianState.Random("test")
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.cartesian_equal(param.get_value(), values)
         param1 = sr.Parameter("cartesian_state", values, sr.ParameterType.STATE, sr.StateType.CARTESIAN_STATE)
@@ -170,6 +188,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_cartesian_pose(self):
         param = sr.Parameter("cartesian_pose", sr.ParameterType.STATE, sr.StateType.CARTESIAN_POSE)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "cartesian_pose")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STATE)
@@ -178,6 +197,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value().get_type(), sr.StateType.CARTESIAN_POSE)
         values = sr.CartesianPose.Random("test")
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.cartesian_equal(param.get_value(), values)
         param1 = sr.Parameter("cartesian_pose", values, sr.ParameterType.STATE, sr.StateType.CARTESIAN_POSE)
@@ -186,6 +206,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_joint_state(self):
         param = sr.Parameter("joint_state", sr.ParameterType.STATE, sr.StateType.JOINT_STATE)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "joint_state")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STATE)
@@ -194,6 +215,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value().get_type(), sr.StateType.JOINT_STATE)
         values = sr.JointState.Random("test", 3)
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.joint_equal(param.get_value(), values)
         param1 = sr.Parameter("joint_state", values, sr.ParameterType.STATE, sr.StateType.JOINT_STATE)
@@ -202,6 +224,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_joint_positions(self):
         param = sr.Parameter("joint_positions", sr.ParameterType.STATE, sr.StateType.JOINT_POSITIONS)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "joint_positions")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STATE)
@@ -210,6 +233,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value().get_type(), sr.StateType.JOINT_POSITIONS)
         values = sr.JointPositions.Random("test", 3)
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.joint_equal(param.get_value(), values)
         param1 = sr.Parameter("joint_positions", values, sr.ParameterType.STATE, sr.StateType.JOINT_POSITIONS)
@@ -218,6 +242,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_ellipsoid(self):
         param = sr.Parameter("ellipse", sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "ellipse")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.STATE)
@@ -226,6 +251,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_value().get_type(), sr.StateType.GEOMETRY_ELLIPSOID)
         values = sr.Ellipsoid("test")
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assertTrue(param.get_value().get_name(), values.get_name())
         param1 = sr.Parameter("ellipse", values, sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID)
@@ -234,6 +260,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_matrix(self):
         param = sr.Parameter("matrix", sr.ParameterType.MATRIX)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "matrix")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.MATRIX)
@@ -241,6 +268,7 @@ class TestParameters(unittest.TestCase):
         self.assert_np_array_equal(param.get_value(), np.empty((0, 0)))
         values = np.random.rand(3, 2)
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assert_np_array_equal(param.get_value(), values)
         param1 = sr.Parameter("matrix", values, sr.ParameterType.MATRIX)
@@ -249,6 +277,7 @@ class TestParameters(unittest.TestCase):
 
     def test_param_vector(self):
         param = sr.Parameter("vector", sr.ParameterType.VECTOR)
+        self.assertFalse(param)
         self.assertTrue(param.is_empty())
         self.assertEqual(param.get_name(), "vector")
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.VECTOR)
@@ -256,6 +285,7 @@ class TestParameters(unittest.TestCase):
         self.assert_np_array_equal(param.get_value(), np.empty(0))
         values = np.random.rand(3)
         param.set_value(values)
+        self.assertTrue(param)
         self.assertFalse(param.is_empty())
         self.assert_np_array_equal(param.get_value(), values)
         param1 = sr.Parameter("vector", values, sr.ParameterType.VECTOR)

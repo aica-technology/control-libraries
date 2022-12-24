@@ -102,6 +102,15 @@ class TestJacobian(unittest.TestCase):
         pose = CartesianPose.Random("robot", "world")
         jac_in_world = pose * jac
 
+    def test_truthiness(self):
+        empty = Jacobian("test", 3, "ee")
+        self.assertTrue(empty.is_empty())
+        self.assertFalse(empty)
+
+        empty.set_data(Jacobian().Random("test", 3, "ee").data())
+        self.assertFalse(empty.is_empty())
+        self.assertTrue(empty)
+
 
 if __name__ == '__main__':
     unittest.main()

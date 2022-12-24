@@ -461,6 +461,15 @@ class TestCartesianState(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             empty / scalar
 
+    def test_truthiness(self):
+        empty = CartesianState("test")
+        self.assertTrue(empty.is_empty())
+        self.assertFalse(empty)
+
+        empty.set_data(CartesianState().Random("test").data())
+        self.assertFalse(empty.is_empty())
+        self.assertTrue(empty)
+
 
 if __name__ == '__main__':
     unittest.main()
