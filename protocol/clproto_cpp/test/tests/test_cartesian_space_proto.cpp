@@ -58,7 +58,7 @@ static void test_encode_decode_empty_cartesian(const T& state) {
 }
 
 TEST(CartesianProtoTest, EncodeDecodeSpatialState) {
-  auto send_state = SpatialState("A", "B", false);
+  auto send_state = SpatialState("A", "B");
   std::string msg = clproto::encode(send_state);
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_TRUE(clproto::check_message_type(msg) == clproto::SPATIAL_STATE_MESSAGE);
