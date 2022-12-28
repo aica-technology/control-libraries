@@ -39,7 +39,7 @@ class TestState(unittest.TestCase):
         self.assertEqual(empty2.get_name(), "")
         self.assertTrue(empty2.is_empty())
 
-        empty3 = State(StateType.CARTESIAN_STATE, "test", True)
+        empty3 = State(StateType.CARTESIAN_STATE, "test")
         self.assertEqual(empty3.get_type(), StateType.CARTESIAN_STATE)
         self.assertEqual(empty3.get_name(), "test")
         self.assertTrue(empty3.is_empty())
@@ -58,7 +58,7 @@ class TestState(unittest.TestCase):
         state1.set_name("test")
         self.assertEqual(state1.get_name(), "test")
 
-        state2 = State(StateType.STATE, "test", False)
+        state2 = State(StateType.STATE, "test")
         self.assertTrue(state1.is_compatible(state2))
         state2.set_name("world")
         self.assertFalse(state1.is_compatible(state2))
@@ -67,7 +67,7 @@ class TestState(unittest.TestCase):
         self.assertTrue(state2.is_empty())
 
     def test_timestamp(self):
-        state = State(StateType.STATE, "test", False)
+        state = State(StateType.STATE, "test")
         time.sleep(0.2)
         self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertTrue(state.is_deprecated(0.1))
@@ -85,7 +85,7 @@ class TestState(unittest.TestCase):
         self.assertTrue(state.get_age() > 0.2)
 
     def test_copy(self):
-        state = State(StateType.STATE, "test", False)
+        state = State(StateType.STATE, "test")
         state2 = copy.copy(state)
         state3 = copy.deepcopy(state)
 
