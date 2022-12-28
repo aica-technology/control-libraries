@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BASE_TAG="latest"
-CONTAINER_NAME=control-libraries-development-dependencies-ssh
+CONTAINER_NAME=aica-technology-control-libraries-development-dependencies-ssh
 
 SSH_PORT=2222
 SSH_KEY_FILE="${HOME}/.ssh/id_rsa.pub"
