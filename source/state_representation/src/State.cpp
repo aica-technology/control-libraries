@@ -7,8 +7,8 @@ State::State() : type_(StateType::STATE), name_(""), empty_(true) {}
 
 State::State(const StateType& type) : type_(type), name_(""), empty_(true) {}
 
-State::State(const StateType& type, const std::string& name, const bool& empty) :
-    type_(type), name_(name), empty_(empty), timestamp_(std::chrono::steady_clock::now()) {}
+State::State(const StateType& type, const std::string& name) :
+    type_(type), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),
@@ -44,6 +44,7 @@ void State::set_type(const StateType& type) {
 }
 
 void State::set_name(const std::string& name) {
+  // FIXME: should we prohibit empty names?
   this->name_ = name;
 }
 
@@ -97,10 +98,7 @@ State::operator bool() const noexcept {
 }
 
 std::ostream& operator<<(std::ostream& os, const State& state) {
-  if (state.is_empty()) {
-    os << "Empty ";
-  }
-  os << " State: " << state.get_name();
+  os << "State: " << state.get_name();
   return os;
 }
 

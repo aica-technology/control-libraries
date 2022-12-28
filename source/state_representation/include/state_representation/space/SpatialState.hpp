@@ -15,11 +15,8 @@ public:
    * @brief Constructor with name and reference frame specification
    * @param name The name of the state
    * @param reference_frame The reference frame in which the state is expressed, by default world
-   * @param empty Specify if the state is initialized as empty, default true
    */
-  explicit SpatialState(
-      const std::string& name, const std::string& reference_frame = "world", const bool& empty = true
-  );
+  explicit SpatialState(const std::string& name, const std::string& reference_frame = "world");
 
   /**
    * @brief Copy constructor from another spatial state

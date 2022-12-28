@@ -17,7 +17,7 @@ TEST(StateTest, Constructors) {
   EXPECT_EQ(empty2.get_name(), "");
   EXPECT_TRUE(empty2.is_empty());
 
-  State empty3(StateType::CARTESIAN_STATE, "test", true);
+  State empty3(StateType::CARTESIAN_STATE, "test");
   EXPECT_EQ(empty3.get_type(), StateType::CARTESIAN_STATE);
   EXPECT_EQ(empty3.get_name(), "test");
   EXPECT_TRUE(empty3.is_empty());
@@ -37,7 +37,7 @@ TEST(StateTest, Compatibility) {
   state1.set_name("test");
   EXPECT_EQ(state1.get_name(), "test");
 
-  State state2(StateType::STATE, "test", false);
+  State state2(StateType::STATE, "test");
   EXPECT_TRUE(state1.is_compatible(state2));
   state2.set_name("world");
   EXPECT_FALSE(state1.is_compatible(state2));
@@ -47,7 +47,7 @@ TEST(StateTest, Compatibility) {
 }
 
 TEST(StateTest, Timestamp) {
-  State state(StateType::STATE, "test", false);
+  State state(StateType::STATE, "test");
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
   EXPECT_TRUE(state.is_deprecated(std::chrono::milliseconds(100)));
   EXPECT_TRUE(state.is_deprecated(0.1));
@@ -66,12 +66,12 @@ TEST(StateTest, Timestamp) {
 }
 
 TEST(StateTest, Swap) {
-  State state1(StateType::CARTESIAN_STATE, "cartesian", true);
-  State state2(StateType::STATE, "state", false);
+  State state1(StateType::CARTESIAN_STATE, "cartesian");
+  State state2(StateType::STATE, "state");
   swap(state1, state2);
   EXPECT_EQ(state1.get_type(), StateType::STATE);
   EXPECT_EQ(state1.get_name(), "state");
-  EXPECT_FALSE(state1.is_empty());
+  EXPECT_TRUE(state1.is_empty());
   EXPECT_EQ(state2.get_type(), StateType::CARTESIAN_STATE);
   EXPECT_EQ(state2.get_name(), "cartesian");
   EXPECT_TRUE(state2.is_empty());
