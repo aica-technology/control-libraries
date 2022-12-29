@@ -191,23 +191,7 @@ CartesianPose CartesianPose::operator-(const CartesianPose& pose) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
-  if (pose.is_empty()) {
-    os << "Empty CartesianPose";
-  } else {
-    os << pose.get_name() << " CartesianPose expressed in " << pose.get_reference_frame() << " frame" << std::endl;
-    os << "position: (" << pose.get_position()(0) << ", ";
-    os << pose.get_position()(1) << ", ";
-    os << pose.get_position()(2) << ")" << std::endl;
-    os << "orientation: (" << pose.get_orientation().w() << ", ";
-    os << pose.get_orientation().x() << ", ";
-    os << pose.get_orientation().y() << ", ";
-    os << pose.get_orientation().z() << ")";
-    Eigen::AngleAxisd axis_angle(pose.get_orientation());
-    os << " <=> theta: " << axis_angle.angle() << ", ";
-    os << "axis: (" << axis_angle.axis()(0) << ", ";
-    os << axis_angle.axis()(1) << ", ";
-    os << axis_angle.axis()(2) << ")";
-  }
+  os << pose.print("CartesianPose", CartesianStateVariable::POSE).str();
   return os;
 }
 

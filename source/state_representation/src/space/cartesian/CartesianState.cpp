@@ -807,42 +807,52 @@ CartesianState CartesianState::operator-(const CartesianState& state) const {
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  if (state.is_empty()) {
-    os << "Empty CartesianState";
-  } else {
-    os << state.get_name() << " CartesianState expressed in " << state.get_reference_frame() << " frame" << std::endl;
-    os << "position: (" << state.position_(0) << ", ";
-    os << state.position_(1) << ", ";
-    os << state.position_(2) << ")" << std::endl;
-    os << "orientation: (" << state.orientation_.w() << ", ";
-    os << state.orientation_.x() << ", ";
-    os << state.orientation_.y() << ", ";
-    os << state.orientation_.z() << ")";
-    Eigen::AngleAxisd axis_angle(state.orientation_);
-    os << " <=> theta: " << axis_angle.angle() << ", ";
-    os << "axis: (" << axis_angle.axis()(0) << ", ";
-    os << axis_angle.axis()(1) << ", ";
-    os << axis_angle.axis()(2) << ")" << std::endl;
-    os << "linear velocity: (" << state.linear_velocity_(0) << ", ";
-    os << state.linear_velocity_(1) << ", ";
-    os << state.linear_velocity_(2) << ")" << std::endl;
-    os << "angular velocity: (" << state.angular_velocity_(0) << ", ";
-    os << state.angular_velocity_(1) << ", ";
-    os << state.angular_velocity_(2) << ")" << std::endl;
-    os << "linear acceleration: (" << state.linear_acceleration_(0) << ", ";
-    os << state.linear_acceleration_(1) << ", ";
-    os << state.linear_acceleration_(2) << ")" << std::endl;
-    os << "angular acceleration: (" << state.angular_acceleration_(0) << ", ";
-    os << state.angular_acceleration_(1) << ", ";
-    os << state.angular_acceleration_(2) << ")" << std::endl;
-    os << "force: (" << state.force_(0) << ", ";
-    os << state.force_(1) << ", ";
-    os << state.force_(2) << ")" << std::endl;
-    os << "torque: (" << state.torque_(0) << ", ";
-    os << state.torque_(1) << ", ";
-    os << state.torque_(2) << ")";
+std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
+  os << "(" << field(0) << ", " << field(1) << ", " << field(2) << ")";
+  return os;
+}
+
+std::stringstream
+CartesianState::print(const std::string& class_name, const CartesianStateVariable& state_variable_type) const {
+  std::stringstream s;
+  auto prefix = this->is_empty() ? "Empty " : "";
+  s << prefix << class_name << " '" << this->get_name() << "' expressed in frame '" << this->get_reference_frame()
+    << "'";
+  if (this->is_empty()) {
+    return s;
   }
+  if (state_variable_type == CartesianStateVariable::POSE || state_variable_type == CartesianStateVariable::ALL) {
+    s << std::endl;
+    s << "position: " << this->get_position() << std::endl;
+    s << "orientation: (" << this->get_orientation().w() << ", ";
+    s << this->get_orientation().x() << ", ";
+    s << this->get_orientation().y() << ", ";
+    s << this->get_orientation().z() << ")";
+    Eigen::AngleAxisd axis_angle(this->get_orientation());
+    s << " <=> theta: " << axis_angle.angle() << ", ";
+    s << "axis: " << axis_angle.axis();
+  }
+  if (state_variable_type == CartesianStateVariable::TWIST || state_variable_type == CartesianStateVariable::ALL) {
+    s << std::endl;
+    s << "linear velocity: " << this->get_linear_velocity() << std::endl;
+    s << "angular velocity: " << this->get_angular_velocity();
+  }
+  if (state_variable_type == CartesianStateVariable::ACCELERATION
+      || state_variable_type == CartesianStateVariable::ALL) {
+    s << std::endl;
+    s << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
+    s << "angular acceleration: " << this->get_angular_acceleration();
+  }
+  if (state_variable_type == CartesianStateVariable::WRENCH || state_variable_type == CartesianStateVariable::ALL) {
+    s << std::endl;
+    s << "force: " << this->get_force() << std::endl;
+    s << "torque: " << this->get_torque();
+  }
+  return s;
+}
+
+std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
+  os << state.print("CartesianState", CartesianStateVariable::ALL).str();
   return os;
 }
 

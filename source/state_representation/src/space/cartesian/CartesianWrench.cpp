@@ -148,18 +148,7 @@ CartesianWrench CartesianWrench::operator-(const CartesianWrench& wrench) const 
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench) {
-  if (wrench.is_empty()) {
-    os << "Empty CartesianWrench";
-  } else {
-    os << wrench.get_name() << " CartesianWrench expressed in " << wrench.get_reference_frame() << " frame"
-       << std::endl;
-    os << "force: (" << wrench.get_force()(0) << ", ";
-    os << wrench.get_force()(1) << ", ";
-    os << wrench.get_force()(2) << ")" << std::endl;
-    os << "torque: (" << wrench.get_torque()(0) << ", ";
-    os << wrench.get_torque()(1) << ", ";
-    os << wrench.get_torque()(2) << ")";
-  }
+  os << wrench.print("CartesianWrench", CartesianStateVariable::WRENCH).str();
   return os;
 }
 

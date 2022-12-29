@@ -215,17 +215,7 @@ CartesianTwist CartesianTwist::operator-(const CartesianTwist& twist) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
-  if (twist.is_empty()) {
-    os << "Empty CartesianTwist";
-  } else {
-    os << twist.get_name() << " CartesianTwist expressed in " << twist.get_reference_frame() << " frame" << std::endl;
-    os << "linear_velocity: (" << twist.get_linear_velocity()(0) << ", ";
-    os << twist.get_linear_velocity()(1) << ", ";
-    os << twist.get_linear_velocity()(2) << ")" << std::endl;
-    os << "angular_velocity: (" << twist.get_angular_velocity()(0) << ", ";
-    os << twist.get_angular_velocity()(1) << ", ";
-    os << twist.get_angular_velocity()(2) << ")";
-  }
+  os << twist.print("CartesianTwist", CartesianStateVariable::TWIST).str();
   return os;
 }
 
