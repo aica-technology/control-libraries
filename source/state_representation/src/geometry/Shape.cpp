@@ -16,12 +16,13 @@ Shape::Shape(const Shape& shape) : State(shape), center_state_(shape.center_stat
 }
 
 std::ostream& operator<<(std::ostream& os, const Shape& shape) {
+  auto prefix = shape.is_empty() ? "Empty ": "";
+  os << prefix << "Shape '" << shape.get_name() << "'";
   if (shape.is_empty()) {
-    os << "Empty Shape";
-  } else {
-    os << "Shape " << shape.get_name() << " with state:" << std::endl;
-    os << shape.get_center_state();
+    return os;
   }
+  os << std::endl << "state:" << std::endl;
+  os << shape.get_center_state();
   return os;
 }
 }

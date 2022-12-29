@@ -408,25 +408,26 @@ const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian) {
+  auto prefix = jacobian.is_empty() ? "Empty ": "";
+  os << prefix << "Jacobian '" << jacobian.get_name() << "' associated to '" << jacobian.get_frame();
+  os << "', expressed in frame '" << jacobian.get_reference_frame() << "'" << std::endl;
+  os << "joint names: [";
+  for (auto& n : jacobian.get_joint_names()) { os << n << ", "; }
+  os << "]";
   if (jacobian.is_empty()) {
-    os << "Empty Jacobian";
-  } else {
-    os << jacobian.get_name() << " Jacobian associated to " << jacobian.frame_;
-    os << ", expressed in " << jacobian.reference_frame_ << std::endl;
-    os << "joint names: [";
-    for (auto& n : jacobian.get_joint_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "number of rows: " << jacobian.rows_ << std::endl;
-    os << "number of columns: " << jacobian.cols_ << std::endl;
-    for (unsigned int i = 0; i < jacobian.rows_; ++i) {
-      os << "| " << jacobian(i, 0);
-      for (unsigned int j = 1; j < jacobian.cols_; ++j) {
-        os << ", " << jacobian(i, j);
-      }
-      os << " |";
-      if (i != jacobian.rows_ - 1) {
-        os << std::endl;
-      }
+    return os;
+  }
+  os << std::endl;
+  os << "number of rows: " << jacobian.rows() << std::endl;
+  os << "number of columns: " << jacobian.cols() << std::endl;
+  for (unsigned int i = 0; i < jacobian.rows(); ++i) {
+    os << "| " << jacobian(i, 0);
+    for (unsigned int j = 1; j < jacobian.cols(); ++j) {
+      os << ", " << jacobian(i, j);
+    }
+    os << " |";
+    if (i != jacobian.rows() - 1) {
+      os << std::endl;
     }
   }
   return os;
