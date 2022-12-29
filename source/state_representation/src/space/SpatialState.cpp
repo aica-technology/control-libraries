@@ -48,7 +48,8 @@ bool SpatialState::is_incompatible(const State& state) const {
 
 std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
   auto prefix = state.is_empty() ? "Empty " : "";
-  os << prefix << "SpatialState: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
+  os << prefix << "SpatialState: '" << state.get_name() << "' expressed in frame '"
+     << state.get_reference_frame() << "'";
   return os;
 }
 
