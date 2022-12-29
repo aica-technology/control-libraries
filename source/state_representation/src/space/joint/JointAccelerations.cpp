@@ -196,17 +196,7 @@ JointAccelerations JointAccelerations::operator-(const JointAccelerations& accel
 }
 
 std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations) {
-  if (accelerations.is_empty()) {
-    os << "Empty JointAccelerations";
-  } else {
-    os << accelerations.get_name() << " JointAccelerations" << std::endl;
-    os << "names: [";
-    for (auto& n : accelerations.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "accelerations: [";
-    for (unsigned int i = 0; i < accelerations.get_size(); ++i) { os << accelerations.get_accelerations()(i) << ", "; }
-    os << "]";
-  }
+  os << accelerations.print("JointAccelerations", JointStateVariable::ACCELERATIONS).str();
   return os;
 }
 }// namespace state_representation

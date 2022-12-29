@@ -587,27 +587,42 @@ JointState JointState::operator-(const JointState& state) const {
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const JointState& state) {
-  if (state.is_empty()) {
-    os << "Empty " << state.get_name() << " JointState";
-  } else {
-    os << state.get_name() << " JointState" << std::endl;
-    os << "names: [";
-    for (auto& n: state.names_) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "positions: [";
-    for (unsigned int i = 0; i < state.positions_.size(); ++i) { os << state.positions_(i) << ", "; }
-    os << "]" << std::endl;
-    os << "velocities: [";
-    for (unsigned int i = 0; i < state.velocities_.size(); ++i) { os << state.velocities_(i) << ", "; }
-    os << "]" << std::endl;
-    os << "accelerations: [";
-    for (unsigned int i = 0; i < state.accelerations_.size(); ++i) { os << state.accelerations_(i) << ", "; }
-    os << "]" << std::endl;
-    os << "torques: [";
-    for (unsigned int i = 0; i < state.torques_.size(); ++i) { os << state.torques_(i) << ", "; }
-    os << "]";
+std::stringstream
+JointState::print(const std::string& class_name, const JointStateVariable& state_variable_type) const {
+  std::stringstream s;
+  auto prefix = this->is_empty() ? "Empty " : "";
+  s << prefix << class_name << " '" << this->get_name() << "'" << std::endl;
+  s << "joint names: [";
+  for (auto& n : this->get_names()) { s << n << ", "; }
+  s << "]";
+  if (this->is_empty()) {
+    return s;
   }
+  if (state_variable_type == JointStateVariable::POSITIONS || state_variable_type == JointStateVariable::ALL) {
+    s << std::endl << "positions: [";
+    for (auto& p : this->get_positions()) { s << p << ", "; }
+    s << "]";
+  }
+  if (state_variable_type == JointStateVariable::VELOCITIES || state_variable_type == JointStateVariable::ALL) {
+    s << std::endl << "velocities: [";
+    for (auto& v : this->get_velocities()) { s << v << ", "; }
+    s << "]";
+  }
+  if (state_variable_type == JointStateVariable::ACCELERATIONS || state_variable_type == JointStateVariable::ALL) {
+    s << std::endl << "accelerations: [";
+    for (auto& a : this->get_accelerations()) { s << a << ", "; }
+    s << "]";
+  }
+  if (state_variable_type == JointStateVariable::TORQUES || state_variable_type == JointStateVariable::ALL) {
+    s << std::endl << "torques: [";
+    for (auto& t : this->get_torques()) { s << t << ", "; }
+    s << "]";
+  }
+  return s;
+}
+
+std::ostream& operator<<(std::ostream& os, const JointState& state) {
+  os << state.print("JointState", JointStateVariable::ALL).str();
   return os;
 }
 }// namespace state_representation

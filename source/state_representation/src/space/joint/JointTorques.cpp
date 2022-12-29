@@ -170,17 +170,7 @@ JointTorques JointTorques::operator-(const JointTorques& torques) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const JointTorques& torques) {
-  if (torques.is_empty()) {
-    os << "Empty JointTorques";
-  } else {
-    os << torques.get_name() << " JointTorques" << std::endl;
-    os << "names: [";
-    for (auto& n : torques.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "torques: [";
-    for (unsigned int i = 0; i < torques.get_size(); ++i) { os << torques.get_torques()(i) << ", "; }
-    os << "]";
-  }
+  os << torques.print("JointTorques", JointStateVariable::TORQUES).str();
   return os;
 }
 }// namespace state_representation
