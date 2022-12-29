@@ -98,7 +98,8 @@ State::operator bool() const noexcept {
 }
 
 std::ostream& operator<<(std::ostream& os, const State& state) {
-  os << "State: " << state.get_name();
+  auto prefix = state.is_empty() ? "Empty " : "";
+  os << prefix << "State: " << state.get_name();
   return os;
 }
 

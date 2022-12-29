@@ -29,7 +29,8 @@ bool SpatialState::is_compatible(const State& state) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
-  os << "SpatialState: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
+  auto prefix = state.is_empty() ? "Empty " : "";
+  os << prefix << "SpatialState: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
   return os;
 }
 
