@@ -4,6 +4,7 @@
 #include "state_representation/space/joint/JointVelocities.hpp"
 
 namespace state_representation {
+
 class JointVelocities;
 
 /**
@@ -11,9 +12,6 @@ class JointVelocities;
  * @brief Class to define accelerations of the joints
  */
 class JointAccelerations : public JointState {
-private:
-  using JointState::clamp_state_variable;
-
 public:
   const Eigen::VectorXd& get_positions() const = delete;
   double get_position(unsigned int joint_index) const = delete;
@@ -44,30 +42,30 @@ public:
 
   /**
    * @brief Constructor with name and number of joints provided
-   * @brief name the name of the state
-   * @brief nb_joints the number of joints for initialization
+   * @brief name The name of the state
+   * @brief nb_joints The number of joints for initialization
    */
   explicit JointAccelerations(const std::string& robot_name, unsigned int nb_joints = 0);
 
   /**
    * @brief Constructor with name and list of joint names provided
-   * @brief name the name of the state
-   * @brief joint_names list of joint names
+   * @brief name The name of the state
+   * @brief joint_names List of joint names
    */
   explicit JointAccelerations(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
    * @brief Constructor with name and acceleration values provided
-   * @brief name the name of the state
-   * @brief accelerations the vector of accelerations
+   * @brief name The name of the state
+   * @brief accelerations The vector of accelerations
    */
   explicit JointAccelerations(const std::string& robot_name, const Eigen::VectorXd& accelerations);
 
   /**
    * @brief Constructor with name, a list of joint names and accelerations values provided
-   * @brief name the name of the state
-   * @brief joint_names list of joint names
-   * @brief accelerations the vector of accelerations
+   * @brief name The name of the state
+   * @brief joint_names List of joint names
+   * @brief accelerations The vector of accelerations
    */
   explicit JointAccelerations(
       const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& accelerations
@@ -79,239 +77,241 @@ public:
   JointAccelerations(const JointAccelerations& accelerations);
 
   /**
-   * @brief Copy constructor from a JointState
+   * @brief Copy constructor from a joint state
    */
   JointAccelerations(const JointState& state);
 
   /**
-   * @brief Differentiation constructor from a JointVelocities by considering that it is equivalent to dividing
+   * @brief Differentiation constructor from joint velocities by considering that it is equivalent to dividing
    * the velocities by 1 second
    */
   JointAccelerations(const JointVelocities& velocities);
 
-/**
- * @brief Constructor for the zero JointAccelerations
- * @param robot_name the name of the associated robot
- * @param nb_joints the number of joints for initialization
- * @return JointAccelerations with zero accelerations values
- */
+  /**
+   * @brief Constructor for zero joint accelerations
+   * @param robot_name The name of the associated robot
+   * @param nb_joints The number of joints for initialization
+   * @return Joint accelerations with zero values
+   */
   static JointAccelerations Zero(const std::string& robot_name, unsigned int nb_joints);
 
   /**
-   * @brief Constructor for the zero JointAccelerations
-   * @param robot_name the name of the associated robot
-   * @param joint_names list of joint names
-   * @return JointAccelerations with zero accelerations values
+   * @brief Constructor for zero joint accelerations
+   * @param robot_name The name of the associated robot
+   * @param joint_names List of joint names
+   * @return Joint accelerations with zero values
    */
   static JointAccelerations Zero(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
-   * @brief Constructor for the random JointAccelerations
-   * @param robot_name the name of the associated robot
-   * @param nb_joints the number of joints for initialization
-   * @return JointAccelerations with random accelerations values
+   * @brief Constructor for random joint accelerations
+   * @param robot_name The name of the associated robot
+   * @param nb_joints The number of joints for initialization
+   * @return Joint accelerations with random values
    */
   static JointAccelerations Random(const std::string& robot_name, unsigned int nb_joints);
 
   /**
-   * @brief Constructor for the random JointAccelerations
-   * @param robot_name the name of the associated robot
-   * @param joint_names list of joint names
-   * @return JointAccelerations with random accelerations values
+   * @brief Constructor for random joint accelerations
+   * @param robot_name The name of the associated robot
+   * @param joint_names List of joint names
+   * @return Joint accelerations with random values
    */
   static JointAccelerations Random(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator
-   * @param accelerations the state with value to assign
-   * @return reference to the current state with new values
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param accelerations The state with value to assign
+   * @return Reference to the current state with new values
    */
   JointAccelerations& operator=(const JointAccelerations& accelerations) = default;
 
   /**
-   * @brief Overload the += operator
-   * @param accelerations JointAccelerations to add
-   * @return the current JointAccelerations added the JointAccelerations given in argument
-   */
-  JointAccelerations& operator+=(const JointAccelerations& accelerations);
-
-  /**
-   * @brief Overload the + operator
-   * @param accelerations JointAccelerations to add
-   * @return the current JointAccelerations added the JointAccelerations given in argument
-   */
-  JointAccelerations operator+(const JointAccelerations& accelerations) const;
-
-  /**
-   * @brief Overload the -= operator
-   * @param accelerations JointAccelerations to subtract
-   * @return the current JointAccelerations subtracted the JointAccelerations given in argument
-   */
-  JointAccelerations& operator-=(const JointAccelerations& accelerations);
-
-  /**
-   * @brief Overload the - operator
-   * @param accelerations JointAccelerations to subtract
-   * @return the current JointAccelerations subtracted the JointAccelerations given in argument
-   */
-  JointAccelerations operator-(const JointAccelerations& accelerations) const;
-
-  /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda the gain to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations& operator*=(double lambda);
-
-  /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda the gain to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations operator*(double lambda) const;
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda the gain array to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda the gain array to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @param lambda the matrix to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda the matrix to multiply with
-   * @return the JointAccelerations multiplied by lambda
-   */
-  JointAccelerations operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the JointAccelerations divided by lambda
-   */
-  JointAccelerations& operator/=(double lambda);
-
-  /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the JointAccelerations divided by lambda
-   */
-  JointAccelerations operator/(double lambda) const;
-
-  /**
-   * @brief Overload the * operator with a time period
-   * @param dt the time period to multiply with
-   * @return the JointVelocities corresponding to the velocities over the time period
-   */
-  JointVelocities operator*(const std::chrono::nanoseconds& dt) const;
-
-  /**
-   * @brief Return a copy of the JointAccelerations
-   * @return the copy
-   */
-  JointAccelerations copy() const;
-
-  /**
    * @brief Returns the accelerations data as an Eigen vector
-   * @return the accelerations data vector
+   * @return The accelerations data vector
    */
   Eigen::VectorXd data() const override;
 
   /**
    * @brief Set the accelerations data from an Eigen vector
-   * @param the accelerations data vector
+   * @param data The accelerations data vector
    */
   virtual void set_data(const Eigen::VectorXd& data) override;
 
   /**
    * @brief Set the accelerations data from a std vector
-   * @param the accelerations data vector
+   * @param data The accelerations data vector
    */
   virtual void set_data(const std::vector<double>& data) override;
 
   /**
    * @brief Clamp inplace the magnitude of the acceleration to the values in argument
-   * @param max_absolute_value the maximum magnitude of acceleration for all the joints
-   * @param noise_ratio if provided, this value will be used to apply a dead zone under which
+   * @param max_absolute_value The maximum magnitude of acceleration for all the joints
+   * @param noise_ratio If provided, this value will be used to apply a dead zone under which
    * the acceleration will be set to 0
    */
   void clamp(double max_absolute_value, double noise_ratio = 0.);
 
   /**
-   * @brief Return the acceleration clamped to the values in argument
-   * @param max_absolute_value the maximum magnitude of acceleration for all the joints
-   * @param noise_ratio if provided, this value will be used to apply a dead zone under which
-   * the acceleration will be set to 0
-   * @return the clamped JointAccelerations
-   */
-  JointAccelerations clamped(double max_absolute_value, double noise_ratio = 0.) const;
-
-  /**
    * @brief Clamp inplace the magnitude of the acceleration to the values in argument
-   * @param max_absolute_value_array the maximum magnitude of acceleration for each joint
-   * @param noise_ratio_array if provided, this value will be used to apply a dead zone under which
+   * @param max_absolute_value_array The maximum magnitude of acceleration for each joint
+   * @param noise_ratio_array If provided, this value will be used to apply a dead zone under which
    * the acceleration will be set to 0
    */
   void clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array);
 
   /**
    * @brief Return the acceleration clamped to the values in argument
-   * @param max_absolute_value_array the maximum magnitude of acceleration for each joint
-   * @param noise_ratio_array if provided, this value will be used to apply a dead zone under which
+   * @param max_absolute_value the maximum magnitude of acceleration for all the joints
+   * @param noise_ratio If provided, this value will be used to apply a dead zone under which
    * the acceleration will be set to 0
-   * @return the clamped JointAccelerations
+   * @return The clamped joint accelerations
+   */
+  JointAccelerations clamped(double max_absolute_value, double noise_ratio = 0.) const;
+
+  /**
+   * @brief Return the acceleration clamped to the values in argument
+   * @param max_absolute_value_array The maximum magnitude of acceleration for each joint
+   * @param noise_ratio_array If provided, this value will be used to apply a dead zone under which
+   * the acceleration will be set to 0
+   * @return The clamped joint accelerations
    */
   JointAccelerations clamped(
       const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
   ) const;
 
   /**
-   * @brief Overload the ostream operator for printing
-   * @param os the ostream to append the string representing the state
-   * @param state the state to print
-   * @return the appended ostream
+   * @brief Return a copy of the joint accelerations
    */
-  friend std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations);
+  JointAccelerations copy() const;
+
+  /**
+   * @brief Overload the *= operator with a double gain
+   * @param lambda The gain to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  JointAccelerations& operator*=(double lambda);
+
+  /**
+   * @brief Overload the * operator with a double gain
+   * @param lambda The gain to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  JointAccelerations operator*(double lambda) const;
 
   /**
    * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the JointAccelerations provided multiply by lambda
+   * @param lambda The scalar gain to multiply with
+   * @return The joint accelerations multiplied by lambda
    */
   friend JointAccelerations operator*(double lambda, const JointAccelerations& accelerations);
 
   /**
-   * @brief Overload the * operator with an array of gains
-   * @param lambda the array to multiply with
-   * @return the JointAccelerations provided multiply by lambda
+   * @brief Overload the *= operator with a matrix of gains
+   * @param lambda The gain matrix to multiply with
+   * @return The joint accelerations multiplied by lambda
    */
-  friend JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations);
+  JointAccelerations& operator*=(const Eigen::MatrixXd& lambda);
 
   /**
    * @brief Overload the * operator with a matrix of gains
-   * @param lambda the matrix to multiply with
-   * @return the JointAccelerations provided multiply by lambda
+   * @param lambda The gain matrix to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  JointAccelerations operator*(const Eigen::MatrixXd& lambda) const;
+
+  /**
+   * @brief Overload the * operator with a matrix of gains
+   * @param lambda The gain matrix to multiply with
+   * @return The joint accelerations multiplied by lambda
    */
   friend JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations);
 
   /**
-   * @param dt the time period to multiply with
-   * @return the JointVelocities corresponding to the velocities over the time period
+   * @brief Overload the *= operator with an array of gains
+   * @param lambda The gain array to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  JointAccelerations& operator*=(const Eigen::ArrayXd& lambda);
+
+  /**
+   * @brief Overload the *= operator with an array of gains
+   * @param lambda The gain array to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  JointAccelerations operator*(const Eigen::ArrayXd& lambda) const;
+
+  /**
+   * @brief Overload the * operator with an array of gains
+   * @param lambda The gain array to multiply with
+   * @return The joint accelerations multiplied by lambda
+   */
+  friend JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations);
+
+  /**
+   * @brief Overload the * operator with a time period
+   * @param dt The time period to multiply with
+   * @return The joint velocities corresponding to the velocities over the time period
+   */
+  JointVelocities operator*(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @param dt The time period to multiply with
+   * @return The joint velocities corresponding to the velocities over the time period
    */
   friend JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations);
+
+  /**
+   * @brief Overload the /= operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return The joint accelerations divided by lambda
+   */
+  JointAccelerations& operator/=(double lambda);
+
+  /**
+   * @brief Overload the / operator with a scalar
+   * @param lambda The scalar to divide with
+   * @return The joint accelerations divided by lambda
+   */
+  JointAccelerations operator/(double lambda) const;
+
+  /**
+   * @brief Overload the += operator
+   * @param accelerations Joint accelerations to add
+   * @return The current joint accelerations added the joint accelerations given in argument
+   */
+  JointAccelerations& operator+=(const JointAccelerations& accelerations);
+
+  /**
+   * @brief Overload the + operator
+   * @param accelerations Joint accelerations to add
+   * @return The current joint accelerations added the joint accelerations given in argument
+   */
+  JointAccelerations operator+(const JointAccelerations& accelerations) const;
+
+  /**
+   * @brief Overload the -= operator
+   * @param accelerations Joint accelerations to subtract
+   * @return The current joint accelerations subtracted the joint accelerations given in argument
+   */
+  JointAccelerations& operator-=(const JointAccelerations& accelerations);
+
+  /**
+   * @brief Overload the - operator
+   * @param accelerations Joint accelerations to subtract
+   * @return The current joint accelerations subtracted the joint accelerations given in argument
+   */
+  JointAccelerations operator-(const JointAccelerations& accelerations) const;
+
+  /**
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the state
+   * @param state The state to print
+   * @return The appended ostream
+   */
+  friend std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations);
+
+private:
+  using JointState::clamp_state_variable;
 };
 }// namespace state_representation
