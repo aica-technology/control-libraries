@@ -2,9 +2,10 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 JointPositions::JointPositions() {
   this->set_type(StateType::JOINT_POSITIONS);
 }
@@ -62,22 +63,43 @@ JointPositions JointPositions::Random(const std::string& robot_name, const std::
   return JointPositions(robot_name, joint_names, Eigen::VectorXd::Random(joint_names.size()));
 }
 
-JointPositions& JointPositions::operator+=(const JointPositions& positions) {
-  this->JointState::operator+=(positions);
-  return (*this);
+Eigen::VectorXd JointPositions::data() const {
+  return this->get_positions();
 }
 
-JointPositions JointPositions::operator+(const JointPositions& positions) const {
-  return this->JointState::operator+(positions);
+void JointPositions::set_data(const Eigen::VectorXd& data) {
+  this->set_positions(data);
 }
 
-JointPositions& JointPositions::operator-=(const JointPositions& positions) {
-  this->JointState::operator-=(positions);
-  return (*this);
+void JointPositions::set_data(const std::vector<double>& data) {
+  this->set_positions(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
-JointPositions JointPositions::operator-(const JointPositions& positions) const {
-  return this->JointState::operator-(positions);
+void JointPositions::clamp(double max_absolute_value, double noise_ratio) {
+  this->clamp_state_variable(max_absolute_value, JointStateVariable::POSITIONS, noise_ratio);
+}
+
+void JointPositions::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
+  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::POSITIONS, noise_ratio_array);
+}
+
+JointPositions JointPositions::clamped(double max_absolute_value, double noise_ratio) const {
+  JointPositions result(*this);
+  result.clamp(max_absolute_value, noise_ratio);
+  return result;
+}
+
+JointPositions JointPositions::clamped(
+    const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
+) const {
+  JointPositions result(*this);
+  result.clamp(max_absolute_value_array, noise_ratio_array);
+  return result;
+}
+
+JointPositions JointPositions::copy() const {
+  JointPositions result(*this);
+  return result;
 }
 
 JointPositions& JointPositions::operator*=(double lambda) {
@@ -87,6 +109,29 @@ JointPositions& JointPositions::operator*=(double lambda) {
 
 JointPositions JointPositions::operator*(double lambda) const {
   return this->JointState::operator*(lambda);
+}
+
+JointPositions operator*(double lambda, const JointPositions& positions) {
+  JointPositions result(positions);
+  result *= lambda;
+  return result;
+}
+
+JointPositions& JointPositions::operator*=(const Eigen::MatrixXd& lambda) {
+  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
+  return (*this);
+}
+
+JointPositions JointPositions::operator*(const Eigen::MatrixXd& lambda) const {
+  JointPositions result(*this);
+  result *= lambda;
+  return result;
+}
+
+JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions) {
+  JointPositions result(positions);
+  result *= lambda;
+  return result;
 }
 
 JointPositions& JointPositions::operator*=(const Eigen::ArrayXd& lambda) {
@@ -100,13 +145,8 @@ JointPositions JointPositions::operator*(const Eigen::ArrayXd& lambda) const {
   return result;
 }
 
-JointPositions& JointPositions::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(const Eigen::MatrixXd& lambda) const {
-  JointPositions result(*this);
+JointPositions operator*(const Eigen::ArrayXd& lambda, const JointPositions& positions) {
+  JointPositions result(positions);
   result *= lambda;
   return result;
 }
@@ -132,43 +172,22 @@ JointVelocities JointPositions::operator/(const std::chrono::nanoseconds& dt) co
   return velocities;
 }
 
-JointPositions JointPositions::copy() const {
-  JointPositions result(*this);
-  return result;
+JointPositions& JointPositions::operator+=(const JointPositions& positions) {
+  this->JointState::operator+=(positions);
+  return (*this);
 }
 
-Eigen::VectorXd JointPositions::data() const {
-  return this->get_positions();
+JointPositions JointPositions::operator+(const JointPositions& positions) const {
+  return this->JointState::operator+(positions);
 }
 
-void JointPositions::set_data(const Eigen::VectorXd& data) {
-  this->set_positions(data);
+JointPositions& JointPositions::operator-=(const JointPositions& positions) {
+  this->JointState::operator-=(positions);
+  return (*this);
 }
 
-void JointPositions::set_data(const std::vector<double>& data) {
-  this->set_positions(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
-void JointPositions::clamp(double max_absolute_value, double noise_ratio) {
-  this->clamp_state_variable(max_absolute_value, JointStateVariable::POSITIONS, noise_ratio);
-}
-
-JointPositions JointPositions::clamped(double max_absolute_value, double noise_ratio) const {
-  JointPositions result(*this);
-  result.clamp(max_absolute_value, noise_ratio);
-  return result;
-}
-
-void JointPositions::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
-  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::POSITIONS, noise_ratio_array);
-}
-
-JointPositions JointPositions::clamped(
-    const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
-) const {
-  JointPositions result(*this);
-  result.clamp(max_absolute_value_array, noise_ratio_array);
-  return result;
+JointPositions JointPositions::operator-(const JointPositions& positions) const {
+  return this->JointState::operator-(positions);
 }
 
 std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
@@ -184,23 +203,5 @@ std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
     os << "]";
   }
   return os;
-}
-
-JointPositions operator*(double lambda, const JointPositions& positions) {
-  JointPositions result(positions);
-  result *= lambda;
-  return result;
-}
-
-JointPositions operator*(const Eigen::ArrayXd& lambda, const JointPositions& positions) {
-  JointPositions result(positions);
-  result *= lambda;
-  return result;
-}
-
-JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions) {
-  JointPositions result(positions);
-  result *= lambda;
-  return result;
 }
 }// namespace state_representation
