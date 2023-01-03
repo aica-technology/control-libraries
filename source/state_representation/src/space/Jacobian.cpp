@@ -5,6 +5,8 @@
 
 namespace state_representation {
 
+using namespace exceptions;
+
 Jacobian::Jacobian() : State(StateType::JACOBIAN) {
   this->State::initialize();
 }

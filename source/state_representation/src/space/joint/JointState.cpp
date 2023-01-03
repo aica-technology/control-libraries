@@ -6,6 +6,8 @@
 
 namespace state_representation {
 
+using namespace exceptions;
+
 static void assert_index_in_range(unsigned int joint_index, unsigned int size) {
   if (joint_index > size) {
     throw JointNotFoundException(
