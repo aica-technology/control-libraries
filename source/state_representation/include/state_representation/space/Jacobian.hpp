@@ -149,16 +149,6 @@ public:
   const std::vector<std::string>& get_joint_names() const;
 
   /**
-   * @brief Setter of the joint names attribute from the number of joints
-   */
-  void set_joint_names(unsigned int nb_joints);
-
-  /**
-   * @brief Setter of the joint names attribute from a vector of joint names
-   */
-  void set_joint_names(const std::vector<std::string>& joint_names);
-
-  /**
    * @brief Getter of the frame attribute
    */
   const std::string& get_frame() const;
@@ -169,6 +159,22 @@ public:
   const std::string& get_reference_frame() const;
 
   /**
+   * @brief Getter of the data attribute
+   */
+  const Eigen::MatrixXd& data() const;
+
+  /**
+   * @brief Setter of the joint names attribute from the number of joints
+   */
+  void set_joint_names(unsigned int nb_joints);
+
+  /**
+   * @brief Setter of the joint names attribute from a vector of joint names
+   */
+  void set_joint_names(const std::vector<std::string>& joint_names);
+
+  // FIXME: why no setter for frame?
+  /**
    * @brief Setter of the reference frame attribute from a CartesianPose
    * Update the value of the data matrix accordingly by changing the reference frame of each columns.
    * This means that the computation needs to be compatible, i.e. the previous reference frame should
@@ -178,33 +184,21 @@ public:
   void set_reference_frame(const CartesianPose& reference_frame);
 
   /**
-   * @brief Getter of the data attribute
-   */
-  const Eigen::MatrixXd& data() const;
-
-  /**
    * @brief Setter of the data attribute
    */
   void set_data(const Eigen::MatrixXd& data) override;
 
   /**
-   * @brief Check if the Jacobian matrix is compatible for operations with the state given as argument
-   * @param state The state to check compatibility with
+   * @brief Return a copy of the Jacobian
    */
-  bool is_compatible(const State& state) const override;
+  Jacobian copy() const;
 
   /**
    * @brief Initialize the matrix to a zero value
    */
   void initialize() override;
 
-  // FIXME: does it make sense to returns Jacobians here instead of matrices?
-  /**
-    * @brief Return the transpose of the Jacobian matrix
-    * @return The transposed Jacobian
-    */
-  Jacobian transpose() const;
-
+  // FIXME: does it make sense to return Jacobians instead of matrices (inverse, pseudoinverse, transpose)?
   /**
    * @brief Return the inverse of the Jacobian matrix
    * @details If the matrix is not invertible, an error is thrown advising to use the
@@ -214,10 +208,36 @@ public:
   Jacobian inverse() const;
 
   /**
+   * @brief Check if the Jacobian matrix is compatible for operations with the state given as argument
+   * @param state The state to check compatibility with
+   */
+  bool is_compatible(const State& state) const override;
+
+  /**
    * @brief Return the pseudoinverse of the Jacobian matrix
    * @return The pseudoinverse of the Jacobian
    */
   Jacobian pseudoinverse() const;
+
+  /**
+   * @brief Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse
+   * @param matrix The matrix to solve the system with
+   * @return The result of X = J.solve(M) from Eigen decomposition
+   */
+  Eigen::MatrixXd solve(const Eigen::MatrixXd& matrix) const;
+
+  /**
+   * @brief Solve the system dX = J*dq to obtain dq which is more efficient than multiplying with the pseudo-inverse
+   * @param dX The Cartesian twist to multiply with
+   * @return The corresponding joint velocities
+   */
+  JointVelocities solve(const CartesianTwist& twist) const;
+
+  /**
+    * @brief Return the transpose of the Jacobian matrix
+    * @return The transposed Jacobian
+    */
+  Jacobian transpose() const;
 
   /**
    * @brief Overload the * operator with an arbitrary matrix
@@ -232,6 +252,14 @@ public:
    * @return The current Jacobian multiplied by the one in parameter
    */
   Eigen::MatrixXd operator*(const Jacobian& jacobian) const;
+
+  /**
+   * @brief Overload the * operator with an arbitrary matrix on the left side
+   * @param matrix The matrix to multiply with
+   * @param jacobian The Jacobian matrix
+   * @return The matrix multiplied by the Jacobian matrix
+   */
+  friend Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobian);
 
   /**
    * @brief Overload the * operator with a JointVelocities
@@ -255,18 +283,13 @@ public:
   JointTorques operator*(const CartesianWrench& wrench) const;
 
   /**
-   * @brief Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse
-   * @param matrix The matrix to solve the system with
-   * @return The result of X = J.solve(M) from Eigen decomposition
+   * @brief Overload the * operator with a Cartesian pose on left side
+   * @details This operation is equivalent to a change of reference frame of the Jacobian
+   * @param pose The Cartesian pose to multiply with
+   * @param jacobian The Jacobian to be multiplied with the Cartesian pose
+   * @return The Jacobian expressed in the new reference frame
    */
-  Eigen::MatrixXd solve(const Eigen::MatrixXd& matrix) const;
-
-  /**
-   * @brief Solve the system dX = J*dq to obtain dq which is more efficient than multiplying with the pseudo-inverse
-   * @param dX The Cartesian twist to multiply with
-   * @return The corresponding joint velocities
-   */
-  JointVelocities solve(const CartesianTwist& twist) const;
+  friend Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian);
 
   /**
    * @brief Overload the () operator in a non const fashion to modify the value at given (row, col)
@@ -285,34 +308,12 @@ public:
   const double& operator()(unsigned int row, unsigned int col) const;
 
   /**
-   * @brief Return a copy of the Jacobian
-   */
-  Jacobian copy() const;
-
-  /**
    * @brief Overload the ostream operator for printing
    * @param os The ostream to append the string representing the Jacobian to
    * @param jacobian The Jacobian to print
    * @return The appended ostream
    */
   friend std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian);
-
-  /**
-   * @brief Overload the * operator with a Cartesian pose on left side
-   * @details This operation is equivalent to a change of reference frame of the Jacobian
-   * @param pose The Cartesian pose to multiply with
-   * @param jacobian The Jacobian to be multiplied with the Cartesian pose
-   * @return The Jacobian expressed in the new reference frame
-   */
-  friend Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian);
-
-  /**
-   * @brief Overload the * operator with an arbitrary matrix on the left side
-   * @param matrix The matrix to multiply with
-   * @param jacobian The Jacobian matrix
-   * @return The matrix multiplied by the Jacobian matrix
-   */
-  friend Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobian);
 
 private:
   std::vector<std::string> joint_names_;///< names of the joints
@@ -331,94 +332,5 @@ inline void swap(Jacobian& jacobian1, Jacobian& jacobian2) {
   std::swap(jacobian1.cols_, jacobian2.cols_);
   std::swap(jacobian1.rows_, jacobian2.rows_);
   std::swap(jacobian1.data_, jacobian2.data_);
-}
-
-inline Jacobian& Jacobian::operator=(const Jacobian& jacobian) {
-  Jacobian tmp(jacobian);
-  swap(*this, tmp);
-  return *this;
-}
-
-inline unsigned int Jacobian::rows() const {
-  return this->rows_;
-}
-
-inline unsigned int Jacobian::cols() const {
-  return this->cols_;
-}
-
-inline Eigen::VectorXd Jacobian::row(unsigned int index) const {
-  return this->data_.row(index);
-}
-
-inline Eigen::VectorXd Jacobian::col(unsigned int index) const {
-  return this->data_.col(index);
-}
-
-inline const std::vector<std::string>& Jacobian::get_joint_names() const {
-  return this->joint_names_;
-}
-
-inline void Jacobian::set_joint_names(unsigned int nb_joints) {
-  if (this->joint_names_.size() != nb_joints) {
-    throw exceptions::IncompatibleSizeException("Input number of joints is of incorrect size, expected "
-                                                    + std::to_string(this->joint_names_.size())
-                                                    + " got " + std::to_string(nb_joints));
-  }
-  for (unsigned int i = 0; i < nb_joints; ++i) {
-    this->joint_names_[i] = "joint" + std::to_string(i);
-  }
-}
-
-inline void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
-  if (this->joint_names_.size() != joint_names.size()) {
-    throw exceptions::IncompatibleSizeException("Input vector of joint names is of incorrect size, expected "
-                                                    + std::to_string(this->joint_names_.size())
-                                                    + " got " + std::to_string(joint_names.size()));
-  }
-  this->joint_names_ = joint_names;
-}
-
-inline const std::string& Jacobian::get_frame() const {
-  return this->frame_;
-}
-
-inline const std::string& Jacobian::get_reference_frame() const {
-  return this->reference_frame_;
-}
-
-inline const Eigen::MatrixXd& Jacobian::data() const {
-  return this->data_;
-}
-
-inline void Jacobian::set_data(const Eigen::MatrixXd& data) {
-  if (this->rows() != data.rows() || this->cols() != data.cols()) {
-    throw exceptions::IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                                    + std::to_string(this->rows_) + "x" + std::to_string(this->cols_)
-                                                    + " got " + std::to_string(data.rows()) + "x"
-                                                    + std::to_string(data.cols()));
-  }
-  this->set_filled();
-  this->data_ = data;
-}
-
-inline double& Jacobian::operator()(unsigned int row, unsigned int col) {
-  if (row > this->rows_) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
-  }
-  if (col > this->cols_) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols_));
-  }
-  return this->data_(row, col);
-}
-
-inline const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
-  if (row > this->rows_) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
-  }
-  if (col > this->cols_) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols_));
-  }
-  return this->data_(row, col);
 }
 }// namespace state_representation
