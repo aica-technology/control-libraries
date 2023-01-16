@@ -2,6 +2,7 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions/InvalidCastException.hpp"
 
 namespace state_representation {
 
@@ -180,48 +181,56 @@ Jacobian Jacobian::inverse() const {
 }
 
 bool Jacobian::is_incompatible(const State& state) const {
-  bool compatible = false;
-  switch (state.get_type()) {
-    case StateType::JACOBIAN:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const Jacobian&>(state).get_joint_names().size());
-      if (compatible) {
-        for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const Jacobian&>(state).get_joint_names()[i]);
+  try {
+    switch (state.get_type()) {
+      case StateType::JACOBIAN: {
+        auto other = dynamic_cast<const Jacobian&>(state);
+        if (this->cols_ != other.joint_names_.size()) {
+          return true;
         }
-        // compatibility is assured through the reference frame and the name of the frame
-        compatible = (compatible && ((this->reference_frame_ == dynamic_cast<const Jacobian&>(state).get_reference_frame())
-            && (this->frame_ == dynamic_cast<const Jacobian&>(state).get_frame())));
-      }
-      break;
-    case StateType::JOINT_STATE:
-    case StateType::JOINT_POSITIONS:
-    case StateType::JOINT_VELOCITIES:
-    case StateType::JOINT_ACCELERATIONS:
-    case StateType::JOINT_TORQUES:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const JointState&>(state).get_size());
-      if (compatible) {
         for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const JointState&>(state).get_names()[i]);
+          if (this->joint_names_[i] != other.joint_names_[i]) {
+            return true;
+          }
         }
+        if (this->reference_frame_ != other.reference_frame_) {
+          return true;
+        }
+        return false;
       }
-      break;
-    case StateType::CARTESIAN_STATE:
-    case StateType::CARTESIAN_POSE:
-    case StateType::CARTESIAN_TWIST:
-    case StateType::CARTESIAN_ACCELERATION:
-    case StateType::CARTESIAN_WRENCH:
-      // compatibility is assured through the reference frame and the name of the frame
-      compatible = (this->reference_frame_ == dynamic_cast<const CartesianState&>(state).get_reference_frame())
-          && (this->frame_ == dynamic_cast<const CartesianState&>(state).get_name());
-      break;
-    default:
-      break;
+      case StateType::JOINT_STATE:
+      case StateType::JOINT_POSITIONS:
+      case StateType::JOINT_VELOCITIES:
+      case StateType::JOINT_ACCELERATIONS:
+      case StateType::JOINT_TORQUES: {
+        auto other = dynamic_cast<const JointState&>(state);
+        if (this->cols_ != other.get_names().size()) {
+          return true;
+        }
+        for (unsigned int i = 0; i < this->cols_; ++i) {
+          if (this->joint_names_[i] != other.get_names()[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+      case StateType::CARTESIAN_STATE:
+      case StateType::CARTESIAN_POSE:
+      case StateType::CARTESIAN_TWIST:
+      case StateType::CARTESIAN_ACCELERATION:
+      case StateType::CARTESIAN_WRENCH: {
+        auto other = dynamic_cast<const CartesianState&>(state);
+        if (this->reference_frame_ != other.get_reference_frame()) {
+          return true;
+        }
+        return false;
+      }
+      default:
+        return true;
+    }
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(std::string("Could not cast the given object: ") + ex.what());
   }
-  return compatible;
 }
 
 Jacobian Jacobian::pseudoinverse() const {

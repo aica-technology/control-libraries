@@ -89,8 +89,7 @@ bool State::is_deprecated(double time_delay) const {
 }
 
 bool State::is_incompatible(const State& state) const {
-  bool compatible = (this->name_ == state.name_);
-  return compatible;
+  return false;
 }
 
 State::operator bool() const noexcept {
