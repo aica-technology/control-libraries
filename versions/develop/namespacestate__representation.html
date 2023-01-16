@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.9</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.10</span>
    </div>
   </td>
  </tr>
@@ -119,7 +119,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to define accelerations of the joints.  <a href="classstate__representation_1_1_joint_accelerations.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to define a positions of the joints.  <a href="classstate__representation_1_1_joint_positions.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to define positions of the joints.  <a href="classstate__representation_1_1_joint_positions.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to define a state in joint space.  <a href="classstate__representation_1_1_joint_state.html#details">More...</a><br /></td></tr>
@@ -246,7 +246,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a832ff2cdc279aeecd369f8c1dc920a9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a832ff2cdc279aeecd369f8c1dc920a9a">swap</a> (<a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian1, <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian2)</td></tr>
 <tr class="separator:a832ff2cdc279aeecd369f8c1dc920a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31f5461a6788ad4bae174490255b486f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a31f5461a6788ad4bae174490255b486f">dist</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;s1, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;s2, const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">JointStateVariable</a> &amp;state_variable_type=JointStateVariable::ALL)</td></tr>
-<tr class="memdesc:a31f5461a6788ad4bae174490255b486f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance between two <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a>.  <a href="namespacestate__representation.html#a31f5461a6788ad4bae174490255b486f">More...</a><br /></td></tr>
+<tr class="memdesc:a31f5461a6788ad4bae174490255b486f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance between two joint states.  <a href="namespacestate__representation.html#a31f5461a6788ad4bae174490255b486f">More...</a><br /></td></tr>
 <tr class="separator:a31f5461a6788ad4bae174490255b486f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb43830cd7d4bb607ab7aa93537c6df4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#aeb43830cd7d4bb607ab7aa93537c6df4">swap</a> (<a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state1, <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state2)</td></tr>
 <tr class="separator:aeb43830cd7d4bb607ab7aa93537c6df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,56 +361,56 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="separator:a50c4cb02a4ffccd71acf0d5c0b6e6cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cd9c4dd3e3e0bc38c7493e5070b6604"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9cd9c4dd3e3e0bc38c7493e5070b6604">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_dual_quaternion_twist.html">DualQuaternionTwist</a> &amp;state)</td></tr>
 <tr class="separator:a9cd9c4dd3e3e0bc38c7493e5070b6604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5c6ad00c289f8a859e23f19f8067895"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ae5c6ad00c289f8a859e23f19f8067895">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
-<tr class="separator:ae5c6ad00c289f8a859e23f19f8067895"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a74f0ee08214ae0f7f1354b0f6e858767">operator*</a> (const <a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> &amp;pose, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
-<tr class="separator:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d1aa2faa1692a0c73ce73b8bada8550"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4d1aa2faa1692a0c73ce73b8bada8550">operator*</a> (const Eigen::MatrixXd &amp;matrix, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
 <tr class="separator:a4d1aa2faa1692a0c73ce73b8bada8550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d4467b20b07bba6cbde246b6af29b27"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9d4467b20b07bba6cbde246b6af29b27">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
-<tr class="separator:a9d4467b20b07bba6cbde246b6af29b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a74f0ee08214ae0f7f1354b0f6e858767">operator*</a> (const <a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> &amp;pose, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
+<tr class="separator:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c6ad00c289f8a859e23f19f8067895"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ae5c6ad00c289f8a859e23f19f8067895">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
+<tr class="separator:ae5c6ad00c289f8a859e23f19f8067895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb286d45cddd56e10df25d54990a7bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#aadb286d45cddd56e10df25d54990a7bb">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
 <tr class="separator:aadb286d45cddd56e10df25d54990a7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4db6be8fe81627240307ac42ea242df4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4db6be8fe81627240307ac42ea242df4">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
-<tr class="separator:a4db6be8fe81627240307ac42ea242df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab217a73c660f86e987323abce3a689f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ab217a73c660f86e987323abce3a689f4">operator*</a> (const Eigen::MatrixXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
 <tr class="separator:ab217a73c660f86e987323abce3a689f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4db6be8fe81627240307ac42ea242df4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4db6be8fe81627240307ac42ea242df4">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
+<tr class="separator:a4db6be8fe81627240307ac42ea242df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d51e7dbd47bb4ba2bcca5bb8f2f15f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1d51e7dbd47bb4ba2bcca5bb8f2f15f0">operator*</a> (const std::chrono::nanoseconds &amp;dt, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
 <tr class="separator:a1d51e7dbd47bb4ba2bcca5bb8f2f15f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1874088b71151709e43bad869edfe580"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1874088b71151709e43bad869edfe580">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
-<tr class="separator:a1874088b71151709e43bad869edfe580"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d4467b20b07bba6cbde246b6af29b27"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9d4467b20b07bba6cbde246b6af29b27">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> &amp;accelerations)</td></tr>
+<tr class="separator:a9d4467b20b07bba6cbde246b6af29b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a576c45b2950c5ac7d9500fd6f6c59faf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a576c45b2950c5ac7d9500fd6f6c59faf">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
 <tr class="separator:a576c45b2950c5ac7d9500fd6f6c59faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92c6f4cfa69519364eb125984ede495d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a92c6f4cfa69519364eb125984ede495d">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
-<tr class="separator:a92c6f4cfa69519364eb125984ede495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9019045800d04022d1bade922e94e841"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9019045800d04022d1bade922e94e841">operator*</a> (const Eigen::MatrixXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
 <tr class="separator:a9019045800d04022d1bade922e94e841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c2bf6ecb75857cbdb965118da508266"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1c2bf6ecb75857cbdb965118da508266">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state)</td></tr>
-<tr class="separator:a1c2bf6ecb75857cbdb965118da508266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c6f4cfa69519364eb125984ede495d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a92c6f4cfa69519364eb125984ede495d">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
+<tr class="separator:a92c6f4cfa69519364eb125984ede495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1874088b71151709e43bad869edfe580"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1874088b71151709e43bad869edfe580">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
+<tr class="separator:a1874088b71151709e43bad869edfe580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae488033c3315bd3004118c826743d9b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ae488033c3315bd3004118c826743d9b7">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state)</td></tr>
 <tr class="separator:ae488033c3315bd3004118c826743d9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9df08c49ebb7a5b7fd6045b160fdcb00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9df08c49ebb7a5b7fd6045b160fdcb00">operator*</a> (const Eigen::MatrixXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state)</td></tr>
 <tr class="separator:a9df08c49ebb7a5b7fd6045b160fdcb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a940ca9b0d08c680b266ff48e33c48754"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a940ca9b0d08c680b266ff48e33c48754">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state)</td></tr>
 <tr class="separator:a940ca9b0d08c680b266ff48e33c48754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a158ef8bc0cc83eebb3938be722649e71"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a158ef8bc0cc83eebb3938be722649e71">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
-<tr class="separator:a158ef8bc0cc83eebb3938be722649e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c2bf6ecb75857cbdb965118da508266"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1c2bf6ecb75857cbdb965118da508266">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state)</td></tr>
+<tr class="separator:a1c2bf6ecb75857cbdb965118da508266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e012e68f9c15706a30102f01ccfa057"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4e012e68f9c15706a30102f01ccfa057">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
 <tr class="separator:a4e012e68f9c15706a30102f01ccfa057"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1500017a20744b0795b8e7bcc54c6faa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1500017a20744b0795b8e7bcc54c6faa">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
-<tr class="separator:a1500017a20744b0795b8e7bcc54c6faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7568276bd5f56d86c48480aca1937980"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a7568276bd5f56d86c48480aca1937980">operator*</a> (const Eigen::MatrixXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
 <tr class="separator:a7568276bd5f56d86c48480aca1937980"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad98278941add12bc762101f49207c5a9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ad98278941add12bc762101f49207c5a9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
-<tr class="separator:ad98278941add12bc762101f49207c5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1500017a20744b0795b8e7bcc54c6faa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1500017a20744b0795b8e7bcc54c6faa">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
+<tr class="separator:a1500017a20744b0795b8e7bcc54c6faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a158ef8bc0cc83eebb3938be722649e71"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a158ef8bc0cc83eebb3938be722649e71">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> &amp;torques)</td></tr>
+<tr class="separator:a158ef8bc0cc83eebb3938be722649e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7388fc5de6943b1f02e8ada69101e814"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a7388fc5de6943b1f02e8ada69101e814">operator*</a> (double lambda, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
 <tr class="separator:a7388fc5de6943b1f02e8ada69101e814"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a308e5f0c96d5ba3adf557042cc7260f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a308e5f0c96d5ba3adf557042cc7260f6">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
-<tr class="separator:a308e5f0c96d5ba3adf557042cc7260f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17eed679b5d1d20668d0e83683d0d114"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a17eed679b5d1d20668d0e83683d0d114">operator*</a> (const Eigen::MatrixXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
 <tr class="separator:a17eed679b5d1d20668d0e83683d0d114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308e5f0c96d5ba3adf557042cc7260f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a308e5f0c96d5ba3adf557042cc7260f6">operator*</a> (const Eigen::ArrayXd &amp;lambda, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
+<tr class="separator:a308e5f0c96d5ba3adf557042cc7260f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed7eda6bcdb34de72612278c643813e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#aed7eda6bcdb34de72612278c643813e5">operator*</a> (const std::chrono::nanoseconds &amp;dt, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
 <tr class="separator:aed7eda6bcdb34de72612278c643813e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad98278941add12bc762101f49207c5a9"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ad98278941add12bc762101f49207c5a9">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;velocities)</td></tr>
+<tr class="separator:ad98278941add12bc762101f49207c5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab743b2d31447a11435894c40d2589b29"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ab743b2d31447a11435894c40d2589b29">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state)</td></tr>
 <tr class="separator:ab743b2d31447a11435894c40d2589b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9402155422f311a578a403f568805be7"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9402155422f311a578a403f568805be7">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state)</td></tr>
@@ -498,7 +498,7 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 
 <p>Enum representing all the fields (positions, velocities, accelerations and torques) of the <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00016">16</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00015">15</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
 
 </div>
 </div>
@@ -634,18 +634,18 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
       </table>
 </div><div class="memdoc">
 
-<p>Compute the distance between two <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a>. </p>
+<p>Compute the distance between two joint states. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s1</td><td>The first <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> </td></tr>
-    <tr><td class="paramname">s2</td><td>The second <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> </td></tr>
+    <tr><td class="paramname">s1</td><td>The first joint state </td></tr>
+    <tr><td class="paramname">s2</td><td>The second joint state </td></tr>
     <tr><td class="paramname">state_variable_type</td><td>Name of the field from the JointStateVariable structure to apply the distance on (default ALL for full distance across all dimensions) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The distance between the two states </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00439">439</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00317">317</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -750,16 +750,16 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
+<p >This operation is equivalent to a change of reference frame of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pose</td><td>the <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define Cartesian pose in Cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> to multiply with </td></tr>
-    <tr><td class="paramname">jacobian</td><td>the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> to be multiplied with the <a class="el" href="classstate__representation_1_1_cartesian_pose.html" title="Class to define Cartesian pose in Cartesian space as 3D position and quaternion based orientation.">CartesianPose</a> </td></tr>
+    <tr><td class="paramname">pose</td><td>The Cartesian pose to multiply with </td></tr>
+    <tr><td class="paramname">jacobian</td><td>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> to be multiplied with the Cartesian pose </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> expressed in the new reference frame </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> expressed in the new reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00288">288</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00347">347</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -938,13 +938,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the array to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain array to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_accelerations.html" title="Class to define accelerations of the joints.">JointAccelerations</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint accelerations multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00195">195</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00150">150</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
 
 </div>
 </div>
@@ -975,13 +975,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the array to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The array to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_positions.html" title="Class to define a positions of the joints.">JointPositions</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint positions multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00195">195</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00148">148</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1010,15 +1010,15 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
+<p >For this operation to succeed, the array needs to have the same size as the concatenated data vector of the state </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lambda</td><td>The gain array to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00456">456</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00428">428</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1049,13 +1049,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the array to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain array to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_torques.html" title="Class to define torques of the joints.">JointTorques</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint torques multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00174">174</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00139">139</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
 
 </div>
 </div>
@@ -1086,13 +1086,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the array to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain array to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_velocities.html" title="Class to define velocities of the joints.">JointVelocities</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint velocities multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00209">209</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00150">150</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1197,13 +1197,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_accelerations.html" title="Class to define accelerations of the joints.">JointAccelerations</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint accelerations multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00201">201</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00133">133</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
 
 </div>
 </div>
@@ -1234,13 +1234,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_positions.html" title="Class to define a positions of the joints.">JointPositions</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint positions multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00201">201</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00131">131</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1269,15 +1269,15 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
+<p >For this operation to succeed, the matrix needs to have the same size as the concatenated data vector of the state </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">lambda</td><td>The matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00450">450</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00411">411</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1308,13 +1308,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_torques.html" title="Class to define torques of the joints.">JointTorques</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint torques multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00180">180</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00122">122</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
 
 </div>
 </div>
@@ -1345,13 +1345,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the matrix to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The gain matrix to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_velocities.html" title="Class to define velocities of the joints.">JointVelocities</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint velocities multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00215">215</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00133">133</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1382,14 +1382,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">matrix</td><td>the matrix to multiply with </td></tr>
-    <tr><td class="paramname">jacobian</td><td>the jacobian matrix </td></tr>
+    <tr><td class="paramname">matrix</td><td>The matrix to multiply with </td></tr>
+    <tr><td class="paramname">jacobian</td><td>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the matrix multiplied by the jacobian matrix </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The matrix multiplied by the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00318">318</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00291">291</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1531,13 +1531,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>the time period to multiply with </td></tr>
+    <tr><td class="paramname">dt</td><td>The time period to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_velocities.html" title="Class to define velocities of the joints.">JointVelocities</a> corresponding to the velocities over the time period </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint velocities corresponding to the velocities over the time period </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00207">207</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00169">169</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
 
 </div>
 </div>
@@ -1568,13 +1568,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dt</td><td>the time period to multiply with </td></tr>
+    <tr><td class="paramname">dt</td><td>The time period to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_positions.html" title="Class to define a positions of the joints.">JointPositions</a> corresponding to the displacement over the time period </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint positions corresponding to the displacement over the time period </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00221">221</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00168">168</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1790,13 +1790,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar gain to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_accelerations.html" title="Class to define accelerations of the joints.">JointAccelerations</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint accelerations multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00189">189</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00116">116</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
 
 </div>
 </div>
@@ -1827,13 +1827,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_positions.html" title="Class to define a positions of the joints.">JointPositions</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint positions multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00189">189</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00114">114</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1868,9 +1868,9 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00443">443</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00393">393</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1901,13 +1901,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar gain to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_torques.html" title="Class to define torques of the joints.">JointTorques</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint torques multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00168">168</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00105">105</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
 
 </div>
 </div>
@@ -1938,13 +1938,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">lambda</td><td>the scalar to multiply with </td></tr>
+    <tr><td class="paramname">lambda</td><td>The scalar gain to multiply with </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="classstate__representation_1_1_joint_velocities.html" title="Class to define velocities of the joints.">JointVelocities</a> provided multiply by lambda </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The joint velocities multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00203">203</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00116">116</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -2355,14 +2355,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the matrix to </td></tr>
-    <tr><td class="paramname">jacobian</td><td>the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> to </td></tr>
+    <tr><td class="paramname">jacobian</td><td>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00263">263</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00397">397</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -2393,14 +2393,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the state </td></tr>
-    <tr><td class="paramname">state</td><td>the state to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00174">174</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_accelerations_8cpp_source.html#l00200">200</a> of file <a class="el" href="_joint_accelerations_8cpp_source.html">JointAccelerations.cpp</a>.</p>
 
 </div>
 </div>
@@ -2431,14 +2431,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the state </td></tr>
-    <tr><td class="paramname">positions</td><td>the state to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">positions</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00174">174</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00193">193</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -2476,7 +2476,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00415">415</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00490">490</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2507,14 +2507,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the state </td></tr>
-    <tr><td class="paramname">state</td><td>the state to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00153">153</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_torques_8cpp_source.html#l00172">172</a> of file <a class="el" href="_joint_torques_8cpp_source.html">JointTorques.cpp</a>.</p>
 
 </div>
 </div>
@@ -2545,14 +2545,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the state </td></tr>
-    <tr><td class="paramname">state</td><td>the state to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00188">188</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00211">211</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -2954,7 +2954,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8hpp_source.html#l00328">328</a> of file <a class="el" href="_jacobian_8hpp_source.html">Jacobian.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8hpp_source.html#l00327">327</a> of file <a class="el" href="_jacobian_8hpp_source.html">Jacobian.hpp</a>.</p>
 
 </div>
 </div>
@@ -2993,13 +2993,13 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state1</td><td><a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> to be swapped with 2 </td></tr>
-    <tr><td class="paramname">state2</td><td><a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a> to be swapped with 1 </td></tr>
+    <tr><td class="paramname">state1</td><td>Joint state to be swapped with 2 </td></tr>
+    <tr><td class="paramname">state2</td><td>Joint state to be swapped with 1 </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00598">598</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00621">621</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
 
 </div>
 </div>
