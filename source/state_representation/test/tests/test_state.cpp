@@ -38,9 +38,7 @@ TEST(StateTest, Compatibility) {
   EXPECT_EQ(state1.get_name(), "test");
 
   State state2(StateType::STATE, "test");
-  EXPECT_TRUE(state1.is_compatible(state2));
-  state2.set_name("world");
-  EXPECT_FALSE(state1.is_compatible(state2));
+  EXPECT_FALSE(state1.is_incompatible(state2));
 
   state2.initialize();
   EXPECT_TRUE(state2.is_empty());

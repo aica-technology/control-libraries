@@ -293,7 +293,7 @@ double JointState::dist(const JointState& state, const JointStateVariable& state
   // sanity check
   if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
   if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );
@@ -457,7 +457,7 @@ JointState& JointState::operator+=(const JointState& state) {
   if (state.is_empty()) {
     throw EmptyStateException(state.get_name() + " state is empty");
   }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );
@@ -480,7 +480,7 @@ JointState& JointState::operator-=(const JointState& state) {
   if (state.is_empty()) {
     throw EmptyStateException(state.get_name() + " state is empty");
   }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );

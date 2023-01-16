@@ -269,17 +269,6 @@ TEST(CartesianStateTest, GetSetFields) {
   EXPECT_EQ(cs.is_empty(), true);
 }
 
-TEST(CartesianStateTest, Compatibility) {
-  CartesianState cs1("test");
-  CartesianState cs2("robot");
-  CartesianState cs3("robot", "test");
-  CartesianState cs4("test", "robot");
-
-  EXPECT_FALSE(cs1.is_compatible(cs2));
-  EXPECT_FALSE(cs1.is_compatible(cs3));
-  EXPECT_FALSE(cs1.is_compatible(cs4));
-}
-
 TEST(CartesianStateTest, SetZero) {
   CartesianState random1 = CartesianState::Random("test");
   random1.initialize();

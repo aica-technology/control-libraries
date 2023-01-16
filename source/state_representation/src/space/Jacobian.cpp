@@ -260,7 +260,7 @@ JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
   if (twist.is_empty()) {
     throw EmptyStateException(twist.get_name() + " state is empty");
   }
-  if (!this->is_compatible(twist)) {
+  if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
   // this uses the solve operation instead of using the inverse or pseudo-inverse of the Jacobian
@@ -290,7 +290,7 @@ Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Jacobian& jacobian) const {
-  if (!this->is_compatible(jacobian)) {
+  if (this->is_incompatible(jacobian)) {
     throw IncompatibleStatesException("The two Jacobian matrices are not compatible");
   }
   // multiply with the data of the second Jacobian
@@ -315,7 +315,7 @@ CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
   if (dq.is_empty()) {
     throw EmptyStateException(dq.get_name() + " state is empty");
   }
-  if (!this->is_compatible(dq)) {
+  if (this->is_incompatible(dq)) {
     throw IncompatibleStatesException("The Jacobian and the input JointVelocities are incompatible");
   }
   Eigen::Matrix<double, 6, 1> twist = (*this) * dq.data();
@@ -330,7 +330,7 @@ JointVelocities Jacobian::operator*(const CartesianTwist& twist) const {
   if (twist.is_empty()) {
     throw EmptyStateException(twist.get_name() + " state is empty");
   }
-  if (!this->is_compatible(twist)) {
+  if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
   Eigen::VectorXd joint_velocities = (*this) * twist.data();
@@ -345,7 +345,7 @@ JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
   if (wrench.is_empty()) {
     throw EmptyStateException(wrench.get_name() + " state is empty");
   }
-  if (!this->is_compatible(wrench)) {
+  if (this->is_incompatible(wrench)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianWrench are incompatible");
   }
   Eigen::VectorXd joint_torques = (*this) * wrench.data();
@@ -366,6 +366,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
                                           + jacobian.get_reference_frame() + " got " + pose.get_name());
   }
   // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
+  // FIXME transpose is weird and confusing with the statement above (also what does it mean for the incompatibility?)
   if (jacobian.rows_ != 6) {
     throw IncompatibleStatesException(
         "The Jacobian and the input CartesianPose are incompatible, the Jacobian has probably been transposed before");

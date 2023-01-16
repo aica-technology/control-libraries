@@ -14,12 +14,11 @@ TEST(SpatialStateTest, Constructors) {
 
 TEST(SpatialStateTest, Compatibility) {
   SpatialState state1("test", "robot");
-  SpatialState state2("robot");
-  EXPECT_FALSE(state1.is_compatible(state2));
-  state2.set_reference_frame("robot");
-  EXPECT_FALSE(state1.is_compatible(state2));
-  state2.set_name("test");
-  EXPECT_TRUE(state1.is_compatible(state2));
+  EXPECT_TRUE(state1.is_incompatible(SpatialState("state")));
+  EXPECT_TRUE(state1.is_incompatible(SpatialState("test")));
+  EXPECT_FALSE(state1.is_incompatible(SpatialState("state", "robot")));
+  EXPECT_FALSE(state1.is_incompatible(SpatialState("state", "test")));
+  EXPECT_FALSE(state1.is_incompatible(SpatialState("robot")));
 }
 
 TEST(SpatialStateTest, Swap) {
