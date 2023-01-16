@@ -88,7 +88,7 @@ bool State::is_deprecated(double time_delay) const {
   return this->get_age() >= time_delay;
 }
 
-bool State::is_incompatible(const State& state) const {
+bool State::is_incompatible(const State&) const {
   return false;
 }
 
