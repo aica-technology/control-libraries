@@ -1,9 +1,10 @@
 #include "state_representation/space/joint/JointVelocities.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 JointVelocities::JointVelocities() {
   this->set_type(StateType::JOINT_VELOCITIES);
 }
@@ -64,22 +65,43 @@ JointVelocities JointVelocities::Random(const std::string& robot_name, const std
   return JointVelocities(robot_name, joint_names, Eigen::VectorXd::Random(joint_names.size()));
 }
 
-JointVelocities& JointVelocities::operator+=(const JointVelocities& velocities) {
-  this->JointState::operator+=(velocities);
-  return (*this);
+Eigen::VectorXd JointVelocities::data() const {
+  return this->get_velocities();
 }
 
-JointVelocities JointVelocities::operator+(const JointVelocities& velocities) const {
-  return this->JointState::operator+(velocities);
+void JointVelocities::set_data(const Eigen::VectorXd& data) {
+  this->set_velocities(data);
 }
 
-JointVelocities& JointVelocities::operator-=(const JointVelocities& velocities) {
-  this->JointState::operator-=(velocities);
-  return (*this);
+void JointVelocities::set_data(const std::vector<double>& data) {
+  this->set_velocities(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
-JointVelocities JointVelocities::operator-(const JointVelocities& velocities) const {
-  return this->JointState::operator-(velocities);
+void JointVelocities::clamp(double max_absolute_value, double noise_ratio) {
+  this->clamp_state_variable(max_absolute_value, JointStateVariable::VELOCITIES, noise_ratio);
+}
+
+void JointVelocities::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
+  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::VELOCITIES, noise_ratio_array);
+}
+
+JointVelocities JointVelocities::clamped(double max_absolute_value, double noise_ratio) const {
+  JointVelocities result(*this);
+  result.clamp(max_absolute_value, noise_ratio);
+  return result;
+}
+
+JointVelocities JointVelocities::clamped(
+    const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
+) const {
+  JointVelocities result(*this);
+  result.clamp(max_absolute_value_array, noise_ratio_array);
+  return result;
+}
+
+JointVelocities JointVelocities::copy() const {
+  JointVelocities result(*this);
+  return result;
 }
 
 JointVelocities& JointVelocities::operator*=(double lambda) {
@@ -91,13 +113,8 @@ JointVelocities JointVelocities::operator*(double lambda) const {
   return this->JointState::operator*(lambda);
 }
 
-JointVelocities& JointVelocities::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(const Eigen::ArrayXd& lambda) const {
-  JointVelocities result(*this);
+JointVelocities operator*(double lambda, const JointVelocities& velocities) {
+  JointVelocities result(velocities);
   result *= lambda;
   return result;
 }
@@ -111,6 +128,45 @@ JointVelocities JointVelocities::operator*(const Eigen::MatrixXd& lambda) const 
   JointVelocities result(*this);
   result *= lambda;
   return result;
+}
+
+JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities) {
+  JointVelocities result(velocities);
+  result *= lambda;
+  return result;
+}
+
+JointVelocities& JointVelocities::operator*=(const Eigen::ArrayXd& lambda) {
+  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
+  return (*this);
+}
+
+JointVelocities JointVelocities::operator*(const Eigen::ArrayXd& lambda) const {
+  JointVelocities result(*this);
+  result *= lambda;
+  return result;
+}
+
+JointVelocities operator*(const Eigen::ArrayXd& lambda, const JointVelocities& velocities) {
+  JointVelocities result(velocities);
+  result *= lambda;
+  return result;
+}
+
+JointPositions JointVelocities::operator*(const std::chrono::nanoseconds& dt) const {
+  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
+  // operations
+  JointPositions displacement(this->get_name(), this->get_names());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // multiply the velocities by this period value and assign it as position
+  displacement.set_positions(period * this->get_velocities());
+  return displacement;
+}
+
+JointPositions operator*(const std::chrono::nanoseconds& dt, const JointVelocities& velocities) {
+  return velocities * dt;
 }
 
 JointVelocities& JointVelocities::operator/=(double lambda) {
@@ -134,55 +190,22 @@ JointAccelerations JointVelocities::operator/(const std::chrono::nanoseconds& dt
   return accelerations;
 }
 
-JointPositions JointVelocities::operator*(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  // operations
-  JointPositions displacement(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // multiply the velocities by this period value and assign it as position
-  displacement.set_positions(period * this->get_velocities());
-  return displacement;
+JointVelocities& JointVelocities::operator+=(const JointVelocities& velocities) {
+  this->JointState::operator+=(velocities);
+  return (*this);
 }
 
-JointVelocities JointVelocities::copy() const {
-  JointVelocities result(*this);
-  return result;
+JointVelocities JointVelocities::operator+(const JointVelocities& velocities) const {
+  return this->JointState::operator+(velocities);
 }
 
-Eigen::VectorXd JointVelocities::data() const {
-  return this->get_velocities();
+JointVelocities& JointVelocities::operator-=(const JointVelocities& velocities) {
+  this->JointState::operator-=(velocities);
+  return (*this);
 }
 
-void JointVelocities::set_data(const Eigen::VectorXd& data) {
-  this->set_velocities(data);
-}
-
-void JointVelocities::set_data(const std::vector<double>& data) {
-  this->set_velocities(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
-void JointVelocities::clamp(double max_absolute_value, double noise_ratio) {
-  this->clamp_state_variable(max_absolute_value, JointStateVariable::VELOCITIES, noise_ratio);
-}
-
-JointVelocities JointVelocities::clamped(double max_absolute_value, double noise_ratio) const {
-  JointVelocities result(*this);
-  result.clamp(max_absolute_value, noise_ratio);
-  return result;
-}
-
-void JointVelocities::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
-  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::VELOCITIES, noise_ratio_array);
-}
-
-JointVelocities JointVelocities::clamped(
-    const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
-) const {
-  JointVelocities result(*this);
-  result.clamp(max_absolute_value_array, noise_ratio_array);
-  return result;
+JointVelocities JointVelocities::operator-(const JointVelocities& velocities) const {
+  return this->JointState::operator-(velocities);
 }
 
 std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
@@ -198,27 +221,5 @@ std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
     os << "]";
   }
   return os;
-}
-
-JointVelocities operator*(double lambda, const JointVelocities& velocities) {
-  JointVelocities result(velocities);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities operator*(const Eigen::ArrayXd& lambda, const JointVelocities& velocities) {
-  JointVelocities result(velocities);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities) {
-  JointVelocities result(velocities);
-  result *= lambda;
-  return result;
-}
-
-JointPositions operator*(const std::chrono::nanoseconds& dt, const JointVelocities& velocities) {
-  return velocities * dt;
 }
 }// namespace state_representation
