@@ -6,8 +6,7 @@ from ..test_state import STATE_METHOD_EXPECTS
 
 SPATIAL_STATE_METHOD_EXPECTS = [
     'get_reference_frame',
-    'set_reference_frame',
-    'is_compatible'
+    'set_reference_frame'
 ]
 
 
@@ -48,10 +47,11 @@ class TestState(unittest.TestCase):
 
     def test_compatibility(self):
         state1 = SpatialState("test", "robot")
-        state2 = SpatialState("test")
-        self.assertFalse(state1.is_compatible(state2))
-        state2.set_reference_frame("robot")
-        self.assertTrue(state1.is_compatible(state2))
+        self.assertTrue(state1.is_incompatible(SpatialState("state")))
+        self.assertTrue(state1.is_incompatible(SpatialState("test")))
+        self.assertFalse(state1.is_incompatible(SpatialState("state", "robot")))
+        self.assertFalse(state1.is_incompatible(SpatialState("state", "test")))
+        self.assertFalse(state1.is_incompatible(SpatialState("robot")))
 
 
 if __name__ == '__main__':

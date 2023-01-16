@@ -16,7 +16,7 @@ STATE_METHOD_EXPECTS = [
     'get_name',
     'set_name',
     'is_deprecated',
-    'is_compatible',
+    'is_incompatible',
     'initialize'
 ]
 
@@ -59,9 +59,7 @@ class TestState(unittest.TestCase):
         self.assertEqual(state1.get_name(), "test")
 
         state2 = State(StateType.STATE, "test")
-        self.assertTrue(state1.is_compatible(state2))
-        state2.set_name("world")
-        self.assertFalse(state1.is_compatible(state2))
+        self.assertFalse(state1.is_incompatible(state2))
 
         state2.initialize()
         self.assertTrue(state2.is_empty())

@@ -18,7 +18,6 @@ void spatial_state(py::module_& m) {
 
   c.def("get_reference_frame", &SpatialState::get_reference_frame, "Getter of the reference frame.");
   c.def("set_reference_frame", &SpatialState::set_reference_frame, "Setter of the reference frame.", "reference_frame"_a);
-  c.def("is_compatible", &SpatialState::is_compatible, "Check if the state is compatible for operations with the state given as argument.", "state"_a);
 
   c.def("__copy__", [](const SpatialState &state) {
     return SpatialState(state);
