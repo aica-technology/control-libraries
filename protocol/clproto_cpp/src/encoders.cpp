@@ -89,80 +89,66 @@ proto::JointState encoder(const JointState& joint_state) {
 }
 
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<int>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<int>& parameter) {
   message.mutable_parameter_value()->mutable_int_()->set_value(parameter.get_value());
   return message;
 }
 
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<std::vector<int>>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<int>>& parameter) {
   *message.mutable_parameter_value()->mutable_int_array()->mutable_value() =
       {parameter.get_value().begin(), parameter.get_value().end()};
   return message;
 }
+
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<double>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<double>& parameter) {
   message.mutable_parameter_value()->mutable_double_()->set_value(parameter.get_value());
   return message;
 }
 
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<std::vector<double>>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<double>>& parameter) {
   *message.mutable_parameter_value()->mutable_double_array()->mutable_value() =
       {parameter.get_value().begin(), parameter.get_value().end()};
   return message;
 }
+
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<bool>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<bool>& parameter) {
   message.mutable_parameter_value()->mutable_bool_()->set_value(parameter.get_value());
   return message;
 }
+
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<std::vector<bool>>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<bool>>& parameter) {
   *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() =
       {parameter.get_value().begin(), parameter.get_value().end()};
   return message;
 }
+
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<std::string>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<std::string>& parameter) {
   message.mutable_parameter_value()->mutable_string()->set_value(parameter.get_value());
   return message;
 }
+
 template<>
-state_representation::proto::Parameter
-encoder(const state_representation::Parameter<std::vector<std::string>>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter
+encoder(proto::Parameter& message, const Parameter<std::vector<std::string>>& parameter) {
   *message.mutable_parameter_value()->mutable_string_array()->mutable_value() =
       {parameter.get_value().begin(), parameter.get_value().end()};
   return message;
 }
+
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<Eigen::VectorXd>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::VectorXd>& parameter) {
   *message.mutable_parameter_value()->mutable_vector()->mutable_value() = matrix_encoder(parameter.get_value());
   return message;
 }
 
 template<>
-state_representation::proto::Parameter encoder(const state_representation::Parameter<Eigen::MatrixXd>& parameter) {
-  state_representation::proto::Parameter message;
-  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::MatrixXd>& parameter) {
   *message.mutable_parameter_value()->mutable_matrix()->mutable_value() = matrix_encoder(parameter.get_value());
   message.mutable_parameter_value()->mutable_matrix()->set_rows(parameter.get_value().rows());
   message.mutable_parameter_value()->mutable_matrix()->set_cols(parameter.get_value().cols());
