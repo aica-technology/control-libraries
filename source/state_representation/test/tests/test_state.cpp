@@ -21,14 +21,10 @@ TEST(StateTest, Constructors) {
   EXPECT_EQ(empty3.get_type(), StateType::CARTESIAN_STATE);
   EXPECT_EQ(empty3.get_name(), "test");
   EXPECT_TRUE(empty3.is_empty());
-  empty3.set_filled();
-  EXPECT_FALSE(empty3.is_empty());
 
   State state(empty3);
   EXPECT_EQ(state.get_type(), StateType::CARTESIAN_STATE);
   EXPECT_EQ(state.get_name(), "test");
-  EXPECT_FALSE(state.is_empty());
-  state.set_empty();
   EXPECT_TRUE(state.is_empty());
 }
 
@@ -79,8 +75,4 @@ TEST(StateTest, Truthiness) {
   State empty;
   EXPECT_TRUE(empty.is_empty());
   EXPECT_FALSE(empty);
-
-  empty.set_filled();
-  EXPECT_FALSE(empty.is_empty());
-  EXPECT_TRUE(empty);
 }

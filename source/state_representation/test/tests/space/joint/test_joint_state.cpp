@@ -167,8 +167,8 @@ TEST(JointStateTest, GetSetFields) {
   EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), false);
-  js.set_empty();
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
+  js.initialize();
+  EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), true);
 }
 
