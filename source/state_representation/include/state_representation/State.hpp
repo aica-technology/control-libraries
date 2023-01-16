@@ -92,17 +92,6 @@ public:
   virtual void set_name(const std::string& name);
 
   /**
-   * @brief Setter of the empty attribute
-   * @param empty Flag to specify if the state should be empty or not, default true
-   */
-  void set_empty(bool empty = true);
-
-  /**
-   * @brief Setter of the empty attribute to false and also reset the timestamp
-   */
-  void set_filled();
-
-  /**
    * @brief Reset the timestamp attribute to now
    */
   void reset_timestamp();
@@ -171,6 +160,12 @@ protected:
    */
   void set_type(const StateType& type);
 
+  /**
+   * @brief Setter of the empty attribute
+   * @param empty Flag to specify if the state should be empty or not, default true
+   */
+  void set_empty(bool empty = true);
+
 private:
   StateType type_;                                              ///< type of the State
   std::string name_;                                            ///< name of the state
@@ -194,5 +189,4 @@ template<typename T>
 std::shared_ptr<State> make_shared_state(const T& state) {
   return std::make_shared<T>(state);
 }
-
 }// namespace state_representation
