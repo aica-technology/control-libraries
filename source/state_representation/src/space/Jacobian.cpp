@@ -179,7 +179,7 @@ Jacobian Jacobian::inverse() const {
   return result;
 }
 
-bool Jacobian::is_compatible(const State& state) const {
+bool Jacobian::is_incompatible(const State& state) const {
   bool compatible = false;
   switch (state.get_type()) {
     case StateType::JACOBIAN:

@@ -128,10 +128,10 @@ public:
   double get_age() const;
 
   /**
-   * @brief Check if the state is compatible for operations with the state given as argument
+   * @brief Check if the state is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
-  virtual bool is_compatible(const State& state) const;
+  virtual bool is_incompatible(const State& state) const;
 
   /**
    * @brief Check if the state is deprecated given a certain time delay

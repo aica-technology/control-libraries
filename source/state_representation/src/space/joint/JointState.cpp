@@ -330,7 +330,7 @@ void JointState::initialize() {
   this->set_zero();
 }
 
-bool JointState::is_compatible(const State& state) const {
+bool JointState::is_incompatible(const State& state) const {
   bool compatible = this->State::is_compatible(state);
   compatible = compatible && (this->names_.size() == dynamic_cast<const JointState&>(state).names_.size());
   if (compatible) {

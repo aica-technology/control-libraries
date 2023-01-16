@@ -208,10 +208,10 @@ public:
   Jacobian inverse() const;
 
   /**
-   * @brief Check if the Jacobian matrix is compatible for operations with the state given as argument
+   * @brief Check if the Jacobian is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
-  bool is_compatible(const State& state) const override;
+  bool is_incompatible(const State& state) const override;
 
   /**
    * @brief Return the pseudoinverse of the Jacobian matrix

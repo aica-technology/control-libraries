@@ -21,7 +21,7 @@ void SpatialState::set_reference_frame(const std::string& reference_frame) {
   this->reference_frame_ = reference_frame;
 }
 
-bool SpatialState::is_compatible(const State& state) const {
+bool SpatialState::is_incompatible(const State& state) const {
   // FIXME: not sure that the names should be compared here
   bool compatible = (this->get_name() == state.get_name())
       && (this->reference_frame_ == dynamic_cast<const SpatialState&>(state).reference_frame_);

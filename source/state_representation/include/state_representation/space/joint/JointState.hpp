@@ -414,10 +414,10 @@ public:
   void initialize();
 
   /**
-   * @brief Check if the state is compatible for operations with the state given as argument
+   * @brief Check if the joint state is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
-  bool is_compatible(const State& state) const;
+  bool is_incompatible(const State& state) const override;
 
   /**
    * @brief Set the joint state to a zero value
