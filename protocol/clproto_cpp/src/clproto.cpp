@@ -267,17 +267,17 @@ bool decode(const std::string& msg, CartesianState& obj) {
     }
 
     auto state = message.cartesian_state();
-    obj.set_name(state.spatial_state().state().name());
-    obj.set_reference_frame(state.spatial_state().reference_frame());
-    obj.set_position(decoder(state.position()));
-    obj.set_orientation(decoder(state.orientation()));
-    obj.set_linear_velocity(decoder(state.linear_velocity()));
-    obj.set_angular_velocity(decoder(state.angular_velocity()));
-    obj.set_linear_acceleration(decoder(state.linear_acceleration()));
-    obj.set_angular_acceleration(decoder(state.angular_acceleration()));
-    obj.set_force(decoder(state.force()));
-    obj.set_torque(decoder(state.torque()));
-    obj.set_empty(state.spatial_state().state().empty());
+    obj = CartesianState(state.spatial_state().state().name(), state.spatial_state().reference_frame());
+    if (!state.spatial_state().state().empty()) {
+      obj.set_position(decoder(state.position()));
+      obj.set_orientation(decoder(state.orientation()));
+      obj.set_linear_velocity(decoder(state.linear_velocity()));
+      obj.set_angular_velocity(decoder(state.angular_velocity()));
+      obj.set_linear_acceleration(decoder(state.linear_acceleration()));
+      obj.set_angular_acceleration(decoder(state.angular_acceleration()));
+      obj.set_force(decoder(state.force()));
+      obj.set_torque(decoder(state.torque()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -321,11 +321,11 @@ bool decode(const std::string& msg, CartesianPose& obj) {
       return false;
     }
     auto pose = message.cartesian_pose();
-    obj.set_name(pose.spatial_state().state().name());
-    obj.set_reference_frame(pose.spatial_state().reference_frame());
-    obj.set_position(decoder(pose.position()));
-    obj.set_orientation(decoder(pose.orientation()));
-    obj.set_empty(pose.spatial_state().state().empty());
+    obj = CartesianPose(pose.spatial_state().state().name(), pose.spatial_state().reference_frame());
+    if (!pose.spatial_state().state().empty()) {
+      obj.set_position(decoder(pose.position()));
+      obj.set_orientation(decoder(pose.orientation()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -369,11 +369,11 @@ bool decode(const std::string& msg, CartesianTwist& obj) {
       return false;
     }
     auto twist = message.cartesian_twist();
-    obj.set_name(twist.spatial_state().state().name());
-    obj.set_reference_frame(twist.spatial_state().reference_frame());
-    obj.set_linear_velocity(decoder(twist.linear_velocity()));
-    obj.set_angular_velocity(decoder(twist.angular_velocity()));
-    obj.set_empty(twist.spatial_state().state().empty());
+    obj = CartesianTwist(twist.spatial_state().state().name(), twist.spatial_state().reference_frame());
+    if (!twist.spatial_state().state().empty()) {
+      obj.set_linear_velocity(decoder(twist.linear_velocity()));
+      obj.set_angular_velocity(decoder(twist.angular_velocity()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -417,11 +417,12 @@ bool decode(const std::string& msg, CartesianAcceleration& obj) {
       return false;
     }
     auto acceleration = message.cartesian_acceleration();
-    obj.set_name(acceleration.spatial_state().state().name());
-    obj.set_reference_frame(acceleration.spatial_state().reference_frame());
-    obj.set_linear_acceleration(decoder(acceleration.linear_acceleration()));
-    obj.set_angular_acceleration(decoder(acceleration.angular_acceleration()));
-    obj.set_empty(acceleration.spatial_state().state().empty());
+    obj = CartesianAcceleration(
+        acceleration.spatial_state().state().name(), acceleration.spatial_state().reference_frame());
+    if (!acceleration.spatial_state().state().empty()) {
+      obj.set_linear_acceleration(decoder(acceleration.linear_acceleration()));
+      obj.set_angular_acceleration(decoder(acceleration.angular_acceleration()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -465,11 +466,11 @@ bool decode(const std::string& msg, CartesianWrench& obj) {
       return false;
     }
     auto wrench = message.cartesian_wrench();
-    obj.set_name(wrench.spatial_state().state().name());
-    obj.set_reference_frame(wrench.spatial_state().reference_frame());
-    obj.set_force(decoder(wrench.force()));
-    obj.set_torque(decoder(wrench.torque()));
-    obj.set_empty(wrench.spatial_state().state().empty());
+    obj = CartesianWrench(wrench.spatial_state().state().name(), wrench.spatial_state().reference_frame());
+    if (!wrench.spatial_state().state().empty()) {
+      obj.set_force(decoder(wrench.force()));
+      obj.set_torque(decoder(wrench.torque()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -515,8 +516,6 @@ bool decode(const std::string& msg, Jacobian& obj) {
       auto raw_data = const_cast<double*>(jacobian.data().data());
       auto data = Eigen::Map<Eigen::MatrixXd>(raw_data, jacobian.rows(), jacobian.cols());
       obj.set_data(data);
-    } else {
-      obj.set_empty();
     }
     return true;
   } catch (...) {
@@ -558,11 +557,12 @@ bool decode(const std::string& msg, JointState& obj) {
 
     auto state = message.joint_state();
     obj = JointState(state.state().name(), decoder(state.joint_names()));
-    obj.set_positions(decoder(state.positions()));
-    obj.set_velocities(decoder(state.velocities()));
-    obj.set_accelerations(decoder(state.accelerations()));
-    obj.set_torques(decoder(state.torques()));
-    obj.set_empty(state.state().empty());
+    if (!state.state().empty()) {
+      obj.set_positions(decoder(state.positions()));
+      obj.set_velocities(decoder(state.velocities()));
+      obj.set_accelerations(decoder(state.accelerations()));
+      obj.set_torques(decoder(state.torques()));
+    };
     return true;
   } catch (...) {
     return false;
@@ -606,10 +606,11 @@ bool decode(const std::string& msg, JointPositions& obj) {
       return false;
     }
 
-    auto state = message.joint_positions();
-    obj = JointState(state.state().name(), decoder(state.joint_names()));
-    obj.set_positions(decoder(state.positions()));
-    obj.set_empty(state.state().empty());
+    auto positions = message.joint_positions();
+    obj = JointPositions(positions.state().name(), decoder(positions.joint_names()));
+    if (!positions.state().empty()) {
+      obj.set_positions(decoder(positions.positions()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -653,10 +654,11 @@ bool decode(const std::string& msg, JointVelocities& obj) {
       return false;
     }
 
-    auto state = message.joint_velocities();
-    obj = JointState(state.state().name(), decoder(state.joint_names()));
-    obj.set_velocities(decoder(state.velocities()));
-    obj.set_empty(state.state().empty());
+    auto velocities = message.joint_velocities();
+    obj = JointVelocities(velocities.state().name(), decoder(velocities.joint_names()));
+    if (!velocities.state().empty()) {
+      obj.set_velocities(decoder(velocities.velocities()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -700,10 +702,11 @@ bool decode(const std::string& msg, JointAccelerations& obj) {
       return false;
     }
 
-    auto state = message.joint_accelerations();
-    obj = JointState(state.state().name(), decoder(state.joint_names()));
-    obj.set_accelerations(decoder(state.accelerations()));
-    obj.set_empty(state.state().empty());
+    auto accelerations = message.joint_accelerations();
+    obj = JointAccelerations(accelerations.state().name(), decoder(accelerations.joint_names()));
+    if (!accelerations.state().empty()) {
+      obj.set_accelerations(decoder(accelerations.accelerations()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -747,10 +750,11 @@ bool decode(const std::string& msg, JointTorques& obj) {
       return false;
     }
 
-    auto state = message.joint_torques();
-    obj = JointState(state.state().name(), decoder(state.joint_names()));
-    obj.set_torques(decoder(state.torques()));
-    obj.set_empty(state.state().empty());
+    auto torques = message.joint_torques();
+    obj = JointTorques(torques.state().name(), decoder(torques.joint_names()));
+    if (!torques.state().empty()) {
+      obj.set_torques(decoder(torques.torques()));
+    }
     return true;
   } catch (...) {
     return false;
@@ -790,9 +794,6 @@ static bool decode_parameter(const std::string& msg, Parameter<T>& obj) {
       return false;
     }
     obj = decoder<T>(message.parameter());
-    if (message.parameter().state().empty()) {
-      obj.set_empty();
-    }
     return true;
   } catch (...) {
     return false;
