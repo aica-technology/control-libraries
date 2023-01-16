@@ -63,8 +63,9 @@ class TestClprotoJSON(unittest.TestCase):
 
         msg = clproto.encode(sr.Jacobian("robot", 3, "test"), clproto.MessageType.JACOBIAN_MESSAGE)
         json = clproto.to_json(msg)
-        self.assertEqual(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true}}}")
-
+        self.assertEqual(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true},"
+                               "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\","
+                               "\"referenceFrame\":\"world\",\"rows\":6,\"cols\":3}}")
 
 class TestClprotoState(unittest.TestCase):
     def state_class_assertions(self, reference_object, message_type):
