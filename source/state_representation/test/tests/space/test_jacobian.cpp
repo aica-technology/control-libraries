@@ -185,3 +185,13 @@ TEST(JacobianTest, TestChangeReferenceFrame) {
   JointVelocities jt2 = jac_in_test_ref.solve(vel_in_test_ref);
   EXPECT_TRUE(jt1.data().isApprox(jt2.data()));
 }
+
+TEST(JacobianTest, Truthiness) {
+  Jacobian empty("test", 3, "ee");
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
+
+  empty.set_data(Eigen::MatrixXd::Random(6, 3));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
+}

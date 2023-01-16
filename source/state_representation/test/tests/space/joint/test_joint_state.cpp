@@ -422,3 +422,12 @@ TEST(JointStateTest, ArrayMultiplication) {
   EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
 }
 
+TEST(JointStateTest, Truthiness) {
+  JointState empty("test", 1);
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
+
+  empty.set_data(Eigen::VectorXd::Random(4));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
+}
