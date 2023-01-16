@@ -298,8 +298,10 @@ std::string encode<CartesianPose>(const CartesianPose& obj) {
   proto::StateMessage message;
   auto cartesian_state = encoder(static_cast<CartesianState>(obj));
   *message.mutable_cartesian_pose()->mutable_spatial_state() = cartesian_state.spatial_state();
-  *message.mutable_cartesian_pose()->mutable_position() = cartesian_state.position();
-  *message.mutable_cartesian_pose()->mutable_orientation() = cartesian_state.orientation();
+  if (!cartesian_state.spatial_state().state().empty()) {
+    *message.mutable_cartesian_pose()->mutable_position() = cartesian_state.position();
+    *message.mutable_cartesian_pose()->mutable_orientation() = cartesian_state.orientation();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -344,8 +346,10 @@ std::string encode<CartesianTwist>(const CartesianTwist& obj) {
   proto::StateMessage message;
   auto cartesian_state = encoder(static_cast<CartesianState>(obj));
   *message.mutable_cartesian_twist()->mutable_spatial_state() = cartesian_state.spatial_state();
-  *message.mutable_cartesian_twist()->mutable_linear_velocity() = cartesian_state.linear_velocity();
-  *message.mutable_cartesian_twist()->mutable_angular_velocity() = cartesian_state.angular_velocity();
+  if (!cartesian_state.spatial_state().state().empty()) {
+    *message.mutable_cartesian_twist()->mutable_linear_velocity() = cartesian_state.linear_velocity();
+    *message.mutable_cartesian_twist()->mutable_angular_velocity() = cartesian_state.angular_velocity();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -390,8 +394,10 @@ std::string encode<CartesianAcceleration>(const CartesianAcceleration& obj) {
   proto::StateMessage message;
   auto cartesian_state = encoder(static_cast<CartesianState>(obj));
   *message.mutable_cartesian_acceleration()->mutable_spatial_state() = cartesian_state.spatial_state();
-  *message.mutable_cartesian_acceleration()->mutable_linear_acceleration() = cartesian_state.linear_acceleration();
-  *message.mutable_cartesian_acceleration()->mutable_angular_acceleration() = cartesian_state.angular_acceleration();
+  if (!cartesian_state.spatial_state().state().empty()) {
+    *message.mutable_cartesian_acceleration()->mutable_linear_acceleration() = cartesian_state.linear_acceleration();
+    *message.mutable_cartesian_acceleration()->mutable_angular_acceleration() = cartesian_state.angular_acceleration();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -436,8 +442,10 @@ std::string encode<CartesianWrench>(const CartesianWrench& obj) {
   proto::StateMessage message;
   auto cartesian_state = encoder(static_cast<CartesianState>(obj));
   *message.mutable_cartesian_wrench()->mutable_spatial_state() = cartesian_state.spatial_state();
-  *message.mutable_cartesian_wrench()->mutable_force() = cartesian_state.force();
-  *message.mutable_cartesian_wrench()->mutable_torque() = cartesian_state.torque();
+  if (!cartesian_state.spatial_state().state().empty()) {
+    *message.mutable_cartesian_wrench()->mutable_force() = cartesian_state.force();
+    *message.mutable_cartesian_wrench()->mutable_torque() = cartesian_state.torque();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -576,7 +584,9 @@ std::string encode<JointPositions>(const JointPositions& obj) {
   auto joint_state = encoder(static_cast<JointState>(obj));
   *message.mutable_joint_positions()->mutable_state() = joint_state.state();
   *message.mutable_joint_positions()->mutable_joint_names() = joint_state.joint_names();
-  *message.mutable_joint_positions()->mutable_positions() = joint_state.positions();
+  if (!joint_state.state().empty()) {
+    *message.mutable_joint_positions()->mutable_positions() = joint_state.positions();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -621,7 +631,9 @@ std::string encode<JointVelocities>(const JointVelocities& obj) {
   auto joint_state = encoder(static_cast<JointState>(obj));
   *message.mutable_joint_velocities()->mutable_state() = joint_state.state();
   *message.mutable_joint_velocities()->mutable_joint_names() = joint_state.joint_names();
-  *message.mutable_joint_velocities()->mutable_velocities() = joint_state.velocities();
+  if (!joint_state.state().empty()) {
+    *message.mutable_joint_velocities()->mutable_velocities() = joint_state.velocities();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -666,7 +678,9 @@ std::string encode<JointAccelerations>(const JointAccelerations& obj) {
   auto joint_state = encoder(static_cast<JointState>(obj));
   *message.mutable_joint_accelerations()->mutable_state() = joint_state.state();
   *message.mutable_joint_accelerations()->mutable_joint_names() = joint_state.joint_names();
-  *message.mutable_joint_accelerations()->mutable_accelerations() = joint_state.accelerations();
+  if (!joint_state.state().empty()) {
+    *message.mutable_joint_accelerations()->mutable_accelerations() = joint_state.accelerations();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -711,7 +725,9 @@ std::string encode<JointTorques>(const JointTorques& obj) {
   auto joint_state = encoder(static_cast<JointState>(obj));
   *message.mutable_joint_torques()->mutable_state() = joint_state.state();
   *message.mutable_joint_torques()->mutable_joint_names() = joint_state.joint_names();
-  *message.mutable_joint_torques()->mutable_torques() = joint_state.torques();
+  if (!joint_state.state().empty()) {
+    *message.mutable_joint_torques()->mutable_torques() = joint_state.torques();
+  }
   return message.SerializeAsString();
 }
 template<>
@@ -755,9 +771,6 @@ template<typename T>
 static std::string encode_parameter(const Parameter<T>& obj) {
   proto::StateMessage message;
   *message.mutable_parameter() = encoder<T>(obj);
-  if (obj.is_empty()) {
-    message.mutable_parameter()->mutable_state()->set_empty(true);
-  }
   return message.SerializeAsString();
 }
 template<typename T>

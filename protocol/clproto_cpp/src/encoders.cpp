@@ -62,14 +62,14 @@ proto::CartesianState encoder(const CartesianState& cartesian_state) {
 proto::Jacobian encoder(const Jacobian& jacobian) {
   proto::Jacobian message;
   *message.mutable_state() = encoder(static_cast<State>(jacobian));
-  if (jacobian.is_empty()) {
-    return message;
-  }
   *message.mutable_joint_names() = {jacobian.get_joint_names().begin(), jacobian.get_joint_names().end()};
   message.set_frame(jacobian.get_frame());
   message.set_reference_frame(jacobian.get_reference_frame());
   message.set_rows(jacobian.rows());
   message.set_cols(jacobian.cols());
+  if (jacobian.is_empty()) {
+    return message;
+  }
   *message.mutable_data() = matrix_encoder(jacobian.data());
   return message;
 }
@@ -77,10 +77,10 @@ proto::Jacobian encoder(const Jacobian& jacobian) {
 proto::JointState encoder(const JointState& joint_state) {
   proto::JointState message;
   *message.mutable_state() = encoder(static_cast<State>(joint_state));
+  *message.mutable_joint_names() = {joint_state.get_names().begin(), joint_state.get_names().end()};
   if (joint_state.is_empty()) {
     return message;
   }
-  *message.mutable_joint_names() = {joint_state.get_names().begin(), joint_state.get_names().end()};
   *message.mutable_positions() = matrix_encoder(joint_state.get_positions());
   *message.mutable_velocities() = matrix_encoder(joint_state.get_velocities());
   *message.mutable_accelerations() = matrix_encoder(joint_state.get_accelerations());
