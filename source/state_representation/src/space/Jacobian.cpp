@@ -188,13 +188,13 @@ bool Jacobian::is_incompatible(const State& state) const {
         if (this->cols_ != other.joint_names_.size()) {
           return true;
         }
+        if (this->reference_frame_ != other.reference_frame_) {
+          return true;
+        }
         for (unsigned int i = 0; i < this->cols_; ++i) {
           if (this->joint_names_[i] != other.joint_names_[i]) {
             return true;
           }
-        }
-        if (this->reference_frame_ != other.reference_frame_) {
-          return true;
         }
         return false;
       }
