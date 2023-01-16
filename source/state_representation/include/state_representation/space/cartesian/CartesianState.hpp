@@ -648,7 +648,7 @@ inline void CartesianState::set_all_state_variables(const Eigen::VectorXd& new_v
 }
 
 inline void CartesianState::set_state_variable(Eigen::Vector3d& state_variable, const Eigen::Vector3d& new_value) {
-  this->set_filled();
+  this->set_empty(false);
   state_variable = new_value;
 }
 

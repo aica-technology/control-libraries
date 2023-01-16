@@ -152,12 +152,12 @@ inline double Ellipsoid::get_axis_length(unsigned int index) const {
 
 inline void Ellipsoid::set_axis_lengths(const std::vector<double>& axis_lengths) {
   this->axis_lengths_ = axis_lengths;
-  this->set_filled();
+  this->set_empty(false);
 }
 
 inline void Ellipsoid::set_axis_lengths(unsigned int index, double axis_length) {
   this->axis_lengths_[index] = axis_length;
-  this->set_filled();
+  this->set_empty(false);
 }
 
 inline double Ellipsoid::get_rotation_angle() const {
@@ -166,7 +166,7 @@ inline double Ellipsoid::get_rotation_angle() const {
 
 inline void Ellipsoid::set_rotation_angle(double rotation_angle) {
   this->rotation_angle_ = rotation_angle;
-  this->set_filled();
+  this->set_empty(false);
 }
 
 inline const std::vector<double> Ellipsoid::to_std_vector() const {

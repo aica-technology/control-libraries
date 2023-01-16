@@ -20,7 +20,7 @@ CartesianState::CartesianState(const std::string& name, const std::string& refer
 CartesianState CartesianState::Identity(const std::string& name, const std::string& reference) {
   CartesianState identity = CartesianState(name, reference);
   // as opposed to the constructor specify this state to be filled
-  identity.set_filled();
+  identity.set_empty(false);
   return identity;
 }
 
@@ -131,7 +131,7 @@ void CartesianState::set_position(const double& x, const double& y, const double
 }
 
 void CartesianState::set_orientation(const Eigen::Quaterniond& orientation) {
-  this->set_filled();
+  this->set_empty(false);
   this->orientation_ = orientation.normalized();
 }
 
