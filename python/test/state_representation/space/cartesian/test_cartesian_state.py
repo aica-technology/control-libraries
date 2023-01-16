@@ -47,8 +47,6 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'set_acceleration',
     'set_angular_acceleration',
     'set_angular_velocity',
-    'set_empty',
-    'set_filled',
     'set_force',
     'set_linear_acceleration',
     'set_linear_velocity',
@@ -257,7 +255,7 @@ class TestCartesianState(unittest.TestCase):
         cs.set_zero()
         self.assertAlmostEqual(np.linalg.norm(cs.data()), 1)
         self.assertFalse(cs.is_empty())
-        cs.set_empty()
+        cs.initialize()
         self.assertTrue(cs.is_empty())
 
     def test_set_zero(self):
@@ -452,6 +450,15 @@ class TestCartesianState(unittest.TestCase):
         empty = CartesianState()
         with self.assertRaises(RuntimeError):
             empty / scalar
+
+    def test_truthiness(self):
+        empty = CartesianState("test")
+        self.assertTrue(empty.is_empty())
+        self.assertFalse(empty)
+
+        empty.set_data(CartesianState().Random("test").data())
+        self.assertFalse(empty.is_empty())
+        self.assertTrue(empty)
 
 
 if __name__ == '__main__':
