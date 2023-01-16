@@ -16,6 +16,7 @@ Release Versions:
 - Reorganize function declarations and implementations (#4, #8)
 - Remove empty flag from State and SpatialState constructors (#7)
 - Refactor State::is_compatible to is_incompatible (#6)
+- No encoding and decoding of data fields in empty states (#9)
 
 ## 6.3.1
 
