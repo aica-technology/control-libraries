@@ -19,8 +19,8 @@ TEST(JsonProtoTest, JsonToFromBinary) {
   auto msg2 = clproto::from_json(json);
 
   CartesianState recv_state;
-  EXPECT_NO_THROW(clproto::decode<CartesianState>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state));
+  EXPECT_NO_THROW(clproto::decode<CartesianState>(msg2));
+  EXPECT_TRUE(clproto::decode(msg2, recv_state));
 
   EXPECT_STREQ(send_state.get_name().c_str(), recv_state.get_name().c_str());
   EXPECT_STREQ(send_state.get_reference_frame().c_str(), recv_state.get_reference_frame().c_str());
@@ -64,7 +64,8 @@ TEST(JsonProtoTest, JsonStringComparison) {
                   "\"joint1\",\"joint2\"],\"positions\":[0,0,0],\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":[0,0,0]}}");
 
   json = clproto::to_json(Jacobian("robot", 3, "test"));
-  EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true}}}");
+  EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true},"
+                  "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\",\"referenceFrame\":\"world\",\"rows\":6,\"cols\":3}}");
 }
 
 /* If a to_json template is invoked that is not implemented in clproto,
