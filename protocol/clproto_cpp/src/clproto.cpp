@@ -185,7 +185,7 @@ bool decode(const std::string& msg, State& obj) {
     }
 
     auto state = message.state();
-    obj = State(decoder(state.type()), state.name(), state.empty());
+    obj = State(decoder(state.type()), state.name());
 
     return true;
   } catch (...) {
@@ -226,7 +226,7 @@ bool decode(const std::string& msg, SpatialState& obj) {
     }
 
     auto spatial_state = message.spatial_state();
-    obj = SpatialState(spatial_state.state().name(), spatial_state.reference_frame(), spatial_state.state().empty());
+    obj = SpatialState(spatial_state.state().name(), spatial_state.reference_frame());
 
     return true;
   } catch (...) {

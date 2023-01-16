@@ -31,7 +31,7 @@ void state(py::module_& m) {
 
   c.def(py::init(), "Empty constructor");
   c.def(py::init<const StateType&>(), "Constructor only specifying the type of the state from the StateType enumeration", "type"_a);
-  c.def(py::init<const StateType&, const std::string&, const bool&>(), "Constructor with name specification", "type"_a, "name"_a, "empty"_a=true);
+  c.def(py::init<const StateType&, const std::string&>(), "Constructor with name specification", "type"_a, "name"_a);
   c.def(py::init<const State&>(), "Copy constructor from another State", "state"_a);
 
   c.def("get_type", &State::get_type, "Getter of the type attribute");

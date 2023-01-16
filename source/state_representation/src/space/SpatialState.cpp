@@ -4,8 +4,8 @@ namespace state_representation {
 
 SpatialState::SpatialState() : State(StateType::SPATIAL_STATE), reference_frame_("world") {}
 
-SpatialState::SpatialState(const std::string& name, const std::string& reference_frame, const bool& empty) :
-    State(StateType::SPATIAL_STATE, name, empty), reference_frame_(reference_frame) {}
+SpatialState::SpatialState(const std::string& name, const std::string& reference_frame) :
+    State(StateType::SPATIAL_STATE, name), reference_frame_(reference_frame) {}
 
 SpatialState& SpatialState::operator=(const SpatialState& state) {
   SpatialState tmp(state);
@@ -29,10 +29,8 @@ bool SpatialState::is_compatible(const State& state) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
-  if (state.is_empty()) {
-    os << "Empty ";
-  }
-  os << " State: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
+  auto prefix = state.is_empty() ? "Empty " : "";
+  os << prefix << "SpatialState: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
   return os;
 }
 

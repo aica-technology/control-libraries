@@ -123,7 +123,7 @@ TEST(MessageProtoTest, EncodeDecodeInvalidParameter) {
   auto send_state_ptr = make_shared_state(send_state);
   EXPECT_THROW(clproto::encode(send_state_ptr), std::invalid_argument);
 
-  auto send_state_2 = State(StateType::STATE, "A", false);
+  auto send_state_2 = State(StateType::STATE, "A");
   std::string msg = clproto::encode(send_state_2);
 
   Parameter<CartesianState> recv_state("");

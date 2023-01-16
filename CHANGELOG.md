@@ -14,6 +14,7 @@ Release Versions:
 - Get the age of a state and remove timestamp setter (#2)
 - Remove type from SpatialState constructor (#3)
 - Reorganize function declarations and implementations (#4)
+- Remove empty flag from State and SpatialState constructors (#7)
 
 ## 6.3.1
 

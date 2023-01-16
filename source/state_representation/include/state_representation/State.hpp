@@ -39,9 +39,8 @@ public:
    * @brief Constructor with name specification
    * @param type The type of state
    * @param name The name of the state
-   * @param empty Specify if the state is initialized as empty, default is true
    */
-  explicit State(const StateType& type, const std::string& name, const bool& empty = true);
+  explicit State(const StateType& type, const std::string& name);
 
   /**
    * @brief Copy constructor from another state

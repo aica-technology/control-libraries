@@ -10,7 +10,7 @@
 using namespace state_representation;
 
 TEST(MessageProtoTest, EncodeDecodeState) {
-  auto send_state = State(StateType::STATE, "A", false);
+  auto send_state = State(StateType::STATE, "A");
   std::string msg = clproto::encode(send_state);
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_TRUE(clproto::check_message_type(msg) == clproto::STATE_MESSAGE);
@@ -29,7 +29,7 @@ TEST(MessageProtoTest, EncodeDecodeInvalidState) {
   auto send_state_ptr = make_shared_state(send_state);
   EXPECT_THROW(clproto::encode(send_state_ptr), std::invalid_argument);
 
-  auto send_state_2 = State(StateType::STATE, "A", false);
+  auto send_state_2 = State(StateType::STATE, "A");
   std::string msg = clproto::encode(send_state_2);
 
   Ellipsoid recv_state;
