@@ -46,7 +46,7 @@ void state(py::module_& m) {
 
   c.def("is_deprecated", &State::is_deprecated<std::micro>, "Check if the state is deprecated given a certain time delay with microsecond precision");
 
-  c.def("is_compatible", &State::is_compatible, "Check if the state is compatible for operations with the state given as argument", "state"_a);
+  c.def("is_incompatible", &State::is_incompatible, "Check if the state is compatible for operations with the state given as argument", "state"_a);
   c.def("initialize", &State::initialize, "Initialize the State to a zero value");
 
   c.def("__copy__", [](const State &state) {

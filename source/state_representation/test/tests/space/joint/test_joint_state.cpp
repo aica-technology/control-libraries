@@ -215,9 +215,9 @@ TEST(JointStateTest, Compatibility) {
   JointState js3("test", 4);
   JointState js4("robot", 3);
 
-  EXPECT_FALSE(js1.is_compatible(js2));
-  EXPECT_FALSE(js1.is_compatible(js3));
-  EXPECT_FALSE(js1.is_compatible(js4));
+  EXPECT_TRUE(js1.is_incompatible(js2));
+  EXPECT_TRUE(js1.is_incompatible(js3));
+  EXPECT_FALSE(js1.is_incompatible(js4));
 }
 
 TEST(JointStateTest, SetZero) {

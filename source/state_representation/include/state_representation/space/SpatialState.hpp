@@ -48,10 +48,10 @@ public:
   virtual void set_reference_frame(const std::string& reference_frame);
 
   /**
-   * @brief Check if the state is compatible for operations with the state given as argument
+   * @brief Check if the spatial state is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
-  virtual bool is_compatible(const State& state) const override;
+  bool is_incompatible(const State& state) const override;
 
   /**
    * @brief Overload the ostream operator for printing

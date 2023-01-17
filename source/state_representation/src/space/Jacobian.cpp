@@ -2,6 +2,7 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions/InvalidCastException.hpp"
 
 namespace state_representation {
 
@@ -179,49 +180,57 @@ Jacobian Jacobian::inverse() const {
   return result;
 }
 
-bool Jacobian::is_compatible(const State& state) const {
-  bool compatible = false;
-  switch (state.get_type()) {
-    case StateType::JACOBIAN:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const Jacobian&>(state).get_joint_names().size());
-      if (compatible) {
-        for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const Jacobian&>(state).get_joint_names()[i]);
+bool Jacobian::is_incompatible(const State& state) const {
+  try {
+    switch (state.get_type()) {
+      case StateType::JACOBIAN: {
+        auto other = dynamic_cast<const Jacobian&>(state);
+        if (this->cols_ != other.joint_names_.size()) {
+          return true;
         }
-        // compatibility is assured through the reference frame and the name of the frame
-        compatible = (compatible && ((this->reference_frame_ == dynamic_cast<const Jacobian&>(state).get_reference_frame())
-            && (this->frame_ == dynamic_cast<const Jacobian&>(state).get_frame())));
-      }
-      break;
-    case StateType::JOINT_STATE:
-    case StateType::JOINT_POSITIONS:
-    case StateType::JOINT_VELOCITIES:
-    case StateType::JOINT_ACCELERATIONS:
-    case StateType::JOINT_TORQUES:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const JointState&>(state).get_size());
-      if (compatible) {
-        for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const JointState&>(state).get_names()[i]);
+        if (this->reference_frame_ != other.reference_frame_) {
+          return true;
         }
+        for (unsigned int i = 0; i < this->cols_; ++i) {
+          if (this->joint_names_[i] != other.joint_names_[i]) {
+            return true;
+          }
+        }
+        return false;
       }
-      break;
-    case StateType::CARTESIAN_STATE:
-    case StateType::CARTESIAN_POSE:
-    case StateType::CARTESIAN_TWIST:
-    case StateType::CARTESIAN_ACCELERATION:
-    case StateType::CARTESIAN_WRENCH:
-      // compatibility is assured through the reference frame and the name of the frame
-      compatible = (this->reference_frame_ == dynamic_cast<const CartesianState&>(state).get_reference_frame())
-          && (this->frame_ == dynamic_cast<const CartesianState&>(state).get_name());
-      break;
-    default:
-      break;
+      case StateType::JOINT_STATE:
+      case StateType::JOINT_POSITIONS:
+      case StateType::JOINT_VELOCITIES:
+      case StateType::JOINT_ACCELERATIONS:
+      case StateType::JOINT_TORQUES: {
+        auto other = dynamic_cast<const JointState&>(state);
+        if (this->cols_ != other.get_names().size()) {
+          return true;
+        }
+        for (unsigned int i = 0; i < this->cols_; ++i) {
+          if (this->joint_names_[i] != other.get_names()[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+      case StateType::CARTESIAN_STATE:
+      case StateType::CARTESIAN_POSE:
+      case StateType::CARTESIAN_TWIST:
+      case StateType::CARTESIAN_ACCELERATION:
+      case StateType::CARTESIAN_WRENCH: {
+        auto other = dynamic_cast<const CartesianState&>(state);
+        if (this->reference_frame_ != other.get_reference_frame()) {
+          return true;
+        }
+        return false;
+      }
+      default:
+        return true;
+    }
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(std::string("Could not cast the given object: ") + ex.what());
   }
-  return compatible;
 }
 
 Jacobian Jacobian::pseudoinverse() const {
@@ -251,7 +260,7 @@ JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
   if (twist.is_empty()) {
     throw EmptyStateException(twist.get_name() + " state is empty");
   }
-  if (!this->is_compatible(twist)) {
+  if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
   // this uses the solve operation instead of using the inverse or pseudo-inverse of the Jacobian
@@ -281,7 +290,7 @@ Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Jacobian& jacobian) const {
-  if (!this->is_compatible(jacobian)) {
+  if (this->is_incompatible(jacobian)) {
     throw IncompatibleStatesException("The two Jacobian matrices are not compatible");
   }
   // multiply with the data of the second Jacobian
@@ -306,7 +315,7 @@ CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
   if (dq.is_empty()) {
     throw EmptyStateException(dq.get_name() + " state is empty");
   }
-  if (!this->is_compatible(dq)) {
+  if (this->is_incompatible(dq)) {
     throw IncompatibleStatesException("The Jacobian and the input JointVelocities are incompatible");
   }
   Eigen::Matrix<double, 6, 1> twist = (*this) * dq.data();
@@ -321,7 +330,7 @@ JointVelocities Jacobian::operator*(const CartesianTwist& twist) const {
   if (twist.is_empty()) {
     throw EmptyStateException(twist.get_name() + " state is empty");
   }
-  if (!this->is_compatible(twist)) {
+  if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
   Eigen::VectorXd joint_velocities = (*this) * twist.data();
@@ -336,7 +345,7 @@ JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
   if (wrench.is_empty()) {
     throw EmptyStateException(wrench.get_name() + " state is empty");
   }
-  if (!this->is_compatible(wrench)) {
+  if (this->is_incompatible(wrench)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianWrench are incompatible");
   }
   Eigen::VectorXd joint_torques = (*this) * wrench.data();
@@ -357,6 +366,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
                                           + jacobian.get_reference_frame() + " got " + pose.get_name());
   }
   // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
+  // FIXME transpose is weird and confusing with the statement above (also what does it mean for the incompatibility?)
   if (jacobian.rows_ != 6) {
     throw IncompatibleStatesException(
         "The Jacobian and the input CartesianPose are incompatible, the Jacobian has probably been transposed before");

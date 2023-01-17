@@ -17,7 +17,7 @@ JACOBIAN_METHOD_EXPECTS = [
     'set_joint_names',
     'set_reference_frame',
     'set_data',
-    'is_compatible',
+    'is_incompatible',
     'initialize',
     'transpose',
     'inverse',

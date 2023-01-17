@@ -37,7 +37,7 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'get_wrench',
     'initialize',
     'inverse',
-    'is_compatible',
+    'is_incompatible',
     'is_deprecated',
     'is_empty',
     'normalize',
@@ -259,16 +259,6 @@ class TestCartesianState(unittest.TestCase):
         self.assertFalse(cs.is_empty())
         cs.set_empty()
         self.assertTrue(cs.is_empty())
-
-    def test_compatibility(self):
-        cs1 = CartesianState("test")
-        cs2 = CartesianState("robot")
-        cs3 = CartesianState("robot", "test")
-        cs4 = CartesianState("test", "robot")
-
-        self.assertFalse(cs1.is_compatible(cs2))
-        self.assertFalse(cs1.is_compatible(cs3))
-        self.assertFalse(cs1.is_compatible(cs4))
 
     def test_set_zero(self):
         random1 = CartesianState().Random("test")

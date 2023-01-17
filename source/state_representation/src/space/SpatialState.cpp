@@ -1,5 +1,7 @@
 #include "state_representation/space/SpatialState.hpp"
 
+#include "state_representation/exceptions/InvalidCastException.hpp"
+
 namespace state_representation {
 
 SpatialState::SpatialState() : State(StateType::SPATIAL_STATE), reference_frame_("world") {}
@@ -21,11 +23,19 @@ void SpatialState::set_reference_frame(const std::string& reference_frame) {
   this->reference_frame_ = reference_frame;
 }
 
-bool SpatialState::is_compatible(const State& state) const {
-  // FIXME: not sure that the names should be compared here
-  bool compatible = (this->get_name() == state.get_name())
-      && (this->reference_frame_ == dynamic_cast<const SpatialState&>(state).reference_frame_);
-  return compatible;
+bool SpatialState::is_incompatible(const State& state) const {
+  try {
+    auto other = dynamic_cast<const SpatialState&>(state);
+    // the three conditions for compatibility are:
+    // 1) this name matches other reference frame (this is parent transform of other)
+    // 2) this reference frame matches other name (this is child transform of other)
+    // 3) this reference frame matches other reference frame (this is sibling transform of other)
+    return (this->get_name() != other.reference_frame_) && (this->reference_frame_ != other.get_name())
+        && (this->get_reference_frame() != other.reference_frame_);
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(
+        std::string("Could not cast the given object to a SpatialState: ") + ex.what());
+  }
 }
 
 std::ostream& operator<<(std::ostream& os, const SpatialState& state) {

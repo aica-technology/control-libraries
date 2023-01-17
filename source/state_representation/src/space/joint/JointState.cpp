@@ -2,6 +2,7 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions/InvalidCastException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"
 
 namespace state_representation {
@@ -292,7 +293,7 @@ double JointState::dist(const JointState& state, const JointStateVariable& state
   // sanity check
   if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
   if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );
@@ -330,15 +331,22 @@ void JointState::initialize() {
   this->set_zero();
 }
 
-bool JointState::is_compatible(const State& state) const {
-  bool compatible = this->State::is_compatible(state);
-  compatible = compatible && (this->names_.size() == dynamic_cast<const JointState&>(state).names_.size());
-  if (compatible) {
-    for (unsigned int i = 0; i < this->names_.size(); ++i) {
-      compatible = (compatible && this->names_[i] == dynamic_cast<const JointState&>(state).names_[i]);
+bool JointState::is_incompatible(const State& state) const {
+  try {
+    auto other = dynamic_cast<const JointState&>(state);
+    if (this->names_.size() != other.names_.size()) {
+      return true;
     }
+    for (unsigned int i = 0; i < this->names_.size(); ++i) {
+      if (this->names_[i] != other.names_[i]) {
+        return true;
+      }
+    }
+    return false;
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(
+        std::string("Could not cast the given object to a JointState: ") + ex.what());
   }
-  return compatible;
 }
 
 void JointState::set_zero() {
@@ -449,7 +457,7 @@ JointState& JointState::operator+=(const JointState& state) {
   if (state.is_empty()) {
     throw EmptyStateException(state.get_name() + " state is empty");
   }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );
@@ -472,7 +480,7 @@ JointState& JointState::operator-=(const JointState& state) {
   if (state.is_empty()) {
     throw EmptyStateException(state.get_name() + " state is empty");
   }
-  if (!this->is_compatible(state)) {
+  if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
     );
