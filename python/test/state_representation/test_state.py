@@ -32,17 +32,12 @@ class TestState(unittest.TestCase):
         self.assertEqual(empty1.get_name(), "")
         self.assertTrue(empty1.is_empty())
 
-        empty2 = State(StateType.JOINT_STATE)
-        self.assertEqual(empty2.get_type(), StateType.JOINT_STATE)
-        self.assertEqual(empty2.get_name(), "")
+        empty2 = State("test")
+        self.assertEqual(empty2.get_type(), StateType.STATE)
+        self.assertEqual(empty2.get_name(), "test")
         self.assertTrue(empty2.is_empty())
 
-        empty3 = State(StateType.CARTESIAN_STATE, "test")
-        self.assertEqual(empty3.get_type(), StateType.CARTESIAN_STATE)
-        self.assertEqual(empty3.get_name(), "test")
-        self.assertTrue(empty3.is_empty())
-
-        state = State(empty3)
+        state = State(empty2)
         self.assertEqual(state.get_type(), StateType.CARTESIAN_STATE)
         self.assertEqual(state.get_name(), "test")
         self.assertTrue(state.is_empty())
@@ -52,14 +47,14 @@ class TestState(unittest.TestCase):
         state1.set_name("test")
         self.assertEqual(state1.get_name(), "test")
 
-        state2 = State(StateType.STATE, "test")
+        state2 = State("test")
         self.assertFalse(state1.is_incompatible(state2))
 
         state2.initialize()
         self.assertTrue(state2.is_empty())
 
     def test_timestamp(self):
-        state = State(StateType.STATE, "test")
+        state = State("test")
         time.sleep(0.2)
         self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertTrue(state.is_deprecated(0.1))
@@ -77,7 +72,7 @@ class TestState(unittest.TestCase):
         self.assertTrue(state.get_age() > 0.2)
 
     def test_copy(self):
-        state = State(StateType.STATE, "test")
+        state = State("test")
         state2 = copy.copy(state)
         state3 = copy.deepcopy(state)
 
