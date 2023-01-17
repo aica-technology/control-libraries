@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.10</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.11</span>
    </div>
   </td>
  </tr>
@@ -164,9 +164,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a672de7bc28c4e1e1648be76acf3981de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_jacobian.html#a672de7bc28c4e1e1648be76acf3981de">inverse</a> () const</td></tr>
 <tr class="memdesc:a672de7bc28c4e1e1648be76acf3981de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the inverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix.  <a href="classstate__representation_1_1_jacobian.html#a672de7bc28c4e1e1648be76acf3981de">More...</a><br /></td></tr>
 <tr class="separator:a672de7bc28c4e1e1648be76acf3981de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa378fc7dc31f76ad0b7f5c61c96b1ffc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_jacobian.html#aa378fc7dc31f76ad0b7f5c61c96b1ffc">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const override</td></tr>
-<tr class="memdesc:aa378fc7dc31f76ad0b7f5c61c96b1ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_jacobian.html#aa378fc7dc31f76ad0b7f5c61c96b1ffc">More...</a><br /></td></tr>
-<tr class="separator:aa378fc7dc31f76ad0b7f5c61c96b1ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93c22a7b769ef4ddff7036fc75d6e4dd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_jacobian.html#a93c22a7b769ef4ddff7036fc75d6e4dd">is_incompatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const override</td></tr>
+<tr class="memdesc:a93c22a7b769ef4ddff7036fc75d6e4dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> is incompatible for operations with the state given as argument.  <a href="classstate__representation_1_1_jacobian.html#a93c22a7b769ef4ddff7036fc75d6e4dd">More...</a><br /></td></tr>
+<tr class="separator:a93c22a7b769ef4ddff7036fc75d6e4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28c16c069390204e9b1dd52666862540"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_jacobian.html#a28c16c069390204e9b1dd52666862540">pseudoinverse</a> () const</td></tr>
 <tr class="memdesc:a28c16c069390204e9b1dd52666862540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the pseudoinverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix.  <a href="classstate__representation_1_1_jacobian.html#a28c16c069390204e9b1dd52666862540">More...</a><br /></td></tr>
 <tr class="separator:a28c16c069390204e9b1dd52666862540"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,9 +256,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
 <tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
 <tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
-<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">is_incompatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
+<tr class="memdesc:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is incompatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">More...</a><br /></td></tr>
+<tr class="separator:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">is_deprecated</a> (double time_delay) const</td></tr>
 <tr class="memdesc:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">More...</a><br /></td></tr>
 <tr class="separator:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,7 +326,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Empty constructor for a <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00010">10</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00011">11</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -379,7 +379,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00014">14</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00015">15</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -432,7 +432,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00028">28</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00029">29</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -485,7 +485,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00041">41</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00042">42</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -545,7 +545,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00049">49</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00050">50</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -567,7 +567,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Copy constructor of a <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00059">59</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00060">60</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -597,7 +597,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The column vector at index </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00104">104</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00105">105</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -618,7 +618,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the number of columns attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00100">100</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00101">101</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -639,7 +639,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Return a copy of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00159">159</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00160">160</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -660,7 +660,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the data attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00120">120</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00121">121</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -681,7 +681,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the frame attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00112">112</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00113">113</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -702,7 +702,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the joint names attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00108">108</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00109">109</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -723,7 +723,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the reference frame attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00116">116</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00117">117</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -754,7 +754,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00164">164</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00165">165</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -776,12 +776,12 @@ Additional Inherited Members</h2></td></tr>
 <p>Return the inverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix. </p>
 <p >If the matrix is not invertible, an error is thrown advising to use the pseudoinverse function instead </p><dl class="section return"><dt>Returns</dt><dd>The inverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00170">170</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00171">171</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa378fc7dc31f76ad0b7f5c61c96b1ffc" name="aa378fc7dc31f76ad0b7f5c61c96b1ffc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa378fc7dc31f76ad0b7f5c61c96b1ffc">&#9670;&#160;</a></span>is_compatible()</h2>
+<a id="a93c22a7b769ef4ddff7036fc75d6e4dd" name="a93c22a7b769ef4ddff7036fc75d6e4dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93c22a7b769ef4ddff7036fc75d6e4dd">&#9670;&#160;</a></span>is_incompatible()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -790,7 +790,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool state_representation::Jacobian::is_compatible </td>
+          <td class="memname">bool state_representation::Jacobian::is_incompatible </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td>
           <td class="paramname"><em>state</em></td><td>)</td>
@@ -804,7 +804,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix is compatible for operations with the state given as argument. </p>
+<p>Check if the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> is incompatible for operations with the state given as argument. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">state</td><td>The state to check compatibility with </td></tr>
@@ -812,9 +812,9 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">state_representation::State</a>.</p>
+<p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00182">182</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00183">183</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -854,7 +854,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the value at the given row and column </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00377">377</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00387">387</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -894,7 +894,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The const reference to the value at the given row and column </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00387">387</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00397">397</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -923,7 +923,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00317">317</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00326">326</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -952,7 +952,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding joint torques </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00332">332</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00341">341</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -981,7 +981,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix multiplied by the matrix in parameter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00272">272</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00281">281</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1010,7 +1010,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> multiplied by the one in parameter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00283">283</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00292">292</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1039,7 +1039,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding Cartesian twist of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00302">302</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00311">311</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1068,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference to the current <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00086">86</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00087">87</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1090,7 +1090,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Return the pseudoinverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix. </p>
 <dl class="section return"><dt>Returns</dt><dd>The pseudoinverse of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00227">227</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00236">236</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1152,7 +1152,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> with random data values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00077">77</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00078">78</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1214,7 +1214,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> with random data values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00068">68</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00069">69</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1243,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The row vector at index </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00096">96</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00097">97</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1264,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Getter of the number of rows attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00092">92</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00093">93</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1296,7 +1296,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#ab5c9438a6d681eb4c03550bb66d6606a">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00148">148</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00149">149</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1318,7 +1318,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Setter of the joint names attribute from a vector of joint names. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00135">135</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00136">136</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1340,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Setter of the joint names attribute from the number of joints. </p>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00124">124</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00125">125</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1368,7 +1368,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00144">144</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00145">145</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1397,7 +1397,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The corresponding joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00247">247</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00256">256</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1426,7 +1426,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The result of X = J.solve(M) from Eigen decomposition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00236">236</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00245">245</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1448,7 +1448,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Return the transpose of the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix. </p>
 <dl class="section return"><dt>Returns</dt><dd>The transposed <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00264">264</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00273">273</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1497,7 +1497,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> expressed in the new reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00347">347</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00356">356</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1545,7 +1545,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The matrix multiplied by the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00291">291</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00300">300</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1593,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00397">397</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00407">407</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.10</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.11</span>
    </div>
   </td>
  </tr>
@@ -168,9 +168,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memitem:ab15a4fbf1041974118d70f386a7cb620"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
 <tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
 <tr class="separator:ab15a4fbf1041974118d70f386a7cb620"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
-<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86001826fd471e3b4fe7ad7842b5228e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">is_incompatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
+<tr class="memdesc:a86001826fd471e3b4fe7ad7842b5228e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is incompatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">More...</a><br /></td></tr>
+<tr class="separator:a86001826fd471e3b4fe7ad7842b5228e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad236056fb1695260a72db2a0a33056d0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">is_deprecated</a> (double time_delay) const</td></tr>
 <tr class="memdesc:ad236056fb1695260a72db2a0a33056d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">More...</a><br /></td></tr>
 <tr class="separator:ad236056fb1695260a72db2a0a33056d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -455,44 +455,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a66ac7749bb026c4df0401dc8176fe7cd" name="a66ac7749bb026c4df0401dc8176fe7cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66ac7749bb026c4df0401dc8176fe7cd">&#9670;&#160;</a></span>is_compatible()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool state_representation::State::is_compatible </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check if the state is compatible for operations with the state given as argument. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td>The state to check compatibility with </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented in <a class="el" href="classstate__representation_1_1_joint_state.html#a74bd20318b6dfcecfd2273f84f7024fe">state_representation::JointState</a>, <a class="el" href="classstate__representation_1_1_jacobian.html#aa378fc7dc31f76ad0b7f5c61c96b1ffc">state_representation::Jacobian</a>, and <a class="el" href="classstate__representation_1_1_spatial_state.html#a3b36cee6bb9781b11fd5cf8ea2de9f8a">state_representation::SpatialState</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00091">91</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
-
-</div>
-</div>
 <a id="af9999161c78b496fe18ca56883ed7fda" name="af9999161c78b496fe18ca56883ed7fda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9999161c78b496fe18ca56883ed7fda">&#9670;&#160;</a></span>is_deprecated() <span class="overload">[1/2]</span></h2>
 
@@ -580,6 +542,44 @@ template&lt;typename DurationT &gt; </div>
 
 </div>
 </div>
+<a id="a86001826fd471e3b4fe7ad7842b5228e" name="a86001826fd471e3b4fe7ad7842b5228e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86001826fd471e3b4fe7ad7842b5228e">&#9670;&#160;</a></span>is_incompatible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool state_representation::State::is_incompatible </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td>
+          <td class="paramname"><em>state</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the state is incompatible for operations with the state given as argument. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state</td><td>The state to check compatibility with </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="classstate__representation_1_1_jacobian.html#a93c22a7b769ef4ddff7036fc75d6e4dd">state_representation::Jacobian</a>, <a class="el" href="classstate__representation_1_1_joint_state.html#a40e5b98914bcf07065b1bf73afe35b65">state_representation::JointState</a>, and <a class="el" href="classstate__representation_1_1_spatial_state.html#a21c8610665c0b6460297a09b26ddc410">state_representation::SpatialState</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00091">91</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ae57571375a38e9663d51ce6f9d9ad1ce" name="ae57571375a38e9663d51ce6f9d9ad1ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae57571375a38e9663d51ce6f9d9ad1ce">&#9670;&#160;</a></span>operator bool()</h2>
 
@@ -606,7 +606,7 @@ template&lt;typename DurationT &gt; </div>
 <p>Boolean operator for the truthiness of a state. </p>
 <dl class="section return"><dt>Returns</dt><dd>False if the state is empty, true otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00096">96</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00095">95</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
 
 </div>
 </div>
@@ -910,7 +910,7 @@ template&lt;typename DurationT &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00100">100</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00099">99</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
 
 </div>
 </div>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.10</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.11</span>
    </div>
   </td>
  </tr>
@@ -244,9 +244,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad8907dbdb323fdc533d28b708054d1e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_state.html#ad8907dbdb323fdc533d28b708054d1e4">initialize</a> ()</td></tr>
 <tr class="memdesc:ad8907dbdb323fdc533d28b708054d1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the joint state to a zero value.  <a href="classstate__representation_1_1_joint_state.html#ad8907dbdb323fdc533d28b708054d1e4">More...</a><br /></td></tr>
 <tr class="separator:ad8907dbdb323fdc533d28b708054d1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74bd20318b6dfcecfd2273f84f7024fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_state.html#a74bd20318b6dfcecfd2273f84f7024fe">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a74bd20318b6dfcecfd2273f84f7024fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_joint_state.html#a74bd20318b6dfcecfd2273f84f7024fe">More...</a><br /></td></tr>
-<tr class="separator:a74bd20318b6dfcecfd2273f84f7024fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40e5b98914bcf07065b1bf73afe35b65"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_state.html#a40e5b98914bcf07065b1bf73afe35b65">is_incompatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const override</td></tr>
+<tr class="memdesc:a40e5b98914bcf07065b1bf73afe35b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the joint state is incompatible for operations with the state given as argument.  <a href="classstate__representation_1_1_joint_state.html#a40e5b98914bcf07065b1bf73afe35b65">More...</a><br /></td></tr>
+<tr class="separator:a40e5b98914bcf07065b1bf73afe35b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37e33229014bf5037eb47f5f267ed337"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_state.html#a37e33229014bf5037eb47f5f267ed337">set_zero</a> ()</td></tr>
 <tr class="memdesc:a37e33229014bf5037eb47f5f267ed337"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the joint state to a zero value.  <a href="classstate__representation_1_1_joint_state.html#a37e33229014bf5037eb47f5f267ed337">More...</a><br /></td></tr>
 <tr class="separator:a37e33229014bf5037eb47f5f267ed337"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,9 +345,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memitem:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">get_age</a> () const</td></tr>
 <tr class="memdesc:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the age of the state, i.e. the time since the last modification.  <a href="classstate__representation_1_1_state.html#ab15a4fbf1041974118d70f386a7cb620">More...</a><br /></td></tr>
 <tr class="separator:ab15a4fbf1041974118d70f386a7cb620 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">is_compatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
-<tr class="memdesc:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is compatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">More...</a><br /></td></tr>
-<tr class="separator:a66ac7749bb026c4df0401dc8176fe7cd inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">is_incompatible</a> (const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state) const</td></tr>
+<tr class="memdesc:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is incompatible for operations with the state given as argument.  <a href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">More...</a><br /></td></tr>
+<tr class="separator:a86001826fd471e3b4fe7ad7842b5228e inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">is_deprecated</a> (double time_delay) const</td></tr>
 <tr class="memdesc:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#ad236056fb1695260a72db2a0a33056d0">More...</a><br /></td></tr>
 <tr class="separator:ad236056fb1695260a72db2a0a33056d0 inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -447,7 +447,7 @@ Friends</h2></td></tr>
 
 <p>Empty constructor for a joint state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00018">18</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00019">19</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -494,7 +494,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00022">22</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00023">23</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -541,7 +541,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00028">28</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00029">29</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -598,7 +598,7 @@ Friends</h2></td></tr>
 <p>Returns the data vector as an Eigen array. </p>
 <dl class="section return"><dt>Returns</dt><dd>The concatenated data array </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00138">138</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00139">139</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -644,7 +644,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00247">247</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00248">248</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -690,7 +690,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00276">276</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00277">277</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -711,7 +711,7 @@ Friends</h2></td></tr>
 
 <p>Return a copy of the joint state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00286">286</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00287">287</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -743,7 +743,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_joint_accelerations.html#a4b2089ea515ca6dca559dd3eaeaa61f1">state_representation::JointAccelerations</a>, <a class="el" href="classstate__representation_1_1_joint_positions.html#a3c34219504422492542edc8217ece950">state_representation::JointPositions</a>, <a class="el" href="classstate__representation_1_1_joint_torques.html#aeb4928ef7f2c5a5fbd13f65255768dd5">state_representation::JointTorques</a>, and <a class="el" href="classstate__representation_1_1_joint_velocities.html#a211eab16aeded78b2464a13d18133029">state_representation::JointVelocities</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00134">134</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00135">135</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +783,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>dist The distance value as a double </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00291">291</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00292">292</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -812,7 +812,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The acceleration of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00112">112</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00113">113</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -841,7 +841,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The acceleration of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00116">116</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00117">117</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -863,7 +863,7 @@ Friends</h2></td></tr>
 <p>Getter of the accelerations attribute. </p>
 <dl class="section return"><dt>Returns</dt><dd>The joint accelerations </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00108">108</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00109">109</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -892,7 +892,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The index of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00074">74</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00075">75</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -914,7 +914,7 @@ Friends</h2></td></tr>
 <p>Getter of the names attribute. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vector of strings containing the joint names </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00070">70</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00071">71</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -943,7 +943,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00086">86</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00087">87</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -972,7 +972,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00090">90</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00091">91</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -994,7 +994,7 @@ Friends</h2></td></tr>
 <p>Getter of the positions attribute. </p>
 <dl class="section return"><dt>Returns</dt><dd>The joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00082">82</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00083">83</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1015,7 +1015,7 @@ Friends</h2></td></tr>
 
 <p>Getter of the size from the attributes. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00066">66</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00067">67</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1081,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The torque of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00125">125</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00126">126</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1110,7 +1110,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The torque of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00129">129</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00130">130</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1132,7 +1132,7 @@ Friends</h2></td></tr>
 <p>Getter of the torques attribute. </p>
 <dl class="section return"><dt>Returns</dt><dd>The joint torques </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00121">121</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00122">122</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1154,7 @@ Friends</h2></td></tr>
 <p>Getter of the velocities attribute. </p>
 <dl class="section return"><dt>Returns</dt><dd>The joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00095">95</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00096">96</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1183,7 +1183,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The velocity of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00099">99</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00100">100</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1212,7 +1212,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The velocity of the joint, if it exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00103">103</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00104">104</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1243,12 +1243,12 @@ Friends</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00321">321</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00322">322</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a74bd20318b6dfcecfd2273f84f7024fe" name="a74bd20318b6dfcecfd2273f84f7024fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a74bd20318b6dfcecfd2273f84f7024fe">&#9670;&#160;</a></span>is_compatible()</h2>
+<a id="a40e5b98914bcf07065b1bf73afe35b65" name="a40e5b98914bcf07065b1bf73afe35b65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40e5b98914bcf07065b1bf73afe35b65">&#9670;&#160;</a></span>is_incompatible()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1257,7 +1257,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool state_representation::JointState::is_compatible </td>
+          <td class="memname">bool state_representation::JointState::is_incompatible </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;&#160;</td>
           <td class="paramname"><em>state</em></td><td>)</td>
@@ -1266,12 +1266,12 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Check if the state is compatible for operations with the state given as argument. </p>
+<p>Check if the joint state is incompatible for operations with the state given as argument. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">state</td><td>The state to check compatibility with </td></tr>
@@ -1279,9 +1279,9 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a66ac7749bb026c4df0401dc8176fe7cd">state_representation::State</a>.</p>
+<p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a86001826fd471e3b4fe7ad7842b5228e">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00333">333</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00334">334</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1328,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00356">356</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00364">364</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1375,7 +1375,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00367">367</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00375">375</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1404,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00422">422</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00430">430</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1433,7 +1433,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00405">405</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00413">413</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1462,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00387">387</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00395">395</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1491,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00417">417</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00425">425</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1520,7 +1520,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00400">400</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00408">408</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1549,7 +1549,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00379">379</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00387">387</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1578,7 +1578,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current joint state added the joint state given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00461">461</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00469">469</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1607,7 +1607,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current joint state added the joint state given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00444">444</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00452">452</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1636,7 +1636,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current joint state subtracted the joint state given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00484">484</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00492">492</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1665,7 +1665,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The current joint state subtracted the joint state given in argument </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00467">467</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00475">475</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1694,7 +1694,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00438">438</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00446">446</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1723,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state divided by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00434">434</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00442">442</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1752,7 +1752,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Reference to the current state with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00060">60</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00061">61</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1800,7 +1800,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint state with random values in all attributes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00053">53</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00054">54</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1848,7 +1848,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint state with random values in all attributes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00046">46</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00047">47</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1887,7 +1887,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00209">209</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00210">210</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1926,7 +1926,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00214">214</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00215">215</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1954,7 +1954,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00201">201</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00202">202</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1982,7 +1982,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00205">205</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00206">206</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2022,7 +2022,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_joint_accelerations.html#a698e8a7589a08ef01dcd3e5df24abaab">state_representation::JointAccelerations</a>, <a class="el" href="classstate__representation_1_1_joint_positions.html#a56b647e2162be69a6e2c2d87afb89f38">state_representation::JointPositions</a>, <a class="el" href="classstate__representation_1_1_joint_torques.html#aa065bdf1156c584cedf79dcfa446a26b">state_representation::JointTorques</a>, and <a class="el" href="classstate__representation_1_1_joint_velocities.html#af3914cf1da58ce0bc751da01a5bcc2d6">state_representation::JointVelocities</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00239">239</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00240">240</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2062,7 +2062,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_joint_accelerations.html#aef0d434f01c54ece8f8930a8d450c91e">state_representation::JointAccelerations</a>, <a class="el" href="classstate__representation_1_1_joint_positions.html#a846a78f0835a7890a6a525099ef5c379">state_representation::JointPositions</a>, <a class="el" href="classstate__representation_1_1_joint_torques.html#a30f740dd816d1f73de31d88c70be01e2">state_representation::JointTorques</a>, and <a class="el" href="classstate__representation_1_1_joint_velocities.html#a23f641ae14ca3aca8c09e3ba08dedb43">state_representation::JointVelocities</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00243">243</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00244">244</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2090,7 +2090,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00154">154</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00155">155</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2118,7 +2118,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00142">142</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00143">143</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2157,7 +2157,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00171">171</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00172">172</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2196,7 +2196,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00176">176</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00177">177</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2224,7 +2224,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00163">163</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00164">164</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2252,7 +2252,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00167">167</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00168">168</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2338,7 +2338,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00228">228</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00229">229</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2377,7 +2377,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00233">233</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00234">234</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2405,7 +2405,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00220">220</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00221">221</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2433,7 +2433,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00224">224</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00225">225</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2461,7 +2461,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00182">182</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00183">183</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2489,7 +2489,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00186">186</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00187">187</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2528,7 +2528,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00190">190</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00191">191</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2567,7 +2567,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00195">195</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00196">196</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2588,7 +2588,7 @@ Friends</h2></td></tr>
 
 <p>Set the joint state to a zero value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00344">344</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00352">352</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2610,7 +2610,7 @@ Friends</h2></td></tr>
 <p>Return the joint state as a std vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>The joint data as a std vector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00351">351</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00359">359</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2658,7 +2658,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint state with zero values in all attributes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00039">39</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00040">40</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2706,7 +2706,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint state with zero values in all attributes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00032">32</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00033">33</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2762,7 +2762,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The distance between the two states </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00317">317</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00318">318</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2809,7 +2809,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00428">428</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00436">436</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2856,7 +2856,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00411">411</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00419">419</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2903,7 +2903,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joint state provided multiplied by lambda </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00393">393</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00401">401</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2951,7 +2951,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00490">490</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8cpp_source.html#l00498">498</a> of file <a class="el" href="_joint_state_8cpp_source.html">JointState.cpp</a>.</p>
 
 </div>
 </div>
