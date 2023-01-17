@@ -10,12 +10,12 @@
 using namespace state_representation;
 
 TEST(MessageProtoTest, EncodeDecodeState) {
-  auto send_state = State(StateType::STATE, "A");
+  auto send_state = State("A");
   std::string msg = clproto::encode(send_state);
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_TRUE(clproto::check_message_type(msg) == clproto::STATE_MESSAGE);
 
-  State recv_state(StateType::STATE);
+  State recv_state;
   EXPECT_NO_THROW(clproto::decode<State>(msg));
   EXPECT_TRUE(clproto::decode(msg, recv_state));
 
@@ -29,7 +29,7 @@ TEST(MessageProtoTest, EncodeDecodeInvalidState) {
   auto send_state_ptr = make_shared_state(send_state);
   EXPECT_THROW(clproto::encode(send_state_ptr), std::invalid_argument);
 
-  auto send_state_2 = State(StateType::STATE, "A");
+  auto send_state_2 = State("A");
   std::string msg = clproto::encode(send_state_2);
 
   Ellipsoid recv_state;
@@ -43,7 +43,7 @@ TEST(MessageProtoTest, DecodeInvalidString) {
   EXPECT_FALSE(clproto::is_valid(dummy_msg));
   EXPECT_EQ(clproto::check_message_type(dummy_msg), clproto::UNKNOWN_MESSAGE);
 
-  State obj(StateType::STATE);
+  State obj;
   EXPECT_NO_THROW(clproto::decode(dummy_msg, obj));
   EXPECT_FALSE(clproto::decode(dummy_msg, obj));
 
