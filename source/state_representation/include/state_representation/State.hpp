@@ -30,17 +30,10 @@ public:
   explicit State();
 
   /**
-   * @brief Constructor only specifying the type of the state from the StateType enumeration
-   * @param type The type of state
-   */
-  explicit State(const StateType& type);
-
-  /**
    * @brief Constructor with name specification
-   * @param type The type of state
    * @param name The name of the state
    */
-  explicit State(const StateType& type, const std::string& name);
+  explicit State(const std::string& name);
 
   /**
    * @brief Copy constructor from another state
