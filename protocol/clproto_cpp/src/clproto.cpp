@@ -185,7 +185,7 @@ bool decode(const std::string& msg, State& obj) {
     }
 
     auto state = message.state();
-    obj = State(decoder(state.type()), state.name());
+    obj = State(state.name());
 
     return true;
   } catch (...) {

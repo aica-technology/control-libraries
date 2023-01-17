@@ -10,10 +10,6 @@ std::vector<bool> decoder(const google::protobuf::RepeatedField<bool>& message) 
   return vec;
 }
 
-StateType decoder(const proto::StateType& message) {
-  return static_cast<StateType>(message);
-}
-
 Eigen::Vector3d decoder(const proto::Vector3d& message) {
   return {message.x(), message.y(), message.z()};
 }
