@@ -17,6 +17,17 @@ namespace clproto {
 /**
  * @brief Encoding helper method for the Parameter type.
  * @tparam ParamT The type contained within the Parameter object
+ * @param message The protocol Parameter message to fill
+ * @param parameter The control libraries Parameter object
+ * @return The encoded protocol Parameter message object
+ */
+template<typename ParamT>
+state_representation::proto::Parameter
+encoder(state_representation::proto::Parameter& message, const state_representation::Parameter<ParamT>& parameter);
+
+/**
+ * @brief Encoding helper method for the Parameter type.
+ * @tparam ParamT The type contained within the Parameter object
  * @param parameter The control libraries Parameter object
  * @return The encoded protocol Parameter message object
  */
@@ -59,5 +70,15 @@ state_representation::proto::JointState encoder(const state_representation::Join
 template<typename FieldT>
 google::protobuf::RepeatedField<FieldT> encoder(const std::vector<FieldT>& data) {
   return google::protobuf::RepeatedField<FieldT>({data.begin(), data.end()});
+}
+
+template<typename ParamT>
+inline state_representation::proto::Parameter encoder(const state_representation::Parameter<ParamT>& parameter) {
+  state_representation::proto::Parameter message;
+  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+  if (parameter.is_empty()) {
+    return message;
+  }
+  return encoder<ParamT>(message, parameter);
 }
 }

@@ -176,6 +176,8 @@ void methods(py::module_& m) {
         return encode_bytes<CartesianPose>(object.cast<CartesianPose>());
       case MessageType::CARTESIAN_TWIST_MESSAGE:
         return encode_bytes<CartesianTwist>(object.cast<CartesianTwist>());
+      case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+        return encode_bytes<CartesianAcceleration>(object.cast<CartesianAcceleration>());
       case MessageType::CARTESIAN_WRENCH_MESSAGE:
         return encode_bytes<CartesianWrench>(object.cast<CartesianWrench>());
       case MessageType::JACOBIAN_MESSAGE:
@@ -210,6 +212,8 @@ void methods(py::module_& m) {
         return py::cast(decode<CartesianPose>(msg));
       case MessageType::CARTESIAN_TWIST_MESSAGE:
         return py::cast(decode<CartesianTwist>(msg));
+      case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+        return py::cast(decode<CartesianAcceleration>(msg));
       case MessageType::CARTESIAN_WRENCH_MESSAGE:
         return py::cast(decode<CartesianWrench>(msg));
       case MessageType::JACOBIAN_MESSAGE:
