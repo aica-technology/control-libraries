@@ -17,6 +17,7 @@ Release Versions:
 - Remove empty flag from State and SpatialState constructors (#7)
 - Refactor State::is_compatible to is_incompatible (#6)
 - No encoding and decoding of data fields in empty states (#9)
+- Set the State::set_empty method protected (#14)
 
 ## 6.3.1
 
