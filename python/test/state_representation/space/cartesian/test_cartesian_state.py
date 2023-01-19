@@ -4,7 +4,8 @@ import copy
 import numpy as np
 from pyquaternion.quaternion import Quaternion
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from state_representation import State, CartesianState, StateType, CartesianStateVariable
+from state_representation import State, CartesianState, StateType, CartesianStateVariable, CartesianPose, \
+    CartesianTwist, CartesianAcceleration, CartesianWrench
 
 from ..test_spatial_state import SPATIAL_STATE_METHOD_EXPECTS
 from ...test_state import STATE_METHOD_EXPECTS
@@ -459,6 +460,24 @@ class TestCartesianState(unittest.TestCase):
         empty.set_data(CartesianState().Random("test").data())
         self.assertFalse(empty.is_empty())
         self.assertTrue(empty)
+
+    def test_multiplication_operators(self):
+        state = CartesianState.Random("world")
+        pose = CartesianPose.Random("world")
+        twist = CartesianTwist.Random("world")
+        acceleration = CartesianAcceleration.Random("world")
+        wrench = CartesianWrench.Random("world")
+
+        # state *= only works with state
+        state *= state
+        with self.assertRaises(TypeError):
+            state *= pose
+        with self.assertRaises(TypeError):
+            state *= twist
+        with self.assertRaises(TypeError):
+            state *= acceleration
+        with self.assertRaises(TypeError):
+            state *= wrench
 
 
 if __name__ == '__main__':

@@ -136,6 +136,10 @@ void cartesian_state(py::module_& m) {
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&CartesianState::set_data), "Set the data of the state from all the state variables in a single vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&CartesianState::set_data), "Set the data of the state from all the state variables in a single list", "data"_a);
 
+  c.def("__imul__", [](const CartesianState& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianState' and 'state_representation.CartesianPose'"); });
+  c.def("__imul__", [](const CartesianState& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianState' and 'state_representation.CartesianTwist'"); });
+  c.def("__imul__", [](const CartesianState& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianState' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__imul__", [](const CartesianState& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianState' and 'state_representation.CartesianWrench'"); });
   c.def(py::self *= py::self);
   c.def(py::self * py::self);
 
