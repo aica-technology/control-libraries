@@ -18,7 +18,7 @@ TEST(StateTest, Constructors) {
   EXPECT_TRUE(empty2.is_empty());
 
   State state(empty2);
-  EXPECT_EQ(state.get_type(), StateType::CARTESIAN_STATE);
+  EXPECT_EQ(state.get_type(), StateType::STATE);
   EXPECT_EQ(state.get_name(), "test");
   EXPECT_TRUE(state.is_empty());
 }
