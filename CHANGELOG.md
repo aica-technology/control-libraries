@@ -23,6 +23,7 @@ Release Versions:
 - Fix inverse operation in CartesianState (#32)
 - Set state type in copy constructors (#34)
 - Refactor operators in CartesianState (addition #23, subtraction #33 and #40, transformation #28)
+- Multiplication operations in Python bindings (#19)
 
 ## 6.3.1
 
