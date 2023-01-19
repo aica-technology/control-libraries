@@ -143,6 +143,8 @@ CartesianWrench CartesianWrench::operator/(double lambda) const {
   return this->CartesianState::operator/(lambda);
 }
 
+// TODO: matrix operators as in twist and acceleration?
+
 CartesianWrench& CartesianWrench::operator+=(const CartesianWrench& wrench) {
   this->CartesianState::operator+=(wrench);
   return (*this);
