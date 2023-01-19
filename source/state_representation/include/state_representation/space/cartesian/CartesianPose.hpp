@@ -52,7 +52,7 @@ public:
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
   CartesianState& operator*=(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
+  friend CartesianState& operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
@@ -300,9 +300,9 @@ public:
   CartesianPose& operator+=(const CartesianPose& pose);
 
   /**
-   * @brief Overload the += operator
-   * @param pose The Cartesian pose to add to
-   * @return The current Cartesian pose added the Cartesian pose given in argument
+   * @brief Overload the += operator with a state
+   * @param state The Cartesian state to add to
+   * @return The current Cartesian pose added the Cartesian state given in argument
    */
   CartesianPose& operator+=(const CartesianState& state);
 
