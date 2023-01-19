@@ -470,6 +470,7 @@ class TestCartesianState(unittest.TestCase):
 
         # state *= only works with state
         state *= state
+        self.assertIsInstance(state, CartesianState)
         with self.assertRaises(TypeError):
             state *= pose
         with self.assertRaises(TypeError):
@@ -478,6 +479,18 @@ class TestCartesianState(unittest.TestCase):
             state *= acceleration
         with self.assertRaises(TypeError):
             state *= wrench
+
+        # pose as right operand only works with state and pose and results in pose
+        result = state * pose
+        self.assertIsInstance(result, CartesianPose)
+        result = pose * pose
+        self.assertIsInstance(result, CartesianPose)
+        with self.assertRaises(TypeError):
+            result = twist * pose
+        with self.assertRaises(TypeError):
+            result = acceleration * pose
+        with self.assertRaises(TypeError):
+            result = wrench * pose
 
 
 if __name__ == '__main__':

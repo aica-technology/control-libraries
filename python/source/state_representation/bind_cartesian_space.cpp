@@ -224,6 +224,10 @@ void cartesian_pose(py::module_& m) {
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(py::self * Eigen::Vector3d());
+  c.def("__rmul__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianTwist' and 'state_representation.CartesianPose'"); });
+  c.def("__rmul__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianPose'"); });
+  c.def("__rmul__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianWrench' and 'state_representation.CartesianPose'"); });
+  c.def(CartesianState() * py::self);
   c.def(double() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
