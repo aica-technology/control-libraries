@@ -216,8 +216,10 @@ void cartesian_pose(py::module_& m) {
   }
 
   c.def(py::self *= py::self);
+  c.def("__imul__", [](const CartesianPose& self, const CartesianState& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianPose' and 'state_representation.CartesianState'"); });
   c.def(py::self * py::self);
   c.def(py::self * CartesianTwist());
+  c.def(py::self * CartesianAcceleration());
   c.def(py::self * CartesianWrench());
   c.def(py::self * CartesianState());
 
