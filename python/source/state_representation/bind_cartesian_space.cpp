@@ -294,6 +294,9 @@ void cartesian_twist(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
+  c.def("__mul__", [](const CartesianTwist& self, const CartesianState& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianTwist' and 'state_representation.CartesianState'"); });
+  c.def(CartesianState() * py::self);
+
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
@@ -367,6 +370,9 @@ void cartesian_acceleration(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianAcceleration&) -> void {}, "Deleted method from parent class.");
 
+  c.def("__mul__", [](const CartesianAcceleration& self, const CartesianState& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianState'"); });
+  c.def(CartesianState() * py::self);
+
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
@@ -437,6 +443,9 @@ void cartesian_wrench(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const CartesianWrench& wrench) -> CartesianWrench { return wrench; }, "Deleted method from parent class.");
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianWrench&) -> void {}, "Deleted method from parent class.");
+
+  c.def("__mul__", [](const CartesianWrench& self, const CartesianState& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianWrench' and 'state_representation.CartesianState'"); });
+  c.def(CartesianState() * py::self);
 
   c.def(py::self *= double());
   c.def(py::self * double());

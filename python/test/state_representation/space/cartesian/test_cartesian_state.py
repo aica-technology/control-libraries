@@ -461,7 +461,7 @@ class TestCartesianState(unittest.TestCase):
         self.assertFalse(empty.is_empty())
         self.assertTrue(empty)
 
-    def test_multiplication_operators(self):
+    def test_state_multiplication_operators(self):
         state = CartesianState.Random("world")
         pose = CartesianPose.Random("world")
         twist = CartesianTwist.Random("world")
@@ -479,6 +479,18 @@ class TestCartesianState(unittest.TestCase):
             state *= acceleration
         with self.assertRaises(TypeError):
             state *= wrench
+
+        # state as right operand only works with state and pose
+        result = state * state
+        self.assertIsInstance(result, CartesianState)
+        result = pose * state
+        self.assertIsInstance(result, CartesianState)
+        with self.assertRaises(TypeError):
+            result = twist * state
+        with self.assertRaises(TypeError):
+            result = acceleration * state
+        with self.assertRaises(TypeError):
+            result = wrench * state
 
         # pose *= only works with pose
         pose *= pose
@@ -504,6 +516,77 @@ class TestCartesianState(unittest.TestCase):
         with self.assertRaises(TypeError):
             result = wrench * pose
 
+        # twist *= doesn't work at all
+        with self.assertRaises(TypeError):
+            twist *= state
+        with self.assertRaises(TypeError):
+            twist *= pose
+        with self.assertRaises(TypeError):
+            twist *= twist
+        with self.assertRaises(TypeError):
+            twist *= acceleration
+        with self.assertRaises(TypeError):
+            twist *= wrench
+
+        # twist as right operand only works with state and pose
+        result = state * twist
+        self.assertIsInstance(result, CartesianTwist)
+        result = pose * twist
+        self.assertIsInstance(result, CartesianTwist)
+        with self.assertRaises(TypeError):
+            result = twist * twist
+        with self.assertRaises(TypeError):
+            result = acceleration * twist
+        with self.assertRaises(TypeError):
+            result = wrench * twist
+
+        # acceleration *= doesn't work at all
+        with self.assertRaises(TypeError):
+            acceleration *= state
+        with self.assertRaises(TypeError):
+            acceleration *= pose
+        with self.assertRaises(TypeError):
+            acceleration *= twist
+        with self.assertRaises(TypeError):
+            acceleration *= acceleration
+        with self.assertRaises(TypeError):
+            acceleration *= wrench
+
+        # acceleration as right operand only works with state and pose
+        result = state * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        result = pose * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        with self.assertRaises(TypeError):
+            result = twist * acceleration
+        with self.assertRaises(TypeError):
+            result = acceleration * acceleration
+        with self.assertRaises(TypeError):
+            result = wrench * acceleration
+
+        # wrench *= doesn't work at all
+        with self.assertRaises(TypeError):
+            wrench *= state
+        with self.assertRaises(TypeError):
+            wrench *= pose
+        with self.assertRaises(TypeError):
+            wrench *= twist
+        with self.assertRaises(TypeError):
+            wrench *= acceleration
+        with self.assertRaises(TypeError):
+            wrench *= wrench
+
+        # wrench as right operand only works with state and pose
+        result = state * wrench
+        self.assertIsInstance(result, CartesianWrench)
+        result = pose * wrench
+        self.assertIsInstance(result, CartesianWrench)
+        with self.assertRaises(TypeError):
+            result = twist * wrench
+        with self.assertRaises(TypeError):
+            result = acceleration * wrench
+        with self.assertRaises(TypeError):
+            result = wrench * wrench
 
 if __name__ == '__main__':
     unittest.main()
