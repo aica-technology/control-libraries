@@ -12,18 +12,13 @@ TEST(StateTest, Constructors) {
   EXPECT_EQ(empty1.get_name(), "");
   EXPECT_TRUE(empty1.is_empty());
 
-  State empty2(StateType::JOINT_STATE);
-  EXPECT_EQ(empty2.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(empty2.get_name(), "");
+  State empty2("test");
+  EXPECT_EQ(empty2.get_type(), StateType::STATE);
+  EXPECT_EQ(empty2.get_name(), "test");
   EXPECT_TRUE(empty2.is_empty());
 
-  State empty3(StateType::CARTESIAN_STATE, "test");
-  EXPECT_EQ(empty3.get_type(), StateType::CARTESIAN_STATE);
-  EXPECT_EQ(empty3.get_name(), "test");
-  EXPECT_TRUE(empty3.is_empty());
-
-  State state(empty3);
-  EXPECT_EQ(state.get_type(), StateType::CARTESIAN_STATE);
+  State state(empty2);
+  EXPECT_EQ(state.get_type(), StateType::STATE);
   EXPECT_EQ(state.get_name(), "test");
   EXPECT_TRUE(state.is_empty());
 }
@@ -33,7 +28,7 @@ TEST(StateTest, Compatibility) {
   state1.set_name("test");
   EXPECT_EQ(state1.get_name(), "test");
 
-  State state2(StateType::STATE, "test");
+  State state2("test");
   EXPECT_FALSE(state1.is_incompatible(state2));
 
   state2.initialize();
@@ -41,7 +36,7 @@ TEST(StateTest, Compatibility) {
 }
 
 TEST(StateTest, Timestamp) {
-  State state(StateType::STATE, "test");
+  State state("test");
   std::this_thread::sleep_for(std::chrono::milliseconds(200));
   EXPECT_TRUE(state.is_deprecated(std::chrono::milliseconds(100)));
   EXPECT_TRUE(state.is_deprecated(0.1));
@@ -60,14 +55,14 @@ TEST(StateTest, Timestamp) {
 }
 
 TEST(StateTest, Swap) {
-  State state1(StateType::CARTESIAN_STATE, "cartesian");
-  State state2(StateType::STATE, "state");
+  State state1("test");
+  State state2("state");
   swap(state1, state2);
   EXPECT_EQ(state1.get_type(), StateType::STATE);
   EXPECT_EQ(state1.get_name(), "state");
   EXPECT_TRUE(state1.is_empty());
-  EXPECT_EQ(state2.get_type(), StateType::CARTESIAN_STATE);
-  EXPECT_EQ(state2.get_name(), "cartesian");
+  EXPECT_EQ(state2.get_type(), StateType::STATE);
+  EXPECT_EQ(state2.get_name(), "test");
   EXPECT_TRUE(state2.is_empty());
 }
 

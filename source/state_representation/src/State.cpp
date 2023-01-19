@@ -5,10 +5,8 @@ namespace state_representation {
 
 State::State() : type_(StateType::STATE), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
-State::State(const StateType& type) : type_(type), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
-
-State::State(const StateType& type, const std::string& name) :
-    type_(type), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
+State::State(const std::string& name) :
+    type_(StateType::STATE), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),

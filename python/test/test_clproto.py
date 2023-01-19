@@ -79,7 +79,7 @@ class TestClprotoState(unittest.TestCase):
         self.assertEqual(reference_object.get_type(), decoded_object.get_type())
 
     def test_encode_decode_state(self):
-        self.state_class_assertions(sr.State(sr.StateType.STATE, "A"), clproto.MessageType.STATE_MESSAGE)
+        self.state_class_assertions(sr.State("A"), clproto.MessageType.STATE_MESSAGE)
 
     def test_encode_decode_spatial_state(self):
         self.state_class_assertions(sr.SpatialState("A", "B"), clproto.MessageType.SPATIAL_STATE_MESSAGE)

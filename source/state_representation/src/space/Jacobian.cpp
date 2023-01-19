@@ -8,20 +8,21 @@ namespace state_representation {
 
 using namespace exceptions;
 
-Jacobian::Jacobian() : State(StateType::JACOBIAN) {
-  this->State::initialize();
+Jacobian::Jacobian() : State() {
+  this->set_type(StateType::JACOBIAN);
 }
 
 Jacobian::Jacobian(const std::string& robot_name,
                    unsigned int nb_joints,
                    const std::string& frame,
                    const std::string& reference_frame) :
-    State(StateType::JACOBIAN, robot_name),
+    State(robot_name),
     joint_names_(nb_joints),
     frame_(frame),
     reference_frame_(reference_frame),
     rows_(6),
     cols_(nb_joints) {
+  this->set_type(StateType::JACOBIAN);
   this->set_joint_names(nb_joints);
   this->initialize();
 }
@@ -30,12 +31,13 @@ Jacobian::Jacobian(const std::string& robot_name,
                    const std::vector<std::string>& joint_names,
                    const std::string& frame,
                    const std::string& reference_frame) :
-    State(StateType::JACOBIAN, robot_name),
+    State(robot_name),
     joint_names_(joint_names),
     frame_(frame),
     reference_frame_(reference_frame),
     rows_(6),
     cols_(joint_names.size()) {
+  this->set_type(StateType::JACOBIAN);
   this->initialize();
 }
 

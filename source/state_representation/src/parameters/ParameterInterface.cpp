@@ -4,7 +4,9 @@ namespace state_representation {
 
 ParameterInterface::ParameterInterface(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type
-) : State(StateType::PARAMETER, name), parameter_type_(type), parameter_state_type_(parameter_state_type) {}
+) : State(name), parameter_type_(type), parameter_state_type_(parameter_state_type) {
+  this->set_type(StateType::PARAMETER);
+}
 
 ParameterInterface::ParameterInterface(const ParameterInterface& parameter) :
     State(parameter),
