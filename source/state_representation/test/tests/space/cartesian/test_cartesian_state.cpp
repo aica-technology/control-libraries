@@ -265,13 +265,16 @@ TEST(CartesianStateTest, GetSetFields) {
   cs.set_zero();
   EXPECT_FLOAT_EQ(cs.data().norm(), 1);
   EXPECT_EQ(cs.is_empty(), false);
-  cs.set_empty();
+  cs.initialize();
+  EXPECT_FLOAT_EQ(cs.data().norm(), 1);
   EXPECT_EQ(cs.is_empty(), true);
 }
 
 TEST(CartesianStateTest, SetZero) {
   CartesianState random1 = CartesianState::Random("test");
+  EXPECT_FALSE(random1.is_empty());
   random1.initialize();
+  EXPECT_TRUE(random1.is_empty());
   EXPECT_FLOAT_EQ(random1.data().norm(), 1);
 
   CartesianState random2 = CartesianState::Random("test");
@@ -501,4 +504,14 @@ TEST(CartesianStateTest, ScalarDivision) {
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);
+}
+
+TEST(CartesianStateTest, Truthiness) {
+  CartesianState empty("test");
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
+
+  empty.set_data(Eigen::VectorXd::Random(25));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
 }

@@ -167,8 +167,8 @@ TEST(JointStateTest, GetSetFields) {
   EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), false);
-  js.set_empty();
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
+  js.initialize();
+  EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), true);
 }
 
@@ -422,3 +422,12 @@ TEST(JointStateTest, ArrayMultiplication) {
   EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
 }
 
+TEST(JointStateTest, Truthiness) {
+  JointState empty("test", 1);
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
+
+  empty.set_data(Eigen::VectorXd::Random(4));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
+}
