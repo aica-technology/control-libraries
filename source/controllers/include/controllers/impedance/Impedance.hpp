@@ -64,6 +64,8 @@ protected:
       damping_; ///< damping matrix of the controller associated to velocity
   std::shared_ptr<state_representation::Parameter<Eigen::MatrixXd>>
       inertia_; ///< inertia matrix of the controller associated to acceleration
+  std::shared_ptr<state_representation::Parameter<bool>>
+      forward_force_; ///< flag to decide of force error should be passed on
   std::shared_ptr<state_representation::Parameter<Eigen::VectorXd>>
       force_limit_; ///< vector of force limits for each degree of freedom
 
@@ -78,12 +80,14 @@ Impedance<S>::Impedance(unsigned int dimensions) :
     state_representation::make_shared_parameter<Eigen::MatrixXd>(
         "damping", Eigen::MatrixXd::Identity(dimensions, dimensions))), inertia_(
     state_representation::make_shared_parameter<Eigen::MatrixXd>(
-        "inertia", Eigen::MatrixXd::Identity(dimensions, dimensions))), force_limit_(
+        "inertia", Eigen::MatrixXd::Identity(dimensions, dimensions))), forward_force_(
+            state_representation::make_shared_parameter<bool>("forward_force", true)), force_limit_(
     state_representation::make_shared_parameter<Eigen::VectorXd>(
         "force_limit", Eigen::VectorXd::Zero(dimensions))), dimensions_(dimensions) {
   this->parameters_.insert(std::make_pair("stiffness", stiffness_));
   this->parameters_.insert(std::make_pair("damping", damping_));
   this->parameters_.insert(std::make_pair("inertia", inertia_));
+  this->parameters_.insert(std::make_pair("forward_force", forward_force_));
   this->parameters_.insert(std::make_pair("force_limit", inertia_));
 }
 
@@ -115,6 +119,8 @@ void Impedance<S>::validate_and_set_parameter(
     this->damping_->set_value(this->gain_matrix_from_parameter(parameter));
   } else if (parameter->get_name() == "inertia") {
     this->inertia_->set_value(this->gain_matrix_from_parameter(parameter));
+  } else if (parameter->get_name() == "forward_force") {
+    this->forward_force_->set_value(parameter->get_parameter_value<bool>());
   } else if (parameter->get_name() == "force_limit") {
     auto limit_matrix = this->gain_matrix_from_parameter(parameter);
     this->force_limit_->set_value(limit_matrix.diagonal());
