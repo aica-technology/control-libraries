@@ -27,7 +27,7 @@ public:
   /**
    * @brief Empty constructor
    */
-  explicit State();
+  State();
 
   /**
    * @brief Constructor with name specification
