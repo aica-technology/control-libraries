@@ -534,7 +534,22 @@ TEST(CartesianStateTest, TestAdditionOperators) {
   auto r3 = pose + state;
   EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_STATE);
 
+  auto r4 = twist + twist;
+  EXPECT_TRUE(r4.get_type() == StateType::CARTESIAN_TWIST);
+  auto r5 = state + twist;
+  EXPECT_TRUE(r5.get_type() == StateType::CARTESIAN_STATE);
+  auto r6 = twist + state;
+  EXPECT_TRUE(r6.get_type() == StateType::CARTESIAN_STATE);
+
   // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  //auto r = pose + twist;
+  //auto r = pose + acc;
+  //auto r = pose + wrench;
+
+  //auto r = twist + pose;
+  //auto r = twist + acc;
+  //auto r = twist + wrench;
 
   state += state;
   state += pose;
@@ -547,4 +562,10 @@ TEST(CartesianStateTest, TestAdditionOperators) {
   //pose += twist;
   //pose += acc;
   //pose += wrench;
+
+  twist += state;
+  twist += twist;
+  //twist += pose;
+  //twist += acc;
+  //twist += wrench;
 }
