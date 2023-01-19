@@ -74,21 +74,22 @@ void joint_state(py::module_& m) {
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&JointState::set_data), "Set the data of the state from all the state variables in a single vector.", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&JointState::set_data), "Set the data of the state from all the state variables in a single list.", "data"_a);
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::ArrayXd());
+  c.def(py::self * Eigen::ArrayXd());
+  c.def(Eigen::ArrayXd() * py::self);
+  c.def(py::self *= Eigen::MatrixXd());
+  c.def(py::self * Eigen::MatrixXd());
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("dist", &JointState::dist, "Compute the distance to another state as the sum of distances between each attribute.", "state"_a, "state_variable_type"_a=JointStateVariable::ALL);
 
@@ -138,22 +139,23 @@ void joint_positions(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointPositions& positions) -> JointPositions { return positions; }, "Deleted method from parent class.");
   }
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::ArrayXd());
+  c.def(py::self * Eigen::ArrayXd());
+  c.def(Eigen::ArrayXd() * py::self);
+  c.def(py::self *= Eigen::MatrixXd());
+  c.def(py::self * Eigen::MatrixXd());
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+  c.def(py::self / std::chrono::nanoseconds());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(py::self / std::chrono::nanoseconds());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("copy", &JointPositions::copy, "Return a copy of the JointPositions");
   c.def("data", &JointPositions::data, "Returns the positions data as a vector");
@@ -205,25 +207,25 @@ void joint_velocities(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointVelocities& velocities) -> JointVelocities { return velocities; }, "Deleted method from parent class.");
   }
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::ArrayXd());
+  c.def(py::self * Eigen::ArrayXd());
+  c.def(Eigen::ArrayXd() * py::self);
+  c.def(py::self *= Eigen::MatrixXd());
+  c.def(py::self * Eigen::MatrixXd());
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+  c.def(py::self / std::chrono::nanoseconds());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(py::self / std::chrono::nanoseconds());
-  c.def(py::self * std::chrono::nanoseconds());
-
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("copy", &JointVelocities::copy, "Return a copy of the JointVelocities");
   c.def("data", &JointVelocities::data, "Returns the velocities data as a vector");
@@ -279,24 +281,24 @@ void joint_accelerations(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointAccelerations& accelerations) -> JointAccelerations { return accelerations; }, "Deleted method from parent class.");
   }
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::ArrayXd());
+  c.def(py::self * Eigen::ArrayXd());
+  c.def(Eigen::ArrayXd() * py::self);
+  c.def(py::self *= Eigen::MatrixXd());
+  c.def(py::self * Eigen::MatrixXd());
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(py::self * std::chrono::nanoseconds());
-
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("copy", &JointAccelerations::copy, "Return a copy of the JointAccelerations");
   c.def("data", &JointAccelerations::data, "Returns the accelerations data as a vector");
@@ -351,21 +353,22 @@ void joint_torques(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointTorques& torques) -> JointTorques { return torques; }, "Deleted method from parent class.");
   }
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::ArrayXd());
+  c.def(py::self * Eigen::ArrayXd());
+  c.def(Eigen::ArrayXd() * py::self);
+  c.def(py::self *= Eigen::MatrixXd());
+  c.def(py::self * Eigen::MatrixXd());
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("copy", &JointTorques::copy, "Return a copy of the JointTorques");
   c.def("data", &JointTorques::data, "Returns the torques data as a vector");

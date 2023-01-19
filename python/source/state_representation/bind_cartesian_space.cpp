@@ -138,11 +138,13 @@ void cartesian_state(py::module_& m) {
 
   c.def(py::self *= py::self);
   c.def(py::self * py::self);
+
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
@@ -211,22 +213,22 @@ void cartesian_pose(py::module_& m) {
 
   c.def(py::self *= py::self);
   c.def(py::self * py::self);
-  c.def(py::self * CartesianState());
   c.def(py::self * CartesianTwist());
   c.def(py::self * CartesianWrench());
-  c.def(py::self * Eigen::Vector3d());
+  c.def(py::self * CartesianState());
+
   c.def(py::self *= double());
   c.def(py::self * double());
+  c.def(py::self * Eigen::Vector3d());
   c.def(double() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+  c.def(py::self / std::chrono::nanoseconds());
 
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-
-  c.def(py::self / std::chrono::nanoseconds());
 
   c.def("copy", &CartesianPose::copy, "Return a copy of the CartesianPose");
   c.def("data", &CartesianPose::data, "Returns the pose data as a vector");
@@ -282,22 +284,21 @@ void cartesian_twist(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+  c.def(py::self / std::chrono::nanoseconds());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
-  c.def(py::self * std::chrono::nanoseconds());
-  c.def(py::self / std::chrono::nanoseconds());
-
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
 
   c.def("clamp", &CartesianTwist::clamp, "Clamp inplace the magnitude of the twist to the values in argument", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
   c.def("clamped", &CartesianTwist::clamped, "Return the clamped twist", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
@@ -356,21 +357,20 @@ void cartesian_acceleration(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianAcceleration&) -> void {}, "Deleted method from parent class.");
 
+  c.def(py::self *= double());
+  c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
+  c.def(py::self /= double());
+  c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
-
-  c.def(py::self *= double());
-  c.def(py::self * double());
-  c.def(py::self /= double());
-  c.def(py::self / double());
-  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
-  c.def(py::self * std::chrono::nanoseconds());
-
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
 
   c.def("clamp", &CartesianAcceleration::clamp, "Clamp inplace the magnitude of the acceleration to the values in argument", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
   c.def("clamped", &CartesianAcceleration::clamped, "Return the clamped acceleration", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
@@ -428,16 +428,16 @@ void cartesian_wrench(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianWrench&) -> void {}, "Deleted method from parent class.");
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
-
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+
+  c.def(py::self += py::self);
+  c.def(py::self + py::self);
+  c.def(py::self -= py::self);
+  c.def(py::self - py::self);
 
   c.def("clamp", &CartesianWrench::clamp, "Clamp inplace the magnitude of the wrench to the values in argument", "max_force"_a, "max_torque"_a, "force_noise_ratio"_a=0, "torque_noise_ratio"_a=0);
   c.def("clamped", &CartesianWrench::clamped, "Return the clamped wrench", "max_force"_a, "max_torque"_a, "force_noise_ratio"_a=0, "torque_noise_ratio"_a=0);
