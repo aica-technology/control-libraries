@@ -38,7 +38,7 @@ class TestState(unittest.TestCase):
         self.assertTrue(empty2.is_empty())
 
         state = State(empty2)
-        self.assertEqual(state.get_type(), StateType.CARTESIAN_STATE)
+        self.assertEqual(state.get_type(), StateType.STATE)
         self.assertEqual(state.get_name(), "test")
         self.assertTrue(state.is_empty())
 
