@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.12</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.13</span>
    </div>
   </td>
  </tr>
@@ -185,7 +185,7 @@ $(function() {
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> StateT&gt;</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> DurationT&gt;</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_trajectory.html#ad2014e22f73ecdb017bdbf25a7afd744">  169</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstate__representation_1_1_trajectory.html#ad2014e22f73ecdb017bdbf25a7afd744">Trajectory&lt;StateT&gt;::add_point</a>(<span class="keyword">const</span> StateT&amp; new_point, <span class="keyword">const</span> std::chrono::duration&lt;int64_t, DurationT&gt;&amp; new_time) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  this-&gt;set_filled();</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>  this-&gt;set_empty(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>  this-&gt;points_.push_back(new_point);</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>  <span class="keywordflow">if</span> (!this-&gt;times_.empty()) {</div>
@@ -201,7 +201,7 @@ $(function() {
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_trajectory.html#a5cb0e81391886b3f8de5dbcfa95a8722">  183</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstate__representation_1_1_trajectory.html#a5cb0e81391886b3f8de5dbcfa95a8722">Trajectory&lt;StateT&gt;::insert_point</a>(<span class="keyword">const</span> StateT&amp; new_point,</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                                      <span class="keyword">const</span> std::chrono::duration&lt;int64_t, DurationT&gt;&amp; new_time,</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                                      <span class="keywordtype">int</span> pos) {</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  this-&gt;set_filled();</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>  this-&gt;set_empty(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>  <span class="keyword">auto</span> it_points = this-&gt;points_.begin();</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>  <span class="keyword">auto</span> it_times = this-&gt;times_.begin();</div>
@@ -220,7 +220,7 @@ $(function() {
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> StateT&gt;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_trajectory.html#a33d1b9a034cd77f23f4d0f1fe16e3fb5">  204</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classstate__representation_1_1_trajectory.html#a33d1b9a034cd77f23f4d0f1fe16e3fb5">Trajectory&lt;StateT&gt;::delete_point</a>() {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  this-&gt;set_filled();</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>  this-&gt;set_empty(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>  <span class="keywordflow">if</span> (!this-&gt;points_.empty()) {</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    this-&gt;points_.pop_back();</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>  }</div>
@@ -267,12 +267,12 @@ $(function() {
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> StateT&gt;</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_trajectory.html#a8045a3a96af02ea899a511702a76078b">  251</a></span>std::pair&lt;StateT, std::chrono::nanoseconds&gt; <a class="code hl_function" href="classstate__representation_1_1_trajectory.html#a54ad8760342bc374566f4cc4d7131a88">Trajectory&lt;StateT&gt;::operator[]</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> idx) {</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  this-&gt;set_filled();</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>  this-&gt;set_empty(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>  <span class="keywordflow">return</span> std::make_pair(this-&gt;points_[idx], this-&gt;times_[idx]);</div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>}</div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>}</div>
 <div class="ttc" id="aclassstate__representation_1_1_state_html"><div class="ttname"><a href="classstate__representation_1_1_state.html">state_representation::State</a></div><div class="ttdoc">Abstract class to represent a state.</div><div class="ttdef"><b>Definition:</b> <a href="_state_8hpp_source.html#l00025">State.hpp:25</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_state_html_a08938479ccdd3286b2fb1e13795c5ee7"><div class="ttname"><a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">state_representation::State::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Initialize the state to a zero value.</div><div class="ttdef"><b>Definition:</b> <a href="_state_8cpp_source.html#l00077">State.cpp:77</a></div></div>
+<div class="ttc" id="aclassstate__representation_1_1_state_html_a08938479ccdd3286b2fb1e13795c5ee7"><div class="ttname"><a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">state_representation::State::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdoc">Initialize the state to a zero value.</div><div class="ttdef"><b>Definition:</b> <a href="_state_8cpp_source.html#l00072">State.cpp:72</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_trajectory_html"><div class="ttname"><a href="classstate__representation_1_1_trajectory.html">state_representation::Trajectory</a></div><div class="ttdef"><b>Definition:</b> <a href="_trajectory_8hpp_source.html#l00009">Trajectory.hpp:9</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_trajectory_html_a01c694a71e3a4bdc6fd509aea36992d6"><div class="ttname"><a href="classstate__representation_1_1_trajectory.html#a01c694a71e3a4bdc6fd509aea36992d6">state_representation::Trajectory::set_reference_frame</a></div><div class="ttdeci">virtual void set_reference_frame(const std::string &amp;reference_frame)</div><div class="ttdoc">Setter of the reference frame.</div><div class="ttdef"><b>Definition:</b> <a href="_trajectory_8hpp_source.html#l00138">Trajectory.hpp:138</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_trajectory_html_a0941a74562ca26a5c435181fa4f840e0"><div class="ttname"><a href="classstate__representation_1_1_trajectory.html#a0941a74562ca26a5c435181fa4f840e0">state_representation::Trajectory::initialize</a></div><div class="ttdeci">void initialize()</div><div class="ttdoc">Initialize trajectory.</div><div class="ttdef"><b>Definition:</b> <a href="_trajectory_8hpp_source.html#l00161">Trajectory.hpp:161</a></div></div>

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.12</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.13</span>
    </div>
   </td>
  </tr>
@@ -132,12 +132,12 @@ $(function() {
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_dual_quaternion_state.html#a5386671f34da51ff4d77eabffcba8316">  126</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classstate__representation_1_1_dual_quaternion_state.html#a5386671f34da51ff4d77eabffcba8316">DualQuaternionState::set_primary</a>(<span class="keyword">const</span> Eigen::Quaterniond&amp; primary) {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  this-&gt;<a class="code hl_function" href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">set_filled</a>();</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  this-&gt;set_filled();</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  this-&gt;primary = primary;</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_dual_quaternion_state.html#a6e9a860d961f04c3e72d784a1418c02a">  131</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classstate__representation_1_1_dual_quaternion_state.html#a6e9a860d961f04c3e72d784a1418c02a">DualQuaternionState::set_dual</a>(<span class="keyword">const</span> Eigen::Quaterniond&amp; dual) {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  this-&gt;<a class="code hl_function" href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">set_filled</a>();</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>  this-&gt;set_filled();</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  this-&gt;dual = dual;</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>}</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
@@ -155,7 +155,6 @@ $(function() {
 <div class="ttc" id="aclassstate__representation_1_1_dual_quaternion_state_html_ae226fa69608462ac4fe1967e8ab36a26"><div class="ttname"><a href="classstate__representation_1_1_dual_quaternion_state.html#ae226fa69608462ac4fe1967e8ab36a26">state_representation::DualQuaternionState::exp</a></div><div class="ttdeci">friend const DualQuaternionState exp(const DualQuaternionState &amp;state)</div><div class="ttdoc">overload exp function</div><div class="ttdef"><b>Definition:</b> <a href="_dual_quaternion_state_8cpp_source.html#l00062">DualQuaternionState.cpp:62</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_dual_quaternion_state_html_aff37fbe44b74ffbe2b11a43d115c1594"><div class="ttname"><a href="classstate__representation_1_1_dual_quaternion_state.html#aff37fbe44b74ffbe2b11a43d115c1594">state_representation::DualQuaternionState::conjugate</a></div><div class="ttdeci">const DualQuaternionState conjugate() const</div><div class="ttdoc">compute the conjugate of the current DualQuaternion</div><div class="ttdef"><b>Definition:</b> <a href="_dual_quaternion_state_8cpp_source.html#l00042">DualQuaternionState.cpp:42</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_spatial_state_html"><div class="ttname"><a href="classstate__representation_1_1_spatial_state.html">state_representation::SpatialState</a></div><div class="ttdef"><b>Definition:</b> <a href="_spatial_state_8hpp_source.html#l00007">SpatialState.hpp:7</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_state_html_a3f90a544f00c588dc5be2ecfee418f37"><div class="ttname"><a href="classstate__representation_1_1_state.html#a3f90a544f00c588dc5be2ecfee418f37">state_representation::State::set_filled</a></div><div class="ttdeci">void set_filled()</div><div class="ttdoc">Setter of the empty attribute to false and also reset the timestamp.</div><div class="ttdef"><b>Definition:</b> <a href="_state_8cpp_source.html#l00055">State.cpp:55</a></div></div>
 <div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition:</b> <a href="_empty_state_exception_8hpp_source.html#l00006">EmptyStateException.hpp:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
