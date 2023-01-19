@@ -6,6 +6,7 @@ from pyquaternion.quaternion import Quaternion
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from state_representation import State, CartesianState, StateType, CartesianStateVariable, CartesianPose, \
     CartesianTwist, CartesianAcceleration, CartesianWrench
+from datetime import timedelta
 
 from ..test_spatial_state import SPATIAL_STATE_METHOD_EXPECTS
 from ...test_state import STATE_METHOD_EXPECTS
@@ -587,6 +588,104 @@ class TestCartesianState(unittest.TestCase):
             result = acceleration * wrench
         with self.assertRaises(TypeError):
             result = wrench * wrench
+
+    def test_multiplication_operators(self):
+        state = CartesianState.Random("world")
+        pose = CartesianPose.Random("world")
+        twist = CartesianTwist.Random("world")
+        acceleration = CartesianAcceleration.Random("world")
+        wrench = CartesianWrench.Random("world")
+
+        # state
+        state *= 3.0
+        self.assertIsInstance(state, CartesianState)
+        result = state * 3.0
+        self.assertIsInstance(result, CartesianState)
+        result = 3.0 * state
+        self.assertIsInstance(result, CartesianState)
+        state /= 2.0
+        self.assertIsInstance(state, CartesianState)
+        result = state / 2.0
+        self.assertIsInstance(result, CartesianState)
+
+        # pose
+        pose *= 3.0
+        self.assertIsInstance(pose, CartesianPose)
+        result = pose * 3.0
+        self.assertIsInstance(result, CartesianPose)
+        result = 3.0 * pose
+        self.assertIsInstance(result, CartesianPose)
+        arr = np.array([1.1, 2.2, 3.3])
+        result = pose * np.array([1.1, 2.2, 3.3])
+        self.assertIsInstance(result, type(arr))
+        self.assertTrue(len(result) == 3)
+        result = pose / 2.0
+        self.assertIsInstance(result, CartesianPose)
+        result = pose / timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianTwist)
+        pose /= 2.0
+        self.assertIsInstance(pose, CartesianPose)
+
+        # twist
+        twist *= 3.0
+        self.assertIsInstance(twist, CartesianTwist)
+        result = twist * 3.0
+        self.assertIsInstance(result, CartesianTwist)
+        result = 3.0 * twist
+        self.assertIsInstance(result, CartesianTwist)
+        mat = np.random.rand(6, 6)
+        twist *= mat
+        self.assertIsInstance(twist, CartesianTwist)
+        result = mat * twist
+        self.assertIsInstance(result, CartesianTwist)
+        with self.assertRaises(TypeError):
+            result = twist * mat
+        result = twist * timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianPose)
+        result = timedelta(seconds=1) * twist
+        self.assertIsInstance(result, CartesianPose)
+        twist /= 3.0
+        self.assertIsInstance(twist, CartesianTwist)
+        result = twist / 3.0
+        self.assertIsInstance(result, CartesianTwist)
+        result = twist / timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianAcceleration)
+
+        # acceleration
+        acceleration *= 3.0
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        result = acceleration * 3.0
+        self.assertIsInstance(result, CartesianAcceleration)
+        result = 3.0 * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        mat = np.random.rand(6, 6)
+        acceleration *= mat
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        result = mat * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        with self.assertRaises(TypeError):
+            result = acceleration * mat
+        result = acceleration * timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianTwist)
+        result = timedelta(seconds=1) * acceleration
+        self.assertIsInstance(result, CartesianTwist)
+        acceleration /= 3.0
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        result = acceleration / 3.0
+        self.assertIsInstance(result, CartesianAcceleration)
+
+        # wrench
+        wrench *= 3.0
+        self.assertIsInstance(wrench, CartesianWrench)
+        result = wrench * 3.0
+        self.assertIsInstance(result, CartesianWrench)
+        result = 3.0 * wrench
+        self.assertIsInstance(result, CartesianWrench)
+        wrench /= 3.0
+        self.assertIsInstance(wrench, CartesianWrench)
+        result = wrench / 3.0
+        self.assertIsInstance(result, CartesianWrench)
+
 
 if __name__ == '__main__':
     unittest.main()
