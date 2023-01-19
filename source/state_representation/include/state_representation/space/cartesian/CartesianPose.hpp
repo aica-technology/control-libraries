@@ -53,6 +53,12 @@ public:
   void set_wrench(const std::vector<double>& wrench) = delete;
   CartesianState& operator*=(const CartesianState& state) = delete;
   friend CartesianState operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator+=(const CartesianWrench& wrench) = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator+(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -294,11 +300,25 @@ public:
   CartesianPose& operator+=(const CartesianPose& pose);
 
   /**
+   * @brief Overload the += operator
+   * @param pose The Cartesian pose to add to
+   * @return The current Cartesian pose added the Cartesian pose given in argument
+   */
+  CartesianPose& operator+=(const CartesianState& state);
+
+  /**
    * @brief Overload the + operator with a pose
    * @param pose The Cartesian pose to add to
    * @return the current Cartesian pose added the Cartesian pose given in argument
    */
   CartesianPose operator+(const CartesianPose& pose) const;
+
+  /**
+   * @brief Overload the + operator with a state, needed to remove ambiguous operators otherwise
+   * @param state The Cartesian state to add to
+   * @return the current Cartesian pose added the Cartesian state given in argument
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator

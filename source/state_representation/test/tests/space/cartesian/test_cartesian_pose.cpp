@@ -3,6 +3,7 @@
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 
 using namespace state_representation;
+using namespace std::chrono_literals;
 
 static void expect_only_pose(CartesianPose& pose) {
   EXPECT_EQ(static_cast<CartesianState&>(pose).get_twist().norm(), 0);
@@ -170,7 +171,7 @@ TEST_F(CartesianPoseTestClass, TestAddTwoPoses) {
   Eigen::Vector3d pos2(1, 0, 0);
   Eigen::Quaterniond rot2(0, 1, 0, 0);
   tf2 = CartesianPose("t1", pos2, rot2);
-  auto tf3 = tf1 + tf2;
+  CartesianPose tf3 = tf1 + tf2;
   EXPECT_EQ(tf3.get_type(), StateType::CARTESIAN_POSE);
   Eigen::Vector3d pos_truth(1, 0, 0);
   Eigen::Quaterniond rot_truth(0, -1, 0, 0);
@@ -197,7 +198,7 @@ TEST_F(CartesianPoseTestClass, TestImplicitConversion) {
   EXPECT_EQ(vel.get_type(), StateType::CARTESIAN_TWIST);
   vel.set_linear_velocity(Eigen::Vector3d(0.1, 0.1, 0.1));
   vel.set_angular_velocity(Eigen::Vector3d(M_PI, 0, 0));
-  tf1 += vel;
+  tf1 += (vel * 1s);
   EXPECT_EQ(tf1.get_type(), StateType::CARTESIAN_POSE);
   Eigen::Vector3d pos_truth(1.1, 2.1, 3.1);
   Eigen::Quaterniond rot_truth(0, 1, 0, 0);

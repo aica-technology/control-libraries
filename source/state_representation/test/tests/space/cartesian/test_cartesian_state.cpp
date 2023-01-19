@@ -2,6 +2,10 @@
 #include <gtest/gtest.h>
 
 #include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
@@ -514,4 +518,33 @@ TEST(CartesianStateTest, Truthiness) {
   empty.set_data(Eigen::VectorXd::Random(25));
   EXPECT_FALSE(empty.is_empty());
   EXPECT_TRUE(empty);
+}
+
+TEST(CartesianStateTest, TestAdditionOperators) {
+  CartesianState state = CartesianState::Random("world");
+  CartesianPose pose = CartesianPose::Random("world");
+  CartesianTwist twist = CartesianTwist::Random("world");
+  CartesianAcceleration acc = CartesianAcceleration::Random("world");
+  CartesianWrench wrench = CartesianWrench::Random("world");
+
+  auto r1 = pose + pose;
+  EXPECT_TRUE(r1.get_type() == StateType::CARTESIAN_POSE);
+  auto r2 = state + pose;
+  EXPECT_TRUE(r2.get_type() == StateType::CARTESIAN_STATE);
+  auto r3 = pose + state;
+  EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_STATE);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  state += state;
+  state += pose;
+  state += twist;
+  state += acc;
+  state += wrench;
+
+  pose += state;
+  pose += pose;
+  //pose += twist;
+  //pose += acc;
+  //pose += wrench;
 }
