@@ -531,10 +531,20 @@ protected:
 
   /**
    * @brief Setter of the variable value corresponding to the input
-   * @param new_value The new value of the variable
+   * @param new_value The new value of the variable as Eigen vector
+   * @param state_variable_type The type of variable to get
+   * @param skip_size_check Skip the check of size compatibility (default false)
+   */
+  void set_state_variable(
+      const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type, bool skip_size_check = false
+  );
+
+  /**
+   * @brief Setter of the variable value corresponding to the input
+   * @param new_value The new value of the variable as std vector
    * @param state_variable_type The type of variable to get
    */
-  void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
+  void set_state_variable(const std::vector<double>& new_value, const CartesianStateVariable& state_variable_type);
 
   /**
    * @copydoc SpatialState::to_string
@@ -550,36 +560,6 @@ private:
   Eigen::Vector3d angular_acceleration_;///< angular acceleration of the point
   Eigen::Vector3d force_;               ///< force applied at the point
   Eigen::Vector3d torque_;              ///< torque applied at the point
-
-  /**
-   * @brief Set new values in all the state variables
-   */
-  void set_all_state_variables(const Eigen::VectorXd& new_values);
-
-  /**
-   * @brief Set new values in the provided state variable
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::Vector3d& state_variable, const Eigen::Vector3d& new_value);
-
-  /**
-   * @brief Set new values in the provided state variable
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::Vector3d& state_variable, const std::vector<double>& new_value);
-
-  /**
-   * @brief Set new values in the provided state variables
-   * @param linear_state_variable The linear part of the state variable to fill
-   * @param angular_state_variable The angular part of the state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(
-      Eigen::Vector3d& linear_state_variable, Eigen::Vector3d& angular_state_variable,
-      const Eigen::Matrix<double, 6, 1>& new_value
-  );
 };
 
 inline void swap(CartesianState& state1, CartesianState& state2) {
