@@ -3,11 +3,14 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 
 namespace state_representation {
 
 class CartesianPose;
 class CartesianTwist;
+class CartesianAcceleration;
+
 /**
  * @class CartesianWrench
  * @brief Class to define wrench in Cartesian space as 3D force and torque vectors
@@ -52,9 +55,15 @@ public:
   void set_angular_acceleration(const double& x, const double& y, const double& z) = delete;
   void set_acceleration(const Eigen::Matrix<double, 6, 1>& acceleration) = delete;
   void set_acceleration(const std::vector<double>& acceleration) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  friend CartesianState& operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
 
   /**
    * @brief Empty constructor
@@ -238,11 +247,25 @@ public:
   CartesianWrench& operator+=(const CartesianWrench& wrench);
 
   /**
+   * @brief Overload the += operator with a state
+   * @param state The Cartesian state to add to
+   * @return The current Cartesian wrench added the Cartesian state given in argument
+   */
+  CartesianWrench& operator+=(const CartesianState& state);
+
+  /**
    * @brief Overload the + operator
    * @param wrench The Cartesian wrench to add
    * @return The current Cartesian wrench added the Cartesian wrench given in argument
    */
   CartesianWrench operator+(const CartesianWrench& wrench) const;
+
+  /**
+   * @brief Overload the + operator with a state, needed to remove ambiguous operators otherwise
+   * @param state The Cartesian state to add to
+   * @return the current Cartesian pose added the Cartesian state given in argument
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator
