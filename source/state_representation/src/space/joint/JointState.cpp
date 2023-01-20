@@ -67,6 +67,33 @@ JointState& JointState::operator=(const JointState& state) {
   return *this;
 }
 
+Eigen::VectorXd JointState::get_all_state_variables() const {
+  Eigen::VectorXd all_fields(this->get_size() * 4);
+  all_fields << this->get_positions(), this->get_velocities(), this->get_accelerations(), this->get_torques();
+  return all_fields;
+}
+
+Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+      return this->get_positions();
+
+    case JointStateVariable::VELOCITIES:
+      return this->get_velocities();
+
+    case JointStateVariable::ACCELERATIONS:
+      return this->get_accelerations();
+
+    case JointStateVariable::TORQUES:
+      return this->get_torques();
+
+    case JointStateVariable::ALL:
+      return this->get_all_state_variables();
+  }
+  // this never goes here but is compulsory to avoid a warning
+  return Eigen::Vector3d::Zero();
+}
+
 unsigned int JointState::get_size() const {
   return this->names_.size();
 }
@@ -152,6 +179,58 @@ void JointState::set_names(unsigned int nb_joints) {
   this->names_.resize(nb_joints);
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
+  }
+}
+
+void JointState::set_state_variable(Eigen::VectorXd& state_variable, const Eigen::VectorXd& new_value) {
+  if (new_value.size() != this->get_size()) {
+    throw state_representation::exceptions::IncompatibleSizeException(
+        "Input vector is of incorrect size: expected " + std::to_string(this->get_size()) + ", given "
+            + std::to_string(new_value.size()));
+  }
+  this->set_empty(false);
+  state_variable = new_value;
+}
+
+void JointState::set_state_variable(Eigen::VectorXd& state_variable, const std::vector<double>& new_value) {
+  this->set_state_variable(state_variable, Eigen::VectorXd::Map(new_value.data(), new_value.size()));
+}
+
+void JointState::set_all_state_variables(const Eigen::VectorXd& new_values) {
+  if (new_values.size() != 4 * this->get_size()) {
+    throw state_representation::exceptions::IncompatibleSizeException(
+        "Input is of incorrect size: expected " + std::to_string(this->get_size()) + ", given "
+            + std::to_string(new_values.size()));
+  }
+  this->set_positions(new_values.segment(0, this->get_size()));
+  this->set_velocities(new_values.segment(this->get_size(), this->get_size()));
+  this->set_accelerations(new_values.segment(2 * this->get_size(), this->get_size()));
+  this->set_torques(new_values.segment(3 * this->get_size(), this->get_size()));
+}
+
+void JointState::set_state_variable(
+    const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type
+) {
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+      this->set_positions(new_value);
+      break;
+
+    case JointStateVariable::VELOCITIES:
+      this->set_velocities(new_value);
+      break;
+
+    case JointStateVariable::ACCELERATIONS:
+      this->set_accelerations(new_value);
+      break;
+
+    case JointStateVariable::TORQUES:
+      this->set_torques(new_value);
+      break;
+
+    case JointStateVariable::ALL:
+      this->set_all_state_variables(new_value);
+      break;
   }
 }
 
