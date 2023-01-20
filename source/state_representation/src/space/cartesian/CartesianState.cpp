@@ -53,48 +53,52 @@ CartesianState& CartesianState::operator=(const CartesianState& state) {
 Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable& state_variable_type) const {
   switch (state_variable_type) {
     case CartesianStateVariable::POSITION:
-      return this->get_position();
-
+      return this->position_;
     case CartesianStateVariable::ORIENTATION:
-      return this->get_orientation_coefficients();
-
-    case CartesianStateVariable::POSE:
-      return this->get_pose();
-
+      return Eigen::Vector4d(
+          this->orientation_.w(), this->orientation_.x(), this->orientation_.y(), this->orientation_.z());
+    case CartesianStateVariable::POSE: {
+      Eigen::VectorXd pose(7);
+      pose << this->position_, this->orientation_.w(), this->orientation_.x(), this->orientation_.y(),
+              this->orientation_.z();
+      return pose;
+    }
     case CartesianStateVariable::LINEAR_VELOCITY:
-      return this->get_linear_velocity();
-
+      return this->linear_velocity_;
     case CartesianStateVariable::ANGULAR_VELOCITY:
-      return this->get_angular_velocity();
-
-    case CartesianStateVariable::TWIST:
-      return this->get_twist();
-
+      return this->angular_velocity_;
+    case CartesianStateVariable::TWIST: {
+      Eigen::VectorXd twist(6);
+      twist << this->linear_velocity_, this->angular_velocity_;
+      return twist;
+    }
     case CartesianStateVariable::LINEAR_ACCELERATION:
-      return this->get_linear_acceleration();
-
+      return this->linear_acceleration_;
     case CartesianStateVariable::ANGULAR_ACCELERATION:
-      return this->get_angular_acceleration();
-
-    case CartesianStateVariable::ACCELERATION:
-      return this->get_acceleration();
-
+      return this->angular_acceleration_;
+    case CartesianStateVariable::ACCELERATION: {
+      Eigen::VectorXd acceleration(6);
+      acceleration << this->linear_acceleration_, this->angular_acceleration_;
+      return acceleration;
+    }
     case CartesianStateVariable::FORCE:
-      return this->get_force();
-
+      return this->force_;
     case CartesianStateVariable::TORQUE:
-      return this->get_torque();
-
-    case CartesianStateVariable::WRENCH:
-      return this->get_wrench();
-
-    case CartesianStateVariable::ALL:
+      return this->torque_;
+    case CartesianStateVariable::WRENCH: {
+      Eigen::VectorXd wrench(6);
+      wrench << this->force_, this->torque_;
+      return wrench;
+    }
+    case CartesianStateVariable::ALL: {
       Eigen::VectorXd all_fields(25);
-      all_fields << this->get_pose(), this->get_twist(), this->get_acceleration(), this->get_wrench();
+      all_fields
+          << this->position_, this->orientation_.w(), this->orientation_.x(), this->orientation_.y(), this->orientation_.z(), this->linear_velocity_, this->angular_velocity_, this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
       return all_fields;
+    }
   }
   // this never goes here but is compulsory to avoid a warning
-  return Eigen::Vector3d::Zero();
+  return {};
 }
 
 const Eigen::Vector3d& CartesianState::get_position() const {
@@ -106,15 +110,11 @@ const Eigen::Quaterniond& CartesianState::get_orientation() const {
 }
 
 Eigen::Vector4d CartesianState::get_orientation_coefficients() const {
-  return Eigen::Vector4d(
-      this->get_orientation().w(), this->get_orientation().x(), this->get_orientation().y(),
-      this->get_orientation().z());
+  return this->get_state_variable(CartesianStateVariable::ORIENTATION);
 }
 
 Eigen::Matrix<double, 7, 1> CartesianState::get_pose() const {
-  Eigen::Matrix<double, 7, 1> pose;
-  pose << this->get_position(), this->get_orientation_coefficients();
-  return pose;
+  return this->get_state_variable(CartesianStateVariable::POSE);
 }
 
 Eigen::Matrix4d CartesianState::get_transformation_matrix() const {
@@ -132,9 +132,7 @@ const Eigen::Vector3d& CartesianState::get_angular_velocity() const {
 }
 
 Eigen::Matrix<double, 6, 1> CartesianState::get_twist() const {
-  Eigen::Matrix<double, 6, 1> twist;
-  twist << this->get_linear_velocity(), this->get_angular_velocity();
-  return twist;
+  return this->get_state_variable(CartesianStateVariable::TWIST);
 }
 
 const Eigen::Vector3d& CartesianState::get_linear_acceleration() const {
@@ -146,9 +144,7 @@ const Eigen::Vector3d& CartesianState::get_angular_acceleration() const {
 }
 
 Eigen::Matrix<double, 6, 1> CartesianState::get_acceleration() const {
-  Eigen::Matrix<double, 6, 1> acceleration;
-  acceleration << this->get_linear_acceleration(), this->get_angular_acceleration();
-  return acceleration;
+  return this->get_state_variable(CartesianStateVariable::ACCELERATION);
 }
 
 const Eigen::Vector3d& CartesianState::get_force() const {
@@ -160,9 +156,7 @@ const Eigen::Vector3d& CartesianState::get_torque() const {
 }
 
 Eigen::Matrix<double, 6, 1> CartesianState::get_wrench() const {
-  Eigen::Matrix<double, 6, 1> wrench;
-  wrench << this->get_force(), this->get_torque();
-  return wrench;
+  return this->get_state_variable(CartesianStateVariable::WRENCH);
 }
 
 Eigen::VectorXd CartesianState::data() const {
@@ -175,7 +169,7 @@ Eigen::ArrayXd CartesianState::array() const {
 
 std::vector<double> CartesianState::to_std_vector() const {
   Eigen::VectorXd data = this->data();
-  return std::vector<double>(data.data(), data.data() + data.size());
+  return {data.data(), data.data() + data.size()};
 }
 
 void CartesianState::set_all_state_variables(const Eigen::VectorXd& new_values) {
