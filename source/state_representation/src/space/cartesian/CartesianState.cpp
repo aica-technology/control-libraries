@@ -7,6 +7,14 @@ namespace state_representation {
 
 using namespace exceptions;
 
+static Eigen::Vector4d quat2vec(const Eigen::Quaterniond quat) {
+  return {quat.w(), quat.x(), quat.y(), quat.z()};
+}
+
+static Eigen::Quaterniond vec2quat(const Eigen::Vector4d vec) {
+  return Eigen::Quaterniond(vec(0), vec(1), vec(2), vec(3)).normalized();
+}
+
 CartesianState::CartesianState() : SpatialState() {
   this->set_type(StateType::CARTESIAN_STATE);
   this->set_zero();
@@ -55,12 +63,10 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
     case CartesianStateVariable::POSITION:
       return this->position_;
     case CartesianStateVariable::ORIENTATION:
-      return Eigen::Vector4d(
-          this->orientation_.w(), this->orientation_.x(), this->orientation_.y(), this->orientation_.z());
+      return quat2vec(this->orientation_);
     case CartesianStateVariable::POSE: {
       Eigen::VectorXd pose(7);
-      pose << this->position_, this->orientation_.w(), this->orientation_.x(), this->orientation_.y(),
-              this->orientation_.z();
+      pose << this->position_, quat2vec(this->orientation_);
       return pose;
     }
     case CartesianStateVariable::LINEAR_VELOCITY:
@@ -92,8 +98,8 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
     }
     case CartesianStateVariable::ALL: {
       Eigen::VectorXd all_fields(25);
-      all_fields
-          << this->position_, this->orientation_.w(), this->orientation_.x(), this->orientation_.y(), this->orientation_.z(), this->linear_velocity_, this->angular_velocity_, this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
+      all_fields << this->position_, quat2vec(this->orientation_), this->linear_velocity_, this->angular_velocity_,
+                    this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
       return all_fields;
     }
   }
