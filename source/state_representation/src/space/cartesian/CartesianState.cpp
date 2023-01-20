@@ -15,6 +15,31 @@ static Eigen::Quaterniond vec2quat(const Eigen::Vector4d vec) {
   return Eigen::Quaterniond(vec(0), vec(1), vec(2), vec(3)).normalized();
 }
 
+static unsigned long get_state_variable_size(const CartesianStateVariable& state_variable_type) {
+  switch (state_variable_type) {
+    case CartesianStateVariable::POSITION:
+    case CartesianStateVariable::LINEAR_VELOCITY:
+    case CartesianStateVariable::ANGULAR_VELOCITY:
+    case CartesianStateVariable::LINEAR_ACCELERATION:
+    case CartesianStateVariable::ANGULAR_ACCELERATION:
+    case CartesianStateVariable::FORCE:
+    case CartesianStateVariable::TORQUE:
+      return 3;
+    case CartesianStateVariable::ORIENTATION:
+      return 4;
+    case CartesianStateVariable::TWIST:
+    case CartesianStateVariable::ACCELERATION:
+    case CartesianStateVariable::WRENCH:
+      return 6;
+    case CartesianStateVariable::POSE:
+      return 7;
+    case CartesianStateVariable::ALL:
+      return 25;
+    default:
+      return 0;
+  }
+}
+
 CartesianState::CartesianState() : SpatialState() {
   this->set_type(StateType::CARTESIAN_STATE);
   this->set_zero();
