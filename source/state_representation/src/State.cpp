@@ -17,8 +17,7 @@ State::State(const State& state) :
     type_(state.type_),
     name_(state.name_),
     empty_(state.empty_),
-    // FIXME: do we keep this or copy the timestamp too?
-    timestamp_(std::chrono::steady_clock::now()) {}
+    timestamp_(state.timestamp_) {}
 
 State& State::operator=(const State& state) {
   State tmp(state);
