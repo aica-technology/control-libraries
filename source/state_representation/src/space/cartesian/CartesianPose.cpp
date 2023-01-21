@@ -36,12 +36,11 @@ CartesianPose::CartesianPose(
   this->set_orientation(orientation);
 }
 
-CartesianPose::CartesianPose(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except position and orientation
-  this->set_type(StateType::CARTESIAN_POSE);
-  this->set_zero();
-  this->set_pose(state.get_pose());
-  this->set_empty(state.is_empty());
+CartesianPose::CartesianPose(const CartesianState& state) :
+    CartesianState(StateType::CARTESIAN_POSE, state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->set_pose(state.get_pose());
+  }
 }
 
 CartesianPose::CartesianPose(const CartesianPose& pose) : CartesianPose(static_cast<const CartesianState&>(pose)) {}

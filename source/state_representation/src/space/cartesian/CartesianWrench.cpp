@@ -27,12 +27,11 @@ CartesianWrench::CartesianWrench(
   this->set_wrench(wrench);
 }
 
-CartesianWrench::CartesianWrench(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except force and torque
-  this->set_type(StateType::CARTESIAN_WRENCH);
-  this->set_zero();
-  this->set_wrench(state.get_wrench());
-  this->set_empty(state.is_empty());
+CartesianWrench::CartesianWrench(const CartesianState& state) :
+    CartesianState(StateType::CARTESIAN_WRENCH, state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->set_wrench(state.get_wrench());
+  }
 }
 
 CartesianWrench::CartesianWrench(const CartesianWrench& wrench) :

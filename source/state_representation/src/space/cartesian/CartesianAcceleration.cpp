@@ -30,18 +30,18 @@ CartesianAcceleration::CartesianAcceleration(
   this->set_acceleration(acceleration);
 }
 
-CartesianAcceleration::CartesianAcceleration(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except linear and angular velocities
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
-  this->set_zero();
-  this->set_acceleration(state.get_acceleration());
-  this->set_empty(state.is_empty());
+CartesianAcceleration::CartesianAcceleration(const CartesianState& state) :
+    CartesianState(StateType::CARTESIAN_ACCELERATION, state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->set_acceleration(state.get_acceleration());
+  }
 }
 
 CartesianAcceleration::CartesianAcceleration(const CartesianAcceleration& acceleration) :
     CartesianAcceleration(static_cast<const CartesianState&>(acceleration)) {}
 
-CartesianAcceleration::CartesianAcceleration(const CartesianTwist& twist) : CartesianAcceleration(twist / std::chrono::seconds(1)) {}
+CartesianAcceleration::CartesianAcceleration(const CartesianTwist& twist) :
+    CartesianAcceleration(twist / std::chrono::seconds(1)) {}
 
 CartesianAcceleration CartesianAcceleration::Zero(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -152,7 +152,6 @@ CartesianTwist CartesianAcceleration::operator*(const std::chrono::nanoseconds& 
   twist.set_angular_velocity(period * this->get_angular_acceleration());
   return twist;
 }
-
 
 CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration) {
   return acceleration * dt;
