@@ -118,16 +118,14 @@ public:
 
 template<class StateT>
 Trajectory<StateT>::Trajectory():
-    State() {
-  this->set_type(StateType::TRAJECTORY);
+    State(StateType::TRAJECTORY) {
   this->initialize();
 }
 
 template<class StateT>
 Trajectory<StateT>::Trajectory(const std::string& name):
-    State(name),
+    State(StateType::TRAJECTORY, name),
     reference_frame_("") {
-  this->set_type(StateType::TRAJECTORY);
   this->initialize();
 }
 

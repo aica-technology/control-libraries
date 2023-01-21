@@ -17,12 +17,15 @@ class Shape : public State {
 private:
   CartesianState center_state_; ///< pose and potentially velocities and accelerations of the shape if moving
 
+protected:
+  explicit Shape(const StateType& type, const CartesianState& center_state = CartesianState());
+
 public:
   /**
    * @brief Constructor with a type
    * @param type the type of shape as a StateType
    */
-  explicit Shape(const StateType& type);
+  Shape();
 
   /**
    * @brief Constructor with name but empty state
@@ -30,7 +33,7 @@ public:
    * @param name name of the shape
    * @param reference_frame the reference frame in which the state is expressed
    */
-  explicit Shape(const StateType& type, const std::string& name, const std::string& reference_frame = "world");
+  explicit Shape(const std::string& name, const std::string& reference_frame = "world");
 
   /**
    * @brief Copy constructor from another shape
