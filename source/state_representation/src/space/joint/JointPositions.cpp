@@ -25,12 +25,11 @@ JointPositions::JointPositions(
   this->set_positions(positions);
 }
 
-JointPositions::JointPositions(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except positions
-  this->set_type(StateType::JOINT_POSITIONS);
-  this->set_zero();
-  this->set_positions(state.get_positions());
-  this->set_empty(state.is_empty());
+JointPositions::JointPositions(const JointState& state) :
+    JointState(StateType::JOINT_POSITIONS, state.get_name(), state.get_names()) {
+  if (state) {
+    this->set_positions(state.get_positions());
+  }
 }
 
 JointPositions::JointPositions(const JointPositions& positions) :

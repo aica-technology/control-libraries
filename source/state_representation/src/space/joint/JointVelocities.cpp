@@ -24,12 +24,11 @@ JointVelocities::JointVelocities(
   this->set_velocities(velocities);
 }
 
-JointVelocities::JointVelocities(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except velocities
-  this->set_type(StateType::JOINT_VELOCITIES);
-  this->set_zero();
-  this->set_velocities(state.get_velocities());
-  this->set_empty(state.is_empty());
+JointVelocities::JointVelocities(const JointState& state) :
+    JointState(StateType::JOINT_VELOCITIES, state.get_name(), state.get_names()) {
+  if (state) {
+    this->set_velocities(state.get_velocities());
+  }
 }
 
 JointVelocities::JointVelocities(const JointVelocities& velocities) :

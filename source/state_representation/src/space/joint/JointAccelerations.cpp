@@ -25,12 +25,11 @@ JointAccelerations::JointAccelerations(
   this->set_accelerations(accelerations);
 }
 
-JointAccelerations::JointAccelerations(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except accelerations
-  this->set_type(StateType::JOINT_ACCELERATIONS);
-  this->set_zero();
-  this->set_accelerations(state.get_accelerations());
-  this->set_empty(state.is_empty());
+JointAccelerations::JointAccelerations(const JointState& state) :
+    JointState(StateType::JOINT_ACCELERATIONS, state.get_name(), state.get_names()) {
+  if (state) {
+    this->set_accelerations(state.get_accelerations());
+  }
 }
 
 JointAccelerations::JointAccelerations(const JointAccelerations& accelerations) :
