@@ -54,16 +54,6 @@ Jacobian::Jacobian(const std::string& robot_name,
   this->set_data(data);
 }
 
-// TODO: make this default
-Jacobian::Jacobian(const Jacobian& jacobian) :
-    State(jacobian),
-    joint_names_(jacobian.joint_names_),
-    frame_(jacobian.frame_),
-    reference_frame_(jacobian.reference_frame_),
-    rows_(jacobian.rows_),
-    cols_(jacobian.cols_),
-    data_(jacobian.data_) {}
-
 Jacobian Jacobian::Random(const std::string& robot_name,
                           unsigned int nb_joints,
                           const std::string& frame,

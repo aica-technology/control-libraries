@@ -77,7 +77,7 @@ public:
   /**
    * @brief Copy constructor of a Jacobian
    */
-  Jacobian(const Jacobian& jacobian);
+  Jacobian(const Jacobian& jacobian) = default;
 
   /**
    * @brief Constructor for a random Jacobian
