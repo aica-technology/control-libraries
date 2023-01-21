@@ -4,28 +4,23 @@ namespace state_representation {
 
 using namespace exceptions;
 
-JointTorques::JointTorques() {
-  this->set_type(StateType::JOINT_TORQUES);
-}
+JointTorques::JointTorques() : JointState(StateType::JOINT_TORQUES) {}
 
-JointTorques::JointTorques(const std::string& robot_name, unsigned int nb_joints) : JointState(robot_name, nb_joints) {
-  this->set_type(StateType::JOINT_TORQUES);
-}
+JointTorques::JointTorques(const std::string& robot_name, unsigned int nb_joints) :
+    JointState(StateType::JOINT_TORQUES, robot_name, nb_joints) {}
 
 JointTorques::JointTorques(const std::string& robot_name, const Eigen::VectorXd& torques) :
-    JointState(robot_name, torques.size()) {
-  this->set_type(StateType::JOINT_TORQUES);
+    JointState(StateType::JOINT_TORQUES, robot_name, torques.size()) {
   this->set_torques(torques);
 }
 
 JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names) {
-  this->set_type(StateType::JOINT_TORQUES);
+    JointState(StateType::JOINT_TORQUES, robot_name, joint_names) {
 }
 
-JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names,
-                           const Eigen::VectorXd& torques) : JointState(robot_name, joint_names) {
-  this->set_type(StateType::JOINT_TORQUES);
+JointTorques::JointTorques(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& torques
+) : JointState(StateType::JOINT_TORQUES, robot_name, joint_names) {
   this->set_torques(torques);
 }
 
