@@ -38,10 +38,6 @@ const std::chrono::time_point<std::chrono::steady_clock>& State::get_timestamp()
   return this->timestamp_;
 }
 
-void State::set_type(const StateType& type) {
-  this->type_ = type;
-}
-
 void State::set_name(const std::string& name) {
   // FIXME: should we prohibit empty names?
   this->name_ = name;

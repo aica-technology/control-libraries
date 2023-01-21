@@ -149,11 +149,6 @@ public:
 
 protected:
   /**
-   * @brief Setter of the state type attribute
-   */
-  void set_type(const StateType& type);
-
-  /**
    * @brief Setter of the empty attribute
    * @param empty Flag to specify if the state should be empty or not, default true
    */
