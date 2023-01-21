@@ -149,13 +149,20 @@ public:
 
 protected:
   /**
+   * @brief Constructor with type and name specification (for derived classes)
+   * @param type The type of the state
+   * @param name The name of the state, default is empty
+   */
+  State(const StateType& type, const std::string& name = "");
+
+  /**
    * @brief Setter of the empty attribute
    * @param empty Flag to specify if the state should be empty or not, default true
    */
   void set_empty(bool empty = true);
 
 private:
-  const StateType type_;                                              ///< type of the State
+  const StateType type_;                                        ///< type of the State
   std::string name_;                                            ///< name of the state
   bool empty_;                                                  ///< indicate if the state is empty
   std::chrono::time_point<std::chrono::steady_clock> timestamp_;///< time since last modification made to the state

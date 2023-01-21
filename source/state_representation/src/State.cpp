@@ -8,8 +8,12 @@ State::State() : type_(StateType::STATE), empty_(true), timestamp_(std::chrono::
 State::State(const std::string& name) :
     type_(StateType::STATE), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
+State::State(const StateType& type, const std::string& name) :
+    type_(type), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
+
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),
+    // FIXME: should the type be STATE and empty = true?
     type_(state.type_),
     name_(state.name_),
     empty_(state.empty_),
