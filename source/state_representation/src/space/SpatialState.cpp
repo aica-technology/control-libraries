@@ -4,14 +4,13 @@
 
 namespace state_representation {
 
-SpatialState::SpatialState() : State(), reference_frame_("world") {
-  this->set_type(StateType::SPATIAL_STATE);
-}
+SpatialState::SpatialState() : State(StateType::SPATIAL_STATE), reference_frame_("world") {}
 
 SpatialState::SpatialState(const std::string& name, const std::string& reference_frame) :
-    State(name), reference_frame_(reference_frame) {
-  this->set_type(StateType::SPATIAL_STATE);
-}
+    State(StateType::SPATIAL_STATE, name), reference_frame_(reference_frame) {}
+
+SpatialState::SpatialState(const StateType& type, const std::string& name, const std::string& reference_frame) :
+    State(type, name), reference_frame_(reference_frame) {}
 
 SpatialState& SpatialState::operator=(const SpatialState& state) {
   SpatialState tmp(state);
