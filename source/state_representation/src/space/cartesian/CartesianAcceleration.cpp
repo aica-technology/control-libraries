@@ -5,35 +5,28 @@ using namespace state_representation::exceptions;
 
 namespace state_representation {
 
-CartesianAcceleration::CartesianAcceleration() {
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
-}
+CartesianAcceleration::CartesianAcceleration() : CartesianState(StateType::CARTESIAN_ACCELERATION) {}
 
 CartesianAcceleration::CartesianAcceleration(const std::string& name, const std::string& reference) :
-    CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
-}
+    CartesianState(StateType::CARTESIAN_ACCELERATION, name, reference) {}
 
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Vector3d& linear_acceleration, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
+) : CartesianState(StateType::CARTESIAN_ACCELERATION, name, reference) {
   this->set_linear_acceleration(linear_acceleration);
 }
 
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Vector3d& linear_acceleration, const Eigen::Vector3d& angular_acceleration,
     const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
+) : CartesianState(StateType::CARTESIAN_ACCELERATION, name, reference) {
   this->set_linear_acceleration(linear_acceleration);
   this->set_angular_acceleration(angular_acceleration);
 }
 
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Matrix<double, 6, 1>& acceleration, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_ACCELERATION);
+) : CartesianState(StateType::CARTESIAN_ACCELERATION, name, reference) {
   this->set_acceleration(acceleration);
 }
 
