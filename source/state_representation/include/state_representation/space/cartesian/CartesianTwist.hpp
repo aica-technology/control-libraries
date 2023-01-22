@@ -55,9 +55,9 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianTwist& twist) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  friend CartesianState& operator*=(const CartesianState& state, const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
