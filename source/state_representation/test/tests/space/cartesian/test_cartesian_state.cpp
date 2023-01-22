@@ -520,6 +520,81 @@ TEST(CartesianStateTest, Truthiness) {
   EXPECT_TRUE(empty);
 }
 
+TEST(CartesianStateTest, TestMultiplicationOperators) {
+  CartesianState state = CartesianState::Random("world");
+  CartesianPose pose = CartesianPose::Random("world");
+  CartesianTwist twist = CartesianTwist::Random("world");
+  CartesianAcceleration acc = CartesianAcceleration::Random("world");
+  CartesianWrench wrench = CartesianWrench::Random("world");
+
+  auto r1 = state * state;
+  EXPECT_TRUE(r1.get_type() == StateType::CARTESIAN_STATE);
+  auto r2 = state * pose;
+  EXPECT_TRUE(r2.get_type() == StateType::CARTESIAN_POSE);
+  auto r3 = state * twist;
+  EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_TWIST);
+  auto r4 = state * acc;
+  EXPECT_TRUE(r4.get_type() == StateType::CARTESIAN_ACCELERATION);
+  auto r5 = state * wrench;
+  EXPECT_TRUE(r5.get_type() == StateType::CARTESIAN_WRENCH);
+  auto r6 = pose * state;
+  EXPECT_TRUE(r6.get_type() == StateType::CARTESIAN_STATE);
+  auto r7 = pose * pose;
+  EXPECT_TRUE(r7.get_type() == StateType::CARTESIAN_POSE);
+  auto r8 = pose * twist;
+  EXPECT_TRUE(r8.get_type() == StateType::CARTESIAN_TWIST);
+  auto r9 = pose * acc;
+  EXPECT_TRUE(r9.get_type() == StateType::CARTESIAN_ACCELERATION);
+  auto r10 = pose * wrench;
+  EXPECT_TRUE(r10.get_type() == StateType::CARTESIAN_WRENCH);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+//  auto r11 = twist * state;
+//  auto r12 = twist * pose;
+//  auto r13 = twist * twist;
+//  auto r14 = twist * acc;
+//  auto r15 = twist * wrench;
+//  auto r21 = acc * state;
+//  auto r22 = acc * pose;
+//  auto r23 = acc * twist;
+//  auto r24 = acc * acc;
+//  auto r25 = acc * wrench;
+//  auto r16 = wrench * state;
+//  auto r17 = wrench * pose;
+//  auto r18 = wrench * twist;
+//  auto r19 = wrench * acc;
+//  auto r20 = wrench * wrench;
+
+  state *= state;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+//  state *= pose;
+//  state *= twist;
+//  state *= acc;
+//  state *= wrench;
+//  pose *= state;
+  pose *= pose;
+  EXPECT_TRUE(pose.get_type() == StateType::CARTESIAN_POSE);
+//  pose *= twist;
+//  pose *= acc;
+//  pose *= wrench;
+//  twist *= state;
+//  twist *= pose;
+//  twist *= twist;
+//  twist *= acc;
+//  twist *= wrench;
+//  acc *= state;
+//  acc *= pose;
+//  acc *= twist;
+//  acc *= acc;
+//  acc *= wrench;
+//  wrench *= state;
+//  wrench *= pose;
+//  wrench *= twist;
+//  wrench *= acc;
+//  wrench *= wrench;
+}
+
 TEST(CartesianStateTest, TestAdditionOperators) {
   CartesianState state = CartesianState::Random("test");
   CartesianPose pose = CartesianPose::Random("test");
