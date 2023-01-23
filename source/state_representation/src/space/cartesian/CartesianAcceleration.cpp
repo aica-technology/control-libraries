@@ -179,8 +179,17 @@ CartesianAcceleration& CartesianAcceleration::operator+=(const CartesianAccelera
   return (*this);
 }
 
+CartesianAcceleration& CartesianAcceleration::operator+=(const CartesianState& state) {
+  this->CartesianState::operator+=(state);
+  return (*this);
+}
+
 CartesianAcceleration CartesianAcceleration::operator+(const CartesianAcceleration& acceleration) const {
   return this->CartesianState::operator+(acceleration);
+}
+
+CartesianState CartesianAcceleration::operator+(const CartesianState& state) const {
+  return this->CartesianState::operator+(state);
 }
 
 CartesianAcceleration& CartesianAcceleration::operator-=(const CartesianAcceleration& acceleration) {

@@ -53,6 +53,12 @@ public:
   void set_wrench(const std::vector<double>& wrench) = delete;
   CartesianState operator*=(const CartesianState& state) = delete;
   friend CartesianState operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator+=(const CartesianWrench& wrench) = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator+(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -287,18 +293,32 @@ public:
   CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the += operator
-   * @param pose The Cartesian pose to add to
-   * @return The current Cartesian pose added the Cartesian pose given in argument
+   * @brief Add inplace another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The reference to the combined Cartesian pose
    */
   CartesianPose& operator+=(const CartesianPose& pose);
 
   /**
-   * @brief Overload the + operator with a pose
-   * @param pose The Cartesian pose to add to
-   * @return the current Cartesian pose added the Cartesian pose given in argument
+   * @brief Add inplace another pose from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian pose
+   */
+  CartesianPose& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The combined Cartesian pose
    */
   CartesianPose operator+(const CartesianPose& pose) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator
