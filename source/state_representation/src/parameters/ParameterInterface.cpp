@@ -6,10 +6,14 @@ ParameterInterface::ParameterInterface(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type
 ) : State(StateType::PARAMETER, name), parameter_type_(type), parameter_state_type_(parameter_state_type) {}
 
-ParameterInterface::ParameterInterface(const ParameterInterface& parameter) :
-    State(StateType::PARAMETER, parameter.get_name()),
-    parameter_type_(parameter.get_parameter_type()),
-    parameter_state_type_(parameter.get_parameter_state_type()) {}
+//ParameterInterface::ParameterInterface(const ParameterInterface& parameter) :
+//    State(StateType::PARAMETER, parameter.get_name()),
+//    parameter_type_(parameter.get_parameter_type()),
+//    parameter_state_type_(parameter.get_parameter_state_type()) {
+//  if (parameter) {
+//    this->set_empty(false);
+//  }
+//}
 
 ParameterInterface& ParameterInterface::operator=(const ParameterInterface& state) {
   State::operator=(state);

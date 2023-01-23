@@ -84,8 +84,11 @@ public:
 
 template<typename T>
 template<typename U>
-Parameter<T>::Parameter(const Parameter<U>& parameter) :
-    Parameter<T>(parameter.get_name(), static_cast<T>(parameter.get_value())) {}
+Parameter<T>::Parameter(const Parameter<U>& parameter) :    Parameter<T>(parameter.get_name()) {
+  if (parameter) {
+    this->set_value(static_cast<T>(parameter.get_value()));
+  }
+}
 
 template<typename T>
 template<typename U>
