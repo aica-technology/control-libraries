@@ -487,16 +487,16 @@ public:
   CartesianState operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param state The Cartesian state to add
-   * @return The current Cartesian state added with the Cartesian state given in argument
+   * @brief Add inplace another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian state
    */
   CartesianState& operator+=(const CartesianState& state);
 
   /**
-   * @brief Overload the + operator
-   * @param state The Cartesian state to add
-   * @return The current Cartesian state added with the Cartesian state given in argument
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
    */
   CartesianState operator+(const CartesianState& state) const;
 

@@ -22,6 +22,7 @@ Release Versions:
 - Move helpers to source file (#21)
 - Fix inverse operation in CartesianState (#32)
 - Set state type in copy constructors (#34)
+- Refactor addition operators in CartesianState (#23)
 
 ## 6.3.1
 

@@ -3,11 +3,13 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
 
 class CartesianPose;
 class CartesianAcceleration;
+class CartesianWrench;
 
 /**
  * @class CartesianTwist
@@ -56,6 +58,12 @@ public:
   CartesianState operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) = delete;
   friend CartesianState operator*=(const CartesianState& state, const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator+=(const CartesianWrench& wrench) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator+(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -279,18 +287,32 @@ public:
   CartesianAcceleration operator/(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the += operator
-   * @param twist The Cartesian twist to add to
-   * @return The current Cartesian twist added the Cartesian twist given in argument
+   * @brief Add inplace another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The reference to the combined Cartesian twist
    */
   CartesianTwist& operator+=(const CartesianTwist& twist);
 
   /**
-   * @brief Overload the + operator with a twist
-   * @param twist The Cartesian twist to add to
-   * @return The current Cartesian twist added the Cartesian twist given in argument
+   * @brief Add inplace another twist from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian twist
+   */
+  CartesianTwist& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The combined Cartesian twist
    */
   CartesianTwist operator+(const CartesianTwist& twist) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator
