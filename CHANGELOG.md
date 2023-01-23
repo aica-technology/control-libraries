@@ -29,6 +29,7 @@ Release Versions:
 - Refactor get/set variable helpers in Cartesian and joint state (#39, #57)
 - Uniformly sample orientation with UnitRandom (#56)
 - Add a Contributor License Agreement (#61)
+- Refactor addition operators in CartesianState (#23)
 
 ## 6.3.1
 
