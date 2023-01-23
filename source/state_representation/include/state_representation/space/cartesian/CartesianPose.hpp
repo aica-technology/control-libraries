@@ -293,30 +293,30 @@ public:
   CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the += operator
-   * @param pose The Cartesian pose to add to
-   * @return The current Cartesian pose added the Cartesian pose given in argument
+   * @brief Add inplace another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The reference to the combined Cartesian pose
    */
   CartesianPose& operator+=(const CartesianPose& pose);
 
   /**
-   * @brief Overload the += operator with a state
-   * @param state The Cartesian state to add to
-   * @return The current Cartesian pose added the Cartesian state given in argument
+   * @brief Add inplace another pose from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian pose
    */
   CartesianPose& operator+=(const CartesianState& state);
 
   /**
-   * @brief Overload the + operator with a pose
-   * @param pose The Cartesian pose to add to
-   * @return the current Cartesian pose added the Cartesian pose given in argument
+   * @brief Add another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The combined Cartesian pose
    */
   CartesianPose operator+(const CartesianPose& pose) const;
 
   /**
-   * @brief Overload the + operator with a state
-   * @param state The Cartesian state to add to
-   * @return the current Cartesian pose added the Cartesian state given in argument
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
    */
   CartesianState operator+(const CartesianState& state) const;
 

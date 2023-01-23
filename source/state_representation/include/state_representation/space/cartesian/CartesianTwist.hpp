@@ -287,30 +287,30 @@ public:
   CartesianAcceleration operator/(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the += operator
-   * @param twist The Cartesian twist to add to
-   * @return The current Cartesian twist added the Cartesian twist given in argument
+   * @brief Add inplace another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The reference to the combined Cartesian twist
    */
   CartesianTwist& operator+=(const CartesianTwist& twist);
 
   /**
-   * @brief Overload the += operator with a state
-   * @param state The Cartesian state to add to
-   * @return The current Cartesian twist added the Cartesian state given in argument
+   * @brief Add inplace another twist from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian twist
    */
   CartesianTwist& operator+=(const CartesianState& state);
 
   /**
-   * @brief Overload the + operator with a twist
-   * @param twist The Cartesian twist to add to
-   * @return The current Cartesian twist added the Cartesian twist given in argument
+   * @brief Add another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The combined Cartesian twist
    */
   CartesianTwist operator+(const CartesianTwist& twist) const;
 
   /**
-   * @brief Overload the + operator with a state
-   * @param state The Cartesian state to add to
-   * @return the current Cartesian pose added the Cartesian state given in argument
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
    */
   CartesianState operator+(const CartesianState& state) const;
 

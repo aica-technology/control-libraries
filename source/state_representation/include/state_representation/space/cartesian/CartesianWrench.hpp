@@ -240,30 +240,30 @@ public:
   CartesianWrench operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param wrench The Cartesian wrench to add
-   * @return The current Cartesian wrench added the Cartesian wrench given in argument
+   * @brief Add inplace another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The reference to the combined Cartesian wrench
    */
   CartesianWrench& operator+=(const CartesianWrench& wrench);
 
   /**
-   * @brief Overload the += operator with a state
-   * @param state The Cartesian state to add to
-   * @return The current Cartesian wrench added the Cartesian state given in argument
+   * @brief Add inplace another wrench from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian wrench
    */
   CartesianWrench& operator+=(const CartesianState& state);
 
   /**
-   * @brief Overload the + operator
-   * @param wrench The Cartesian wrench to add
-   * @return The current Cartesian wrench added the Cartesian wrench given in argument
+   * @brief Add another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The combined Cartesian wrench
    */
   CartesianWrench operator+(const CartesianWrench& wrench) const;
 
   /**
-   * @brief Overload the + operator with a state
-   * @param state The Cartesian state to add to
-   * @return the current Cartesian pose added the Cartesian state given in argument
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
    */
   CartesianState operator+(const CartesianState& state) const;
 

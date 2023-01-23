@@ -276,30 +276,30 @@ public:
   CartesianAcceleration operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   * @brief Add inplace another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The reference to the combined Cartesian acceleration
    */
   CartesianAcceleration& operator+=(const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the += operator with a state
-   * @param state The Cartesian state to add to
-   * @return The current Cartesian acceleration added the Cartesian state given in argument
+   * @brief Add inplace another acceleration from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian accleration
    */
   CartesianAcceleration& operator+=(const CartesianState& state);
 
   /**
-   * @brief Overload the + operator with an acceleration
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   * @brief Add another Cartesian accleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The combined Cartesian acceleration
    */
   CartesianAcceleration operator+(const CartesianAcceleration& acceleration) const;
 
   /**
-   * @brief Overload the + operator with a state
-   * @param state The Cartesian state to add to
-   * @return the current Cartesian pose added the Cartesian state given in argument
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
    */
   CartesianState operator+(const CartesianState& state) const;
 
