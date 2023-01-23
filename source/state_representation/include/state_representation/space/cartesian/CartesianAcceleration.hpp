@@ -1,11 +1,15 @@
 #pragma once
 
 #include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
 
+class CartesianPose;
 class CartesianTwist;
+class CartesianWrench;
 
 /**
  * @class CartesianAcceleration
@@ -54,6 +58,12 @@ public:
   CartesianState operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) = delete;
   friend CartesianState operator*=(const CartesianState& state, const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianWrench& wrench) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -266,18 +276,32 @@ public:
   CartesianAcceleration operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   * @brief Add inplace another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The reference to the combined Cartesian acceleration
    */
   CartesianAcceleration& operator+=(const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the + operator with an acceleration
-   * @param acceleration The Cartesian acceleration to add to
-   * @return The current Cartesian acceleration added the Cartesian acceleration given in argument
+   * @brief Add inplace another acceleration from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian accleration
+   */
+  CartesianAcceleration& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian accleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The combined Cartesian acceleration
    */
   CartesianAcceleration operator+(const CartesianAcceleration& acceleration) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator

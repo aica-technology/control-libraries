@@ -24,6 +24,7 @@ Release Versions:
 - Set state type in copy constructors (#34)
 - Remove state type from clproto (#47)
 - Add forward force parameter to Impedance controller (#36)
+- Refactor addition operators in CartesianState (#23)
 
 ## 6.3.1
 

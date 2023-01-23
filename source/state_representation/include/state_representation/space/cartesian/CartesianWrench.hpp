@@ -3,11 +3,14 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 
 namespace state_representation {
 
 class CartesianPose;
 class CartesianTwist;
+class CartesianAcceleration;
+
 /**
  * @class CartesianWrench
  * @brief Class to define wrench in Cartesian space as 3D force and torque vectors
@@ -55,6 +58,12 @@ public:
   CartesianState operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) = delete;
   friend CartesianState operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
 
   /**
    * @brief Empty constructor
@@ -231,18 +240,32 @@ public:
   CartesianWrench operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param wrench The Cartesian wrench to add
-   * @return The current Cartesian wrench added the Cartesian wrench given in argument
+   * @brief Add inplace another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The reference to the combined Cartesian wrench
    */
   CartesianWrench& operator+=(const CartesianWrench& wrench);
 
   /**
-   * @brief Overload the + operator
-   * @param wrench The Cartesian wrench to add
-   * @return The current Cartesian wrench added the Cartesian wrench given in argument
+   * @brief Add inplace another wrench from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian wrench
+   */
+  CartesianWrench& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The combined Cartesian wrench
    */
   CartesianWrench operator+(const CartesianWrench& wrench) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
 
   /**
    * @brief Overload the -= operator
