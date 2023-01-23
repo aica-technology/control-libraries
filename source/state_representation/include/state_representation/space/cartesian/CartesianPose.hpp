@@ -314,7 +314,7 @@ public:
   CartesianPose operator+(const CartesianPose& pose) const;
 
   /**
-   * @brief Overload the + operator with a state, needed to remove ambiguous operators otherwise
+   * @brief Overload the + operator with a state
    * @param state The Cartesian state to add to
    * @return the current Cartesian pose added the Cartesian state given in argument
    */
