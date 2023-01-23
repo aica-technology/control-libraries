@@ -110,10 +110,6 @@ std::vector<double> CartesianAcceleration::norms(const CartesianStateVariable& s
   return CartesianState::norms(state_variable_type);
 }
 
-CartesianAcceleration operator*(const CartesianState& state, const CartesianAcceleration& acceleration) {
-  return state.operator*(acceleration);
-}
-
 CartesianAcceleration& CartesianAcceleration::operator*=(double lambda) {
   this->CartesianState::operator*=(lambda);
   return (*this);

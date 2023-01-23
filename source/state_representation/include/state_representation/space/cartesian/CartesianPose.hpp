@@ -51,8 +51,9 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState& operator*=(const CartesianState& state) = delete;
-  friend CartesianState& operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
+  CartesianPose& operator*=(const CartesianTwist& twist) = delete;
+  CartesianPose& operator*=(const CartesianAcceleration& acceleration) = delete;
+  CartesianPose& operator*=(const CartesianWrench& wrench) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
@@ -195,6 +196,13 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
 
   /**
+   * @brief Overload the *= operator with a state
+   * @param state Cartesian state to multiply with
+   * @return the Cartesian state multiplied with the current Cartesian pose
+   */
+  CartesianPose& operator*=(const CartesianState& state);
+
+  /**
    * @brief Overload the *= operator
    * @param pose Cartesian pose to multiply with
    * @return the Cartesian pose multiplied with the current Cartesian pose
@@ -203,17 +211,17 @@ public:
 
   /**
    * @brief Overload the * operator
-   * @param pose CartesianPose to multiply with
-   * @return the Cartesian pose multiplied with the current Cartesian pose
-   */
-  CartesianPose operator*(const CartesianPose& pose) const;
-
-  /**
-   * @brief Overload the * operator
    * @param state Cartesian state to multiply with
    * @return the Cartesian state multiplied with the current Cartesian pose
    */
   CartesianState operator*(const CartesianState& state) const;
+
+  /**
+   * @brief Overload the * operator
+   * @param pose CartesianPose to multiply with
+   * @return the Cartesian pose multiplied with the current Cartesian pose
+   */
+  CartesianPose operator*(const CartesianPose& pose) const;
 
   /**
    * @brief Overload the * operator
@@ -256,13 +264,6 @@ public:
    * @return The vector multiplied by the current Cartesian pose
    */
   Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian pose provided multiplied by the state
-   */
-  friend CartesianPose operator*(const CartesianState& state, const CartesianPose& pose);
 
   /**
    * @brief Overload the * operator with a scalar

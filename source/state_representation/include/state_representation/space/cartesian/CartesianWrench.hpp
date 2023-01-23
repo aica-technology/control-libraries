@@ -57,7 +57,6 @@ public:
   void set_acceleration(const std::vector<double>& acceleration) = delete;
   CartesianState& operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) const = delete;
-  friend CartesianState& operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
@@ -196,13 +195,6 @@ public:
    */
   std::vector<double>
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const override;
-
-  /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian wrench provided multiplied by the state
-   */
-  friend CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wrench);
 
   /**
    * @brief Overload the *= operator with a scalar

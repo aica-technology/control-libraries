@@ -527,16 +527,19 @@ TEST(CartesianStateTest, TestMultiplicationOperators) {
   CartesianAcceleration acc = CartesianAcceleration::Random("world");
   CartesianWrench wrench = CartesianWrench::Random("world");
 
+  // CartesianState multiplied with any derived stays a CartesianState
   auto r1 = state * state;
   EXPECT_TRUE(r1.get_type() == StateType::CARTESIAN_STATE);
   auto r2 = state * pose;
-  EXPECT_TRUE(r2.get_type() == StateType::CARTESIAN_POSE);
+  EXPECT_TRUE(r2.get_type() == StateType::CARTESIAN_STATE);
   auto r3 = state * twist;
-  EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_TWIST);
+  EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_STATE);
   auto r4 = state * acc;
-  EXPECT_TRUE(r4.get_type() == StateType::CARTESIAN_ACCELERATION);
+  EXPECT_TRUE(r4.get_type() == StateType::CARTESIAN_STATE);
   auto r5 = state * wrench;
-  EXPECT_TRUE(r5.get_type() == StateType::CARTESIAN_WRENCH);
+  EXPECT_TRUE(r5.get_type() == StateType::CARTESIAN_STATE);
+
+  // CartesianPose multiplied with any derived type is defined by the right hand type
   auto r6 = pose * state;
   EXPECT_TRUE(r6.get_type() == StateType::CARTESIAN_STATE);
   auto r7 = pose * pose;
@@ -550,49 +553,58 @@ TEST(CartesianStateTest, TestMultiplicationOperators) {
 
   // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
 
-//  auto r11 = twist * state;
-//  auto r12 = twist * pose;
-//  auto r13 = twist * twist;
-//  auto r14 = twist * acc;
-//  auto r15 = twist * wrench;
-//  auto r21 = acc * state;
-//  auto r22 = acc * pose;
-//  auto r23 = acc * twist;
-//  auto r24 = acc * acc;
-//  auto r25 = acc * wrench;
-//  auto r16 = wrench * state;
-//  auto r17 = wrench * pose;
-//  auto r18 = wrench * twist;
-//  auto r19 = wrench * acc;
-//  auto r20 = wrench * wrench;
+  //auto r11 = twist * state;
+  //auto r12 = twist * pose;
+  //auto r13 = twist * twist;
+  //auto r14 = twist * acc;
+  //auto r15 = twist * wrench;
+  //auto r21 = acc * state;
+  //auto r22 = acc * pose;
+  //auto r23 = acc * twist;
+  //auto r24 = acc * acc;
+  //auto r25 = acc * wrench;
+  //auto r16 = wrench * state;
+  //auto r17 = wrench * pose;
+  //auto r18 = wrench * twist;
+  //auto r19 = wrench * acc;
+  //auto r20 = wrench * wrench;
 
   state *= state;
   EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
-//  state *= pose;
-//  state *= twist;
-//  state *= acc;
-//  state *= wrench;
-//  pose *= state;
+  state *= pose;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state *= twist;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state *= acc;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state *= wrench;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+
+  pose *= state;
+  EXPECT_TRUE(pose.get_type() == StateType::CARTESIAN_POSE);
   pose *= pose;
   EXPECT_TRUE(pose.get_type() == StateType::CARTESIAN_POSE);
-//  pose *= twist;
-//  pose *= acc;
-//  pose *= wrench;
-//  twist *= state;
-//  twist *= pose;
-//  twist *= twist;
-//  twist *= acc;
-//  twist *= wrench;
-//  acc *= state;
-//  acc *= pose;
-//  acc *= twist;
-//  acc *= acc;
-//  acc *= wrench;
-//  wrench *= state;
-//  wrench *= pose;
-//  wrench *= twist;
-//  wrench *= acc;
-//  wrench *= wrench;
+  //pose *= twist;
+  //pose *= acc;
+  //pose *= wrench;
+
+  //twist *= state;
+  //twist *= pose;
+  //twist *= twist;
+  //twist *= acc;
+  //twist *= wrench;
+
+  //acc *= state;
+  //acc *= pose;
+  //acc *= twist;
+  //acc *= acc;
+  //acc *= wrench;
+
+  //wrench *= state;
+  //wrench *= pose;
+  //wrench *= twist;
+  //wrench *= acc;
+  //wrench *= wrench;
 }
 
 TEST(CartesianStateTest, TestAdditionOperators) {
