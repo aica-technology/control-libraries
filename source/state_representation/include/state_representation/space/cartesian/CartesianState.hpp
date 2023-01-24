@@ -481,6 +481,13 @@ public:
   friend CartesianState operator*(double lambda, const CartesianState& state);
 
   /**
+   * @brief Transform a vector into the state reference frame
+   * @param vector A position vector
+   * @return The transformed vector expressed in the state reference frame
+   */
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
+
+  /**
    * @brief Overload the /= operator with a scalar
    * @param lambda The scalar to divide with
    * @return The Cartesian state divided by lambda

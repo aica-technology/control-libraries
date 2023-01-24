@@ -57,6 +57,7 @@ public:
   void set_wrench(const std::vector<double>& wrench) = delete;
   CartesianState& operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;

@@ -135,10 +135,6 @@ CartesianPose CartesianPose::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
 }
 
-Eigen::Vector3d CartesianPose::operator*(const Eigen::Vector3d& vector) const {
-  return this->get_orientation() * vector + this->get_position();
-}
-
 CartesianPose operator*(double lambda, const CartesianPose& pose) {
   return pose * lambda;
 }
