@@ -204,52 +204,57 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const override;
 
   /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian acceleration
    */
   CartesianAcceleration& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale a Cartesian acceleration by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian acceleration
    */
   CartesianAcceleration operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration provided multiplied by lambda
+   * @brief Scale a Cartesian acceleration by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param acceleration The Cartesian acceleration to be scaled
+   * @return The scaled Cartesian acceleration
    */
   friend CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the *= operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale all dimensions inplace by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @return The reference to the scaled Cartesian acceleration
    */
   CartesianAcceleration& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
 
   /**
-   * @brief Overload the * operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian acceleration provided multiplied by lambda
+   * @brief Scale a Cartesian acceleration in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param acceleration The Cartesian acceleration to be scaled
+   * @return The scaled Cartesian acceleration
    */
   friend CartesianAcceleration
   operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian twist corresponding to the twist over the time period
+   * @brief Integrate over a time period
+   * @param dt The time period used for integration
+   * @return The integrated Cartesian twist
    */
   CartesianTwist operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian twist corresponding to the velocity over the time period
+   * @brief Integrate over a time period
+   * @param dt The time period used for integration
+   * @return The integrated Cartesian twist
    */
   friend CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration);
 
