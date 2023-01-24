@@ -1,4 +1,5 @@
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
+#include "state_representation/exceptions/EmptyStateException.hpp"
 
 namespace state_representation {
 
@@ -114,6 +115,23 @@ CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wr
 
 CartesianWrench CartesianWrench::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
+}
+
+CartesianWrench& CartesianWrench::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
+  // sanity check
+  if (this->is_empty()) {
+    throw EmptyStateException(this->get_name() + " state is empty");
+  }
+  // operation
+  this->set_force(lambda.block<3, 3>(0, 0) * this->get_force());
+  this->set_torque(lambda.block<3, 3>(3, 3) * this->get_torque());
+  return (*this);
+}
+
+CartesianWrench operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench) {
+  CartesianWrench result(wrench);
+  result *= lambda;
+  return result;
 }
 
 CartesianWrench& CartesianWrench::operator/=(double lambda) {
