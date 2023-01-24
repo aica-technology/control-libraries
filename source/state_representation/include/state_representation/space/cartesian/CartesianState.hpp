@@ -438,37 +438,45 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ALL) const;
 
   /**
-   * @brief Overload the *= operator with another state by deriving the equations of motions
-   * @param state The state to compose with corresponding to b_S_c
-   * @return The Cartesian state corresponding f_S_c = f_S_b * b_S_c (assuming this is f_S_b)
+   * @brief Transform inplace a Cartesian state into the current reference frame
+   * @details: For a state A expressed in reference frame W multiplied with a state B expressed in reference frame A,
+   * the result of the transformation is a state B expressed in reference frame W.
+   * @param state A Cartesian state expressed in the current state frame
+   * @return The transformed state expressed in the original reference frame
    */
   CartesianState& operator*=(const CartesianState& state);
 
   /**
-   * @brief Overload the * operator with another state by deriving the equations of motions
-   * @param state The state to compose with corresponding to b_S_c
-   * @return The Cartesian state corresponding f_S_c = f_S_b * b_S_c (assuming this is f_S_b)
+   * @brief Transform a Cartesian state into the left operand state reference frame
+   * @details: For a state A expressed in reference frame W multiplied with a state B expressed in reference frame A,
+   * the result of the transformation is a state B expressed in reference frame W.
+   * @param state A Cartesian state expressed in the left operand frame
+   * @return The transformed state expressed in the left operand reference frame
    */
   CartesianState operator*(const CartesianState& state) const;
 
   /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian state multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @details: All state variables in all their dimensions are scaled by the same factor.
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian state
    */
   CartesianState& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian state multiplied by lambda
+   * @brief Scale a Cartesian pose by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian pose
    */
   CartesianState operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian state provided multiplied by lambda
+   * @brief Scale a Cartesian state by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param state The Cartesian state to be scaled
+   * @return The scaled Cartesian state
    */
   friend CartesianState operator*(double lambda, const CartesianState& state);
 
