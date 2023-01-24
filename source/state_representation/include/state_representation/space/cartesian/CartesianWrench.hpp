@@ -197,23 +197,27 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const override;
 
   /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian wrench
    */
   CartesianWrench& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench multiplied by lambda
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian wrench
    */
   CartesianWrench operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench provided multiplied by lambda
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param wrench The Cartesian wrench to be scaled
+   * @return The scaled Cartesian wrench
    */
   friend CartesianWrench operator*(double lambda, const CartesianWrench& wrench);
 
