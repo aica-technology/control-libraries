@@ -284,12 +284,12 @@ public:
   /**
    * @brief Add inplace another acceleration from a Cartesian state
    * @param state A Cartesian state in the same reference frame
-   * @return The reference to the combined Cartesian accleration
+   * @return The reference to the combined Cartesian acceleration
    */
   CartesianAcceleration& operator+=(const CartesianState& state);
 
   /**
-   * @brief Add another Cartesian accleration
+   * @brief Add another Cartesian acceleration
    * @param acceleration A Cartesian acceleration in the same reference frame
    * @return The combined Cartesian acceleration
    */
