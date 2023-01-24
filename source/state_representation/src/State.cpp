@@ -8,13 +8,16 @@ State::State() : type_(StateType::STATE), empty_(true), timestamp_(std::chrono::
 State::State(const std::string& name) :
     type_(StateType::STATE), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
+State::State(const StateType& type, const std::string& name) :
+    type_(type), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
+
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),
+    // FIXME: should the type be STATE and empty = true?
     type_(state.type_),
     name_(state.name_),
     empty_(state.empty_),
-    // FIXME: do we keep this or copy the timestamp too?
-    timestamp_(std::chrono::steady_clock::now()) {}
+    timestamp_(state.timestamp_) {}
 
 State& State::operator=(const State& state) {
   State tmp(state);
@@ -36,10 +39,6 @@ bool State::is_empty() const {
 
 const std::chrono::time_point<std::chrono::steady_clock>& State::get_timestamp() const {
   return this->timestamp_;
-}
-
-void State::set_type(const StateType& type) {
-  this->type_ = type;
 }
 
 void State::set_name(const std::string& name) {

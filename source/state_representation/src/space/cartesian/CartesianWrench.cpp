@@ -4,42 +4,34 @@ namespace state_representation {
 
 using namespace exceptions;
 
-CartesianWrench::CartesianWrench() {
-  this->set_type(StateType::CARTESIAN_WRENCH);
-}
+CartesianWrench::CartesianWrench() : CartesianState(StateType::CARTESIAN_WRENCH) {}
 
 CartesianWrench::CartesianWrench(const std::string& name, const std::string& reference) :
-    CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_WRENCH);
-}
+    CartesianState(StateType::CARTESIAN_WRENCH, name, reference) {}
 
 CartesianWrench::CartesianWrench(const std::string& name, const Eigen::Vector3d& force, const std::string& reference) :
-    CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_WRENCH);
+    CartesianState(StateType::CARTESIAN_WRENCH, name, reference) {
   this->set_force(force);
 }
 
 CartesianWrench::CartesianWrench(
     const std::string& name, const Eigen::Vector3d& force, const Eigen::Vector3d& torque, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_WRENCH);
+) : CartesianState(StateType::CARTESIAN_WRENCH, name, reference) {
   this->set_force(force);
   this->set_torque(torque);
 }
 
 CartesianWrench::CartesianWrench(
     const std::string& name, const Eigen::Matrix<double, 6, 1>& wrench, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_WRENCH);
+) : CartesianState(StateType::CARTESIAN_WRENCH, name, reference) {
   this->set_wrench(wrench);
 }
 
-CartesianWrench::CartesianWrench(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except force and torque
-  this->set_type(StateType::CARTESIAN_WRENCH);
-  this->set_zero();
-  this->set_wrench(state.get_wrench());
-  this->set_empty(state.is_empty());
+CartesianWrench::CartesianWrench(const CartesianState& state) :
+    CartesianState(StateType::CARTESIAN_WRENCH, state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->set_wrench(state.get_wrench());
+  }
 }
 
 CartesianWrench::CartesianWrench(const CartesianWrench& wrench) :

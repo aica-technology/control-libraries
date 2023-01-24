@@ -5,44 +5,36 @@ namespace state_representation {
 
 using namespace exceptions;
 
-CartesianTwist::CartesianTwist() {
-  this->set_type(StateType::CARTESIAN_TWIST);
-}
+CartesianTwist::CartesianTwist() : CartesianState(StateType::CARTESIAN_TWIST) {}
 
 CartesianTwist::CartesianTwist(const std::string& name, const std::string& reference) :
-    CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_TWIST);
-}
+    CartesianState(StateType::CARTESIAN_TWIST, name, reference) {}
 
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Vector3d& linear_velocity, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_TWIST);
+) : CartesianState(StateType::CARTESIAN_TWIST, name, reference) {
   this->set_linear_velocity(linear_velocity);
 }
 
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Vector3d& linear_velocity, const Eigen::Vector3d& angular_velocity,
     const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_TWIST);
+) : CartesianState(StateType::CARTESIAN_TWIST, name, reference) {
   this->set_linear_velocity(linear_velocity);
   this->set_angular_velocity(angular_velocity);
 }
 
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Matrix<double, 6, 1>& twist, const std::string& reference
-) : CartesianState(name, reference) {
-  this->set_type(StateType::CARTESIAN_TWIST);
+) : CartesianState(StateType::CARTESIAN_TWIST, name, reference) {
   this->set_twist(twist);
 }
 
-CartesianTwist::CartesianTwist(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except linear and angular velocities
-  this->set_type(StateType::CARTESIAN_TWIST);
-  this->set_zero();
-  this->set_twist(state.get_twist());
-  this->set_empty(state.is_empty());
+CartesianTwist::CartesianTwist(const CartesianState& state) :
+    CartesianState(StateType::CARTESIAN_TWIST, state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->set_twist(state.get_twist());
+  }
 }
 
 CartesianTwist::CartesianTwist(const CartesianTwist& twist) :

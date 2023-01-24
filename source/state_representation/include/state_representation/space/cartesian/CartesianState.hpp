@@ -50,7 +50,7 @@ public:
   /**
    * @brief Empty constructor
    */
-  explicit CartesianState();
+  CartesianState();
 
   /**
    * @brief Constructor with name and reference frame provided
@@ -523,6 +523,16 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const CartesianState& state);
 
 protected:
+  /**
+   * @brief Constructor with type, name and reference frame specification (for derived classes)
+   * @param type The type of the state
+   * @param name The name of the state
+   * @param reference_frame The reference frame in which the state is expressed, by default world
+   */
+  explicit CartesianState(
+      const StateType& type, const std::string& name = "", const std::string& reference_frame = "world"
+  );
+
   /**
    * @brief Getter of the variable value corresponding to the input
    * @param state_variable_type The type of variable to get

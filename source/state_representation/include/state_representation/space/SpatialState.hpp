@@ -61,6 +61,17 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const SpatialState& state);
 
+protected:
+  /**
+   * @brief Constructor with type, name and reference frame specification (for derived classes)
+   * @param type The type of the state
+   * @param name The name of the state
+   * @param reference_frame The reference frame in which the state is expressed
+   */
+  explicit SpatialState(
+      const StateType& type, const std::string& name = "", const std::string& reference_frame = "world"
+  );
+
 private:
   std::string reference_frame_; ///< name of the reference frame
 };

@@ -6,38 +6,30 @@ namespace state_representation {
 
 using namespace exceptions;
 
-JointAccelerations::JointAccelerations() {
-  this->set_type(StateType::JOINT_ACCELERATIONS);
-}
+JointAccelerations::JointAccelerations() : JointState(StateType::JOINT_ACCELERATIONS) {}
 
 JointAccelerations::JointAccelerations(const std::string& robot_name, unsigned int nb_joints) :
-    JointState(robot_name, nb_joints) {
-  this->set_type(StateType::JOINT_ACCELERATIONS);
-}
+    JointState(StateType::JOINT_ACCELERATIONS, robot_name, nb_joints) {}
 
 JointAccelerations::JointAccelerations(const std::string& robot_name, const Eigen::VectorXd& accelerations) :
-    JointState(robot_name, accelerations.size()) {
-  this->set_type(StateType::JOINT_ACCELERATIONS);
+    JointState(StateType::JOINT_ACCELERATIONS, robot_name, accelerations.size()) {
   this->set_accelerations(accelerations);
 }
 
 JointAccelerations::JointAccelerations(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names) {
-  this->set_type(StateType::JOINT_ACCELERATIONS);}
+    JointState(StateType::JOINT_ACCELERATIONS, robot_name, joint_names) {}
 
-JointAccelerations::JointAccelerations(const std::string& robot_name,
-                                       const std::vector<std::string>& joint_names,
-                                       const Eigen::VectorXd& accelerations) : JointState(robot_name, joint_names) {
-  this->set_type(StateType::JOINT_ACCELERATIONS);
+JointAccelerations::JointAccelerations(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& accelerations
+) : JointState(StateType::JOINT_ACCELERATIONS, robot_name, joint_names) {
   this->set_accelerations(accelerations);
 }
 
-JointAccelerations::JointAccelerations(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except accelerations
-  this->set_type(StateType::JOINT_ACCELERATIONS);
-  this->set_zero();
-  this->set_accelerations(state.get_accelerations());
-  this->set_empty(state.is_empty());
+JointAccelerations::JointAccelerations(const JointState& state) :
+    JointState(StateType::JOINT_ACCELERATIONS, state.get_name(), state.get_names()) {
+  if (state) {
+    this->set_accelerations(state.get_accelerations());
+  }
 }
 
 JointAccelerations::JointAccelerations(const JointAccelerations& accelerations) :
@@ -103,7 +95,6 @@ JointAccelerations JointAccelerations::copy() const {
   return result;
 }
 
-
 JointAccelerations& JointAccelerations::operator*=(double lambda) {
   this->JointState::operator*=(lambda);
   return (*this);
@@ -164,7 +155,6 @@ JointVelocities JointAccelerations::operator*(const std::chrono::nanoseconds& dt
   velocities.set_velocities(period * this->get_accelerations());
   return velocities;
 }
-
 
 JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations) {
   return accelerations * dt;

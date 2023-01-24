@@ -51,7 +51,7 @@ public:
    * @param robot_name The name of the associated robot
    * @param joint_names List of joint names
    */
-  explicit JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
+  JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
    * @brief Copy constructor of a joint state
@@ -556,6 +556,22 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const JointState& state);
 
 protected:
+  /**
+   * @brief Constructor with type, name and number of joints provided
+   * @param type The type of the state
+   * @param robot_name The name of the associated robot
+   * @param nb_joints The number of joints for initialization
+   */
+  explicit JointState(const StateType& type, const std::string& robot_name = "", unsigned int nb_joints = 0);
+
+  /**
+   * @brief Constructor with type, name and list of joints names provided
+   * @param type The type of the state
+   * @param robot_name The name of the associated robot
+   * @param joint_names List of joint names
+   */
+  JointState(const StateType& type, const std::string& robot_name, const std::vector<std::string>& joint_names);
+
   /**
    * @brief Proxy function that multiply the specified state variable by an array of gain
    * @param lambda The gain array to multiply with

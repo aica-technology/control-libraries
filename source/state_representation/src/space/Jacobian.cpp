@@ -8,21 +8,18 @@ namespace state_representation {
 
 using namespace exceptions;
 
-Jacobian::Jacobian() : State() {
-  this->set_type(StateType::JACOBIAN);
-}
+Jacobian::Jacobian() : State(StateType::JACOBIAN) {}
 
 Jacobian::Jacobian(const std::string& robot_name,
                    unsigned int nb_joints,
                    const std::string& frame,
                    const std::string& reference_frame) :
-    State(robot_name),
+    State(StateType::JACOBIAN, robot_name),
     joint_names_(nb_joints),
     frame_(frame),
     reference_frame_(reference_frame),
     rows_(6),
     cols_(nb_joints) {
-  this->set_type(StateType::JACOBIAN);
   this->set_joint_names(nb_joints);
   this->initialize();
 }
@@ -31,13 +28,12 @@ Jacobian::Jacobian(const std::string& robot_name,
                    const std::vector<std::string>& joint_names,
                    const std::string& frame,
                    const std::string& reference_frame) :
-    State(robot_name),
+    State(StateType::JACOBIAN, robot_name),
     joint_names_(joint_names),
     frame_(frame),
     reference_frame_(reference_frame),
     rows_(6),
     cols_(joint_names.size()) {
-  this->set_type(StateType::JACOBIAN);
   this->initialize();
 }
 
@@ -57,16 +53,6 @@ Jacobian::Jacobian(const std::string& robot_name,
     Jacobian(robot_name, joint_names, frame, reference_frame) {
   this->set_data(data);
 }
-
-// TODO: make this default
-Jacobian::Jacobian(const Jacobian& jacobian) :
-    State(jacobian),
-    joint_names_(jacobian.joint_names_),
-    frame_(jacobian.frame_),
-    reference_frame_(jacobian.reference_frame_),
-    rows_(jacobian.rows_),
-    cols_(jacobian.cols_),
-    data_(jacobian.data_) {}
 
 Jacobian Jacobian::Random(const std::string& robot_name,
                           unsigned int nb_joints,
