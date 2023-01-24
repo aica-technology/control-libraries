@@ -245,16 +245,17 @@ public:
   operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Integrate over a time period
+   * @brief Integrate a Cartesian acceleration over a time period
    * @param dt The time period used for integration
-   * @return The integrated Cartesian twist
+   * @return The resulting Cartesian twist after integration
    */
   CartesianTwist operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Integrate over a time period
+   * @brief Integrate a Cartesian acceleration over a time period
    * @param dt The time period used for integration
-   * @return The integrated Cartesian twist
+   * @param acceleration The Cartesian acceleration to be integrated
+   * @return The resulting Cartesian twist after integration
    */
   friend CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration);
 
