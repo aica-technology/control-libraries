@@ -531,29 +531,24 @@ CartesianState CartesianState::inverse() const {
   Eigen::Vector3d inverse_position = inverse_orientation * (-this->get_position());
   Eigen::Vector3d inverse_angular_velocity = inverse_orientation * (-this->get_angular_velocity());
   Eigen::Vector3d inverse_linear_velocity = inverse_orientation * (-this->get_linear_velocity());
-  inverse_linear_velocity += inverse_angular_velocity.cross(inverse_position);
+  inverse_linear_velocity += inverse_angular_velocity.cross(inverse_position); // radially induced velocity
 
-  // intermediate variables for a_S_b
-  Eigen::Vector3d a_acc_b = this->get_linear_acceleration();
-  Eigen::Vector3d a_alpha_b = this->get_angular_acceleration();
-  Eigen::Vector3d a_F_b = this->get_force();
-  Eigen::Vector3d a_T_b = this->get_torque();
-
-  Eigen::Vector3d
-      b_acc_a = inverse_orientation * a_acc_b;     // TODO: wrong, must account for angular velocity and acceleration
-  Eigen::Vector3d b_alpha_a = inverse_orientation * a_alpha_b; // TODO: wrong, must account for angular velocity
-  Eigen::Vector3d b_F_a = inverse_orientation * (-a_F_b);
-  Eigen::Vector3d b_T_a = inverse_orientation * (-a_T_b);      // TODO: wrong, must account for force
+  Eigen::Vector3d inverse_angular_acceleration = inverse_orientation * (-this->get_angular_acceleration());
+  Eigen::Vector3d inverse_linear_acceleration = inverse_orientation * (-this->get_linear_acceleration());
+  inverse_linear_acceleration += inverse_angular_acceleration.cross(inverse_position); // Euler acceleration
+  inverse_linear_acceleration += 2 * inverse_angular_velocity.cross(inverse_linear_velocity); // Coriolis acceleration
+  inverse_linear_acceleration -=
+      inverse_angular_velocity.cross(inverse_angular_velocity.cross(inverse_position)); // centrifugal acceleration
 
   // collect the results
   inverse.set_position(inverse_position);
   inverse.set_orientation(inverse_orientation);
   inverse.set_linear_velocity(inverse_linear_velocity);
   inverse.set_angular_velocity(inverse_angular_velocity);
-  inverse.set_linear_acceleration(b_acc_a);
-  inverse.set_angular_acceleration(b_alpha_a);
-  inverse.set_force(b_F_a);
-  inverse.set_torque(b_T_a);
+  inverse.set_linear_acceleration(inverse_linear_acceleration);
+  inverse.set_angular_acceleration(inverse_angular_acceleration);
+  // TODO(#30): wrench inverse
+
   return inverse;
 }
 

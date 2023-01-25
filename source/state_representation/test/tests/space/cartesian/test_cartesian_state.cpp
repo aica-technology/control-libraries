@@ -426,6 +426,7 @@ TEST(CartesianStateTest, Distance) {
 TEST(CartesianStateTest, Inverse) {
   auto a_state_b = CartesianState::Random("B", "A");
   auto b_state_a = a_state_b.inverse();
+
   // frame of reference should be flipped
   EXPECT_STREQ(b_state_a.get_name().c_str(), a_state_b.get_reference_frame().c_str());
   EXPECT_STREQ(b_state_a.get_reference_frame().c_str(), a_state_b.get_name().c_str());
@@ -437,10 +438,10 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(expect_null.get_pose().norm(), 1, 1e-5);
   EXPECT_NEAR(expect_null.get_linear_velocity().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
+  EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
+  EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
 
-  // TODO(#30): fix transform of acceleration and wrench
-//  EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
-//  EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
+  // TODO(#30): wrench inverse and transform
 //  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
 //  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
 
@@ -612,6 +613,78 @@ TEST(CartesianStateTest, InverseMovingFrame) {
   EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), w.x());
   EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), w.y());
   EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), w.z());
+}
+
+TEST(CartesianStateTest, InverseAcceleratingFrame) {
+  auto state = CartesianState::Identity("test");
+  auto random = CartesianState::Random("random");
+
+  // with no initial pose or twist, the inverse acceleration is simply negated
+  state.set_acceleration(random.get_acceleration());
+  auto inverse = state.inverse();
+  EXPECT_EQ(inverse.get_linear_acceleration().x(), -state.get_linear_acceleration().x());
+  EXPECT_EQ(inverse.get_linear_acceleration().y(), -state.get_linear_acceleration().y());
+  EXPECT_EQ(inverse.get_linear_acceleration().z(), -state.get_linear_acceleration().z());
+  EXPECT_EQ(inverse.get_angular_acceleration().x(), -state.get_angular_acceleration().x());
+  EXPECT_EQ(inverse.get_angular_acceleration().y(), -state.get_angular_acceleration().y());
+  EXPECT_EQ(inverse.get_angular_acceleration().z(), -state.get_angular_acceleration().z());
+
+  // if there is only an orientation offset, the inverse acceleration is negated and rotated
+  state.set_orientation(random.get_orientation());
+  inverse = state.inverse();
+  Eigen::Vector3d av = state.get_orientation().conjugate() * (-state.get_linear_acceleration());
+  Eigen::Vector3d aw = state.get_orientation().conjugate() * (-state.get_angular_acceleration());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().x(), av.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().y(), av.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().x(), aw.x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().y(), aw.y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().z(), aw.z());
+
+  // for any state, the inverse angular acceleration depends only on the orientation
+  state.set_data(random.data());
+  inverse = state.inverse();
+  aw = state.get_orientation().conjugate() * (-state.get_angular_acceleration());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().x(), aw.x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().y(), aw.y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_acceleration().z(), aw.z());
+
+  // the inverse linear acceleration depends on position, orientation, linear velocity, angular velocity and angular acceleration.
+  // for the following tests, the base linear acceleration is set to zero to look only at the additional terms.
+  state.set_linear_acceleration(0, 0, 0);
+
+  // if there is position offset and angular acceleration, the additional inverse linear acceleration is the Euler acceleration,
+  // the cross product of the inverted angular acceleration and distance
+  state.set_orientation(1, 0, 0, 0);
+  state.set_linear_velocity(0, 0, 0);
+  state.set_angular_velocity(0, 0, 0);
+  state.set_angular_acceleration(random.get_angular_acceleration());
+  inverse = state.inverse();
+  av = inverse.get_angular_acceleration().cross(inverse.get_position());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().x(), av.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().y(), av.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
+
+  // if there is only twist and no pose offset, the additional inverse linear acceleration is the Coriolis acceleration,
+  // twice the cross product of the inverted angular and linear velocity
+  state.set_position(0, 0, 0);
+  state.set_orientation(1, 0, 0, 0);
+  state.set_twist(random.get_twist());
+  state.set_angular_acceleration(0, 0, 0);
+  inverse = state.inverse();
+  av = 2 * (inverse.get_angular_velocity()).cross(inverse.get_linear_velocity());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().x(), av.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().y(), av.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
+
+  // if there is twist and position offset, the additional inverse linear acceleration is the centrifugal acceleration
+  state.set_position(random.get_position());
+  inverse = state.inverse();
+  av = 2 * (inverse.get_angular_velocity()).cross(inverse.get_linear_velocity()); // Coriolis
+  av += -inverse.get_angular_velocity().cross(inverse.get_angular_velocity().cross(inverse.get_position())); // centrifugal
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().x(), av.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().y(), av.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
 }
 
 TEST(CartesianStateTest, Addition) {
