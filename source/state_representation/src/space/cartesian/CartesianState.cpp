@@ -521,35 +521,40 @@ void CartesianState::initialize() {
 }
 
 CartesianState CartesianState::inverse() const {
-  CartesianState result(*this);
-  // inverse name and reference frame
-  std::string ref = result.get_reference_frame();
-  result.set_reference_frame(result.get_name());
-  result.set_name(ref);
-  // intermediate variables for f_S_b
-  Eigen::Vector3d f_P_b = this->get_position();
-  Eigen::Quaterniond f_R_b = this->get_orientation();
-  Eigen::Vector3d f_v_b = this->get_linear_velocity();
-  Eigen::Vector3d f_omega_b = this->get_angular_velocity();
-  Eigen::Vector3d f_a_b = this->get_linear_acceleration();
-  Eigen::Vector3d f_alpha_b = this->get_angular_acceleration();
-  // computation for b_S_f
-  Eigen::Quaterniond b_R_f = f_R_b.conjugate();
-  Eigen::Vector3d b_P_f = b_R_f * (-f_P_b);
-  Eigen::Vector3d b_v_f = b_R_f * (-f_v_b);
-  Eigen::Vector3d b_omega_f = b_R_f * (-f_omega_b);
-  Eigen::Vector3d b_a_f = b_R_f * f_a_b;        // not sure if minus is needed
-  Eigen::Vector3d b_alpha_f = b_R_f * f_alpha_b;// no minus for sure
-  // wrench
-  //TODO
+  CartesianState inverse(*this);
+  // invert name and reference frame
+  std::string ref = inverse.get_reference_frame();
+  inverse.set_reference_frame(inverse.get_name());
+  inverse.set_name(ref);
+
+  Eigen::Quaterniond inverse_orientation = this->get_orientation().conjugate();
+  Eigen::Vector3d inverse_position = inverse_orientation * (-this->get_position());
+  Eigen::Vector3d inverse_angular_velocity = inverse_orientation * (-this->get_angular_velocity());
+  Eigen::Vector3d inverse_linear_velocity = inverse_orientation * (-this->get_linear_velocity());
+  inverse_linear_velocity += inverse_angular_velocity.cross(inverse_position);
+
+  // intermediate variables for a_S_b
+  Eigen::Vector3d a_acc_b = this->get_linear_acceleration();
+  Eigen::Vector3d a_alpha_b = this->get_angular_acceleration();
+  Eigen::Vector3d a_F_b = this->get_force();
+  Eigen::Vector3d a_T_b = this->get_torque();
+
+  Eigen::Vector3d
+      b_acc_a = inverse_orientation * a_acc_b;     // TODO: wrong, must account for angular velocity and acceleration
+  Eigen::Vector3d b_alpha_a = inverse_orientation * a_alpha_b; // TODO: wrong, must account for angular velocity
+  Eigen::Vector3d b_F_a = inverse_orientation * (-a_F_b);
+  Eigen::Vector3d b_T_a = inverse_orientation * (-a_T_b);      // TODO: wrong, must account for force
+
   // collect the results
-  result.set_position(b_P_f);
-  result.set_orientation(b_R_f);
-  result.set_linear_velocity(b_v_f);
-  result.set_angular_velocity(b_omega_f);
-  result.set_linear_acceleration(b_a_f);
-  result.set_angular_acceleration(b_alpha_f);
-  return result;
+  inverse.set_position(inverse_position);
+  inverse.set_orientation(inverse_orientation);
+  inverse.set_linear_velocity(inverse_linear_velocity);
+  inverse.set_angular_velocity(inverse_angular_velocity);
+  inverse.set_linear_acceleration(b_acc_a);
+  inverse.set_angular_acceleration(b_alpha_a);
+  inverse.set_force(b_F_a);
+  inverse.set_torque(b_T_a);
+  return inverse;
 }
 
 void CartesianState::normalize(const CartesianStateVariable& state_variable_type) {
@@ -657,9 +662,9 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   Eigen::Vector3d f_alpha_b = this->get_angular_acceleration();
   // intermediate variables for b_S_c
   Eigen::Vector3d b_P_c = state.get_position();
-  Eigen::Quaterniond b_R_c =
-      (this->get_orientation().dot(state.get_orientation()) > 0) ? state.get_orientation() : Eigen::Quaterniond(
-          -state.get_orientation().coeffs());
+  Eigen::Quaterniond
+      b_R_c = (this->get_orientation().dot(state.get_orientation()) > 0) ? state.get_orientation() : Eigen::Quaterniond(
+      -state.get_orientation().coeffs());
   Eigen::Vector3d b_v_c = state.get_linear_velocity();
   Eigen::Vector3d b_omega_c = state.get_angular_velocity();
   Eigen::Vector3d b_a_c = state.get_linear_acceleration();

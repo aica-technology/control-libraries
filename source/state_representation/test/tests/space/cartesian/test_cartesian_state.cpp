@@ -424,7 +424,194 @@ TEST(CartesianStateTest, Distance) {
 }
 
 TEST(CartesianStateTest, Inverse) {
-  // TODO
+  auto a_state_b = CartesianState::Random("B", "A");
+  auto b_state_a = a_state_b.inverse();
+  // frame of reference should be flipped
+  EXPECT_STREQ(b_state_a.get_name().c_str(), a_state_b.get_reference_frame().c_str());
+  EXPECT_STREQ(b_state_a.get_reference_frame().c_str(), a_state_b.get_name().c_str());
+
+  // the product of a state and its inverse should result in an identity / zero state
+  auto expect_null = a_state_b * b_state_a;
+  EXPECT_STREQ(expect_null.get_name().c_str(), expect_null.get_reference_frame().c_str());
+  EXPECT_STREQ(expect_null.get_name().c_str(), a_state_b.get_reference_frame().c_str());
+  EXPECT_NEAR(expect_null.get_pose().norm(), 1, 1e-5);
+  EXPECT_NEAR(expect_null.get_linear_velocity().norm(), 0, 1e-5);
+  EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
+
+  // TODO(#30): fix transform of acceleration and wrench
+//  EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
+//  EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
+//  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
+//  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
+
+  // TODO(#30): conservation of power must hold
+//  auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
+//  auto power_inverse = b_state_a.get_twist().transpose() * b_state_a.get_wrench();
+//  EXPECT_NEAR(power, power_inverse, 1e-5);
+}
+
+TEST(CartesianStateTest, InverseStaticFrame) {
+  auto state = CartesianState::Identity("test");
+  auto random = CartesianState::Random("random");
+
+  // with null orientation, the inverse position is simply negated
+  state.set_position(random.get_position());
+  auto inverse = state.inverse();
+  EXPECT_EQ(inverse.get_position().x(), -state.get_position().x());
+  EXPECT_EQ(inverse.get_position().y(), -state.get_position().y());
+  EXPECT_EQ(inverse.get_position().z(), -state.get_position().z());
+
+  // with some orientation, the inverse position is negated and rotated
+  // apply a 90-degree rotation around X
+  state.set_orientation(0.707, 0.707, 0.0, 0.0);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_position().x(), -state.get_position().x());
+  EXPECT_FLOAT_EQ(inverse.get_position().y(), -state.get_position().z());
+  EXPECT_FLOAT_EQ(inverse.get_position().z(), state.get_position().y());
+  EXPECT_NEAR((state * state.inverse()).get_pose().norm(), 1, 1e-5);
+
+  // apply a 90-degree rotation around Y
+  state.set_orientation(0.707, 0.0, 0.707, 0.0);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_position().x(), state.get_position().z());
+  EXPECT_FLOAT_EQ(inverse.get_position().y(), -state.get_position().y());
+  EXPECT_FLOAT_EQ(inverse.get_position().z(), -state.get_position().x());
+
+  // apply a 90-degree rotation around Z
+  state.set_orientation(0.707, 0.0, 0.0, 0.707);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_position().x(), -state.get_position().y());
+  EXPECT_FLOAT_EQ(inverse.get_position().y(), state.get_position().x());
+  EXPECT_FLOAT_EQ(inverse.get_position().z(), -state.get_position().z());
+
+  // for any pose, the inverse orientation is simply the conjugate
+  state.set_pose(random.get_pose());
+  inverse = state.inverse();
+  Eigen::Quaterniond q = state.get_orientation().conjugate();
+  EXPECT_FLOAT_EQ(inverse.get_orientation().w(), q.w());
+  EXPECT_FLOAT_EQ(inverse.get_orientation().x(), q.x());
+  EXPECT_FLOAT_EQ(inverse.get_orientation().y(), q.y());
+  EXPECT_FLOAT_EQ(inverse.get_orientation().z(), q.z());
+
+  // this can also be checked by the product of their rotation matrices, which yields the identity matrix
+  auto r = state.get_orientation().toRotationMatrix() * inverse.get_orientation().toRotationMatrix();
+  EXPECT_FLOAT_EQ(r.diagonal().sum(), 3);
+
+  // for any pose, the inverse position is negated and rotated by the conjugate orientation
+  Eigen::Vector3d p = q * state.get_position();
+  EXPECT_FLOAT_EQ(inverse.get_position().x(), -p.x());
+  EXPECT_FLOAT_EQ(inverse.get_position().y(), -p.y());
+  EXPECT_FLOAT_EQ(inverse.get_position().z(), -p.z());
+}
+
+TEST(CartesianStateTest, InverseMovingFrame) {
+  auto state = CartesianState::Identity("test");
+  auto random = CartesianState::Random("random");
+
+  // with no pose offset, the twist is simply negated
+  state.set_twist(random.get_twist());
+  auto inverse = state.inverse();
+  EXPECT_EQ(inverse.get_linear_velocity().x(), -state.get_linear_velocity().x());
+  EXPECT_EQ(inverse.get_linear_velocity().y(), -state.get_linear_velocity().y());
+  EXPECT_EQ(inverse.get_linear_velocity().z(), -state.get_linear_velocity().z());
+  EXPECT_EQ(inverse.get_angular_velocity().x(), -state.get_angular_velocity().x());
+  EXPECT_EQ(inverse.get_angular_velocity().y(), -state.get_angular_velocity().y());
+  EXPECT_EQ(inverse.get_angular_velocity().z(), -state.get_angular_velocity().z());
+
+  // with no orientation offset, the inverse angular velocity is always the negative for any position or linear velocity
+  state.set_position(random.get_position());
+  inverse = state.inverse();
+  EXPECT_EQ(inverse.get_angular_velocity().x(), -state.get_angular_velocity().x());
+  EXPECT_EQ(inverse.get_angular_velocity().y(), -state.get_angular_velocity().y());
+  EXPECT_EQ(inverse.get_angular_velocity().z(), -state.get_angular_velocity().z());
+
+  // with no orientation offset, the inverse linear velocity is affected by the position offset and angular velocity
+  // according to the cross product of the pose and angular velocity vectors
+  state.set_position(1, 0, 0);
+  inverse = state.inverse();
+  EXPECT_EQ(inverse.get_linear_velocity().x(), -state.get_linear_velocity().x());
+  EXPECT_EQ(inverse.get_linear_velocity().y(),
+            -state.get_linear_velocity().y() + state.get_angular_velocity().z() * state.get_position().x());
+  EXPECT_EQ(inverse.get_linear_velocity().z(),
+            -state.get_linear_velocity().z() - state.get_angular_velocity().y() * state.get_position().x());
+
+  state.set_position(0, 1, 0);
+  inverse = state.inverse();
+  EXPECT_EQ(inverse.get_linear_velocity().x(),
+            -state.get_linear_velocity().x() - state.get_angular_velocity().z() * state.get_position().y());
+  EXPECT_EQ(inverse.get_linear_velocity().y(), -state.get_linear_velocity().y());
+  EXPECT_EQ(inverse.get_linear_velocity().z(),
+            -state.get_linear_velocity().z() + state.get_angular_velocity().x() * state.get_position().y());
+
+  state.set_position(0, 0, 1);
+  inverse = state.inverse();
+  EXPECT_EQ(inverse.get_linear_velocity().x(),
+            -state.get_linear_velocity().x() + state.get_angular_velocity().y() * state.get_position().z());
+  EXPECT_EQ(inverse.get_linear_velocity().y(),
+            -state.get_linear_velocity().y() - state.get_angular_velocity().x() * state.get_position().z());
+  EXPECT_EQ(inverse.get_linear_velocity().z(), -state.get_linear_velocity().z());
+
+  // general case with any position and no orientation offset
+  state.set_position(random.get_position());
+  inverse = state.inverse();
+  Eigen::Vector3d v = -state.get_linear_velocity() + state.get_angular_velocity().cross(state.get_position());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().x(), v.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().y(), v.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().z(), v.z());
+
+  // with orientation offset and no position offset, the linear and angular velocities are simply negated and rotated
+  state.set_position(0, 0, 0);
+  state.set_linear_velocity(0, 0, 0);
+  state.set_angular_velocity(10, 20, 30);
+
+  // apply a 90-degree rotation around X
+  state.set_orientation(0.707, 0.707, 0.0, 0.0);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), -state.get_angular_velocity().x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), -state.get_angular_velocity().z());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), state.get_angular_velocity().y());
+
+  // apply a 90-degree rotation around Y
+  state.set_orientation(0.707, 0.0, 0.707, 0.0);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), state.get_angular_velocity().z());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), -state.get_angular_velocity().y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), -state.get_angular_velocity().x());
+
+  // apply a 90-degree rotation around Z
+  state.set_orientation(0.707, 0.0, 0.0, 0.707);
+  inverse = state.inverse();
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), -state.get_angular_velocity().y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), state.get_angular_velocity().x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), -state.get_angular_velocity().z());
+
+  // general case with any orientation and no position offset
+  state.set_orientation(random.get_orientation());
+  state.set_twist(random.get_twist());
+  inverse = state.inverse();
+  v = state.get_orientation().conjugate() * (-state.get_linear_velocity());
+  Eigen::Vector3d w = state.get_orientation().conjugate() * (-state.get_angular_velocity());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().x(), v.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().y(), v.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().z(), v.z());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), w.x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), w.y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), w.z());
+
+  // in the general case for any pose and twist, the inverse angular velocity is simply negated and rotated, while the
+  // inverse linear velocity is negated, rotated and offset by the cross product of the angular velocity and pose.
+  state.set_pose(random.get_pose());
+  state.set_twist(random.get_twist());
+  inverse = state.inverse();
+  v = state.get_orientation().conjugate() * (-state.get_linear_velocity());
+  w = state.get_orientation().conjugate() * (-state.get_angular_velocity());
+  v += w.cross(inverse.get_position());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().x(), v.x());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().y(), v.y());
+  EXPECT_FLOAT_EQ(inverse.get_linear_velocity().z(), v.z());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().x(), w.x());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().y(), w.y());
+  EXPECT_FLOAT_EQ(inverse.get_angular_velocity().z(), w.z());
 }
 
 TEST(CartesianStateTest, Addition) {
