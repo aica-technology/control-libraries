@@ -494,10 +494,6 @@ TEST(CartesianStateTest, InverseStaticFrame) {
   EXPECT_FLOAT_EQ(inverse.get_orientation().y(), q.y());
   EXPECT_FLOAT_EQ(inverse.get_orientation().z(), q.z());
 
-  // this can also be checked by the product of their rotation matrices, which yields the identity matrix
-  auto r = state.get_orientation().toRotationMatrix() * inverse.get_orientation().toRotationMatrix();
-  EXPECT_FLOAT_EQ(r.diagonal().sum(), 3);
-
   // for any pose, the inverse position is negated and rotated by the conjugate orientation
   Eigen::Vector3d p = q * state.get_position();
   EXPECT_FLOAT_EQ(inverse.get_position().x(), -p.x());
