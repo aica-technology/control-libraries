@@ -29,7 +29,7 @@ public:
    * @brief Copy constructor
    * @param parameter The parameter to copy
    */
-  ParameterInterface(const ParameterInterface& parameter) = default;
+  ParameterInterface(const ParameterInterface& parameter);
 
   /**
    * @brief Default virtual destructor

@@ -6,41 +6,49 @@ using namespace state_representation::exceptions;
 
 namespace state_representation {
 
-CartesianPose::CartesianPose() : CartesianState(StateType::CARTESIAN_POSE) {}
+CartesianPose::CartesianPose() {
+  this->set_type(StateType::CARTESIAN_POSE);
+}
 
-CartesianPose::CartesianPose(const std::string& name, const std::string& reference) :
-    CartesianState(StateType::CARTESIAN_POSE, name, reference) {}
+CartesianPose::CartesianPose(const std::string& name, const std::string& reference) : CartesianState(name, reference) {
+  this->set_type(StateType::CARTESIAN_POSE);
+}
 
 CartesianPose::CartesianPose(const std::string& name, const Eigen::Vector3d& position, const std::string& reference) :
-    CartesianState(StateType::CARTESIAN_POSE, name, reference) {
+    CartesianState(name, reference) {
+  this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(position);
 }
 
 CartesianPose::CartesianPose(
     const std::string& name, double x, double y, double z, const std::string& reference
-) : CartesianState(StateType::CARTESIAN_POSE, name, reference) {
+) : CartesianState(name, reference) {
+  this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(x, y, z);
 }
 
 CartesianPose::CartesianPose(
     const std::string& name, const Eigen::Quaterniond& orientation, const std::string& reference
-) : CartesianState(StateType::CARTESIAN_POSE, name, reference) {
+) : CartesianState(name, reference) {
+  this->set_type(StateType::CARTESIAN_POSE);
   this->set_orientation(orientation);
 }
 
 CartesianPose::CartesianPose(
     const std::string& name, const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation,
     const std::string& reference
-) : CartesianState(StateType::CARTESIAN_POSE, name, reference) {
+) : CartesianState(name, reference) {
+  this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(position);
   this->set_orientation(orientation);
 }
 
-CartesianPose::CartesianPose(const CartesianState& state) :
-    CartesianState(StateType::CARTESIAN_POSE, state.get_name(), state.get_reference_frame()) {
-  if (state) {
-    this->set_pose(state.get_pose());
-  }
+CartesianPose::CartesianPose(const CartesianState& state) : CartesianState(state) {
+  // set all the state variables to 0 except position and orientation
+  this->set_type(StateType::CARTESIAN_POSE);
+  this->set_zero();
+  this->set_pose(state.get_pose());
+  this->set_empty(state.is_empty());
 }
 
 CartesianPose::CartesianPose(const CartesianPose& pose) : CartesianPose(static_cast<const CartesianState&>(pose)) {}

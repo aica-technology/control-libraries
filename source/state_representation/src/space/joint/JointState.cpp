@@ -16,33 +16,23 @@ static void assert_index_in_range(unsigned int joint_index, unsigned int size) {
   }
 }
 
-JointState::JointState() : State(StateType::JOINT_STATE) {}
+JointState::JointState() : State() {
+  this->set_type(StateType::JOINT_STATE);
+  this->initialize();
+}
 
 JointState::JointState(const std::string& robot_name, unsigned int nb_joints) :
-    State(StateType::JOINT_STATE, robot_name), names_(nb_joints) {
+    State(robot_name), names_(nb_joints) {
+  this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
   this->initialize();
 }
 
 JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    State(StateType::JOINT_STATE, robot_name), names_(joint_names) {
+    State(robot_name), names_(joint_names) {
+  this->set_type(StateType::JOINT_STATE);
   this->initialize();
 }
-
-JointState::JointState(const StateType& type, const std::string& robot_name, unsigned int nb_joints) :
-    State(type, robot_name), names_(nb_joints) {
-  this->set_names(nb_joints);
-  // FIXME: this initializes all field, but subclasses might want to only initialize one field
-  this->initialize();
-}
-
-JointState::JointState(
-    const StateType& type, const std::string& robot_name, const std::vector<std::string>& joint_names
-) : State(type, robot_name), names_(joint_names) {
-  // FIXME: this initializes all field, but subclasses might want to only initialize one field
-  this->initialize();
-}
-
 JointState JointState::Zero(const std::string& robot_name, unsigned int nb_joints) {
   JointState zero = JointState(robot_name, nb_joints);
   // as opposed to the constructor specify this state to be filled
