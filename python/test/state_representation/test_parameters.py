@@ -253,10 +253,10 @@ class TestParameters(unittest.TestCase):
         param.set_value(values)
         self.assertTrue(param)
         self.assertFalse(param.is_empty())
-        self.assertEqual(param.get_value().get_name(), values.get_name())
+        self.assertTrue(param.get_value().get_name(), values.get_name())
         param1 = sr.Parameter("ellipse", values, sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID)
         self.assertFalse(param.is_empty())
-        self.assertEqual(param1.get_value().get_name(), values.get_name())
+        self.assertTrue(param1.get_value().get_name(), values.get_name())
 
     def test_param_matrix(self):
         param = sr.Parameter("matrix", sr.ParameterType.MATRIX)

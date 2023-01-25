@@ -7,18 +7,14 @@ namespace state_representation {
 
 using namespace exceptions;
 
-CartesianState::CartesianState() : SpatialState(StateType::CARTESIAN_STATE) {
-  this->set_zero();
+CartesianState::CartesianState() : SpatialState() {
+  this->set_type(StateType::CARTESIAN_STATE);
+  this->initialize();
 }
 
-CartesianState::CartesianState(const std::string& name, const std::string& reference) :
-    SpatialState(StateType::CARTESIAN_STATE, name, reference) {
-  this->set_zero();
-}
-
-CartesianState::CartesianState(const StateType& type, const std::string& name, const std::string& reference_frame) :
-    SpatialState(type, name, reference_frame) {
-  this->set_zero();
+CartesianState::CartesianState(const std::string& name, const std::string& reference) : SpatialState(name, reference) {
+  this->set_type(StateType::CARTESIAN_STATE);
+  this->initialize();
 }
 
 CartesianState CartesianState::Identity(const std::string& name, const std::string& reference) {

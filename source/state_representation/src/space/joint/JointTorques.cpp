@@ -4,31 +4,37 @@ namespace state_representation {
 
 using namespace exceptions;
 
-JointTorques::JointTorques() : JointState(StateType::JOINT_TORQUES) {}
+JointTorques::JointTorques() {
+  this->set_type(StateType::JOINT_TORQUES);
+}
 
-JointTorques::JointTorques(const std::string& robot_name, unsigned int nb_joints) :
-    JointState(StateType::JOINT_TORQUES, robot_name, nb_joints) {}
+JointTorques::JointTorques(const std::string& robot_name, unsigned int nb_joints) : JointState(robot_name, nb_joints) {
+  this->set_type(StateType::JOINT_TORQUES);
+}
 
 JointTorques::JointTorques(const std::string& robot_name, const Eigen::VectorXd& torques) :
-    JointState(StateType::JOINT_TORQUES, robot_name, torques.size()) {
+    JointState(robot_name, torques.size()) {
+  this->set_type(StateType::JOINT_TORQUES);
   this->set_torques(torques);
 }
 
 JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(StateType::JOINT_TORQUES, robot_name, joint_names) {
+    JointState(robot_name, joint_names) {
+  this->set_type(StateType::JOINT_TORQUES);
 }
 
-JointTorques::JointTorques(
-    const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& torques
-) : JointState(StateType::JOINT_TORQUES, robot_name, joint_names) {
+JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names,
+                           const Eigen::VectorXd& torques) : JointState(robot_name, joint_names) {
+  this->set_type(StateType::JOINT_TORQUES);
   this->set_torques(torques);
 }
 
-JointTorques::JointTorques(const JointState& state) :
-    JointState(StateType::JOINT_TORQUES, state.get_name(), state.get_names()) {
-  if (state) {
-    this->set_torques(state.get_torques());
-  }
+JointTorques::JointTorques(const JointState& state) : JointState(state) {
+  // set all the state variables to 0 except torques
+  this->set_type(StateType::JOINT_TORQUES);
+  this->set_zero();
+  this->set_torques(state.get_torques());
+  this->set_empty(state.is_empty());
 }
 
 JointTorques::JointTorques(const JointTorques& torques) : JointTorques(static_cast<const JointState&>(torques)) {}

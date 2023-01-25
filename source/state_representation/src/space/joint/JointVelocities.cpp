@@ -5,30 +5,39 @@ namespace state_representation {
 
 using namespace exceptions;
 
-JointVelocities::JointVelocities() : JointState(StateType::JOINT_VELOCITIES) {}
+JointVelocities::JointVelocities() {
+  this->set_type(StateType::JOINT_VELOCITIES);
+}
 
 JointVelocities::JointVelocities(const std::string& robot_name, unsigned int nb_joints) :
-    JointState(StateType::JOINT_VELOCITIES, robot_name, nb_joints) {}
+    JointState(robot_name, nb_joints) {
+  this->set_type(StateType::JOINT_VELOCITIES);
+}
 
 JointVelocities::JointVelocities(const std::string& robot_name, const Eigen::VectorXd& velocities) :
-    JointState(StateType::JOINT_VELOCITIES, robot_name, velocities.size()) {
+    JointState(robot_name, velocities.size()) {
+  this->set_type(StateType::JOINT_VELOCITIES);
   this->set_velocities(velocities);
 }
 
 JointVelocities::JointVelocities(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(StateType::JOINT_VELOCITIES, robot_name, joint_names) {}
+    JointState(robot_name, joint_names) {
+  this->set_type(StateType::JOINT_VELOCITIES);
+}
 
 JointVelocities::JointVelocities(
     const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& velocities
-) : JointState(StateType::JOINT_VELOCITIES, robot_name, joint_names) {
+) : JointState(robot_name, joint_names) {
+  this->set_type(StateType::JOINT_VELOCITIES);
   this->set_velocities(velocities);
 }
 
-JointVelocities::JointVelocities(const JointState& state) :
-    JointState(StateType::JOINT_VELOCITIES, state.get_name(), state.get_names()) {
-  if (state) {
-    this->set_velocities(state.get_velocities());
-  }
+JointVelocities::JointVelocities(const JointState& state) : JointState(state) {
+  // set all the state variables to 0 except velocities
+  this->set_type(StateType::JOINT_VELOCITIES);
+  this->set_zero();
+  this->set_velocities(state.get_velocities());
+  this->set_empty(state.is_empty());
 }
 
 JointVelocities::JointVelocities(const JointVelocities& velocities) :

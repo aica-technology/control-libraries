@@ -1,17 +1,17 @@
 #include "state_representation/geometry/Shape.hpp"
 
 namespace state_representation {
-
-Shape::Shape() : State(StateType::GEOMETRY_SHAPE) {}
-
-Shape::Shape(const std::string& name, const std::string& reference_frame) :
-    State(StateType::GEOMETRY_SHAPE, name), center_state_(CartesianPose::Identity(name, reference_frame)) {
+Shape::Shape(const StateType& type) : State() {
+  this->set_type(type);
 }
 
-Shape::Shape(const StateType& type, const CartesianState& center_state) : State(type), center_state_(center_state) {}
+Shape::Shape(const StateType& type, const std::string& name, const std::string& reference_frame) :
+    State(name),
+    center_state_(CartesianPose(name, Eigen::Vector3d::Zero(), Eigen::Quaterniond::Identity(), reference_frame)) {
+  this->set_type(type);
+}
 
-Shape::Shape(const Shape& shape) :
-    State(StateType::GEOMETRY_SHAPE, shape.get_name()), center_state_(shape.center_state_) {}
+Shape::Shape(const Shape& shape) : State(shape), center_state_(shape.center_state_) {}
 
 std::ostream& operator<<(std::ostream& os, const Shape& shape) {
   if (shape.is_empty()) {

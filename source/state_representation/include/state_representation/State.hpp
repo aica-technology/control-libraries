@@ -149,11 +149,9 @@ public:
 
 protected:
   /**
-   * @brief Constructor with type and name specification (for derived classes)
-   * @param type The type of the state
-   * @param name The name of the state, default is empty
+   * @brief Setter of the state type attribute
    */
-  State(const StateType& type, const std::string& name = "");
+  void set_type(const StateType& type);
 
   /**
    * @brief Setter of the empty attribute
@@ -162,13 +160,14 @@ protected:
   void set_empty(bool empty = true);
 
 private:
-  const StateType type_;                                        ///< type of the State
+  StateType type_;                                              ///< type of the State
   std::string name_;                                            ///< name of the state
   bool empty_;                                                  ///< indicate if the state is empty
   std::chrono::time_point<std::chrono::steady_clock> timestamp_;///< time since last modification made to the state
 };
 
 inline void swap(State& state1, State& state2) {
+  std::swap(state1.type_, state2.type_);
   std::swap(state1.name_, state2.name_);
   std::swap(state1.empty_, state2.empty_);
   std::swap(state1.timestamp_, state2.timestamp_);

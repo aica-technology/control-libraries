@@ -189,7 +189,7 @@ TEST(JointPositionsTest, ArrayMultiplication) {
   EXPECT_THROW(gains * jp, exceptions::IncompatibleSizeException);
 }
 
-TEST(JointPositionsTest, ChronoDivision) {
+TEST(JointStateTest, ChronoDivision) {
   JointPositions jp = JointPositions::Random("test", 3);
   EXPECT_EQ(jp.get_type(), StateType::JOINT_POSITIONS);
   auto time = std::chrono::seconds(1);
