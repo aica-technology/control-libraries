@@ -21,7 +21,7 @@ public:
   /**
    * @brief Copy constructor from another spatial state
    */
-  SpatialState(const SpatialState& state) = default;
+  SpatialState(const SpatialState& state);
 
   /**
    * @brief Swap the values of the two SpatialState

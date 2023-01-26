@@ -13,6 +13,10 @@ SpatialState::SpatialState(const std::string& name, const std::string& reference
   this->set_type(StateType::SPATIAL_STATE);
 }
 
+SpatialState::SpatialState(const SpatialState& state) : State(state), reference_frame_(state.reference_frame_) {
+  this->set_type(StateType::SPATIAL_STATE);
+}
+
 SpatialState& SpatialState::operator=(const SpatialState& state) {
   SpatialState tmp(state);
   swap(*this, tmp);

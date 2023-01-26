@@ -11,7 +11,9 @@ ParameterInterface::ParameterInterface(
 ParameterInterface::ParameterInterface(const ParameterInterface& parameter) :
     State(parameter),
     parameter_type_(parameter.get_parameter_type()),
-    parameter_state_type_(parameter.get_parameter_state_type()) {}
+    parameter_state_type_(parameter.get_parameter_state_type()) {
+  this->set_type(StateType::PARAMETER);
+}
 
 ParameterInterface& ParameterInterface::operator=(const ParameterInterface& state) {
   State::operator=(state);

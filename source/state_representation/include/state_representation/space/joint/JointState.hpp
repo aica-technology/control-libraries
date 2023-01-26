@@ -37,7 +37,7 @@ public:
   /**
    * @brief Empty constructor for a joint state
    */
-  explicit JointState();
+  JointState();
 
   /**
    * @brief Constructor with name and number of joints provided
@@ -57,7 +57,7 @@ public:
    * @brief Copy constructor of a joint state
    * @param state The joint state to copy from
    */
-  JointState(const JointState& state) = default;
+  JointState(const JointState& state);
 
   /**
    * @brief Constructor for a zero joint state
