@@ -20,6 +20,7 @@ Release Versions:
 - Set the State::set_empty method protected (#14)
 - Remove StateType argument from State constructor (#16)
 - Move helpers to source file (#21)
+- Fix inverse operation in CartesianState (#32)
 
 ## 6.3.1
 
