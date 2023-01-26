@@ -714,6 +714,10 @@ CartesianState operator*(double lambda, const CartesianState& state) {
   return state * lambda;
 }
 
+Eigen::Vector3d CartesianState::operator*(const Eigen::Vector3d& vector) const {
+  return this->get_orientation() * vector + this->get_position();
+}
+
 CartesianState& CartesianState::operator/=(double lambda) {
   if (std::abs(lambda) < std::numeric_limits<double>::min()) {
     throw std::runtime_error("Division by zero is not allowed");

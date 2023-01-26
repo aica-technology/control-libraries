@@ -113,10 +113,6 @@ std::vector<double> CartesianTwist::norms(const CartesianStateVariable& state_va
   return CartesianState::norms(state_variable_type);
 }
 
-CartesianTwist operator*(const CartesianState& state, const CartesianTwist& twist) {
-  return state.operator*(twist);
-}
-
 CartesianTwist& CartesianTwist::operator*=(double lambda) {
   this->CartesianState::operator*=(lambda);
   return (*this);
