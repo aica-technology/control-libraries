@@ -20,7 +20,7 @@ Release Versions:
 - Set the State::set_empty method protected (#14)
 - Remove StateType argument from State constructor (#16)
 - Move helpers to source file (#21)
-- Refactor operators in CartesianState (addition #23, transformation #28)
+- Refactor operators in CartesianState (addition #23, subtraction #33, transformation #28)
 
 ## 6.3.1
 
