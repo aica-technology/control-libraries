@@ -55,9 +55,9 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianTwist& twist) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
@@ -210,58 +210,57 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::TWIST) const override;
 
   /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian twist provided multiplied by the state
-   */
-  friend CartesianTwist operator*(const CartesianState& state, const CartesianTwist& twist);
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian twist multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian twist
    */
   CartesianTwist& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian twist multiplied by lambda
+   * @brief Scale a Cartesian twist by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian twist
    */
   CartesianTwist operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian twist provided multiplied by lambda
+   * @brief Scale a Cartesian twist by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param twist The Cartesian twist to be scaled
+   * @return The scaled Cartesian twist
    */
   friend CartesianTwist operator*(double lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Overload the *= operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian twist multiplied by lambda
+   * @brief Scale all dimensions inplace by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @return The reference to the scaled Cartesian twist
    */
   CartesianTwist& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
 
   /**
-   * @brief Overload the * operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian twist provided multiplied by lambda
+   * @brief Scale a Cartesian twist in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param twist The Cartesian twist to be scaled
+   * @return The scaled Cartesian twist
    */
   friend CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian pose corresponding to the displacement over the time period
+   * @brief Integrate a Cartesian twist over a time period
+   * @param dt The time period used for integration
+   * @return The resulting Cartesian pose after integration
    */
   CartesianPose operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian pose corresponding to the displacement over the time period
+   * @brief Integrate a Cartesian twist over a time period
+   * @param dt The time period used for integration
+   * @param twist The Cartesian twist to be integrated
+   * @return The resulting Cartesian pose after integration
    */
   friend CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist);
 

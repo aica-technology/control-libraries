@@ -55,9 +55,9 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
@@ -205,59 +205,58 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::ACCELERATION) const override;
 
   /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian acceleration provided multiplied by the state
-   */
-  friend CartesianAcceleration operator*(const CartesianState& state, const CartesianAcceleration& acceleration);
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian acceleration
    */
   CartesianAcceleration& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale a Cartesian acceleration by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian acceleration
    */
   CartesianAcceleration operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian acceleration provided multiplied by lambda
+   * @brief Scale a Cartesian acceleration by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param acceleration The Cartesian acceleration to be scaled
+   * @return The scaled Cartesian acceleration
    */
   friend CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the *= operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian acceleration multiplied by lambda
+   * @brief Scale all dimensions inplace by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @return The reference to the scaled Cartesian acceleration
    */
   CartesianAcceleration& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
 
   /**
-   * @brief Overload the * operator with a gain matrix
-   * @param lambda The matrix to multiply with
-   * @return The Cartesian acceleration provided multiplied by lambda
+   * @brief Scale a Cartesian acceleration in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param acceleration The Cartesian acceleration to be scaled
+   * @return The scaled Cartesian acceleration
    */
   friend CartesianAcceleration
   operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian twist corresponding to the twist over the time period
+   * @brief Integrate a Cartesian acceleration over a time period
+   * @param dt The time period used for integration
+   * @return The resulting Cartesian twist after integration
    */
   CartesianTwist operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The Cartesian twist corresponding to the velocity over the time period
+   * @brief Integrate a Cartesian acceleration over a time period
+   * @param dt The time period used for integration
+   * @param acceleration The Cartesian acceleration to be integrated
+   * @return The resulting Cartesian twist after integration
    */
   friend CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration);
 
