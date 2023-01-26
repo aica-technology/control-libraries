@@ -461,7 +461,7 @@ TEST(CartesianStateTest, Subtraction) {
   CartesianState cdiff = cs1 - cs2;
   EXPECT_TRUE(cdiff.get_position().isApprox(cs1.get_position() - cs2.get_position()));
   Eigen::Quaterniond
-      orientation = (cs1.get_orientation().dot(cs2.get_orientation()) > 0) ? cs2.get_orientation() : Eigen::Quaterniond(
+      orientation = (cs1.get_orientation().dot(cs2.get_orientation().conjugate()) > 0) ? cs2.get_orientation() : Eigen::Quaterniond(
       -cs2.get_orientation().coeffs());
   orientation = cs1.get_orientation() * orientation.conjugate();
   EXPECT_TRUE(cdiff.get_orientation().coeffs().isApprox(orientation.coeffs()));
