@@ -170,8 +170,17 @@ CartesianWrench& CartesianWrench::operator-=(const CartesianWrench& wrench) {
   return (*this);
 }
 
+CartesianWrench& CartesianWrench::operator-=(const CartesianState& state) {
+  this->CartesianState::operator-=(state);
+  return (*this);
+}
+
 CartesianWrench CartesianWrench::operator-(const CartesianWrench& wrench) const {
   return this->CartesianState::operator-(wrench);
+}
+
+CartesianState CartesianWrench::operator-(const CartesianState& state) const {
+  return this->CartesianState::operator-(state);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench) {
