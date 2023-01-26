@@ -210,13 +210,26 @@ CartesianState CartesianTwist::operator+(const CartesianState& state) const {
   return this->CartesianState::operator+(state);
 }
 
+CartesianTwist CartesianTwist::operator-() const {
+  return this->CartesianState::operator-();
+}
+
 CartesianTwist& CartesianTwist::operator-=(const CartesianTwist& twist) {
   this->CartesianState::operator-=(twist);
   return (*this);
 }
 
+CartesianTwist& CartesianTwist::operator-=(const CartesianState& state) {
+  this->CartesianState::operator-=(state);
+  return (*this);
+}
+
 CartesianTwist CartesianTwist::operator-(const CartesianTwist& twist) const {
   return this->CartesianState::operator-(twist);
+}
+
+CartesianState CartesianTwist::operator-(const CartesianState& state) const {
+  return this->CartesianState::operator-(state);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
