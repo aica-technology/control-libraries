@@ -167,7 +167,6 @@ private:
 };
 
 inline void swap(State& state1, State& state2) {
-  std::swap(state1.type_, state2.type_);
   std::swap(state1.name_, state2.name_);
   std::swap(state1.empty_, state2.empty_);
   std::swap(state1.timestamp_, state2.timestamp_);
