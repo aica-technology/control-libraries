@@ -516,16 +516,22 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param state The Cartesian state to subtract
-   * @return The current Cartesian state minus the Cartesian state given in argument
+   * @brief Negate a Cartesian state
+   * @return The negative value of the Cartesian state
+   */
+  CartesianState operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the difference in all the state variables
    */
   CartesianState& operator-=(const CartesianState& state);
 
   /**
-   * @brief Overload the - operator
-   * @param state The Cartesian state to subtract
-   * @return The current Cartesian state minus the Cartesian state given in argument
+   * @brief Compute the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The difference in all the state variables
    */
   CartesianState operator-(const CartesianState& state) const;
 

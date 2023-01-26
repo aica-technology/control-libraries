@@ -778,30 +778,27 @@ CartesianState CartesianState::operator+(const CartesianState& state) const {
   return result;
 }
 
-CartesianState& CartesianState::operator-=(const CartesianState& state) {
+CartesianState CartesianState::operator-() const {
   // sanity check
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
-  if (!(this->get_reference_frame() == state.get_reference_frame())) {
-    throw IncompatibleReferenceFramesException("The two states do not have the same reference frame");
-  }
+  // create a copy of the state
+  CartesianState result(*this);
   // operation on pose
-  this->set_position(this->get_position() - state.get_position());
-  // specific operation on quaternion using Hamilton product
-  Eigen::Quaterniond orientation =
-      (this->get_orientation().dot(state.get_orientation()) > 0) ? state.get_orientation() : Eigen::Quaterniond(
-          -state.get_orientation().coeffs());
-  this->set_orientation(this->get_orientation() * orientation.conjugate());
+  result.set_position(-result.get_position());
+  result.set_orientation(result.get_orientation().conjugate());
   // operation on twist
-  this->set_twist(this->get_twist() - state.get_twist());
+  result.set_twist(-result.get_twist());
   // operation on acceleration
-  this->set_acceleration(this->get_acceleration() - state.get_acceleration());
+  result.set_acceleration(-result.get_acceleration());
   // operation on wrench
-  this->set_wrench(this->get_wrench() - state.get_wrench());
+  result.set_wrench(-result.get_wrench());
+  return result;
+}
+
+CartesianState& CartesianState::operator-=(const CartesianState& state) {
+  (*this) += -state;
   return (*this);
 }
 
