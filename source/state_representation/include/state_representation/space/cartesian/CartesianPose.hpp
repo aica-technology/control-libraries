@@ -341,7 +341,7 @@ public:
 
   /**
    * @brief Negate a Cartesian pose
-   * @return The negative value of the Cartesian acceleration
+   * @return The negative value of the Cartesian pose
    */
   CartesianPose operator-() const;
 
