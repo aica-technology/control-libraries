@@ -33,6 +33,7 @@ JointState::JointState(const std::string& robot_name, const std::vector<std::str
   this->set_type(StateType::JOINT_STATE);
   this->initialize();
 }
+
 JointState JointState::Zero(const std::string& robot_name, unsigned int nb_joints) {
   JointState zero = JointState(robot_name, nb_joints);
   // as opposed to the constructor specify this state to be filled

@@ -5,6 +5,7 @@
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
 namespace state_representation {
+
 Ellipsoid::Ellipsoid() : Shape(StateType::GEOMETRY_ELLIPSOID), axis_lengths_({1., 1.}), rotation_angle_(0) {}
 
 Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :

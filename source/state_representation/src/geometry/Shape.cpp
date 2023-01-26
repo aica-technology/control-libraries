@@ -1,6 +1,7 @@
 #include "state_representation/geometry/Shape.hpp"
 
 namespace state_representation {
+
 Shape::Shape(const StateType& type) : State() {
   this->set_type(type);
 }
