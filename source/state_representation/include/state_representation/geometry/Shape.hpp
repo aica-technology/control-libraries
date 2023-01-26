@@ -19,14 +19,12 @@ private:
 
 public:
   /**
-   * @brief Constructor with a type
-   * @param type the type of shape as a StateType
+   * @brief Empty constructor
    */
   Shape();
 
   /**
    * @brief Constructor with name but empty state
-   * @param type the type of shape as a StateType
    * @param name name of the shape
    * @param reference_frame the reference frame in which the state is expressed
    */
