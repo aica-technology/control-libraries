@@ -64,6 +64,12 @@ public:
   CartesianState operator+(const CartesianPose& pose) const = delete;
   CartesianState operator+(const CartesianTwist& twist) const = delete;
   CartesianState operator+(const CartesianWrench& wrench) const = delete;
+  CartesianState& operator-=(const CartesianPose& pose) = delete;
+  CartesianState& operator-=(const CartesianTwist& twist) = delete;
+  CartesianState& operator-=(const CartesianWrench& wrench) = delete;
+  CartesianState operator-(const CartesianPose& pose) const = delete;
+  CartesianState operator-(const CartesianTwist& twist) const = delete;
+  CartesianState operator-(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -284,12 +290,12 @@ public:
   /**
    * @brief Add inplace another acceleration from a Cartesian state
    * @param state A Cartesian state in the same reference frame
-   * @return The reference to the combined Cartesian accleration
+   * @return The reference to the combined Cartesian acceleration
    */
   CartesianAcceleration& operator+=(const CartesianState& state);
 
   /**
-   * @brief Add another Cartesian accleration
+   * @brief Add another Cartesian acceleration
    * @param acceleration A Cartesian acceleration in the same reference frame
    * @return The combined Cartesian acceleration
    */
@@ -303,18 +309,38 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   * @brief Negate a Cartesian acceleration
+   * @return The negative value of the Cartesian acceleration
+   */
+  CartesianAcceleration operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The reference to the difference in acceleration
    */
   CartesianAcceleration& operator-=(const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the - operator with an acceleration
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   * @brief Compute inplace the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the difference in acceleration
+   */
+  CartesianAcceleration& operator-=(const CartesianState& state);
+
+  /**
+   * @brief Compute the difference with another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The difference in acceleration
    */
   CartesianAcceleration operator-(const CartesianAcceleration& acceleration) const;
+
+  /**
+   * @brief Compute the difference with a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The difference in all the state variables
+   */
+  CartesianState operator-(const CartesianState& state) const;
 
   /**
    * @brief Overload the ostream operator for printing

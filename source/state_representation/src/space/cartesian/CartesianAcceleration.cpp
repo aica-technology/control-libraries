@@ -188,13 +188,26 @@ CartesianState CartesianAcceleration::operator+(const CartesianState& state) con
   return this->CartesianState::operator+(state);
 }
 
+CartesianAcceleration CartesianAcceleration::operator-() const {
+  return this->CartesianState::operator-();
+}
+
 CartesianAcceleration& CartesianAcceleration::operator-=(const CartesianAcceleration& acceleration) {
   this->CartesianState::operator-=(acceleration);
   return (*this);
 }
 
+CartesianAcceleration& CartesianAcceleration::operator-=(const CartesianState& state) {
+  this->CartesianState::operator-=(state);
+  return (*this);
+}
+
 CartesianAcceleration CartesianAcceleration::operator-(const CartesianAcceleration& acceleration) const {
   return this->CartesianState::operator-(acceleration);
+}
+
+CartesianState CartesianAcceleration::operator-(const CartesianState& state) const {
+  return this->CartesianState::operator-(state);
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration) {
