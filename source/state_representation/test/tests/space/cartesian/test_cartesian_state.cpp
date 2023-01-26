@@ -701,11 +701,11 @@ TEST(CartesianStateTest, TestAdditionOperators) {
 }
 
 TEST(CartesianStateTest, TestSubtractionOperators) {
-  CartesianState state = CartesianState::Random("world");
-  CartesianPose pose = CartesianPose::Random("world");
-  CartesianTwist twist = CartesianTwist::Random("world");
-  CartesianAcceleration acc = CartesianAcceleration::Random("world");
-  CartesianWrench wrench = CartesianWrench::Random("world");
+  CartesianState state = CartesianState::Random("test");
+  CartesianPose pose = CartesianPose::Random("test");
+  CartesianTwist twist = CartesianTwist::Random("test");
+  CartesianAcceleration acc = CartesianAcceleration::Random("test");
+  CartesianWrench wrench = CartesianWrench::Random("test");
 
   auto r1 = pose - pose;
   EXPECT_TRUE(r1.get_type() == StateType::CARTESIAN_POSE);
