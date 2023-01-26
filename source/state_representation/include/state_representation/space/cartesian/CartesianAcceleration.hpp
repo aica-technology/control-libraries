@@ -303,16 +303,22 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   * @brief Negate a Cartesian acceleration
+   * @return The negative value of the Cartesian acceleration
+   */
+  CartesianAcceleration operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The reference to the difference in acceleration
    */
   CartesianAcceleration& operator-=(const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the - operator with an acceleration
-   * @param acceleration The Cartesian acceleration to subtract
-   * @return The current Cartesian acceleration minus the Cartesian acceleration given in argument
+   * @brief Compute the difference with another Cartesian acceleration
+   * @param acceleration A Cartesian acceleration in the same reference frame
+   * @return The difference in acceleration
    */
   CartesianAcceleration operator-(const CartesianAcceleration& acceleration) const;
 

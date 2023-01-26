@@ -281,6 +281,12 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
+   * @brief Negate a Cartesian wrench
+   * @return The negative value of the Cartesian wrench
+   */
+  CartesianWrench operator-() const;
+
+  /**
    * @brief Overload the -= operator
    * @param wrench The Cartesian wrench to subtract
    * @return The current Cartesian wrench minus the Cartesian wrench given in argument

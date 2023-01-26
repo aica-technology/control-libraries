@@ -161,6 +161,10 @@ CartesianState CartesianWrench::operator+(const CartesianState& state) const {
   return this->CartesianState::operator+(state);
 }
 
+CartesianWrench CartesianWrench::operator-() const {
+  return this->CartesianState::operator-();
+}
+
 CartesianWrench& CartesianWrench::operator-=(const CartesianWrench& wrench) {
   this->CartesianState::operator-=(wrench);
   return (*this);

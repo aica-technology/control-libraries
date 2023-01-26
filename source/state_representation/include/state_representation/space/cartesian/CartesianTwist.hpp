@@ -314,6 +314,12 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
+   * @brief Negate a Cartesian twist
+   * @return The negative value of the Cartesian twist
+   */
+  CartesianTwist operator-() const;
+
+  /**
    * @brief Overload the -= operator
    * @param twist The Cartesian twist to subtract
    * @return The current Cartesian twist minus the Cartesian twist given in argument

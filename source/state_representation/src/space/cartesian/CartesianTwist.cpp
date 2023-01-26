@@ -210,6 +210,10 @@ CartesianState CartesianTwist::operator+(const CartesianState& state) const {
   return this->CartesianState::operator+(state);
 }
 
+CartesianTwist CartesianTwist::operator-() const {
+  return this->CartesianState::operator-();
+}
+
 CartesianTwist& CartesianTwist::operator-=(const CartesianTwist& twist) {
   this->CartesianState::operator-=(twist);
   return (*this);

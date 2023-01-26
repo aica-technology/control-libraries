@@ -333,6 +333,12 @@ public:
   CartesianState operator+(const CartesianState& state) const;
 
   /**
+   * @brief Negate a Cartesian pose
+   * @return The negative value of the Cartesian acceleration
+   */
+  CartesianPose operator-() const;
+
+  /**
    * @brief Overload the -= operator
    * @param pose The Cartesian pose to subtract
    * @return The current Cartesian pose minus the Cartesian pose given in argument

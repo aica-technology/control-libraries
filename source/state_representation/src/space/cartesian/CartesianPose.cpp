@@ -187,6 +187,10 @@ CartesianState CartesianPose::operator+(const CartesianState& state) const {
   return this->CartesianState::operator+(state);
 }
 
+CartesianPose CartesianPose::operator-() const {
+  return this->CartesianState::operator-();
+}
+
 CartesianPose& CartesianPose::operator-=(const CartesianPose& pose) {
   this->CartesianState::operator-=(pose);
   return (*this);
