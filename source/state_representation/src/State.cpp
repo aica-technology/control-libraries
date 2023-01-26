@@ -10,11 +10,10 @@ State::State(const std::string& name) :
 
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),
-    type_(state.type_),
+    type_(StateType::STATE),
     name_(state.name_),
     empty_(state.empty_),
-    // FIXME: do we keep this or copy the timestamp too?
-    timestamp_(std::chrono::steady_clock::now()) {}
+    timestamp_(state.timestamp_) {}
 
 State& State::operator=(const State& state) {
   State tmp(state);
