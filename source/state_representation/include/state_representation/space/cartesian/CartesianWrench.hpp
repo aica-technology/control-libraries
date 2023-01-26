@@ -55,9 +55,9 @@ public:
   void set_angular_acceleration(const double& x, const double& y, const double& z) = delete;
   void set_acceleration(const Eigen::Matrix<double, 6, 1>& acceleration) = delete;
   void set_acceleration(const std::vector<double>& acceleration) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
   CartesianState& operator+=(const CartesianPose& pose) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
@@ -198,32 +198,45 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const override;
 
   /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian wrench provided multiplied by the state
-   */
-  friend CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wrench);
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian wrench
    */
   CartesianWrench& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench multiplied by lambda
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian wrench
    */
   CartesianWrench operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian wrench provided multiplied by lambda
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param wrench The Cartesian wrench to be scaled
+   * @return The scaled Cartesian wrench
    */
   friend CartesianWrench operator*(double lambda, const CartesianWrench& wrench);
+
+  /**
+   * @brief Scale all dimensions inplace by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @return The reference to the scaled Cartesian wrench
+   */
+  CartesianWrench& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
+
+  /**
+   * @brief Scale a Cartesian wrench in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param wrench The Cartesian wrench to be scaled
+   * @return The scaled Cartesian wrench
+   */
+  friend CartesianWrench
+  operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench);
 
   /**
    * @brief Overload the /= operator with a scalar

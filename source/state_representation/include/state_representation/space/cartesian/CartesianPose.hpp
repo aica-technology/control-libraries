@@ -51,8 +51,9 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianPose& pose) = delete;
+  CartesianPose& operator*=(const CartesianTwist& twist) = delete;
+  CartesianPose& operator*=(const CartesianAcceleration& acceleration) = delete;
+  CartesianPose& operator*=(const CartesianWrench& wrench) = delete;
   CartesianState& operator+=(const CartesianTwist& twist) = delete;
   CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
   CartesianState& operator+=(const CartesianWrench& wrench) = delete;
@@ -195,79 +196,90 @@ public:
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::POSE) const override;
 
   /**
-   * @brief Overload the *= operator
-   * @param pose Cartesian pose to multiply with
-   * @return the Cartesian pose multiplied with the current Cartesian pose
+   * @brief Transform inplace a Cartesian state into the current reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a state B expressed in reference frame A,
+   * the result of the transformation is a pose B expressed in reference frame W.
+   * @param state A Cartesian state expressed in the current pose frame
+   * @return The transformed pose expressed in the original reference frame
+   */
+  CartesianPose& operator*=(const CartesianState& state);
+
+  /**
+   * @brief Transform inplace a Cartesian pose into the current reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a pose B expressed in reference frame A,
+   * the result of the transformation is a pose B expressed in reference frame W.
+   * @param pose A Cartesian pose expressed in the current pose frame
+   * @return The transformed pose expressed in the original reference frame
    */
   CartesianPose& operator*=(const CartesianPose& pose);
 
   /**
-   * @brief Overload the * operator
-   * @param pose CartesianPose to multiply with
-   * @return the Cartesian pose multiplied with the current Cartesian pose
-   */
-  CartesianPose operator*(const CartesianPose& pose) const;
-
-  /**
-   * @brief Overload the * operator
-   * @param state Cartesian state to multiply with
-   * @return the Cartesian state multiplied with the current Cartesian pose
+   * @brief Transform a Cartesian state into the pose reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a state B expressed in reference frame A,
+   * the result of the transformation is a state B expressed in reference frame W.
+   * @param state A Cartesian state expressed in the pose frame
+   * @return The transformed state expressed in the pose reference frame
    */
   CartesianState operator*(const CartesianState& state) const;
 
   /**
-   * @brief Overload the * operator
-   * @param twist Cartesian twist to multiply with
-   * @return the Cartesian twist multiplied with the current Cartesian pose
+   * @brief Transform a Cartesian pose into the left operand pose reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a pose B expressed in reference frame A,
+   * the result of the transformation is a pose B expressed in reference frame W.
+   * @param pose A Cartesian pose expressed in the left operand pose frame
+   * @return The transformed pose expressed in the left operand pose reference frame
+   */
+  CartesianPose operator*(const CartesianPose& pose) const;
+
+  /**
+   * @brief Transform a Cartesian twist into the pose reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a twist B expressed in reference frame A,
+   * the result of the transformation is a twist B expressed in reference frame W.
+   * @param twist A Cartesian twist expressed in the pose frame
+   * @return The transformed twist expressed in the pose reference frame
    */
   CartesianTwist operator*(const CartesianTwist& twist) const;
 
   /**
-   * @brief Overload the * operator
-   * @param acceleration Cartesian acceleration to multiply with
-   * @return the Cartesian acceleration multiplied with the current Cartesian pose
+   * @brief Transform a Cartesian acceleration into the pose reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with an acceleration B expressed in reference
+   * frame A, the result of the transformation is an acceleration B expressed in reference frame W.
+   * @param acceleration A Cartesian acceleration expressed in the pose frame
+   * @return The transformed acceleration expressed in the pose reference frame
    */
   CartesianAcceleration operator*(const CartesianAcceleration& acceleration) const;
 
   /**
-   * @brief Overload the * operator
-   * @param wrench Cartesian wrench to multiply with
-   * @return the Cartesian wrench multiplied with the current Cartesian pose
+   * @brief Transform a Cartesian wrench into the pose reference frame
+   * @details: For a pose A expressed in reference frame W multiplied with a wrench B expressed in reference frame A,
+   * the result of the transformation is a wrench B expressed in reference frame W.
+   * @param wrench A Cartesian wrench expressed in the pose frame
+   * @return The transformed wrench expressed in the pose reference frame
    */
   CartesianWrench operator*(const CartesianWrench& wrench) const;
 
   /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return the Cartesian pose multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian pose
    */
   CartesianPose& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return the Cartesian pose multiplied by lambda
+   * @brief Scale a Cartesian pose by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian pose
    */
   CartesianPose operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator for a vector input
-   * @param vector Vector to multiply with, representing either a position, velocity or acceleration
-   * @return The vector multiplied by the current Cartesian pose
-   */
-  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian state
-   * @param state The state to multiply with
-   * @return The Cartesian pose provided multiplied by the state
-   */
-  friend CartesianPose operator*(const CartesianState& state, const CartesianPose& pose);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The Cartesian pose provided multiplied by lambda
+   * @brief Scale a Cartesian pose by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param pose The Cartesian pose to be scaled
+   * @return The scaled Cartesian pose
    */
   friend CartesianPose operator*(double lambda, const CartesianPose& pose);
 
