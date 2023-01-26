@@ -60,6 +60,13 @@ public:
   CartesianState operator+(const CartesianTwist& twist) const = delete;
   CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
   CartesianState operator+(const CartesianWrench& wrench) const = delete;
+  CartesianState& operator-=(const CartesianTwist& twist) = delete;
+  CartesianState& operator-=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator-=(const CartesianWrench& wrench) = delete;
+  CartesianState operator-(const CartesianTwist& twist) const = delete;
+  CartesianState operator-(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator-(const CartesianWrench& wrench) const = delete;
+
 
   /**
    * @brief Empty constructor
@@ -339,18 +346,32 @@ public:
   CartesianPose operator-() const;
 
   /**
-   * @brief Overload the -= operator
-   * @param pose The Cartesian pose to subtract
-   * @return The current Cartesian pose minus the Cartesian pose given in argument
+   * @brief Compute inplace the difference with another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The reference to the difference in pose
    */
   CartesianPose& operator-=(const CartesianPose& pose);
 
   /**
-   * @brief Overload the - operator with a pose
-   * @param pose The Cartesian pose to subtract
-   * @return The current Cartesian pose minus the Cartesian pose given in argument
+   * @brief Compute inplace the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the difference in pose
+   */
+  CartesianPose& operator-=(const CartesianState& state);
+
+  /**
+   * @brief Compute the difference with another Cartesian pose
+   * @param pose A Cartesian pose in the same reference frame
+   * @return The difference in pose
    */
   CartesianPose operator-(const CartesianPose& pose) const;
+
+  /**
+   * @brief Compute the difference with a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The difference in all the state variables
+   */
+  CartesianState operator-(const CartesianState& state) const;
 
   /**
    * @brief Overload the ostream operator for printing
