@@ -431,6 +431,12 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_STREQ(b_state_a.get_name().c_str(), a_state_b.get_reference_frame().c_str());
   EXPECT_STREQ(b_state_a.get_reference_frame().c_str(), a_state_b.get_name().c_str());
 
+  // the double inverse should be the same as the original state
+  auto new_a_state_b = b_state_a.inverse();
+  EXPECT_STREQ(new_a_state_b.get_name().c_str(), a_state_b.get_name().c_str());
+  EXPECT_STREQ(new_a_state_b.get_reference_frame().c_str(), a_state_b.get_reference_frame().c_str());
+  EXPECT_NEAR(a_state_b.dist(new_a_state_b, CartesianStateVariable::ALL), 0, 1e-5);
+
   // the product of a state and its inverse should result in an identity / zero state
   auto expect_null = a_state_b * b_state_a;
   EXPECT_STREQ(expect_null.get_name().c_str(), expect_null.get_reference_frame().c_str());
