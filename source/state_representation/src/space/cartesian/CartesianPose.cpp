@@ -96,17 +96,22 @@ std::vector<double> CartesianPose::norms(const CartesianStateVariable& state_var
   return CartesianState::norms(state_variable_type);
 }
 
+CartesianPose& CartesianPose::operator*=(const CartesianState& state) {
+  this->CartesianState::operator*=(state);
+  return (*this);
+}
+
 CartesianPose& CartesianPose::operator*=(const CartesianPose& pose) {
   this->CartesianState::operator*=(pose);
   return (*this);
 }
 
-CartesianPose CartesianPose::operator*(const CartesianPose& pose) const {
-  return this->CartesianState::operator*(pose);
-}
-
 CartesianState CartesianPose::operator*(const CartesianState& state) const {
   return this->CartesianState::operator*(state);
+}
+
+CartesianPose CartesianPose::operator*(const CartesianPose& pose) const {
+  return this->CartesianState::operator*(pose);
 }
 
 CartesianTwist CartesianPose::operator*(const CartesianTwist& twist) const {
@@ -128,14 +133,6 @@ CartesianPose& CartesianPose::operator*=(double lambda) {
 
 CartesianPose CartesianPose::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
-}
-
-Eigen::Vector3d CartesianPose::operator*(const Eigen::Vector3d& vector) const {
-  return this->get_orientation() * vector + this->get_position();
-}
-
-CartesianPose operator*(const CartesianState& state, const CartesianPose& pose) {
-  return state.operator*(pose);
 }
 
 CartesianPose operator*(double lambda, const CartesianPose& pose) {
