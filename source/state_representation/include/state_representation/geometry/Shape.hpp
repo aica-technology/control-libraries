@@ -30,13 +30,13 @@ public:
    * @param name name of the shape
    * @param reference_frame the reference frame in which the state is expressed
    */
-  explicit Shape(const StateType& type, const std::string& name, const std::string& reference_frame = "world");
+  explicit Shape(const std::string& name, const std::string& reference_frame = "world");
 
   /**
    * @brief Copy constructor from another shape
    * @param shape the shape to copy
    */
-  explicit Shape(const Shape& shape);
+  Shape(const Shape& shape);
 
   /**
    * @brief Copy assignment operator that have to be defined to the custom assignment operator
