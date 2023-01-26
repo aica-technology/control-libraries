@@ -699,3 +699,96 @@ TEST(CartesianStateTest, TestAdditionOperators) {
   //wrench += twist;
   //wrench += acc;
 }
+
+TEST(CartesianStateTest, TestSubtractionOperators) {
+  CartesianState state = CartesianState::Random("world");
+  CartesianPose pose = CartesianPose::Random("world");
+  CartesianTwist twist = CartesianTwist::Random("world");
+  CartesianAcceleration acc = CartesianAcceleration::Random("world");
+  CartesianWrench wrench = CartesianWrench::Random("world");
+
+  auto r1 = pose - pose;
+  EXPECT_TRUE(r1.get_type() == StateType::CARTESIAN_POSE);
+  auto r2 = state - pose;
+  EXPECT_TRUE(r2.get_type() == StateType::CARTESIAN_STATE);
+  auto r3 = pose - state;
+  EXPECT_TRUE(r3.get_type() == StateType::CARTESIAN_STATE);
+
+  auto r4 = twist - twist;
+  EXPECT_TRUE(r4.get_type() == StateType::CARTESIAN_TWIST);
+  auto r5 = state - twist;
+  EXPECT_TRUE(r5.get_type() == StateType::CARTESIAN_STATE);
+  auto r6 = twist - state;
+  EXPECT_TRUE(r6.get_type() == StateType::CARTESIAN_STATE);
+
+  auto r7 = acc - acc;
+  EXPECT_TRUE(r7.get_type() == StateType::CARTESIAN_ACCELERATION);
+  auto r8 = state - acc;
+  EXPECT_TRUE(r8.get_type() == StateType::CARTESIAN_STATE);
+  auto r9 = acc - state;
+  EXPECT_TRUE(r9.get_type() == StateType::CARTESIAN_STATE);
+
+  auto r10 = wrench - wrench;
+  EXPECT_TRUE(r10.get_type() == StateType::CARTESIAN_WRENCH);
+  auto r11 = state - wrench;
+  EXPECT_TRUE(r11.get_type() == StateType::CARTESIAN_STATE);
+  auto r12 = wrench - state;
+  EXPECT_TRUE(r12.get_type() == StateType::CARTESIAN_STATE);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  //auto r = pose - twist;
+  //auto r = pose - acc;
+  //auto r = pose - wrench;
+
+  //auto r = twist - pose;
+  //auto r = twist - acc;
+  //auto r = twist - wrench;
+
+  //auto r = acc - pose;
+  //auto r = acc - twist;
+  //auto r = acc - wrench;
+
+  state -= state;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state -= pose;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state -= twist;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state -= acc;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+  state -= wrench;
+  EXPECT_TRUE(state.get_type() == StateType::CARTESIAN_STATE);
+
+  pose -= state;
+  EXPECT_TRUE(pose.get_type() == StateType::CARTESIAN_POSE);
+  pose -= pose;
+  EXPECT_TRUE(pose.get_type() == StateType::CARTESIAN_POSE);
+  //pose -= twist;
+  //pose -= acc;
+  //pose -= wrench;
+
+  twist -= state;
+  EXPECT_TRUE(twist.get_type() == StateType::CARTESIAN_TWIST);
+  twist -= twist;
+  EXPECT_TRUE(twist.get_type() == StateType::CARTESIAN_TWIST);
+  //twist -= pose;
+  //twist -= acc;
+  //twist -= wrench;
+
+  acc -= state;
+  EXPECT_TRUE(acc.get_type() == StateType::CARTESIAN_ACCELERATION);
+  acc -= acc;
+  EXPECT_TRUE(acc.get_type() == StateType::CARTESIAN_ACCELERATION);
+  //acc -= pose;
+  //acc -= twist;
+  //acc -= wrench;
+
+  wrench -= state;
+  EXPECT_TRUE(wrench.get_type() == StateType::CARTESIAN_WRENCH);
+  wrench -= wrench;
+  EXPECT_TRUE(wrench.get_type() == StateType::CARTESIAN_WRENCH);
+  //wrench -= pose;
+  //wrench -= twist;
+  //wrench -= acc;
+}
