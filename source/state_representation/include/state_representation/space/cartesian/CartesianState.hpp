@@ -50,7 +50,7 @@ public:
   /**
    * @brief Empty constructor
    */
-  explicit CartesianState();
+  CartesianState();
 
   /**
    * @brief Constructor with name and reference frame provided

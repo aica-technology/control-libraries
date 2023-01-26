@@ -22,7 +22,7 @@ public:
    * @brief Constructor with a type
    * @param type the type of shape as a StateType
    */
-  explicit Shape(const StateType& type);
+  Shape();
 
   /**
    * @brief Constructor with name but empty state

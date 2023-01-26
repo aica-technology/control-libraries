@@ -51,7 +51,7 @@ public:
    * @param robot_name The name of the associated robot
    * @param joint_names List of joint names
    */
-  explicit JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
+  JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
    * @brief Copy constructor of a joint state
