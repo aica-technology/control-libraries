@@ -532,7 +532,7 @@ protected:
   /**
    * @brief Setter of the variable value corresponding to the input
    * @param new_value The new value of the variable as Eigen vector
-   * @param state_variable_type The type of variable to get
+   * @param state_variable_type The type of variable to set
    * @param skip_size_check Skip the check of size compatibility (default false)
    */
   void set_state_variable(
@@ -542,7 +542,7 @@ protected:
   /**
    * @brief Setter of the variable value corresponding to the input
    * @param new_value The new value of the variable as std vector
-   * @param state_variable_type The type of variable to get
+   * @param state_variable_type The type of variable to set
    */
   void set_state_variable(const std::vector<double>& new_value, const CartesianStateVariable& state_variable_type);
 
