@@ -284,7 +284,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
   config2.set_positions(std::vector<double>{2.648782, -0.553976, 0.801067, -2.042097, -1.642935, 2.946476, 1.292717});
   config3.set_positions(std::vector<double>{-0.329909, -0.235174, -1.881858, -2.491807, 0.674615, 0.996670, 0.345810});
 
-  // TODO (#): config2 doesn't converge
+  // TODO (#40): config2 doesn't converge
   std::vector<state_representation::JointState> test_configs = {config1, config3};
   double tol = 1e-3;
   std::chrono::nanoseconds dt(static_cast<int>(1e9));
