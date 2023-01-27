@@ -24,6 +24,7 @@ Release Versions:
 - Set state type in copy constructors (#34)
 - Remove state type from clproto (#47)
 - Add forward force parameter to Impedance controller (#36)
+- Simplify and consolidate ostream operators (#37)
 
 ## 6.3.1
 
