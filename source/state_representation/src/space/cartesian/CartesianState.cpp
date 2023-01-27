@@ -822,8 +822,7 @@ CartesianState::print(const std::string& class_name, const CartesianStateVariabl
     return s;
   }
   if (state_variable_type == CartesianStateVariable::POSE || state_variable_type == CartesianStateVariable::ALL) {
-    s << std::endl;
-    s << "position: " << this->get_position() << std::endl;
+    s << std::endl << "position: " << this->get_position() << std::endl;
     s << "orientation: (" << this->get_orientation().w() << ", ";
     s << this->get_orientation().x() << ", ";
     s << this->get_orientation().y() << ", ";
@@ -833,19 +832,16 @@ CartesianState::print(const std::string& class_name, const CartesianStateVariabl
     s << "axis: " << axis_angle.axis();
   }
   if (state_variable_type == CartesianStateVariable::TWIST || state_variable_type == CartesianStateVariable::ALL) {
-    s << std::endl;
-    s << "linear velocity: " << this->get_linear_velocity() << std::endl;
+    s << std::endl << "linear velocity: " << this->get_linear_velocity() << std::endl;
     s << "angular velocity: " << this->get_angular_velocity();
   }
   if (state_variable_type == CartesianStateVariable::ACCELERATION
       || state_variable_type == CartesianStateVariable::ALL) {
-    s << std::endl;
-    s << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
+    s << std::endl << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
     s << "angular acceleration: " << this->get_angular_acceleration();
   }
   if (state_variable_type == CartesianStateVariable::WRENCH || state_variable_type == CartesianStateVariable::ALL) {
-    s << std::endl;
-    s << "force: " << this->get_force() << std::endl;
+    s << std::endl << "force: " << this->get_force() << std::endl;
     s << "torque: " << this->get_torque();
   }
   return s;
