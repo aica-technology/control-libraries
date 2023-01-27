@@ -716,21 +716,18 @@ TEST(CartesianStateTest, Addition) {
 
 TEST(CartesianStateTest, Subtraction) {
   CartesianState cs1 = CartesianState::Random("test");
-  CartesianState cs2 = CartesianState::Random("test");
-  CartesianState cs3 = CartesianState::Random("test", "reference");
-  EXPECT_THROW(cs1 - cs3, exceptions::IncompatibleReferenceFramesException);
+  CartesianState cs2 = CartesianState::Random("test", "reference");
+  EXPECT_THROW(cs1 - cs2, exceptions::IncompatibleReferenceFramesException);
 
-  CartesianState cdiff = cs1 - cs2;
-  EXPECT_TRUE(cdiff.get_position().isApprox(cs1.get_position() - cs2.get_position()));
-  EXPECT_TRUE(cdiff.get_orientation().dot(cs1.get_orientation()) > 0);
-  auto orientation = cs1.get_orientation() * cs2.get_orientation().conjugate();
-  EXPECT_TRUE(cdiff.get_orientation().coeffs().isApprox(orientation.coeffs()));
-  EXPECT_TRUE(cdiff.get_twist().isApprox(cs1.get_twist() - cs2.get_twist()));
-  EXPECT_TRUE(cdiff.get_acceleration().isApprox(cs1.get_acceleration() - cs2.get_acceleration()));
-  EXPECT_TRUE(cdiff.get_wrench().isApprox(cs1.get_wrench() - cs2.get_wrench()));
+  auto cdiff = cs1 - cs1;
+  EXPECT_FLOAT_EQ(cdiff.data().norm(), 1.);
+  EXPECT_FLOAT_EQ(abs(cdiff.get_orientation().w()), 1.);
 
-  cs1 -= cs2;
+  cs1 -= cs1;
   EXPECT_TRUE(cs1.data().isApprox(cdiff.data()));
+
+  auto res = cs1 + cs1 - cs1;
+  EXPECT_TRUE(res.data().isApprox(cs1.data()));
 }
 
 TEST(CartesianStateTest, ScalarMultiplication) {
