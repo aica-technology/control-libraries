@@ -5,15 +5,21 @@
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
 namespace state_representation {
-Ellipsoid::Ellipsoid() : Shape(StateType::GEOMETRY_ELLIPSOID), axis_lengths_({1., 1.}), rotation_angle_(0) {}
+
+Ellipsoid::Ellipsoid() : Shape(), axis_lengths_({1., 1.}), rotation_angle_(0) {
+  this->set_type(StateType::GEOMETRY_ELLIPSOID);
+}
 
 Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :
-    Shape(StateType::GEOMETRY_ELLIPSOID, name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
+    Shape(name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
+  this->set_type(StateType::GEOMETRY_ELLIPSOID);
   this->set_empty(false);
 }
 
 Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) :
-    Shape(ellipsoid), axis_lengths_(ellipsoid.axis_lengths_), rotation_angle_(0) {}
+    Shape(ellipsoid), axis_lengths_(ellipsoid.axis_lengths_), rotation_angle_(ellipsoid.rotation_angle_) {
+  this->set_type(StateType::GEOMETRY_ELLIPSOID);
+}
 
 const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned int nb_samples) const {
   if (this->get_center_state().is_empty()) {

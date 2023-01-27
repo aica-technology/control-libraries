@@ -21,8 +21,7 @@ JointState::JointState() : State() {
   this->initialize();
 }
 
-JointState::JointState(const std::string& robot_name, unsigned int nb_joints) :
-    State(robot_name), names_(nb_joints) {
+JointState::JointState(const std::string& robot_name, unsigned int nb_joints) : State(robot_name), names_(nb_joints) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
   this->initialize();
@@ -33,6 +32,17 @@ JointState::JointState(const std::string& robot_name, const std::vector<std::str
   this->set_type(StateType::JOINT_STATE);
   this->initialize();
 }
+
+JointState::JointState(const JointState& state) :
+    State(state),
+    names_(state.names_),
+    positions_(state.positions_),
+    velocities_(state.velocities_),
+    accelerations_(state.accelerations_),
+    torques_(state.torques_) {
+  this->set_type(StateType::JOINT_STATE);
+}
+
 JointState JointState::Zero(const std::string& robot_name, unsigned int nb_joints) {
   JointState zero = JointState(robot_name, nb_joints);
   // as opposed to the constructor specify this state to be filled

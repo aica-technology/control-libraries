@@ -103,7 +103,6 @@ JointAccelerations JointAccelerations::copy() const {
   return result;
 }
 
-
 JointAccelerations& JointAccelerations::operator*=(double lambda) {
   this->JointState::operator*=(lambda);
   return (*this);
@@ -164,7 +163,6 @@ JointVelocities JointAccelerations::operator*(const std::chrono::nanoseconds& dt
   velocities.set_velocities(period * this->get_accelerations());
   return velocities;
 }
-
 
 JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations) {
   return accelerations * dt;

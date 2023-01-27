@@ -21,6 +21,7 @@ Release Versions:
 - Remove StateType argument from State constructor (#16)
 - Move helpers to source file (#21)
 - Fix inverse operation in CartesianState (#32)
+- Set state type in copy constructors (#34)
 
 ## 6.3.1
 

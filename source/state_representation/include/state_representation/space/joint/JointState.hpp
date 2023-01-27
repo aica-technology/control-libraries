@@ -37,7 +37,7 @@ public:
   /**
    * @brief Empty constructor for a joint state
    */
-  explicit JointState();
+  JointState();
 
   /**
    * @brief Constructor with name and number of joints provided
@@ -51,13 +51,13 @@ public:
    * @param robot_name The name of the associated robot
    * @param joint_names List of joint names
    */
-  explicit JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
+  JointState(const std::string& robot_name, const std::vector<std::string>& joint_names);
 
   /**
    * @brief Copy constructor of a joint state
    * @param state The joint state to copy from
    */
-  JointState(const JointState& state) = default;
+  JointState(const JointState& state);
 
   /**
    * @brief Constructor for a zero joint state
