@@ -722,10 +722,8 @@ TEST(CartesianStateTest, Subtraction) {
 
   CartesianState cdiff = cs1 - cs2;
   EXPECT_TRUE(cdiff.get_position().isApprox(cs1.get_position() - cs2.get_position()));
-  Eigen::Quaterniond
-      orientation = (cs1.get_orientation().dot(cs2.get_orientation().conjugate()) > 0) ? cs2.get_orientation() : Eigen::Quaterniond(
-      -cs2.get_orientation().coeffs());
-  orientation = cs1.get_orientation() * orientation.conjugate();
+  EXPECT_TRUE(cdiff.get_orientation().dot(cs1.get_orientation()) > 0);
+  auto orientation = cs1.get_orientation() * cs2.get_orientation().conjugate();
   EXPECT_TRUE(cdiff.get_orientation().coeffs().isApprox(orientation.coeffs()));
   EXPECT_TRUE(cdiff.get_twist().isApprox(cs1.get_twist() - cs2.get_twist()));
   EXPECT_TRUE(cdiff.get_acceleration().isApprox(cs1.get_acceleration() - cs2.get_acceleration()));
@@ -783,11 +781,12 @@ TEST(CartesianStateTest, Truthiness) {
 }
 
 TEST(CartesianStateTest, TestMultiplicationOperators) {
-  CartesianState state = CartesianState::Random("test");
-  CartesianPose pose = CartesianPose::Random("test");
-  CartesianTwist twist = CartesianTwist::Random("test");
-  CartesianAcceleration acc = CartesianAcceleration::Random("test");
-  CartesianWrench wrench = CartesianWrench::Random("test");
+  // to have fully compatible states, use "world" as name and reference frame
+  CartesianState state = CartesianState::Random("world");
+  CartesianPose pose = CartesianPose::Random("world");
+  CartesianTwist twist = CartesianTwist::Random("world");
+  CartesianAcceleration acc = CartesianAcceleration::Random("world");
+  CartesianWrench wrench = CartesianWrench::Random("world");
 
   // CartesianState multiplied with any derived stays a CartesianState
   auto r1 = state * state;
