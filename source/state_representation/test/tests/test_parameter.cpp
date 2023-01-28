@@ -146,7 +146,6 @@ TYPED_TEST_P(ParameterTest, Construction) {
     EXPECT_FALSE(param.is_empty());
     EXPECT_TRUE(param);
     expect_values_equal(param.get_value(), std::get<0>(test_case));
-    std::cout << param << std::endl;
   }
 }
 

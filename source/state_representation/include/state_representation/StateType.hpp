@@ -36,7 +36,10 @@ enum class StateType {
 #endif
 };
 
-[[maybe_unused]] inline std::string get_state_type_name(const StateType& state_type) {
+/**
+ * @brief Convert state type enum to its corresponding name
+ */
+[[maybe_unused]] static std::string get_state_type_name(const StateType& state_type) {
   switch (state_type) {
     case StateType::STATE:
       return "State";
@@ -72,6 +75,14 @@ enum class StateType {
       return "Ellipsoid";
     case StateType::TRAJECTORY:
       return "Trajectory";
+#ifdef EXPERIMENTAL_FEATURES
+    case StateType::DUAL_QUATERNION_STATE:
+      return "DualQuaternionState";
+    case StateType::DUAL_QUATERNION_POSE:
+      return "DualQuaternionPose";
+    case StateType::DUAL_QUATERNION_TWIST:
+      return "DualQuaternionTwist";
+#endif
     default:
       return "";
   }
