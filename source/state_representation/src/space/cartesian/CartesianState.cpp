@@ -812,14 +812,11 @@ std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
   return os;
 }
 
-std::stringstream
-CartesianState::print_state_variable(const std::string& class_name, const StateType& state_type) const {
+std::string CartesianState::print_state(const StateType& state_type) const {
   std::stringstream s;
-  auto prefix = this->is_empty() ? "Empty " : "";
-  s << prefix << class_name << " '" << this->get_name() << "' expressed in frame '" << this->get_reference_frame()
-    << "'";
+  s << this->SpatialState::print_state(state_type);
   if (this->is_empty()) {
-    return s;
+    return s.str();
   }
   if (state_type == StateType::CARTESIAN_POSE || state_type == StateType::CARTESIAN_STATE) {
     s << std::endl << "position: " << this->get_position() << std::endl;
@@ -843,12 +840,11 @@ CartesianState::print_state_variable(const std::string& class_name, const StateT
     s << std::endl << "force: " << this->get_force() << std::endl;
     s << "torque: " << this->get_torque();
   }
-  return s;
+  return s.str();
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  os << state.print_state_variable("CartesianState", state.get_type()).str();
+  os << state.print_state(StateType::CARTESIAN_STATE);
   return os;
 }
-
 }// namespace state_representation

@@ -189,15 +189,12 @@ void Ellipsoid::set_data(const std::vector<double>& data) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& ellipsoid) {
-  auto prefix = ellipsoid.is_empty() ? "Empty ": "";
-  os << prefix << "Ellipsoid '" << ellipsoid.get_name() << "'";
+  os << ellipsoid.print_state(StateType::GEOMETRY_ELLIPSOID);
   if (ellipsoid.is_empty()) {
     return os;
   }
   os << std::endl;
-  os << "axis lengths: [" << ellipsoid.get_axis_length(0) << ", " << ellipsoid.get_axis_length(1) << "]" << std::endl;
-  os << "state:" << std::endl;
-  os << ellipsoid.get_center_state();
+  os << "axis lengths: [" << ellipsoid.get_axis_length(0) << ", " << ellipsoid.get_axis_length(1) << "]";
   return os;
 }
 }

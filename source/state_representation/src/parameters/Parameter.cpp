@@ -156,10 +156,9 @@ Parameter<Eigen::VectorXd>::Parameter(const std::string& name, const Eigen::Vect
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Parameter<T>& parameter) {
-  if (parameter.is_empty()) {
-    os << "Empty Parameter '" << parameter.get_name() << "'";
-  } else {
-    os << "Parameter '" << parameter.get_name() << "': " << parameter.get_value();
+  os << parameter.print_state(StateType::PARAMETER);
+  if (parameter) {
+    os << ", " << parameter.get_value();
   }
   return os;
 }
@@ -178,10 +177,9 @@ template std::ostream& operator<<(std::ostream& os, const Parameter<Eigen::Vecto
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<int>>& parameter) {
-  if (parameter.is_empty()) {
-    os << "Empty Parameter '" << parameter.get_name() << "'";
-  } else {
-    os << "Parameter '" << parameter.get_name() << "': [";
+  os << parameter.print_state(StateType::PARAMETER);
+  if (parameter) {
+    os << ", [";
     for (auto& v: parameter.get_value()) {
       os << v << ", ";
     }
@@ -192,10 +190,9 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<int>>& pa
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<double>>& parameter) {
-  if (parameter.is_empty()) {
-    os << "Empty Parameter '" << parameter.get_name() << "'";
-  } else {
-    os << "Parameter '" << parameter.get_name() << "': [";
+  os << parameter.print_state(StateType::PARAMETER);
+  if (parameter) {
+    os << ", [";
     for (auto& v: parameter.get_value()) {
       os << v << ", ";
     }
@@ -206,10 +203,9 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<double>>&
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<bool>>& parameter) {
-  if (parameter.is_empty()) {
-    os << "Empty Parameter '" << parameter.get_name() << "'";
-  } else {
-    os << "Parameter '" << parameter.get_name() << "': [";
+  os << parameter.print_state(StateType::PARAMETER);
+  if (parameter) {
+    os << ", [";
     for (auto v: parameter.get_value()) {
       os << v << ", ";
     }
@@ -220,10 +216,9 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<bool>>& p
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<std::string>>& parameter) {
-  if (parameter.is_empty()) {
-    os << "Empty Parameter '" << parameter.get_name() << "'";
-  } else {
-    os << "Parameter '" << parameter.get_name() << "': [";
+  os << parameter.print_state(StateType::PARAMETER);
+  if (parameter) {
+    os << ", [";
     for (auto& v: parameter.get_value()) {
       os << v << ", ";
     }

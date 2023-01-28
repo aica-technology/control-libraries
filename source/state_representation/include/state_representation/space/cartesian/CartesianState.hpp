@@ -537,12 +537,9 @@ protected:
   void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
 
   /**
-   * @brief Print the Cartesian state
-   * @param class_name The name of the class (one of CartesianState, CartesianPose, CartesianTwist,
-   * CartesianAcceleration, CartesianWrench)
-   * @param state_type The type of the state to print
+   * @copydoc SpatialState::print_state
    */
-  std::stringstream print_state_variable(const std::string& class_name, const StateType& state_type) const;
+  std::string print_state(const StateType& state_type) const override;
 
 private:
   Eigen::Vector3d position_;            ///< position of the point

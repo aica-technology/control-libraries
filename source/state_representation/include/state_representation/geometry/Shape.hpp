@@ -14,9 +14,6 @@ namespace state_representation {
  * @class Shape
  */
 class Shape : public State {
-private:
-  CartesianState center_state_; ///< pose and potentially velocities and accelerations of the shape if moving
-
 public:
   /**
    * @brief Empty constructor
@@ -104,6 +101,15 @@ public:
     * @return the appended ostream
      */
   friend std::ostream& operator<<(std::ostream& os, const Shape& shape);
+
+protected:
+  /**
+   * @copydoc State::print_state
+   */
+  std::string print_state(const StateType& state_type) const override;
+
+private:
+  CartesianState center_state_; ///< pose and potentially velocities and accelerations of the shape if moving
 };
 
 inline Shape& Shape::operator=(const Shape& state) {

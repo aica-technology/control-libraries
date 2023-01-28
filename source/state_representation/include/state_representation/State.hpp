@@ -159,6 +159,12 @@ protected:
    */
   void set_empty(bool empty = true);
 
+  /**
+   * @brief Print the state
+   * @param state_type The type of the state to print
+   */
+  virtual std::string print_state(const StateType& state_type) const;
+
 private:
   StateType type_;                                              ///< type of the State
   std::string name_;                                            ///< name of the state

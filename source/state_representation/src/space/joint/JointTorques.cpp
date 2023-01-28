@@ -170,7 +170,7 @@ JointTorques JointTorques::operator-(const JointTorques& torques) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const JointTorques& torques) {
-  os << torques.print_state_variable("JointTorques", torques.get_type()).str();
+  os << torques.print_state(StateType::JOINT_TORQUES);
   return os;
 }
 }// namespace state_representation

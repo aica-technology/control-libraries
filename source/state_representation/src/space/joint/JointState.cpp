@@ -587,15 +587,14 @@ JointState JointState::operator-(const JointState& state) const {
   return result;
 }
 
-std::stringstream JointState::print_state_variable(const std::string& class_name, const StateType& state_type) const {
+std::string JointState::print_state(const StateType& state_type) const {
   std::stringstream s;
-  auto prefix = this->is_empty() ? "Empty " : "";
-  s << prefix << class_name << " '" << this->get_name() << "'" << std::endl;
-  s << "joint names: [";
+  s << this->State::print_state(state_type);
+  s << std::endl << "joint names: [";
   for (auto& n : this->get_names()) { s << n << ", "; }
   s << "]";
   if (this->is_empty()) {
-    return s;
+    return s.str();
   }
   if (state_type == StateType::JOINT_POSITIONS || state_type == StateType::JOINT_STATE) {
     s << std::endl << "positions: [";
@@ -617,11 +616,11 @@ std::stringstream JointState::print_state_variable(const std::string& class_name
     for (auto& t : this->get_torques()) { s << t << ", "; }
     s << "]";
   }
-  return s;
+  return s.str();
 }
 
 std::ostream& operator<<(std::ostream& os, const JointState& state) {
-  os << state.print_state_variable("JointState", state.get_type()).str();
+  os << state.print_state(StateType::JOINT_STATE);
   return os;
 }
 }// namespace state_representation

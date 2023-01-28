@@ -585,12 +585,9 @@ protected:
   void set_state_variable(const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type);
 
   /**
-   * @brief Print the joint state
-   * @param class_name The name of the class (one of JointState, JointPositions, JointVelocities,
-   * JointAccelerations, JointTorques)
-   * @param state_type The type of the state to print
+   * @copydoc State::print_state
    */
-  std::stringstream print_state_variable(const std::string& class_name, const StateType& state_type) const;
+  std::string print_state(const StateType& state_type) const override;
 
 private:
   std::vector<std::string> names_;///< names of the joints

@@ -408,8 +408,8 @@ const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian) {
-  auto prefix = jacobian.is_empty() ? "Empty ": "";
-  os << prefix << "Jacobian '" << jacobian.get_name() << "' associated to '" << jacobian.get_frame();
+  os << jacobian.print_state(StateType::JACOBIAN);
+  os << " associated to '" << jacobian.get_frame();
   os << "', expressed in frame '" << jacobian.get_reference_frame() << "'" << std::endl;
   os << "joint names: [";
   for (auto& n : jacobian.get_joint_names()) { os << n << ", "; }

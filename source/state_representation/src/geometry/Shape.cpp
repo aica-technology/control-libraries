@@ -15,14 +15,19 @@ Shape::Shape(const Shape& shape) : State(shape), center_state_(shape.center_stat
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
-std::ostream& operator<<(std::ostream& os, const Shape& shape) {
-  auto prefix = shape.is_empty() ? "Empty ": "";
-  os << prefix << "Shape '" << shape.get_name() << "'";
-  if (shape.is_empty()) {
-    return os;
+std::string Shape::print_state(const StateType& state_type) const {
+  std::stringstream s;
+  s << this->State::print_state(state_type);
+  if (this->is_empty()) {
+    return s.str();
   }
-  os << std::endl << "state:" << std::endl;
-  os << shape.get_center_state();
+  s << std::endl << "state:" << std::endl;
+  s << this->get_center_state();
+  return s.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const Shape& shape) {
+  os << shape.print_state(StateType::GEOMETRY_SHAPE);
   return os;
 }
 }
