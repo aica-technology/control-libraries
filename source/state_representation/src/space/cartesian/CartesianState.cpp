@@ -812,8 +812,9 @@ std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
   return os;
 }
 
-std::stringstream
-CartesianState::print(const std::string& class_name, const CartesianStateVariable& state_variable_type) const {
+std::stringstream CartesianState::print_state_variable(
+    const std::string& class_name, const CartesianStateVariable& state_variable_type
+) const {
   std::stringstream s;
   auto prefix = this->is_empty() ? "Empty " : "";
   s << prefix << class_name << " '" << this->get_name() << "' expressed in frame '" << this->get_reference_frame()
@@ -848,7 +849,7 @@ CartesianState::print(const std::string& class_name, const CartesianStateVariabl
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  os << state.print("CartesianState", CartesianStateVariable::ALL).str();
+  os << state.print_state_variable("CartesianState", CartesianStateVariable::ALL).str();
   return os;
 }
 

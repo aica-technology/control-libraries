@@ -542,7 +542,8 @@ protected:
    * CartesianAcceleration, CartesianWrench)
    * @param state_variable_type The corresponding type of variable to print
    */
-  std::stringstream print(const std::string& class_name, const CartesianStateVariable& state_variable_type) const;
+  std::stringstream
+  print_state_variable(const std::string& class_name, const CartesianStateVariable& state_variable_type) const;
 
 private:
   Eigen::Vector3d position_;            ///< position of the point

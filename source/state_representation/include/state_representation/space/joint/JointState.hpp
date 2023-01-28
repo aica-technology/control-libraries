@@ -590,7 +590,8 @@ protected:
    * JointAccelerations, JointTorques)
    * @param state_variable_type The corresponding type of variable to print
    */
-  std::stringstream print(const std::string& class_name, const JointStateVariable& state_variable_type) const;
+  std::stringstream
+  print_state_variable(const std::string& class_name, const JointStateVariable& state_variable_type) const;
 
 private:
   std::vector<std::string> names_;///< names of the joints

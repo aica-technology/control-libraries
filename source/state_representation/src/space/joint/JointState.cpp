@@ -588,7 +588,7 @@ JointState JointState::operator-(const JointState& state) const {
 }
 
 std::stringstream
-JointState::print(const std::string& class_name, const JointStateVariable& state_variable_type) const {
+JointState::print_state_variable(const std::string& class_name, const JointStateVariable& state_variable_type) const {
   std::stringstream s;
   auto prefix = this->is_empty() ? "Empty " : "";
   s << prefix << class_name << " '" << this->get_name() << "'" << std::endl;
@@ -622,7 +622,7 @@ JointState::print(const std::string& class_name, const JointStateVariable& state
 }
 
 std::ostream& operator<<(std::ostream& os, const JointState& state) {
-  os << state.print("JointState", JointStateVariable::ALL).str();
+  os << state.print_state_variable("JointState", JointStateVariable::ALL).str();
   return os;
 }
 }// namespace state_representation

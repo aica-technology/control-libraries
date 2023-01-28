@@ -191,7 +191,7 @@ CartesianPose CartesianPose::operator-(const CartesianPose& pose) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
-  os << pose.print("CartesianPose", CartesianStateVariable::POSE).str();
+  os << pose.print_state_variable("CartesianPose", CartesianStateVariable::POSE).str();
   return os;
 }
 
