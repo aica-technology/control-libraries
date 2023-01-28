@@ -109,8 +109,8 @@ CartesianWrench& CartesianWrench::operator*=(double lambda) {
   return (*this);
 }
 
-CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wrench) {
-  return state.operator*(wrench);
+CartesianWrench operator*(double lambda, const CartesianWrench& wrench) {
+  return wrench * lambda;
 }
 
 CartesianWrench CartesianWrench::operator*(double lambda) const {
