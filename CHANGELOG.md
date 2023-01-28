@@ -22,7 +22,8 @@ Release Versions:
 - Move helpers to source file (#21)
 - Fix inverse operation in CartesianState (#32)
 - Set state type in copy constructors (#34)
-- Refactor operators in CartesianState (addition #23, subtraction #33 and #40, transformation #28, division #41)
+- Refactor operators in CartesianState (addition #23, subtraction #33 and #40, 
+  transformation #28 and #45, division #41)
 
 ## 6.3.1
 
