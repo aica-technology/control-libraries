@@ -196,7 +196,7 @@ JointAccelerations JointAccelerations::operator-(const JointAccelerations& accel
 }
 
 std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations) {
-  os << accelerations.print_state_variable("JointAccelerations", JointStateVariable::ACCELERATIONS).str();
+  os << accelerations.print_state_variable("JointAccelerations", accelerations.get_type()).str();
   return os;
 }
 }// namespace state_representation

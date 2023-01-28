@@ -587,8 +587,7 @@ JointState JointState::operator-(const JointState& state) const {
   return result;
 }
 
-std::stringstream
-JointState::print_state_variable(const std::string& class_name, const JointStateVariable& state_variable_type) const {
+std::stringstream JointState::print_state_variable(const std::string& class_name, const StateType& state_type) const {
   std::stringstream s;
   auto prefix = this->is_empty() ? "Empty " : "";
   s << prefix << class_name << " '" << this->get_name() << "'" << std::endl;
@@ -598,22 +597,22 @@ JointState::print_state_variable(const std::string& class_name, const JointState
   if (this->is_empty()) {
     return s;
   }
-  if (state_variable_type == JointStateVariable::POSITIONS || state_variable_type == JointStateVariable::ALL) {
+  if (state_type == StateType::JOINT_POSITIONS || state_type == StateType::JOINT_STATE) {
     s << std::endl << "positions: [";
     for (auto& p : this->get_positions()) { s << p << ", "; }
     s << "]";
   }
-  if (state_variable_type == JointStateVariable::VELOCITIES || state_variable_type == JointStateVariable::ALL) {
+  if (state_type == StateType::JOINT_VELOCITIES || state_type == StateType::JOINT_STATE) {
     s << std::endl << "velocities: [";
     for (auto& v : this->get_velocities()) { s << v << ", "; }
     s << "]";
   }
-  if (state_variable_type == JointStateVariable::ACCELERATIONS || state_variable_type == JointStateVariable::ALL) {
+  if (state_type == StateType::JOINT_ACCELERATIONS || state_type == StateType::JOINT_STATE) {
     s << std::endl << "accelerations: [";
     for (auto& a : this->get_accelerations()) { s << a << ", "; }
     s << "]";
   }
-  if (state_variable_type == JointStateVariable::TORQUES || state_variable_type == JointStateVariable::ALL) {
+  if (state_type == StateType::JOINT_TORQUES || state_type == StateType::JOINT_STATE) {
     s << std::endl << "torques: [";
     for (auto& t : this->get_torques()) { s << t << ", "; }
     s << "]";
@@ -622,7 +621,7 @@ JointState::print_state_variable(const std::string& class_name, const JointState
 }
 
 std::ostream& operator<<(std::ostream& os, const JointState& state) {
-  os << state.print_state_variable("JointState", JointStateVariable::ALL).str();
+  os << state.print_state_variable("JointState", state.get_type()).str();
   return os;
 }
 }// namespace state_representation

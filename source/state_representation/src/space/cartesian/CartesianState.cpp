@@ -812,9 +812,8 @@ std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
   return os;
 }
 
-std::stringstream CartesianState::print_state_variable(
-    const std::string& class_name, const CartesianStateVariable& state_variable_type
-) const {
+std::stringstream
+CartesianState::print_state_variable(const std::string& class_name, const StateType& state_type) const {
   std::stringstream s;
   auto prefix = this->is_empty() ? "Empty " : "";
   s << prefix << class_name << " '" << this->get_name() << "' expressed in frame '" << this->get_reference_frame()
@@ -822,7 +821,7 @@ std::stringstream CartesianState::print_state_variable(
   if (this->is_empty()) {
     return s;
   }
-  if (state_variable_type == CartesianStateVariable::POSE || state_variable_type == CartesianStateVariable::ALL) {
+  if (state_type == StateType::CARTESIAN_POSE || state_type == StateType::CARTESIAN_STATE) {
     s << std::endl << "position: " << this->get_position() << std::endl;
     s << "orientation: (" << this->get_orientation().w() << ", ";
     s << this->get_orientation().x() << ", ";
@@ -832,16 +831,15 @@ std::stringstream CartesianState::print_state_variable(
     s << " <=> theta: " << axis_angle.angle() << ", ";
     s << "axis: " << axis_angle.axis();
   }
-  if (state_variable_type == CartesianStateVariable::TWIST || state_variable_type == CartesianStateVariable::ALL) {
+  if (state_type == StateType::CARTESIAN_TWIST || state_type == StateType::CARTESIAN_STATE) {
     s << std::endl << "linear velocity: " << this->get_linear_velocity() << std::endl;
     s << "angular velocity: " << this->get_angular_velocity();
   }
-  if (state_variable_type == CartesianStateVariable::ACCELERATION
-      || state_variable_type == CartesianStateVariable::ALL) {
+  if (state_type == StateType::CARTESIAN_ACCELERATION || state_type == StateType::CARTESIAN_STATE) {
     s << std::endl << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
     s << "angular acceleration: " << this->get_angular_acceleration();
   }
-  if (state_variable_type == CartesianStateVariable::WRENCH || state_variable_type == CartesianStateVariable::ALL) {
+  if (state_type == StateType::CARTESIAN_WRENCH || state_type == StateType::CARTESIAN_STATE) {
     s << std::endl << "force: " << this->get_force() << std::endl;
     s << "torque: " << this->get_torque();
   }
@@ -849,7 +847,7 @@ std::stringstream CartesianState::print_state_variable(
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  os << state.print_state_variable("CartesianState", CartesianStateVariable::ALL).str();
+  os << state.print_state_variable("CartesianState", state.get_type()).str();
   return os;
 }
 

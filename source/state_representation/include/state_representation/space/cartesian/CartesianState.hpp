@@ -540,10 +540,9 @@ protected:
    * @brief Print the Cartesian state
    * @param class_name The name of the class (one of CartesianState, CartesianPose, CartesianTwist,
    * CartesianAcceleration, CartesianWrench)
-   * @param state_variable_type The corresponding type of variable to print
+   * @param state_type The type of the state to print
    */
-  std::stringstream
-  print_state_variable(const std::string& class_name, const CartesianStateVariable& state_variable_type) const;
+  std::stringstream print_state_variable(const std::string& class_name, const StateType& state_type) const;
 
 private:
   Eigen::Vector3d position_;            ///< position of the point

@@ -215,7 +215,7 @@ CartesianTwist CartesianTwist::operator-(const CartesianTwist& twist) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
-  os << twist.print_state_variable("CartesianTwist", CartesianStateVariable::TWIST).str();
+  os << twist.print_state_variable("CartesianTwist", twist.get_type()).str();
   return os;
 }
 
