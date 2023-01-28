@@ -171,7 +171,7 @@ TEST_F(CartesianPoseTestClass, TestAddTwoPoses) {
   Eigen::Vector3d pos2(1, 0, 0);
   Eigen::Quaterniond rot2(0, 1, 0, 0);
   tf2 = CartesianPose("t1", pos2, rot2);
-  CartesianPose tf3 = tf1 + tf2;
+  auto tf3 = tf1 + tf2;
   EXPECT_EQ(tf3.get_type(), StateType::CARTESIAN_POSE);
   Eigen::Vector3d pos_truth(1, 0, 0);
   Eigen::Quaterniond rot_truth(0, -1, 0, 0);
