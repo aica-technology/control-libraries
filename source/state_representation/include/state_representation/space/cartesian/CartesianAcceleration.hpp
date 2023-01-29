@@ -267,16 +267,18 @@ public:
   friend CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian acceleration divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian acceleration
    */
   CartesianAcceleration& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian acceleration divided by lambda
+   * @brief Scale a Cartesian acceleration by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian acceleration
    */
   CartesianAcceleration operator/(double lambda) const;
 
