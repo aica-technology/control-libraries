@@ -118,35 +118,23 @@ JointAccelerations operator*(double lambda, const JointAccelerations& accelerati
   return result;
 }
 
-JointAccelerations& JointAccelerations::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator*(const Eigen::MatrixXd& lambda) const {
-  JointAccelerations result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations) {
-  JointAccelerations result(accelerations);
-  result *= lambda;
-  return result;
-}
-
 JointAccelerations& JointAccelerations::operator*=(const Eigen::ArrayXd& lambda) {
   this->multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
   return (*this);
 }
 
-JointAccelerations JointAccelerations::operator*(const Eigen::ArrayXd& lambda) const {
-  JointAccelerations result(*this);
+JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations) {
+  JointAccelerations result(accelerations);
   result *= lambda;
   return result;
 }
 
-JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations) {
+JointAccelerations& JointAccelerations::operator*=(const Eigen::MatrixXd& lambda) {
+  this->multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
+  return (*this);
+}
+
+JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations) {
   JointAccelerations result(accelerations);
   result *= lambda;
   return result;

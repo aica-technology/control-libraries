@@ -186,78 +186,72 @@ public:
   JointAccelerations copy() const;
 
   /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint accelerations multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint accelerations
    */
   JointAccelerations& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint accelerations multiplied by lambda
+   * @brief Scale joint accelerations by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint accelerations
    */
   JointAccelerations operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar gain to multiply with
-   * @return The joint accelerations multiplied by lambda
+   * @brief Scale joint accelerations by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param accelerations The joint accelerations to be scaled
+   * @return The scaled joint accelerations
    */
   friend JointAccelerations operator*(double lambda, const JointAccelerations& accelerations);
 
   /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint accelerations multiplied by lambda
-   */
-  JointAccelerations& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint accelerations multiplied by lambda
-   */
-  JointAccelerations operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint accelerations multiplied by lambda
-   */
-  friend JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations);
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint accelerations multiplied by lambda
+   * @brief Scale joint accelerations inplace by an array
+   * @param lambda The scaling factors for each joints
+   * @return The reference to the scaled joint accelerations
    */
   JointAccelerations& operator*=(const Eigen::ArrayXd& lambda);
 
   /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint accelerations multiplied by lambda
-   */
-  JointAccelerations operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint accelerations multiplied by lambda
+   * @brief Scale joint accelerations by an array
+   * @param lambda The scaling factors for each joints
+   * @param accelerations The joint accelerations to be scaled
+   * @return The scaled joint accelerations
    */
   friend JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations);
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The joint velocities corresponding to the velocities over the time period
+   * @brief Scale joint accelerations inplace by a matrix
+   * @param lambda The coupled scaling matrix
+   * @return The reference to the scaled joint accelerations
+   */
+  JointAccelerations& operator*=(const Eigen::MatrixXd& lambda);
+
+  /**
+   * @brief Scale joint accelerations by a matrix
+   * @param lambda The coupled scaling matrix
+   * @param acceleration The Cartesian acceleration to be scaled
+   * @return The scaled Cartesian acceleration
+   */
+  friend JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations);
+
+  /**
+   * @brief Integrate joint accelerations over a time period
+   * @param dt The time period used for integration
+   * @return The resulting joint velocities after integration
    */
   JointVelocities operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @param dt The time period to multiply with
-   * @return The joint velocities corresponding to the velocities over the time period
+   * @brief Integrate joint accelerations over a time period
+   * @param dt The time period used for integration
+   * @param accelerations The joint accelerations to be integrated
+   * @return The resulting joint velocities after integration
    */
   friend JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations);
 
