@@ -129,9 +129,8 @@ CartesianAcceleration& CartesianAcceleration::operator*=(const Eigen::Matrix<dou
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  // operation
-  this->set_linear_acceleration(lambda.block<3, 3>(0, 0) * this->get_linear_acceleration());
-  this->set_angular_acceleration(lambda.block<3, 3>(3, 3) * this->get_angular_acceleration());
+  // operation on full data vector
+  this->set_data(lambda * this->data());
   return (*this);
 }
 

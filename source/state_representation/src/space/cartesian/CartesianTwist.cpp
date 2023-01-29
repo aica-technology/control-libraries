@@ -131,9 +131,8 @@ CartesianTwist& CartesianTwist::operator*=(const Eigen::Matrix<double, 6, 6>& la
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  // operation
-  this->set_linear_velocity(lambda.block<3, 3>(0, 0) * this->get_linear_velocity());
-  this->set_angular_velocity(lambda.block<3, 3>(3, 3) * this->get_angular_velocity());
+  // operation on full data vector
+  this->set_data(lambda * this->data());
   return (*this);
 }
 
