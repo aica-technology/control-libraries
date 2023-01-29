@@ -291,6 +291,21 @@ public:
   friend CartesianPose operator*(double lambda, const CartesianPose& pose);
 
   /**
+   * @brief Scale all dimensions inplace by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @return The reference to the scaled Cartesian pose
+   */
+  CartesianPose& operator*=(const Eigen::Matrix<double, 7, 7>& lambda);
+
+  /**
+   * @brief Scale a Cartesian pose in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param pose The Cartesian pose to be scaled
+   * @return The scaled Cartesian pose
+   */
+  friend CartesianPose operator*(const Eigen::Matrix<double, 7, 7>& lambda, const CartesianPose& pose);
+
+  /**
    * @brief Scale inplace by a scalar
    * @copydetails CartesianState::operator*=(double)
    * @param lambda The scaling factor
