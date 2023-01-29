@@ -245,16 +245,18 @@ public:
   operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench);
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian wrench divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian wrench
    */
   CartesianWrench& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian wrench divided by lambda
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian wrench
    */
   CartesianWrench operator/(double lambda) const;
 

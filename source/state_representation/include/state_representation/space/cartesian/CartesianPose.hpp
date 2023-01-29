@@ -291,23 +291,25 @@ public:
   friend CartesianPose operator*(double lambda, const CartesianPose& pose);
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian pose divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian pose
    */
   CartesianPose& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return the Cartesian pose divided by lambda
+   * @brief Scale a Cartesian pose by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian acceleration
    */
   CartesianPose operator/(double lambda) const;
 
   /**
-   * @brief Overload the / operator with a time period
-   * @param dt The time period to divide by
-   * @return The corresponding Cartesian twist
+   * @brief Derive a Cartesian pose over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting Cartesian twist after derivation
    */
   CartesianTwist operator/(const std::chrono::nanoseconds& dt) const;
 

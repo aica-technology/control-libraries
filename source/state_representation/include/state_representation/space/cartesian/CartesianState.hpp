@@ -488,16 +488,18 @@ public:
   Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const;
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian state divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian state
    */
   CartesianState& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The Cartesian state divided by lambda
+   * @brief Scale a Cartesian state by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian state
    */
   CartesianState operator/(double lambda) const;
 
