@@ -24,7 +24,8 @@ Release Versions:
 - Set state type in copy constructors (#34)
 - Remove state type from clproto (#47)
 - Add forward force parameter to Impedance controller (#36)
-- Refactor operators in CartesianState (addition #23, subtraction #33 and #40, transformation #28, division #41)
+- Refactor operators in CartesianState (addition #23, subtraction #33 and #40, 
+  transformation #28 and #45, division #41)
 
 ## 6.3.1
 
