@@ -27,7 +27,7 @@ enum StateType {
 
 message State {
   string name = 1;
-  StateType type = 2;
+  StateType type = 2 [deprecated = true];
   bool empty = 3;
   int64 timestamp = 4 [deprecated = true];
 }

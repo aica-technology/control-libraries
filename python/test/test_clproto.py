@@ -47,24 +47,23 @@ class TestClprotoJSON(unittest.TestCase):
         self.assertAlmostEqual(sr.dist(reference_object, decoded_object), 0)
 
     def test_string_comparison(self):
-        # TODO(#34): remove state type from clproto
         msg = clproto.encode(sr.CartesianPose("A", 1.0, 0.5, 3.0, "B"), clproto.MessageType.CARTESIAN_POSE_MESSAGE)
         json = clproto.to_json(msg)
-        self.assertEqual(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\",\"type\":"
-                               "\"STATE\"},\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,"
+        self.assertEqual(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\"},"
+                               "\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,"
                                "\"z\":3},\"orientation\":{\"w\":1,\"vec\":{}}}}")
 
         joint_state = sr.JointState("robot", 3)
         joint_state.set_velocities([0.3, 0.1, 0.6])
         msg = clproto.encode(joint_state, clproto.MessageType.JOINT_STATE_MESSAGE)
         json = clproto.to_json(msg)
-        self.assertEqual(json, "{\"jointState\":{\"state\":{\"name\":\"robot\",\"type\":\"STATE\"},"
+        self.assertEqual(json, "{\"jointState\":{\"state\":{\"name\":\"robot\"},"
                                "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"positions\":[0,0,0],"
                                "\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":[0,0,0]}}")
 
         msg = clproto.encode(sr.Jacobian("robot", 3, "test"), clproto.MessageType.JACOBIAN_MESSAGE)
         json = clproto.to_json(msg)
-        self.assertEqual(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"STATE\",\"empty\":true},"
+        self.assertEqual(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"empty\":true},"
                                "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\","
                                "\"referenceFrame\":\"world\",\"rows\":6,\"cols\":3}}")
 

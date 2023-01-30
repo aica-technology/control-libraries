@@ -15,7 +15,6 @@ proto::StateType encoder(const StateType& type) {
 proto::State encoder(const State& state) {
   proto::State message;
   message.set_name(state.get_name());
-  message.set_type(encoder(state.get_type()));
   message.set_empty(state.is_empty());
   return message;
 }
