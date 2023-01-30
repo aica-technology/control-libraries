@@ -18,23 +18,25 @@ CartesianState Impedance<CartesianState>::compute_command(
     const CartesianState& command_state, const CartesianState& feedback_state
 ) {
   CartesianState state_error = command_state - feedback_state;
-  // compute the wrench using the formula W = I * acc_desired + K * e_pose + D * e_twist + e_wrench
+  // compute the wrench using the formula W = I * acc_desired + K * e_pose + D * e_twist
   CartesianState command(feedback_state.get_name(), feedback_state.get_reference_frame());
   // compute force
   Eigen::Vector3d position_control = this->stiffness_->get_value().topLeftCorner<3, 3>() * state_error.get_position()
       + this->damping_->get_value().topLeftCorner<3, 3>() * state_error.get_linear_velocity()
       + this->inertia_->get_value().topLeftCorner<3, 3>() * command_state.get_linear_acceleration();
-  Eigen::Vector3d commanded_force = position_control + state_error.get_force();
 
   // compute torque (orientation requires special care)
   Eigen::Vector3d orientation_control =
       this->stiffness_->get_value().bottomRightCorner<3, 3>() * state_error.get_orientation().vec()
           + this->damping_->get_value().bottomRightCorner<3, 3>() * state_error.get_angular_velocity()
           + this->inertia_->get_value().bottomRightCorner<3, 3>() * command_state.get_angular_acceleration();
-  Eigen::Vector3d commanded_torque = orientation_control + state_error.get_torque();
 
   Eigen::VectorXd wrench(6);
-  wrench << commanded_force, commanded_torque;
+  wrench << position_control, orientation_control;
+  // if the 'feed_forward_force' parameter is set to true, also add the wrench error to the command
+  if (this->get_parameter_value<bool>("feed_forward_force")) {
+    wrench += state_error.get_wrench();
+  }
   clamp_force(wrench);
 
   command.set_wrench(wrench);
@@ -46,15 +48,19 @@ JointState Impedance<JointState>::compute_command(
     const JointState& command_state, const JointState& feedback_state
 ) {
   JointState state_error = command_state - feedback_state;
-  // compute the wrench using the formula T = I * acc_desired + K * e_pos + D * e_vel + e_tor
+  // compute the wrench using the formula T = I * acc_desired + K * e_pos + D * e_vel
   JointState command(feedback_state.get_name(), feedback_state.get_names());
   // compute torques
-  Eigen::VectorXd state_control = this->stiffness_->get_value() * state_error.get_positions()
+  Eigen::VectorXd torque_control = this->stiffness_->get_value() * state_error.get_positions()
       + this->damping_->get_value() * state_error.get_velocities()
       + this->inertia_->get_value() * command_state.get_accelerations();
-  Eigen::VectorXd commanded_torques = state_control + state_error.get_torques();
-  clamp_force(commanded_torques);
-  command.set_torques(commanded_torques);
+
+  // if the 'feed_forward_force' parameter is set to true, also add the torque error to the command
+  if (this->get_parameter_value<bool>("feed_forward_force")) {
+    torque_control += state_error.get_torques();
+  }
+  clamp_force(torque_control);
+  command.set_torques(torque_control);
   return command;
 }
 

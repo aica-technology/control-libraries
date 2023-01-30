@@ -23,6 +23,7 @@ Release Versions:
 - Fix inverse operation in CartesianState (#32)
 - Set state type in copy constructors (#34)
 - Remove state type from clproto (#47)
+- Add forward force parameter to Impedance controller (#36)
 
 ## 6.3.1
 
