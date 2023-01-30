@@ -23,11 +23,6 @@ CompliantTwist::CompliantTwist(
 
   set_linear_gains(linear_principle_damping, linear_orthogonal_damping);
   set_angular_gains(angular_stiffness, angular_damping);
-  // dissipative already doesn't have stiffness and inertia
-  // by setting forward force to false, we ensure that only the velocity error contributes to the command
-  // FIXME: is this just for the compliant twist controller or for the dissipative in general?
-  // FIXME: or should this even be the user's responsibility to set that?
-  this->dissipative_ctrl_.set_parameter_value("forward_force", false);
 }
 
 CompliantTwist::CompliantTwist(
