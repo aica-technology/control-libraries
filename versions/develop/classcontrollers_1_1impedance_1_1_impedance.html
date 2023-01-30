@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.20</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.21</span>
    </div>
   </td>
  </tr>
@@ -210,6 +210,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a9d2c7e76bc6ebe6efe42aa303898d4b4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter.html">state_representation::Parameter</a>&lt; Eigen::MatrixXd &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcontrollers_1_1impedance_1_1_impedance.html#a9d2c7e76bc6ebe6efe42aa303898d4b4">inertia_</a></td></tr>
 <tr class="memdesc:a9d2c7e76bc6ebe6efe42aa303898d4b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">inertia matrix of the controller associated to acceleration  <a href="classcontrollers_1_1impedance_1_1_impedance.html#a9d2c7e76bc6ebe6efe42aa303898d4b4">More...</a><br /></td></tr>
 <tr class="separator:a9d2c7e76bc6ebe6efe42aa303898d4b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ca71833b77caac82b0ca890f026d60"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter.html">state_representation::Parameter</a>&lt; bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcontrollers_1_1impedance_1_1_impedance.html#a52ca71833b77caac82b0ca890f026d60">feed_forward_force_</a></td></tr>
+<tr class="memdesc:a52ca71833b77caac82b0ca890f026d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag to decide if force error should be passed on  <a href="classcontrollers_1_1impedance_1_1_impedance.html#a52ca71833b77caac82b0ca890f026d60">More...</a><br /></td></tr>
+<tr class="separator:a52ca71833b77caac82b0ca890f026d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c5b6e87b98279b470437c80de6227ea"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter.html">state_representation::Parameter</a>&lt; Eigen::VectorXd &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcontrollers_1_1impedance_1_1_impedance.html#a5c5b6e87b98279b470437c80de6227ea">force_limit_</a></td></tr>
 <tr class="memdesc:a5c5b6e87b98279b470437c80de6227ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector of force limits for each degree of freedom  <a href="classcontrollers_1_1impedance_1_1_impedance.html#a5c5b6e87b98279b470437c80de6227ea">More...</a><br /></td></tr>
 <tr class="separator:a5c5b6e87b98279b470437c80de6227ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,7 +274,7 @@ template&lt;class S &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00074">74</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00076">76</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -320,7 +323,7 @@ template&lt;class S &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00091">91</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00095">95</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -351,7 +354,7 @@ template&lt;class S &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00099">99</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00103">103</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -411,7 +414,7 @@ template&lt;class S &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8cpp_source.html#l00045">45</a> of file <a class="el" href="_impedance_8cpp_source.html">Impedance.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8cpp_source.html#l00047">47</a> of file <a class="el" href="_impedance_8cpp_source.html">Impedance.cpp</a>.</p>
 
 </div>
 </div>
@@ -504,7 +507,7 @@ template&lt;class S &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A square gain matrix </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00129">129</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00135">135</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -542,7 +545,7 @@ template&lt;class S &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00109">109</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00113">113</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -599,7 +602,35 @@ template&lt;class S &gt; </div>
 
 <p>dimensionality of the control space and associated gain matrices </p>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00070">70</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00072">72</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a52ca71833b77caac82b0ca890f026d60" name="a52ca71833b77caac82b0ca890f026d60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52ca71833b77caac82b0ca890f026d60">&#9670;&#160;</a></span>feed_forward_force_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class S &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classstate__representation_1_1_parameter.html">state_representation::Parameter</a>&lt;bool&gt; &gt; <a class="el" href="classcontrollers_1_1impedance_1_1_impedance.html">controllers::impedance::Impedance</a>&lt; S &gt;::feed_forward_force_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>flag to decide if force error should be passed on </p>
+
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00068">68</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
@@ -627,7 +658,7 @@ template&lt;class S &gt; </div>
 
 <p>vector of force limits for each degree of freedom </p>
 
-<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00068">68</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_impedance_8hpp_source.html#l00070">70</a> of file <a class="el" href="_impedance_8hpp_source.html">Impedance.hpp</a>.</p>
 
 </div>
 </div>
