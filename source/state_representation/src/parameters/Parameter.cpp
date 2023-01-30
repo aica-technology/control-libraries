@@ -156,7 +156,7 @@ Parameter<Eigen::VectorXd>::Parameter(const std::string& name, const Eigen::Vect
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const Parameter<T>& parameter) {
-  os << parameter.print_state(StateType::PARAMETER);
+  os << parameter.to_string();
   if (parameter) {
     os << ", " << parameter.get_value();
   }
@@ -177,7 +177,7 @@ template std::ostream& operator<<(std::ostream& os, const Parameter<Eigen::Vecto
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<int>>& parameter) {
-  os << parameter.print_state(StateType::PARAMETER);
+  os << parameter.to_string();
   if (parameter) {
     os << ", [";
     for (auto& v: parameter.get_value()) {
@@ -190,7 +190,7 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<int>>& pa
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<double>>& parameter) {
-  os << parameter.print_state(StateType::PARAMETER);
+  os << parameter.to_string();
   if (parameter) {
     os << ", [";
     for (auto& v: parameter.get_value()) {
@@ -203,7 +203,7 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<double>>&
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<bool>>& parameter) {
-  os << parameter.print_state(StateType::PARAMETER);
+  os << parameter.to_string();
   if (parameter) {
     os << ", [";
     for (auto v: parameter.get_value()) {
@@ -216,7 +216,7 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<bool>>& p
 
 template<>
 std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<std::string>>& parameter) {
-  os << parameter.print_state(StateType::PARAMETER);
+  os << parameter.to_string();
   if (parameter) {
     os << ", [";
     for (auto& v: parameter.get_value()) {

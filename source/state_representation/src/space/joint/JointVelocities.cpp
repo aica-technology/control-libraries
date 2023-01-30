@@ -209,7 +209,7 @@ JointVelocities JointVelocities::operator-(const JointVelocities& velocities) co
 }
 
 std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
-  os << velocities.print_state(StateType::JOINT_VELOCITIES);
+  os << velocities.to_string();
   return os;
 }
 }// namespace state_representation

@@ -193,7 +193,7 @@ CartesianAcceleration CartesianAcceleration::operator-(const CartesianAccelerati
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration) {
-  os << acceleration.print_state(StateType::CARTESIAN_ACCELERATION);
+  os << acceleration.to_string();
   return os;
 }
 

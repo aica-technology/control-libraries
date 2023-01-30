@@ -15,9 +15,9 @@ Shape::Shape(const Shape& shape) : State(shape), center_state_(shape.center_stat
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
-std::string Shape::print_state(const StateType& state_type) const {
+std::string Shape::to_string() const {
   std::stringstream s;
-  s << this->State::print_state(state_type);
+  s << this->State::to_string();
   if (this->is_empty()) {
     return s.str();
   }
@@ -27,7 +27,7 @@ std::string Shape::print_state(const StateType& state_type) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Shape& shape) {
-  os << shape.print_state(StateType::GEOMETRY_SHAPE);
+  os << shape.to_string();
   return os;
 }
 }

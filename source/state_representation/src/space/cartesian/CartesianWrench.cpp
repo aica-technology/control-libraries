@@ -148,7 +148,7 @@ CartesianWrench CartesianWrench::operator-(const CartesianWrench& wrench) const 
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench) {
-  os << wrench.print_state(StateType::CARTESIAN_WRENCH);
+  os << wrench.to_string();
   return os;
 }
 

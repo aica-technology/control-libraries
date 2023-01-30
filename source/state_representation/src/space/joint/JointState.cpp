@@ -587,31 +587,31 @@ JointState JointState::operator-(const JointState& state) const {
   return result;
 }
 
-std::string JointState::print_state(const StateType& state_type) const {
+std::string JointState::to_string() const {
   std::stringstream s;
-  s << this->State::print_state(state_type);
+  s << this->State::to_string();
   s << std::endl << "joint names: [";
   for (auto& n : this->get_names()) { s << n << ", "; }
   s << "]";
   if (this->is_empty()) {
     return s.str();
   }
-  if (state_type == StateType::JOINT_POSITIONS || state_type == StateType::JOINT_STATE) {
+  if (this->get_type() == StateType::JOINT_POSITIONS || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "positions: [";
     for (auto& p : this->get_positions()) { s << p << ", "; }
     s << "]";
   }
-  if (state_type == StateType::JOINT_VELOCITIES || state_type == StateType::JOINT_STATE) {
+  if (this->get_type() == StateType::JOINT_VELOCITIES || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "velocities: [";
     for (auto& v : this->get_velocities()) { s << v << ", "; }
     s << "]";
   }
-  if (state_type == StateType::JOINT_ACCELERATIONS || state_type == StateType::JOINT_STATE) {
+  if (this->get_type() == StateType::JOINT_ACCELERATIONS || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "accelerations: [";
     for (auto& a : this->get_accelerations()) { s << a << ", "; }
     s << "]";
   }
-  if (state_type == StateType::JOINT_TORQUES || state_type == StateType::JOINT_STATE) {
+  if (this->get_type() == StateType::JOINT_TORQUES || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "torques: [";
     for (auto& t : this->get_torques()) { s << t << ", "; }
     s << "]";
@@ -620,7 +620,7 @@ std::string JointState::print_state(const StateType& state_type) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const JointState& state) {
-  os << state.print_state(StateType::JOINT_STATE);
+  os << state.to_string();
   return os;
 }
 }// namespace state_representation

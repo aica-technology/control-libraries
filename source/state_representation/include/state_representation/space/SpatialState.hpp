@@ -63,9 +63,9 @@ public:
 
 protected:
   /**
-   * @copydoc State::print_state
+   * @copydoc State::to_string
    */
-  std::string print_state(const StateType& state_type) const override;
+  std::string to_string() const override;
 
 private:
   std::string reference_frame_; ///< name of the reference frame

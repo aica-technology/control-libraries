@@ -189,7 +189,7 @@ void Ellipsoid::set_data(const std::vector<double>& data) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& ellipsoid) {
-  os << ellipsoid.print_state(StateType::GEOMETRY_ELLIPSOID);
+  os << ellipsoid.to_string();
   if (ellipsoid.is_empty()) {
     return os;
   }

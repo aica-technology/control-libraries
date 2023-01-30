@@ -812,13 +812,13 @@ std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
   return os;
 }
 
-std::string CartesianState::print_state(const StateType& state_type) const {
+std::string CartesianState::to_string() const {
   std::stringstream s;
-  s << this->SpatialState::print_state(state_type);
+  s << this->SpatialState::to_string();
   if (this->is_empty()) {
     return s.str();
   }
-  if (state_type == StateType::CARTESIAN_POSE || state_type == StateType::CARTESIAN_STATE) {
+  if (this->get_type() == StateType::CARTESIAN_POSE || this->get_type() == StateType::CARTESIAN_STATE) {
     s << std::endl << "position: " << this->get_position() << std::endl;
     s << "orientation: (" << this->get_orientation().w() << ", ";
     s << this->get_orientation().x() << ", ";
@@ -828,15 +828,15 @@ std::string CartesianState::print_state(const StateType& state_type) const {
     s << " <=> theta: " << axis_angle.angle() << ", ";
     s << "axis: " << axis_angle.axis();
   }
-  if (state_type == StateType::CARTESIAN_TWIST || state_type == StateType::CARTESIAN_STATE) {
+  if (this->get_type() == StateType::CARTESIAN_TWIST || this->get_type() == StateType::CARTESIAN_STATE) {
     s << std::endl << "linear velocity: " << this->get_linear_velocity() << std::endl;
     s << "angular velocity: " << this->get_angular_velocity();
   }
-  if (state_type == StateType::CARTESIAN_ACCELERATION || state_type == StateType::CARTESIAN_STATE) {
+  if (this->get_type() == StateType::CARTESIAN_ACCELERATION || this->get_type() == StateType::CARTESIAN_STATE) {
     s << std::endl << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
     s << "angular acceleration: " << this->get_angular_acceleration();
   }
-  if (state_type == StateType::CARTESIAN_WRENCH || state_type == StateType::CARTESIAN_STATE) {
+  if (this->get_type() == StateType::CARTESIAN_WRENCH || this->get_type() == StateType::CARTESIAN_STATE) {
     s << std::endl << "force: " << this->get_force() << std::endl;
     s << "torque: " << this->get_torque();
   }
@@ -844,7 +844,7 @@ std::string CartesianState::print_state(const StateType& state_type) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  os << state.print_state(StateType::CARTESIAN_STATE);
+  os << state.to_string();
   return os;
 }
 }// namespace state_representation

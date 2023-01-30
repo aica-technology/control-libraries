@@ -408,7 +408,7 @@ const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian) {
-  os << jacobian.print_state(StateType::JACOBIAN);
+  os << jacobian.to_string();
   os << " associated to '" << jacobian.get_frame();
   os << "', expressed in frame '" << jacobian.get_reference_frame() << "'" << std::endl;
   os << "joint names: [";

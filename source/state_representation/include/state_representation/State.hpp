@@ -160,10 +160,9 @@ protected:
   void set_empty(bool empty = true);
 
   /**
-   * @brief Print the state
-   * @param state_type The type of the state to print
+   * @brief Convert the state to its string representation
    */
-  virtual std::string print_state(const StateType& state_type) const;
+  virtual std::string to_string() const;
 
 private:
   StateType type_;                                              ///< type of the State

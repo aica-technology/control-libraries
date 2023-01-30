@@ -191,7 +191,7 @@ JointPositions JointPositions::operator-(const JointPositions& positions) const 
 }
 
 std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
-  os << positions.print_state(StateType::JOINT_POSITIONS);
+  os << positions.to_string();
   return os;
 }
 }// namespace state_representation

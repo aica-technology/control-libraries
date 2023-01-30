@@ -191,7 +191,7 @@ CartesianPose CartesianPose::operator-(const CartesianPose& pose) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
-  os << pose.print_state(StateType::CARTESIAN_POSE);
+  os << pose.to_string();
   return os;
 }
 
