@@ -184,86 +184,58 @@ public:
   JointPositions copy() const;
 
   /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint positions multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint positions
    */
   JointPositions& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint positions multiplied by lambda
+   * @brief Scale joint positions by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint positions
    */
   JointPositions operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The joint positions multiplied by lambda
+   * @brief Scale joint positions by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param positions The joint positions to be scaled
+   * @return The scaled joint positions
    */
   friend JointPositions operator*(double lambda, const JointPositions& positions);
 
   /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint positions multiplied by lambda
-   */
-  JointPositions& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint positions multiplied by lambda
-   */
-  JointPositions operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The matrix to multiply with
-   * @return The joint positions multiplied by lambda
+   * @brief Scale joint positions by a matrix
+   * @param lambda The scaling matrix
+   * @param accelerations The joint positions to be scaled
+   * @return The scaled joint accelerations
    */
   friend JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions);
 
   /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint positions multiplied by lambda
-   */
-  JointPositions& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint positions multiplied by lambda
-   */
-  JointPositions operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @param lambda The array to multiply with
-   * @return The joint positions multiplied by lambda
-   */
-  friend JointPositions operator*(const Eigen::ArrayXd& lambda, const JointPositions& positions);
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint positions divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint positions
    */
   JointPositions& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint positions divided by lambda
+   * @brief Scale joint positions by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint positions
    */
   JointPositions operator/(double lambda) const;
 
   /**
-   * @brief Overload the / operator with a time period
-   * @param dt The time period to divide with
-   * @return The joint velocities corresponding to the velocities over the time period
+   * @brief Differentiate joint positions pose over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting joint velocities after derivation
    */
   JointVelocities operator/(const std::chrono::nanoseconds& dt) const;
 
