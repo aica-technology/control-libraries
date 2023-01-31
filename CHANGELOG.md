@@ -25,6 +25,7 @@ Release Versions:
 - Remove state type from clproto (#47)
 - Add forward force parameter to Impedance controller (#36)
 - Simplify and consolidate ostream operators (#37)
+- Bind inverse for each Cartesian class individually (#52)
 
 ## 6.3.1
 
