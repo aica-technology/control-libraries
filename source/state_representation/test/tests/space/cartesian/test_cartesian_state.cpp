@@ -450,15 +450,13 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
+  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
+  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
 
-  // TODO(#30): wrench inverse and transform
-//  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
-//  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
-
-  // TODO(#30): conservation of power must hold
-//  auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
-//  auto power_inverse = b_state_a.get_twist().transpose() * b_state_a.get_wrench();
-//  EXPECT_NEAR(power, power_inverse, 1e-5);
+  // conservation of power must hold
+  auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
+  auto power_inverse = b_state_a.get_twist().transpose() * b_state_a.get_wrench();
+  EXPECT_NEAR(power, power_inverse, 1e-5);
 }
 
 TEST(CartesianStateTest, InverseStaticFrame) {
