@@ -123,8 +123,9 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
     }
     case CartesianStateVariable::ALL: {
       Eigen::VectorXd all_fields(25);
-      all_fields << this->position_, quat2vec(this->orientation_), this->linear_velocity_, this->angular_velocity_,
-                    this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
+      all_fields << this->position_, quat2vec(
+          this->orientation_
+      ), this->linear_velocity_, this->angular_velocity_, this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
       return all_fields;
     }
   }
@@ -206,14 +207,7 @@ std::vector<double> CartesianState::to_std_vector() const {
 void CartesianState::set_state_variable(
     const std::vector<double>& new_value, const CartesianStateVariable& state_variable_type
 ) {
-  // Make the size check here to avoid unnecessary mapping from std to Eigen vector
-  auto expected_size = get_state_variable_size(state_variable_type);
-  if (new_value.size() != expected_size) {
-    throw exceptions::IncompatibleSizeException(
-        "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
-            + std::to_string(new_value.size()));
-  }
-  this->set_state_variable(Eigen::VectorXd::Map(new_value.data(), new_value.size()), state_variable_type, true);
+  this->set_state_variable(Eigen::VectorXd::Map(new_value.data(), new_value.size()), state_variable_type);
 }
 
 void CartesianState::set_state_variable(
