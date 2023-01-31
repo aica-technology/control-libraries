@@ -241,13 +241,6 @@ public:
   friend CartesianTwist operator*(double lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Scale all dimensions inplace by a matrix
-   * @param lambda The scaling factors in all the dimensions
-   * @return The reference to the scaled Cartesian twist
-   */
-  CartesianTwist& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
    * @brief Scale a Cartesian twist in all dimensions by a matrix
    * @param lambda The scaling factors in all the dimensions
    * @param twist The Cartesian twist to be scaled

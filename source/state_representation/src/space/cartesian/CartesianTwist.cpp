@@ -126,19 +126,13 @@ CartesianTwist operator*(double lambda, const CartesianTwist& twist) {
   return twist * lambda;
 }
 
-CartesianTwist& CartesianTwist::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  // operation on full data vector
-  this->set_data(lambda * this->data());
-  return (*this);
-}
-
 CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist) {
+  // sanity check
+  if (twist.is_empty()) {
+    throw EmptyStateException(twist.get_name() + " state is empty");
+  }
   CartesianTwist result(twist);
-  result *= lambda;
+  result.set_twist(lambda * result.get_twist());
   return result;
 }
 

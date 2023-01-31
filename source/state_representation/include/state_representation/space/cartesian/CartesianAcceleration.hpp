@@ -236,13 +236,6 @@ public:
   friend CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Scale all dimensions inplace by a matrix
-   * @param lambda The scaling factors in all the dimensions
-   * @return The reference to the scaled Cartesian acceleration
-   */
-  CartesianAcceleration& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
    * @brief Scale a Cartesian acceleration in all dimensions by a matrix
    * @param lambda The scaling factors in all the dimensions
    * @param acceleration The Cartesian acceleration to be scaled

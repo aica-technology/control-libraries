@@ -124,19 +124,13 @@ CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acce
   return acceleration * lambda;
 }
 
-CartesianAcceleration& CartesianAcceleration::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  // operation on full data vector
-  this->set_data(lambda * this->data());
-  return (*this);
-}
-
 CartesianAcceleration operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration) {
+  // sanity check
+  if (acceleration.is_empty()) {
+    throw EmptyStateException(acceleration.get_name() + " state is empty");
+  }
   CartesianAcceleration result(acceleration);
-  result *= lambda;
+  result.set_acceleration(lambda * result.get_acceleration());
   return result;
 }
 
