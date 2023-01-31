@@ -183,7 +183,7 @@ CartesianState PointAttractor<CartesianState>::compute_dynamics(const CartesianS
     throw exceptions::EmptyAttractorException("The attractor of the dynamical system is empty.");
   }
   CartesianTwist twist = CartesianPose(this->attractor_->get_value()) - CartesianPose(state);
-  twist *= this->gain_->get_value();
+  twist = this->gain_->get_value() * twist;
   return CartesianTwist(state.get_name(), twist.get_twist(), this->attractor_->get_value().get_reference_frame());
 }
 
