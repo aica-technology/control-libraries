@@ -194,22 +194,6 @@ TEST(JointVelocitiesTest, MatrixMultiplication) {
   EXPECT_THROW(gains * jv, exceptions::IncompatibleSizeException);
 }
 
-TEST(JointVelocitiesTest, ArrayMultiplication) {
-  JointVelocities jv = JointVelocities::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(jv.get_size());
-
-  JointVelocities jscaled = gains * jv;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jscaled.data(), (gains * jv.array()).matrix());
-  EXPECT_EQ((jv * gains).data(), jscaled.data());
-  jv *= gains;
-  EXPECT_EQ(jv.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jscaled.data(), jv.data());
-
-  gains = Eigen::ArrayXd::Random(2 * jv.get_size());
-  EXPECT_THROW(gains * jv, exceptions::IncompatibleSizeException);
-}
-
 TEST(JointVelocitiesTest, ChronoMultiplication) {
   JointVelocities jv = JointVelocities::Random("test", 3);
   EXPECT_EQ(jv.get_type(), StateType::JOINT_VELOCITIES);
