@@ -531,6 +531,10 @@ CartesianState CartesianState::inverse() const {
   inverse_linear_acceleration -=
       inverse_angular_velocity.cross(inverse_angular_velocity.cross(inverse_position)); // centrifugal acceleration
 
+  Eigen::Vector3d inverse_torque = inverse_orientation * (-this->get_torque());
+  Eigen::Vector3d inverse_force = inverse_orientation * (-this->get_force());
+  inverse_force += inverse_torque.cross(inverse_position); // radially induced velocity
+
   // collect the results
   inverse.set_position(inverse_position);
   inverse.set_orientation(inverse_orientation);
@@ -538,7 +542,8 @@ CartesianState CartesianState::inverse() const {
   inverse.set_angular_velocity(inverse_angular_velocity);
   inverse.set_linear_acceleration(inverse_linear_acceleration);
   inverse.set_angular_acceleration(inverse_angular_acceleration);
-  // TODO(#30): wrench inverse
+  inverse.set_force(inverse_force);
+  inverse.set_torque(inverse_torque);
 
   return inverse;
 }
@@ -646,6 +651,8 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   Eigen::Vector3d f_omega_b = this->get_angular_velocity();
   Eigen::Vector3d f_a_b = this->get_linear_acceleration();
   Eigen::Vector3d f_alpha_b = this->get_angular_acceleration();
+  Eigen::Vector3d f_F_b = this->get_force();
+  Eigen::Vector3d f_T_b = this->get_torque();
   // intermediate variables for b_S_c
   Eigen::Vector3d b_P_c = state.get_position();
   // specific operation on quaternion using Hamilton product, keeping the resulting quaternion on the same hemisphere
@@ -654,6 +661,8 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   Eigen::Vector3d b_omega_c = state.get_angular_velocity();
   Eigen::Vector3d b_a_c = state.get_linear_acceleration();
   Eigen::Vector3d b_alpha_c = state.get_angular_acceleration();
+  Eigen::Vector3d b_F_c = state.get_force();
+  Eigen::Vector3d b_T_c = state.get_torque();
   // pose
   this->set_position(f_P_b + f_R_b * b_P_c);
   auto orientation = f_R_b * b_R_c;
@@ -670,7 +679,8 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
           + f_omega_b.cross(f_omega_b.cross(f_R_b * b_P_c)));
   this->set_angular_acceleration(f_alpha_b + f_R_b * b_alpha_c + f_omega_b.cross(f_R_b * b_omega_c));
   // wrench
-  //TODO
+  this->set_force(f_F_b + f_R_b * b_F_c + f_T_b.cross(f_R_b * b_P_c));
+  this->set_torque(f_T_b + f_R_b * b_T_c);
   return (*this);
 }
 
