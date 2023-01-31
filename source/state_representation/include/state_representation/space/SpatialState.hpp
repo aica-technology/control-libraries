@@ -61,6 +61,12 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const SpatialState& state);
 
+protected:
+  /**
+   * @copydoc State::to_string
+   */
+  std::string to_string() const override;
+
 private:
   std::string reference_frame_; ///< name of the reference frame
 };

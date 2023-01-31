@@ -46,10 +46,13 @@ bool SpatialState::is_incompatible(const State& state) const {
   }
 }
 
-std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
-  auto prefix = state.is_empty() ? "Empty " : "";
-  os << prefix << "SpatialState: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
-  return os;
+std::string SpatialState::to_string() const {
+  auto state = this->State::to_string();
+  return state + " expressed in frame '" + this->get_reference_frame() + "'";
 }
 
+std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
+  os << state.to_string();
+  return os;
+}
 }// namespace state_representation

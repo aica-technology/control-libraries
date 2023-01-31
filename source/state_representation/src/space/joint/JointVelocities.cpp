@@ -209,17 +209,7 @@ JointVelocities JointVelocities::operator-(const JointVelocities& velocities) co
 }
 
 std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
-  if (velocities.is_empty()) {
-    os << "Empty JointVelocities";
-  } else {
-    os << velocities.get_name() << " JointVelocities" << std::endl;
-    os << "names: [";
-    for (auto& n: velocities.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "velocities: [";
-    for (unsigned int i = 0; i < velocities.get_size(); ++i) { os << velocities.get_velocities()(i) << ", "; }
-    os << "]";
-  }
+  os << velocities.to_string();
   return os;
 }
 }// namespace state_representation

@@ -88,9 +88,13 @@ State::operator bool() const noexcept {
   return !this->empty_;
 }
 
+std::string State::to_string() const {
+  std::string prefix = this->is_empty() ? "Empty " : "";
+  return prefix + get_state_type_name(this->type_) + ": '" + this->get_name() + "'";
+}
+
 std::ostream& operator<<(std::ostream& os, const State& state) {
-  auto prefix = state.is_empty() ? "Empty " : "";
-  os << prefix << "State: " << state.get_name();
+  os << state.to_string();
   return os;
 }
 }// namespace state_representation

@@ -536,6 +536,11 @@ protected:
    */
   void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
 
+  /**
+   * @copydoc SpatialState::to_string
+   */
+  std::string to_string() const override;
+
 private:
   Eigen::Vector3d position_;            ///< position of the point
   Eigen::Quaterniond orientation_;      ///< orientation of the point

@@ -191,17 +191,7 @@ JointPositions JointPositions::operator-(const JointPositions& positions) const 
 }
 
 std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
-  if (positions.is_empty()) {
-    os << "Empty JointPositions";
-  } else {
-    os << positions.get_name() << " JointPositions" << std::endl;
-    os << "names: [";
-    for (auto& n: positions.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "positions: [";
-    for (unsigned int i = 0; i < positions.get_size(); ++i) { os << positions.get_positions()(i) << ", "; }
-    os << "]";
-  }
+  os << positions.to_string();
   return os;
 }
 }// namespace state_representation

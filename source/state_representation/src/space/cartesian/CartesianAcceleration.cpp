@@ -193,18 +193,7 @@ CartesianAcceleration CartesianAcceleration::operator-(const CartesianAccelerati
 }
 
 std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& acceleration) {
-  if (acceleration.is_empty()) {
-    os << "Empty CartesianAcceleration";
-  } else {
-    os << acceleration.get_name() << " CartesianTwist expressed in " << acceleration.get_reference_frame() << " frame"
-       << std::endl;
-    os << "linear_velocity: (" << acceleration.get_linear_acceleration()(0) << ", ";
-    os << acceleration.get_linear_acceleration()(1) << ", ";
-    os << acceleration.get_linear_acceleration()(2) << ")" << std::endl;
-    os << "angular_velocity: (" << acceleration.get_angular_acceleration()(0) << ", ";
-    os << acceleration.get_angular_acceleration()(1) << ", ";
-    os << acceleration.get_angular_acceleration()(2) << ")";
-  }
+  os << acceleration.to_string();
   return os;
 }
 

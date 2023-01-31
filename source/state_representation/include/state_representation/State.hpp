@@ -159,6 +159,11 @@ protected:
    */
   void set_empty(bool empty = true);
 
+  /**
+   * @brief Convert the state to its string representation
+   */
+  virtual std::string to_string() const;
+
 private:
   StateType type_;                                              ///< type of the State
   std::string name_;                                            ///< name of the state

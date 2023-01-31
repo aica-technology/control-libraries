@@ -584,6 +584,11 @@ protected:
    */
   void set_state_variable(const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type);
 
+  /**
+   * @copydoc State::to_string
+   */
+  std::string to_string() const override;
+
 private:
   std::vector<std::string> names_;///< names of the joints
   Eigen::VectorXd positions_;     ///< joints positions

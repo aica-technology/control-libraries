@@ -807,43 +807,44 @@ CartesianState CartesianState::operator-(const CartesianState& state) const {
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
-  if (state.is_empty()) {
-    os << "Empty CartesianState";
-  } else {
-    os << state.get_name() << " CartesianState expressed in " << state.get_reference_frame() << " frame" << std::endl;
-    os << "position: (" << state.position_(0) << ", ";
-    os << state.position_(1) << ", ";
-    os << state.position_(2) << ")" << std::endl;
-    os << "orientation: (" << state.orientation_.w() << ", ";
-    os << state.orientation_.x() << ", ";
-    os << state.orientation_.y() << ", ";
-    os << state.orientation_.z() << ")";
-    Eigen::AngleAxisd axis_angle(state.orientation_);
-    os << " <=> theta: " << axis_angle.angle() << ", ";
-    os << "axis: (" << axis_angle.axis()(0) << ", ";
-    os << axis_angle.axis()(1) << ", ";
-    os << axis_angle.axis()(2) << ")" << std::endl;
-    os << "linear velocity: (" << state.linear_velocity_(0) << ", ";
-    os << state.linear_velocity_(1) << ", ";
-    os << state.linear_velocity_(2) << ")" << std::endl;
-    os << "angular velocity: (" << state.angular_velocity_(0) << ", ";
-    os << state.angular_velocity_(1) << ", ";
-    os << state.angular_velocity_(2) << ")" << std::endl;
-    os << "linear acceleration: (" << state.linear_acceleration_(0) << ", ";
-    os << state.linear_acceleration_(1) << ", ";
-    os << state.linear_acceleration_(2) << ")" << std::endl;
-    os << "angular acceleration: (" << state.angular_acceleration_(0) << ", ";
-    os << state.angular_acceleration_(1) << ", ";
-    os << state.angular_acceleration_(2) << ")" << std::endl;
-    os << "force: (" << state.force_(0) << ", ";
-    os << state.force_(1) << ", ";
-    os << state.force_(2) << ")" << std::endl;
-    os << "torque: (" << state.torque_(0) << ", ";
-    os << state.torque_(1) << ", ";
-    os << state.torque_(2) << ")";
-  }
+std::ostream& operator<<(std::ostream& os, const Eigen::Vector3d& field) {
+  os << "(" << field(0) << ", " << field(1) << ", " << field(2) << ")";
   return os;
 }
 
+std::string CartesianState::to_string() const {
+  std::stringstream s;
+  s << this->SpatialState::to_string();
+  if (this->is_empty()) {
+    return s.str();
+  }
+  if (this->get_type() == StateType::CARTESIAN_POSE || this->get_type() == StateType::CARTESIAN_STATE) {
+    s << std::endl << "position: " << this->get_position() << std::endl;
+    s << "orientation: (" << this->get_orientation().w() << ", ";
+    s << this->get_orientation().x() << ", ";
+    s << this->get_orientation().y() << ", ";
+    s << this->get_orientation().z() << ")";
+    Eigen::AngleAxisd axis_angle(this->get_orientation());
+    s << " <=> theta: " << axis_angle.angle() << ", ";
+    s << "axis: " << axis_angle.axis();
+  }
+  if (this->get_type() == StateType::CARTESIAN_TWIST || this->get_type() == StateType::CARTESIAN_STATE) {
+    s << std::endl << "linear velocity: " << this->get_linear_velocity() << std::endl;
+    s << "angular velocity: " << this->get_angular_velocity();
+  }
+  if (this->get_type() == StateType::CARTESIAN_ACCELERATION || this->get_type() == StateType::CARTESIAN_STATE) {
+    s << std::endl << "linear acceleration: " << this->get_linear_acceleration() << std::endl;
+    s << "angular acceleration: " << this->get_angular_acceleration();
+  }
+  if (this->get_type() == StateType::CARTESIAN_WRENCH || this->get_type() == StateType::CARTESIAN_STATE) {
+    s << std::endl << "force: " << this->get_force() << std::endl;
+    s << "torque: " << this->get_torque();
+  }
+  return s.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const CartesianState& state) {
+  os << state.to_string();
+  return os;
+}
 }// namespace state_representation
