@@ -203,7 +203,7 @@ public:
 
   /**
    * @brief Scale joint accelerations by a scalar
-   * @copydetails CartesianState::operator*=(double)
+   * @copydetails JointState::operator*=(double)
    * @param lambda The scaling factor
    * @param accelerations The joint accelerations to be scaled
    * @return The scaled joint accelerations
@@ -211,32 +211,10 @@ public:
   friend JointAccelerations operator*(double lambda, const JointAccelerations& accelerations);
 
   /**
-   * @brief Scale joint accelerations inplace by an array
-   * @param lambda The scaling factors for each joints
-   * @return The reference to the scaled joint accelerations
-   */
-  JointAccelerations& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Scale joint accelerations by an array
-   * @param lambda The scaling factors for each joints
-   * @param accelerations The joint accelerations to be scaled
-   * @return The scaled joint accelerations
-   */
-  friend JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations);
-
-  /**
-   * @brief Scale joint accelerations inplace by a matrix
-   * @param lambda The coupled scaling matrix
-   * @return The reference to the scaled joint accelerations
-   */
-  JointAccelerations& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
    * @brief Scale joint accelerations by a matrix
    * @param lambda The coupled scaling matrix
-   * @param acceleration The Cartesian acceleration to be scaled
-   * @return The scaled Cartesian acceleration
+   * @param accelerations The joint accelerations to be scaled
+   * @return The scaled joint accelerations
    */
   friend JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations);
 
@@ -256,16 +234,18 @@ public:
   friend JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations);
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint accelerations divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint accelerations
    */
   JointAccelerations& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint accelerations divided by lambda
+   * @brief Scale joint accelerations by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint accelerations
    */
   JointAccelerations operator/(double lambda) const;
 
