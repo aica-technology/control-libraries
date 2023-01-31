@@ -212,7 +212,7 @@ public:
 
   /**
    * @brief Scale joint accelerations by a matrix
-   * @param lambda The coupled scaling matrix
+   * @param lambda The scaling matrix
    * @param accelerations The joint accelerations to be scaled
    * @return The scaled joint accelerations
    */
