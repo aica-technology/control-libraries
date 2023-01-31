@@ -139,22 +139,6 @@ CartesianPose operator*(double lambda, const CartesianPose& pose) {
   return pose * lambda;
 }
 
-CartesianPose& CartesianPose::operator*=(const Eigen::Matrix<double, 7, 7>& lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  // operation on full data vector
-  this->set_data(lambda * this->data());
-  return (*this);
-}
-
-CartesianPose operator*(const Eigen::Matrix<double, 7, 7>& lambda, const CartesianPose& pose) {
-  CartesianPose result(pose);
-  result *= lambda;
-  return result;
-}
-
 CartesianPose& CartesianPose::operator/=(double lambda) {
   this->CartesianState::operator/=(lambda);
   return (*this);
