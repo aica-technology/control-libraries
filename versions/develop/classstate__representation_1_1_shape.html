@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.21</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.22</span>
    </div>
   </td>
  </tr>
@@ -75,6 +75,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classstate__representation_1_1_shape-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">state_representation::Shape Class Reference</div></div>
@@ -196,14 +197,11 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memdesc:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator for the truthiness of a state.  <a href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">More...</a><br /></td></tr>
 <tr class="separator:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
-<tr class="memdesc:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">More...</a><br /></td></tr>
-<tr class="separator:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9cf5c6e2299b75d5967cefd96f7e21a8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a9cf5c6e2299b75d5967cefd96f7e21a8">to_string</a> () const override</td></tr>
+<tr class="memdesc:a9cf5c6e2299b75d5967cefd96f7e21a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the state to its string representation.   <a href="classstate__representation_1_1_shape.html#a9cf5c6e2299b75d5967cefd96f7e21a8">More...</a><br /></td></tr>
+<tr class="separator:a9cf5c6e2299b75d5967cefd96f7e21a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classstate__representation_1_1_state"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classstate__representation_1_1_state')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classstate__representation_1_1_state.html">state_representation::State</a></td></tr>
 <tr class="memitem:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">set_type</a> (const <a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87">StateType</a> &amp;type)</td></tr>
 <tr class="memdesc:a52903618d6ac38c9098e020b05099465 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the state type attribute.  <a href="classstate__representation_1_1_state.html#a52903618d6ac38c9098e020b05099465">More...</a><br /></td></tr>
@@ -211,6 +209,15 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pro_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">set_empty</a> (bool empty=true)</td></tr>
 <tr class="memdesc:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the empty attribute.  <a href="classstate__representation_1_1_state.html#afbdf29471aba1d59d4f97d3d8f3a1314">More...</a><br /></td></tr>
 <tr class="separator:afbdf29471aba1d59d4f97d3d8f3a1314 inherit pro_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5337896f96dd7cc23c945aa4142b6161 inherit pro_methods_classstate__representation_1_1_state"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a5337896f96dd7cc23c945aa4142b6161">to_string</a> () const</td></tr>
+<tr class="memdesc:a5337896f96dd7cc23c945aa4142b6161 inherit pro_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the state to its string representation.  <a href="classstate__representation_1_1_state.html#a5337896f96dd7cc23c945aa4142b6161">More...</a><br /></td></tr>
+<tr class="separator:a5337896f96dd7cc23c945aa4142b6161 inherit pro_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
+<tr class="memdesc:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">More...</a><br /></td></tr>
+<tr class="separator:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -339,7 +346,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter of the orientation from the state. </p>
 <dl class="section return"><dt>Returns</dt><dd>the orientation of the shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00127">127</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00133">133</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -369,7 +376,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter of the pose from the state. </p>
 <dl class="section return"><dt>Returns</dt><dd>the pose of the shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00119">119</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00125">125</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -399,7 +406,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter of the position from the state. </p>
 <dl class="section return"><dt>Returns</dt><dd>the position of the shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00123">123</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00129">129</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -429,7 +436,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter of the state. </p>
 <dl class="section return"><dt>Returns</dt><dd>the state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00115">115</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00121">121</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -459,7 +466,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Getter of the twist from the state. </p>
 <dl class="section return"><dt>Returns</dt><dd>the twist of the shape </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00131">131</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00137">137</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -496,7 +503,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>reference to the current state with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00109">109</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00115">115</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -532,7 +539,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00155">155</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00161">161</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -568,7 +575,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00140">140</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00146">146</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -604,7 +611,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00148">148</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00154">154</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -640,7 +647,38 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00135">135</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00141">141</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a9cf5c6e2299b75d5967cefd96f7e21a8" name="a9cf5c6e2299b75d5967cefd96f7e21a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cf5c6e2299b75d5967cefd96f7e21a8">&#9670;&#160;</a></span>to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string state_representation::Shape::to_string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert the state to its string representation.  </p>
+
+<p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a5337896f96dd7cc23c945aa4142b6161">state_representation::State</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00018">18</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
 
 </div>
 </div>
@@ -689,7 +727,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00018">18</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00029">29</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
 
 </div>
 </div>
