@@ -123,14 +123,13 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
     }
     case CartesianStateVariable::ALL: {
       Eigen::VectorXd all_fields(25);
-      all_fields << this->position_, quat2vec(
-          this->orientation_
-      ), this->linear_velocity_, this->angular_velocity_, this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
+      all_fields << this->position_, quat2vec(this->orientation_), this->linear_velocity_, this->angular_velocity_,
+                    this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
       return all_fields;
     }
+    default:
+      return {};
   }
-  // this never goes here but is compulsory to avoid a warning
-  return {};
 }
 
 const Eigen::Vector3d& CartesianState::get_position() const {
@@ -211,15 +210,13 @@ void CartesianState::set_state_variable(
 }
 
 void CartesianState::set_state_variable(
-    const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type, bool skip_size_check
+    const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type
 ) {
-  if (!skip_size_check) {
-    auto expected_size = long(get_state_variable_size(state_variable_type));
-    if (new_value.size() != expected_size) {
-      throw exceptions::IncompatibleSizeException(
-          "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
-              + std::to_string(new_value.size()));
-    }
+  auto expected_size = long(get_state_variable_size(state_variable_type));
+  if (new_value.size() != expected_size) {
+    throw exceptions::IncompatibleSizeException(
+        "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
+            + std::to_string(new_value.size()));
   }
   switch (state_variable_type) {
     case CartesianStateVariable::POSITION:
@@ -278,7 +275,7 @@ void CartesianState::set_state_variable(
 }
 
 void CartesianState::set_position(const Eigen::Vector3d& position) {
-  this->set_state_variable(position, CartesianStateVariable::POSITION, true);
+  this->set_state_variable(position, CartesianStateVariable::POSITION);
 }
 
 void CartesianState::set_position(const std::vector<double>& position) {
@@ -286,7 +283,7 @@ void CartesianState::set_position(const std::vector<double>& position) {
 }
 
 void CartesianState::set_position(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::POSITION, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::POSITION);
 }
 
 void CartesianState::set_orientation(const Eigen::Quaterniond& orientation) {
@@ -298,7 +295,7 @@ void CartesianState::set_orientation(const Eigen::Quaterniond& orientation) {
 }
 
 void CartesianState::set_orientation(const Eigen::Vector4d& orientation) {
-  this->set_state_variable(orientation, CartesianStateVariable::ORIENTATION, true);
+  this->set_state_variable(orientation, CartesianStateVariable::ORIENTATION);
 }
 
 void CartesianState::set_orientation(const std::vector<double>& orientation) {
@@ -306,16 +303,16 @@ void CartesianState::set_orientation(const std::vector<double>& orientation) {
 }
 
 void CartesianState::set_orientation(const double& w, const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector4d(w, x, y, z), CartesianStateVariable::ORIENTATION, true);
+  this->set_state_variable(Eigen::Vector4d(w, x, y, z), CartesianStateVariable::ORIENTATION);
 }
 
 void CartesianState::set_pose(const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation) {
   this->orientation_ = orientation.normalized();
-  this->set_state_variable(position, CartesianStateVariable::POSITION, true);
+  this->set_state_variable(position, CartesianStateVariable::POSITION);
 }
 
 void CartesianState::set_pose(const Eigen::Matrix<double, 7, 1>& pose) {
-  this->set_state_variable(pose, CartesianStateVariable::POSE, true);
+  this->set_state_variable(pose, CartesianStateVariable::POSE);
 }
 
 void CartesianState::set_pose(const std::vector<double>& pose) {
@@ -323,7 +320,7 @@ void CartesianState::set_pose(const std::vector<double>& pose) {
 }
 
 void CartesianState::set_linear_velocity(const Eigen::Vector3d& linear_velocity) {
-  this->set_state_variable(linear_velocity, CartesianStateVariable::LINEAR_VELOCITY, true);
+  this->set_state_variable(linear_velocity, CartesianStateVariable::LINEAR_VELOCITY);
 }
 
 void CartesianState::set_linear_velocity(const std::vector<double>& linear_velocity) {
@@ -331,11 +328,11 @@ void CartesianState::set_linear_velocity(const std::vector<double>& linear_veloc
 }
 
 void CartesianState::set_linear_velocity(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::LINEAR_VELOCITY, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::LINEAR_VELOCITY);
 }
 
 void CartesianState::set_angular_velocity(const Eigen::Vector3d& angular_velocity) {
-  this->set_state_variable(angular_velocity, CartesianStateVariable::ANGULAR_VELOCITY, true);
+  this->set_state_variable(angular_velocity, CartesianStateVariable::ANGULAR_VELOCITY);
 }
 
 void CartesianState::set_angular_velocity(const std::vector<double>& angular_velocity) {
@@ -343,11 +340,11 @@ void CartesianState::set_angular_velocity(const std::vector<double>& angular_vel
 }
 
 void CartesianState::set_angular_velocity(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::ANGULAR_VELOCITY, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::ANGULAR_VELOCITY);
 }
 
 void CartesianState::set_twist(const Eigen::Matrix<double, 6, 1>& twist) {
-  this->set_state_variable(twist, CartesianStateVariable::TWIST, true);
+  this->set_state_variable(twist, CartesianStateVariable::TWIST);
 }
 
 void CartesianState::set_twist(const std::vector<double>& twist) {
@@ -355,7 +352,7 @@ void CartesianState::set_twist(const std::vector<double>& twist) {
 }
 
 void CartesianState::set_linear_acceleration(const Eigen::Vector3d& linear_acceleration) {
-  this->set_state_variable(linear_acceleration, CartesianStateVariable::LINEAR_ACCELERATION, true);
+  this->set_state_variable(linear_acceleration, CartesianStateVariable::LINEAR_ACCELERATION);
 }
 
 void CartesianState::set_linear_acceleration(const std::vector<double>& linear_acceleration) {
@@ -363,11 +360,11 @@ void CartesianState::set_linear_acceleration(const std::vector<double>& linear_a
 }
 
 void CartesianState::set_linear_acceleration(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::LINEAR_ACCELERATION, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::LINEAR_ACCELERATION);
 }
 
 void CartesianState::set_angular_acceleration(const Eigen::Vector3d& angular_acceleration) {
-  this->set_state_variable(angular_acceleration, CartesianStateVariable::ANGULAR_ACCELERATION, true);
+  this->set_state_variable(angular_acceleration, CartesianStateVariable::ANGULAR_ACCELERATION);
 }
 
 void CartesianState::set_angular_acceleration(const std::vector<double>& angular_acceleration) {
@@ -375,11 +372,11 @@ void CartesianState::set_angular_acceleration(const std::vector<double>& angular
 }
 
 void CartesianState::set_angular_acceleration(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::ANGULAR_ACCELERATION, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::ANGULAR_ACCELERATION);
 }
 
 void CartesianState::set_acceleration(const Eigen::Matrix<double, 6, 1>& acceleration) {
-  this->set_state_variable(acceleration, CartesianStateVariable::ACCELERATION, true);
+  this->set_state_variable(acceleration, CartesianStateVariable::ACCELERATION);
 }
 
 void CartesianState::set_acceleration(const std::vector<double>& acceleration) {
@@ -387,7 +384,7 @@ void CartesianState::set_acceleration(const std::vector<double>& acceleration) {
 }
 
 void CartesianState::set_force(const Eigen::Vector3d& force) {
-  this->set_state_variable(force, CartesianStateVariable::FORCE, true);
+  this->set_state_variable(force, CartesianStateVariable::FORCE);
 }
 
 void CartesianState::set_force(const std::vector<double>& force) {
@@ -395,11 +392,11 @@ void CartesianState::set_force(const std::vector<double>& force) {
 }
 
 void CartesianState::set_force(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::FORCE, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::FORCE);
 }
 
 void CartesianState::set_torque(const Eigen::Vector3d& torque) {
-  this->set_state_variable(torque, CartesianStateVariable::TORQUE, true);
+  this->set_state_variable(torque, CartesianStateVariable::TORQUE);
 }
 
 void CartesianState::set_torque(const std::vector<double>& torque) {
@@ -407,11 +404,11 @@ void CartesianState::set_torque(const std::vector<double>& torque) {
 }
 
 void CartesianState::set_torque(const double& x, const double& y, const double& z) {
-  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::TORQUE, true);
+  this->set_state_variable(Eigen::Vector3d(x, y, z), CartesianStateVariable::TORQUE);
 }
 
 void CartesianState::set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) {
-  this->set_state_variable(wrench, CartesianStateVariable::WRENCH, true);
+  this->set_state_variable(wrench, CartesianStateVariable::WRENCH);
 }
 
 void CartesianState::set_wrench(const std::vector<double>& wrench) {
@@ -452,7 +449,7 @@ void CartesianState::clamp_state_variable(
     // clamp the values to their maximum amplitude provided
     state_variable_value = max_norm * state_variable_value.normalized();
   }
-  this->set_state_variable(state_variable_value, state_variable_type, true);
+  this->set_state_variable(state_variable_value, state_variable_type);
 }
 
 CartesianState CartesianState::copy() const {

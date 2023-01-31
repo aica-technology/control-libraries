@@ -533,11 +533,8 @@ protected:
    * @brief Setter of the variable value corresponding to the input
    * @param new_value The new value of the variable as Eigen vector
    * @param state_variable_type The type of variable to set
-   * @param skip_size_check Skip the check of size compatibility (default false)
    */
-  void set_state_variable(
-      const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type, bool skip_size_check = false
-  );
+  void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
 
   /**
    * @brief Setter of the variable value corresponding to the input
