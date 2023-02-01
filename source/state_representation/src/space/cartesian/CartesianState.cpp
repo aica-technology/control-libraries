@@ -74,6 +74,7 @@ CartesianState CartesianState::Random(const std::string& name, const std::string
   CartesianState random = CartesianState(name, reference);
   // set all the state variables to random
   random.set_state_variable(Eigen::VectorXd::Random(25), CartesianStateVariable::ALL);
+  random.set_orientation(Eigen::Quaterniond::UnitRandom());
   return random;
 }
 
