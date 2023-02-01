@@ -280,7 +280,7 @@ public:
   CartesianTwist operator/(double lambda) const;
 
   /**
-   * @brief Derive a Cartesian twist over a time period
+   * @brief Differentiate a Cartesian twist over a time period
    * @param dt The time period used for derivation
    * @return The resulting Cartesian acceleration after derivation
    */
@@ -335,9 +335,9 @@ public:
   CartesianTwist& operator-=(const CartesianState& state);
 
   /**
-   * @brief Overload the - operator with a twist
-   * @param twist The Cartesian twist to subtract
-   * @return The current Cartesian twist minus the Cartesian twist given in argument
+   * @brief Compute the difference with another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The difference in twist
    */
   CartesianTwist operator-(const CartesianTwist& twist) const;
 
