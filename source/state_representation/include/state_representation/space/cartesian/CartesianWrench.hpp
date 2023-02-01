@@ -229,13 +229,6 @@ public:
   friend CartesianWrench operator*(double lambda, const CartesianWrench& wrench);
 
   /**
-   * @brief Scale all dimensions inplace by a matrix
-   * @param lambda The scaling factors in all the dimensions
-   * @return The reference to the scaled Cartesian wrench
-   */
-  CartesianWrench& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
    * @brief Scale a Cartesian wrench in all dimensions by a matrix
    * @param lambda The scaling factors in all the dimensions
    * @param wrench The Cartesian wrench to be scaled

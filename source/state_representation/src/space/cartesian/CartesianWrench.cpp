@@ -117,20 +117,13 @@ CartesianWrench CartesianWrench::operator*(double lambda) const {
   return this->CartesianState::operator*(lambda);
 }
 
-CartesianWrench& CartesianWrench::operator*=(const Eigen::Matrix<double, 6, 6>& lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  // operation
-  this->set_force(lambda.block<3, 3>(0, 0) * this->get_force());
-  this->set_torque(lambda.block<3, 3>(3, 3) * this->get_torque());
-  return (*this);
-}
-
 CartesianWrench operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench) {
+  // sanity check
+  if (wrench.is_empty()) {
+    throw EmptyStateException(wrench.get_name() + " state is empty");
+  }
   CartesianWrench result(wrench);
-  result *= lambda;
+  result.set_wrench(lambda * result.get_wrench());
   return result;
 }
 
