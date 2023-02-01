@@ -77,31 +77,24 @@ JointState& JointState::operator=(const JointState& state) {
   return *this;
 }
 
-Eigen::VectorXd JointState::get_all_state_variables() const {
-  Eigen::VectorXd all_fields(this->get_size() * 4);
-  all_fields << this->get_positions(), this->get_velocities(), this->get_accelerations(), this->get_torques();
-  return all_fields;
-}
-
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
-      return this->get_positions();
-
+      return this->positions_;
     case JointStateVariable::VELOCITIES:
-      return this->get_velocities();
-
+      return this->velocities_;
     case JointStateVariable::ACCELERATIONS:
-      return this->get_accelerations();
-
+      return this->accelerations_;
     case JointStateVariable::TORQUES:
-      return this->get_torques();
-
-    case JointStateVariable::ALL:
-      return this->get_all_state_variables();
+      return this->torques_;
+    case JointStateVariable::ALL: {
+      Eigen::VectorXd all_fields(this->get_size() * 4);
+      all_fields << this->positions_, this->velocities_, this->accelerations_, this->torques_;
+      return all_fields;
+    }
+    default:
+      return {};
   }
-  // this never goes here but is compulsory to avoid a warning
-  return Eigen::Vector3d::Zero();
 }
 
 unsigned int JointState::get_size() const {
@@ -173,7 +166,7 @@ double JointState::get_torque(unsigned int joint_index) const {
 }
 
 Eigen::VectorXd JointState::data() const {
-  return this->get_all_state_variables();
+  return this->get_state_variable(JointStateVariable::ALL);
 }
 
 Eigen::ArrayXd JointState::array() const {

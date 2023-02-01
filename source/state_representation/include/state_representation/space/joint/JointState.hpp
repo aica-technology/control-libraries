@@ -611,12 +611,6 @@ private:
   Eigen::VectorXd velocities_;    ///< joints velocities
   Eigen::VectorXd accelerations_; ///< joints accelerations
   Eigen::VectorXd torques_;       ///< joints torques
-
-  /**
-   * @brief Getter of all the state variables (positions, velocities, accelerations and torques)
-   * @return The concatenated vector of all the state variables
-   */
-  Eigen::VectorXd get_all_state_variables() const;
 };
 
 inline void swap(JointState& state1, JointState& state2) {
