@@ -25,7 +25,7 @@ Release Versions:
 - Remove state type from clproto (#47)
 - Add forward force parameter to Impedance controller (#36)
 - Refactor operators in CartesianState (addition #23, subtraction #33 and #40, 
-  transformation #28 and #45, division #41)
+  transformation #28 and #45, division #41, multiplication #43)
 
 ## 6.3.1
 

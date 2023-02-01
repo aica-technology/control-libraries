@@ -307,7 +307,7 @@ public:
   CartesianPose operator/(double lambda) const;
 
   /**
-   * @brief Derive a Cartesian pose over a time period
+   * @brief Differentiate a Cartesian pose over a time period
    * @param dt The time period used for derivation
    * @return The resulting Cartesian twist after derivation
    */

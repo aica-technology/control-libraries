@@ -241,13 +241,6 @@ public:
   friend CartesianTwist operator*(double lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Scale all dimensions inplace by a matrix
-   * @param lambda The scaling factors in all the dimensions
-   * @return The reference to the scaled Cartesian twist
-   */
-  CartesianTwist& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
    * @brief Scale a Cartesian twist in all dimensions by a matrix
    * @param lambda The scaling factors in all the dimensions
    * @param twist The Cartesian twist to be scaled
@@ -287,7 +280,7 @@ public:
   CartesianTwist operator/(double lambda) const;
 
   /**
-   * @brief Derive a Cartesian twist over a time period
+   * @brief Differentiate a Cartesian twist over a time period
    * @param dt The time period used for derivation
    * @return The resulting Cartesian acceleration after derivation
    */
@@ -342,9 +335,9 @@ public:
   CartesianTwist& operator-=(const CartesianState& state);
 
   /**
-   * @brief Overload the - operator with a twist
-   * @param twist The Cartesian twist to subtract
-   * @return The current Cartesian twist minus the Cartesian twist given in argument
+   * @brief Compute the difference with another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The difference in twist
    */
   CartesianTwist operator-(const CartesianTwist& twist) const;
 
