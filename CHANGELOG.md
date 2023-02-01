@@ -27,6 +27,7 @@ Release Versions:
 - Simplify and consolidate ostream operators (#37)
 - Bind inverse for each Cartesian class individually (#52)
 - Refactor get/set variable helpers in Cartesian state (#39)
+- Uniformly sample orientation with UnitRandom (56)
 
 ## 6.3.1
 
