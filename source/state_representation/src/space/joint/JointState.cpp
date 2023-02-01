@@ -16,6 +16,20 @@ static void assert_index_in_range(unsigned int joint_index, unsigned int size) {
   }
 }
 
+static unsigned int get_state_variable_size_factor(const JointStateVariable& state_variable_type) {
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+    case JointStateVariable::VELOCITIES:
+    case JointStateVariable::ACCELERATIONS:
+    case JointStateVariable::TORQUES:
+      return 1;
+    case JointStateVariable::ALL:
+      return 4;
+    default:
+      return 0;
+  }
+}
+
 JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
   this->initialize();
