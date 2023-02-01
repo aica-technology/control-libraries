@@ -489,7 +489,7 @@ JointState& JointState::operator*=(double lambda) {
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  this->set_all_state_variables(lambda * this->get_all_state_variables());
+  this->set_state_variable(lambda * this->get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   return (*this);
 }
 
@@ -563,7 +563,10 @@ JointState& JointState::operator+=(const JointState& state) {
         "The two joint states are incompatible, check name, joint names and order or size"
     );
   }
-  this->set_all_state_variables(this->get_all_state_variables() + state.get_all_state_variables());
+  this->set_state_variable(
+      this->get_state_variable(JointStateVariable::ALL) + state.get_state_variable(JointStateVariable::ALL),
+      JointStateVariable::ALL
+  );
   return (*this);
 }
 
@@ -586,7 +589,10 @@ JointState& JointState::operator-=(const JointState& state) {
         "The two joint states are incompatible, check name, joint names and order or size"
     );
   }
-  this->set_all_state_variables(this->get_all_state_variables() - state.get_all_state_variables());
+  this->set_state_variable(
+      this->get_state_variable(JointStateVariable::ALL) - state.get_state_variable(JointStateVariable::ALL),
+      JointStateVariable::ALL
+  );
   return (*this);
 }
 
