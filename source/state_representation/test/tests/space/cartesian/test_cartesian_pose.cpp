@@ -193,6 +193,38 @@ TEST_F(CartesianPoseTestClass, TestPoseToVelocity) {
   EXPECT_EQ(res2.get_angular_velocity(), 10 * Eigen::Vector3d(M_PI, 0, 0));
 }
 
+TEST_F(CartesianPoseTestClass, TestDerivationIntegration) {
+  auto quaternion = Eigen::Quaterniond::UnitRandom();
+  quaternion.w() = abs(quaternion.w());
+  auto pose = CartesianPose::Random("A");
+  pose.set_orientation(quaternion);
+  CartesianTwist twist_from_pose_1(pose);
+  CartesianPose integrated_pose(twist_from_pose_1);
+  EXPECT_TRUE(pose.data().isApprox(integrated_pose.data()));
+  EXPECT_TRUE(pose.dist(integrated_pose) < 1e-3);
+
+  auto other_pose = CartesianPose::Random("A");
+  CartesianTwist twist_from_diff_1 = pose - other_pose;
+  CartesianTwist twist_from_diff_2 = other_pose - pose;
+  auto twist_sum = twist_from_diff_1 + twist_from_diff_2;
+  EXPECT_TRUE(twist_sum.data().isApprox(Eigen::VectorXd::Zero(6)));
+
+  quaternion = Eigen::Quaterniond(-quaternion.coeffs());
+  pose.set_orientation(quaternion);
+  CartesianTwist twist_from_pose_2(pose);
+  EXPECT_TRUE(twist_from_pose_1.data().isApprox(twist_from_pose_2.data()));
+  integrated_pose = twist_from_pose_2;
+  // This does not hold because the quaternion is in the other hemisphere
+  // EXPECT_TRUE(pose.data().isApprox(integrated_pose.data()));
+  // This still holds because -q represents the same orientation
+  EXPECT_TRUE(pose.dist(integrated_pose) < 1e-3);
+
+  twist_from_diff_1 = pose - other_pose;
+  twist_from_diff_2 = other_pose - pose;
+  twist_sum = twist_from_diff_1 + twist_from_diff_2;
+  EXPECT_TRUE(twist_sum.data().isApprox(Eigen::VectorXd::Zero(6)));
+}
+
 TEST_F(CartesianPoseTestClass, TestImplicitConversion) {
   CartesianTwist vel("t1");
   EXPECT_EQ(vel.get_type(), StateType::CARTESIAN_TWIST);
