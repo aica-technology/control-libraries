@@ -4,7 +4,12 @@ namespace state_representation::math_tools {
 const Eigen::Quaterniond log(const Eigen::Quaterniond& q) {
   Eigen::Quaterniond log_q = Eigen::Quaterniond(0, 0, 0, 0);
   double q_norm = q.vec().norm();
-  if (q_norm > 1e-4) { log_q.vec() = (q.vec() / q_norm) * acos(std::min<double>(std::max<double>(q.w(), -1), 1)); }
+  if (q_norm > 1e-4) {
+    log_q.vec() = (q.vec() / q_norm) * acos(std::min<double>(std::max<double>(abs(q.w()), -1), 1));
+  }
+  if (q.w() < 0) {
+    log_q = Eigen::Quaterniond(-log_q.coeffs());
+  }
   return log_q;
 }
 
