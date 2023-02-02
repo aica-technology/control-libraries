@@ -16,6 +16,20 @@ static void assert_index_in_range(unsigned int joint_index, unsigned int size) {
   }
 }
 
+static unsigned int get_state_variable_size_factor(const JointStateVariable& state_variable_type) {
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+    case JointStateVariable::VELOCITIES:
+    case JointStateVariable::ACCELERATIONS:
+    case JointStateVariable::TORQUES:
+      return 1;
+    case JointStateVariable::ALL:
+      return 4;
+    default:
+      return 0;
+  }
+}
+
 JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
   this->initialize();
@@ -77,31 +91,24 @@ JointState& JointState::operator=(const JointState& state) {
   return *this;
 }
 
-Eigen::VectorXd JointState::get_all_state_variables() const {
-  Eigen::VectorXd all_fields(this->get_size() * 4);
-  all_fields << this->get_positions(), this->get_velocities(), this->get_accelerations(), this->get_torques();
-  return all_fields;
-}
-
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
-      return this->get_positions();
-
+      return this->positions_;
     case JointStateVariable::VELOCITIES:
-      return this->get_velocities();
-
+      return this->velocities_;
     case JointStateVariable::ACCELERATIONS:
-      return this->get_accelerations();
-
+      return this->accelerations_;
     case JointStateVariable::TORQUES:
-      return this->get_torques();
-
-    case JointStateVariable::ALL:
-      return this->get_all_state_variables();
+      return this->torques_;
+    case JointStateVariable::ALL: {
+      Eigen::VectorXd all_fields(this->get_size() * 4);
+      all_fields << this->positions_, this->velocities_, this->accelerations_, this->torques_;
+      return all_fields;
+    }
+    default:
+      return {};
   }
-  // this never goes here but is compulsory to avoid a warning
-  return Eigen::Vector3d::Zero();
 }
 
 unsigned int JointState::get_size() const {
@@ -173,11 +180,77 @@ double JointState::get_torque(unsigned int joint_index) const {
 }
 
 Eigen::VectorXd JointState::data() const {
-  return this->get_all_state_variables();
+  return this->get_state_variable(JointStateVariable::ALL);
 }
 
 Eigen::ArrayXd JointState::array() const {
   return this->data().array();
+}
+
+void JointState::set_state_variable(
+    const std::vector<double>& new_value, const JointStateVariable& state_variable_type
+) {
+  this->set_state_variable(Eigen::VectorXd::Map(new_value.data(), new_value.size()), state_variable_type);
+}
+
+void JointState::set_state_variable(const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type) {
+  auto expected_size = get_state_variable_size_factor(state_variable_type) * this->get_size();
+  if (new_value.size() != expected_size) {
+    throw exceptions::IncompatibleSizeException(
+        "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
+            + std::to_string(new_value.size()));
+  }
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+      this->positions_ = new_value;
+      break;
+    case JointStateVariable::VELOCITIES:
+      this->velocities_ = new_value;
+      break;
+    case JointStateVariable::ACCELERATIONS:
+      this->accelerations_ = new_value;
+      break;
+    case JointStateVariable::TORQUES:
+      this->torques_ = new_value;
+      break;
+    case JointStateVariable::ALL: {
+      auto size = this->get_size();
+      this->positions_ = new_value.head(size);
+      this->velocities_ = new_value.segment(size, size);
+      this->accelerations_ = new_value.segment(2 * size, size);
+      this->torques_ = new_value.tail(size);
+      break;
+    }
+  }
+  this->set_empty(false);
+  this->reset_timestamp();
+}
+
+void JointState::set_state_variable(
+    double new_value, unsigned int joint_index, const JointStateVariable& state_variable_type
+) {
+  assert_index_in_range(joint_index, this->get_size());
+  switch (state_variable_type) {
+    case JointStateVariable::POSITIONS:
+      this->positions_(joint_index) = new_value;
+      break;
+    case JointStateVariable::VELOCITIES:
+      this->velocities_(joint_index) = new_value;
+      break;
+    case JointStateVariable::ACCELERATIONS:
+      this->accelerations_(joint_index) = new_value;
+      break;
+    case JointStateVariable::TORQUES:
+      this->torques_(joint_index) = new_value;
+      break;
+    case JointStateVariable::ALL:
+      this->positions_(joint_index) = new_value;
+      this->velocities_(joint_index) = new_value;
+      this->accelerations_(joint_index) = new_value;
+      this->torques_(joint_index) = new_value;
+  }
+  this->set_empty(false);
+  this->reset_timestamp();
 }
 
 void JointState::set_names(unsigned int nb_joints) {
@@ -192,58 +265,6 @@ void JointState::set_names(unsigned int nb_joints) {
   }
 }
 
-void JointState::set_state_variable(Eigen::VectorXd& state_variable, const Eigen::VectorXd& new_value) {
-  if (new_value.size() != this->get_size()) {
-    throw state_representation::exceptions::IncompatibleSizeException(
-        "Input vector is of incorrect size: expected " + std::to_string(this->get_size()) + ", given "
-            + std::to_string(new_value.size()));
-  }
-  this->set_empty(false);
-  state_variable = new_value;
-}
-
-void JointState::set_state_variable(Eigen::VectorXd& state_variable, const std::vector<double>& new_value) {
-  this->set_state_variable(state_variable, Eigen::VectorXd::Map(new_value.data(), new_value.size()));
-}
-
-void JointState::set_all_state_variables(const Eigen::VectorXd& new_values) {
-  if (new_values.size() != 4 * this->get_size()) {
-    throw state_representation::exceptions::IncompatibleSizeException(
-        "Input is of incorrect size: expected " + std::to_string(this->get_size()) + ", given "
-            + std::to_string(new_values.size()));
-  }
-  this->set_positions(new_values.segment(0, this->get_size()));
-  this->set_velocities(new_values.segment(this->get_size(), this->get_size()));
-  this->set_accelerations(new_values.segment(2 * this->get_size(), this->get_size()));
-  this->set_torques(new_values.segment(3 * this->get_size(), this->get_size()));
-}
-
-void JointState::set_state_variable(
-    const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type
-) {
-  switch (state_variable_type) {
-    case JointStateVariable::POSITIONS:
-      this->set_positions(new_value);
-      break;
-
-    case JointStateVariable::VELOCITIES:
-      this->set_velocities(new_value);
-      break;
-
-    case JointStateVariable::ACCELERATIONS:
-      this->set_accelerations(new_value);
-      break;
-
-    case JointStateVariable::TORQUES:
-      this->set_torques(new_value);
-      break;
-
-    case JointStateVariable::ALL:
-      this->set_all_state_variables(new_value);
-      break;
-  }
-}
-
 void JointState::set_names(const std::vector<std::string>& names) {
   if (this->get_size() != names.size()) {
     throw state_representation::exceptions::IncompatibleSizeException(
@@ -254,87 +275,75 @@ void JointState::set_names(const std::vector<std::string>& names) {
 }
 
 void JointState::set_positions(const Eigen::VectorXd& positions) {
-  this->set_state_variable(this->positions_, positions);
+  this->set_state_variable(positions, JointStateVariable::POSITIONS);
 }
 
 void JointState::set_positions(const std::vector<double>& positions) {
-  this->set_state_variable(this->positions_, positions);
+  this->set_state_variable(positions, JointStateVariable::POSITIONS);
 }
 
 void JointState::set_position(double position, const std::string& joint_name) {
-  this->set_empty(false);
-  this->positions_(this->get_joint_index(joint_name)) = position;
+  this->set_state_variable(position, this->get_joint_index(joint_name), JointStateVariable::POSITIONS);
 }
 
 void JointState::set_position(double position, unsigned int joint_index) {
-  assert_index_in_range(joint_index, this->get_size());
-  this->set_empty(false);
-  this->positions_(joint_index) = position;
+  this->set_state_variable(position, joint_index, JointStateVariable::POSITIONS);
 }
 
 void JointState::set_velocities(const Eigen::VectorXd& velocities) {
-  this->set_state_variable(this->velocities_, velocities);
+  this->set_state_variable(velocities, JointStateVariable::VELOCITIES);
 }
 
 void JointState::set_velocities(const std::vector<double>& velocities) {
-  this->set_state_variable(this->velocities_, velocities);
+  this->set_state_variable(velocities, JointStateVariable::VELOCITIES);
 }
 
 void JointState::set_velocity(double velocity, const std::string& joint_name) {
-  this->set_empty(false);
-  this->velocities_(this->get_joint_index(joint_name)) = velocity;
+  this->set_state_variable(velocity, this->get_joint_index(joint_name), JointStateVariable::VELOCITIES);
 }
 
 void JointState::set_velocity(double velocity, unsigned int joint_index) {
-  assert_index_in_range(joint_index, this->get_size());
-  this->set_empty(false);
-  this->velocities_(joint_index) = velocity;
+  this->set_state_variable(velocity, joint_index, JointStateVariable::VELOCITIES);
 }
 
 void JointState::set_accelerations(const Eigen::VectorXd& accelerations) {
-  this->set_state_variable(this->accelerations_, accelerations);
+  this->set_state_variable(accelerations, JointStateVariable::ACCELERATIONS);
 }
 
 void JointState::set_accelerations(const std::vector<double>& accelerations) {
-  this->set_state_variable(this->accelerations_, accelerations);
+  this->set_state_variable(accelerations, JointStateVariable::ACCELERATIONS);
 }
 
 void JointState::set_acceleration(double acceleration, const std::string& joint_name) {
-  this->set_empty(false);
-  this->accelerations_(this->get_joint_index(joint_name)) = acceleration;
+  this->set_state_variable(acceleration, this->get_joint_index(joint_name), JointStateVariable::ACCELERATIONS);
 }
 
 void JointState::set_acceleration(double acceleration, unsigned int joint_index) {
-  assert_index_in_range(joint_index, this->get_size());
-  this->set_empty(false);
-  this->accelerations_(joint_index) = acceleration;
+  this->set_state_variable(acceleration, joint_index, JointStateVariable::ACCELERATIONS);
 }
 
 void JointState::set_torques(const Eigen::VectorXd& torques) {
-  this->set_state_variable(this->torques_, torques);
+  this->set_state_variable(torques, JointStateVariable::TORQUES);
 }
 
 void JointState::set_torques(const std::vector<double>& torques) {
-  this->set_state_variable(this->torques_, torques);
+  this->set_state_variable(torques, JointStateVariable::TORQUES);
 }
 
 void JointState::set_torque(double torque, const std::string& joint_name) {
-  this->set_empty(false);
-  this->torques_(this->get_joint_index(joint_name)) = torque;
+  this->set_state_variable(torque, this->get_joint_index(joint_name), JointStateVariable::TORQUES);
 }
 
 void JointState::set_torque(double torque, unsigned int joint_index) {
-  assert_index_in_range(joint_index, this->get_size());
-  this->set_empty(false);
-  this->torques_(joint_index) = torque;
+  this->set_state_variable(torque, joint_index, JointStateVariable::TORQUES);
 }
 
 void JointState::set_data(const Eigen::VectorXd& data) {
-  this->set_all_state_variables(data);
+  this->set_state_variable(data, JointStateVariable::ALL);
 }
 
 void JointState::set_data(const std::vector<double>& data) {
-  this->set_all_state_variables(Eigen::VectorXd::Map(data.data(), data.size()));
+  this->set_state_variable(data, JointStateVariable::ALL);
 }
 
 void JointState::clamp_state_variable(
@@ -480,7 +489,7 @@ JointState& JointState::operator*=(double lambda) {
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  this->set_all_state_variables(lambda * this->get_all_state_variables());
+  this->set_state_variable(lambda * this->get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   return (*this);
 }
 
@@ -554,7 +563,10 @@ JointState& JointState::operator+=(const JointState& state) {
         "The two joint states are incompatible, check name, joint names and order or size"
     );
   }
-  this->set_all_state_variables(this->get_all_state_variables() + state.get_all_state_variables());
+  this->set_state_variable(
+      this->get_state_variable(JointStateVariable::ALL) + state.get_state_variable(JointStateVariable::ALL),
+      JointStateVariable::ALL
+  );
   return (*this);
 }
 
@@ -577,7 +589,10 @@ JointState& JointState::operator-=(const JointState& state) {
         "The two joint states are incompatible, check name, joint names and order or size"
     );
   }
-  this->set_all_state_variables(this->get_all_state_variables() - state.get_all_state_variables());
+  this->set_state_variable(
+      this->get_state_variable(JointStateVariable::ALL) - state.get_state_variable(JointStateVariable::ALL),
+      JointStateVariable::ALL
+  );
   return (*this);
 }
 

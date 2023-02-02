@@ -579,10 +579,26 @@ protected:
 
   /**
    * @brief Setter of the variable value corresponding to the input
-   * @param new_value The new value of the variable
-   * @param state_variable_type The type of variable to get
+   * @param new_value The new value of the variable as Eigen vector
+   * @param state_variable_type The type of variable to set
    */
   void set_state_variable(const Eigen::VectorXd& new_value, const JointStateVariable& state_variable_type);
+
+  /**
+   * @brief Setter of the variable value corresponding to the input
+   * @param new_value The new value of the variable as std vector
+   * @param state_variable_type The type of variable to set
+   */
+  void set_state_variable(const std::vector<double>& new_value, const JointStateVariable& state_variable_type);
+
+  /**
+   * @brief Setter of the variable value corresponding to the input
+   * @param new_value The new value of the variable as Eigen vector
+   * @param joint_index The index at which to set the new value
+   * @param state_variable_type The type of variable to set
+   * @raises JointNotFoundException if the desired joint doesn't exist
+   */
+  void set_state_variable(double new_value, unsigned int joint_index, const JointStateVariable& state_variable_type);
 
   /**
    * @copydoc State::to_string
@@ -595,32 +611,6 @@ private:
   Eigen::VectorXd velocities_;    ///< joints velocities
   Eigen::VectorXd accelerations_; ///< joints accelerations
   Eigen::VectorXd torques_;       ///< joints torques
-
-  /**
-   * @brief Getter of all the state variables (positions, velocities, accelerations and torques)
-   * @return The concatenated vector of all the state variables
-   */
-  Eigen::VectorXd get_all_state_variables() const;
-
-  /**
-   * @brief Set new_value in the provided state_variable (positions, velocities, accelerations or torques)
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::VectorXd& state_variable, const Eigen::VectorXd& new_value);
-
-  /**
-   * @brief Set new_value in the provided state_variable (positions, velocities, accelerations or torques)
-   * @param state_variable The state variable to fill
-   * @param new_value The new value of the state variable
-   */
-  void set_state_variable(Eigen::VectorXd& state_variable, const std::vector<double>& new_value);
-
-  /**
-   * @brief Set new_value in all the state variables (positions, velocities, accelerations and torques)
-   * @param new_values The new values of the state variables
-   */
-  void set_all_state_variables(const Eigen::VectorXd& new_values);
 };
 
 inline void swap(JointState& state1, JointState& state2) {
