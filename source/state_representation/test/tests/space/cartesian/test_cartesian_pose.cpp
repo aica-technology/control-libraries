@@ -179,6 +179,15 @@ TEST_F(CartesianPoseTestClass, TestAddTwoPoses) {
   EXPECT_GT(abs(tf3.get_orientation().dot(rot_truth)), 1 - 1e-5);
 }
 
+TEST_F(CartesianPoseTestClass, TestSubtraction) {
+  auto pose_1 = CartesianPose::Random("A");
+  auto pose_2 = CartesianPose::Random("B");
+  CartesianPose diff_1 = pose_1 - pose_2;
+  CartesianPose diff_2 = pose_2 - pose_1;
+  EXPECT_FALSE(diff_1.get_pose().isApprox(diff_2.get_pose()));
+  EXPECT_TRUE(diff_1.get_position().isApprox(-diff_2.get_position()));
+}
+
 TEST_F(CartesianPoseTestClass, TestPoseToVelocity) {
   tf1.set_orientation(Eigen::Quaterniond(0, 1, 0, 0));
   std::chrono::seconds dt1(1);
@@ -207,7 +216,7 @@ TEST_F(CartesianPoseTestClass, TestDerivationIntegration) {
   CartesianTwist twist_from_diff_1 = pose - other_pose;
   CartesianTwist twist_from_diff_2 = other_pose - pose;
   auto twist_sum = twist_from_diff_1 + twist_from_diff_2;
-  EXPECT_TRUE(twist_sum.data().isApprox(Eigen::VectorXd::Zero(6)));
+  EXPECT_NEAR(twist_sum.get_twist().cwiseAbs().sum(), 0, 1e-4);
 
   quaternion = Eigen::Quaterniond(-quaternion.coeffs());
   pose.set_orientation(quaternion);
@@ -222,7 +231,7 @@ TEST_F(CartesianPoseTestClass, TestDerivationIntegration) {
   twist_from_diff_1 = pose - other_pose;
   twist_from_diff_2 = other_pose - pose;
   twist_sum = twist_from_diff_1 + twist_from_diff_2;
-  EXPECT_TRUE(twist_sum.data().isApprox(Eigen::VectorXd::Zero(6)));
+  EXPECT_NEAR(twist_sum.get_twist().cwiseAbs().sum(), 0, 1e-4);
 }
 
 TEST_F(CartesianPoseTestClass, TestImplicitConversion) {
