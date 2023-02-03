@@ -701,10 +701,10 @@ TEST(CartesianStateTest, Addition) {
 
   CartesianState csum = cs1 + cs2;
   EXPECT_TRUE(csum.get_position().isApprox(cs1.get_position() + cs2.get_position()));
-  Eigen::Quaterniond
-      orientation = (cs1.get_orientation().dot(cs2.get_orientation()) > 0) ? cs2.get_orientation() : Eigen::Quaterniond(
-      -cs2.get_orientation().coeffs());
-  orientation = cs1.get_orientation() * orientation;
+  auto orientation = cs1.get_orientation() * cs2.get_orientation();
+  if (orientation.dot(cs1.get_orientation()) < 0) {
+    orientation = Eigen::Quaterniond(-orientation.coeffs());
+  }
   EXPECT_TRUE(csum.get_orientation().coeffs().isApprox(orientation.coeffs()));
   EXPECT_TRUE(csum.get_twist().isApprox(cs1.get_twist() + cs2.get_twist()));
   EXPECT_TRUE(csum.get_acceleration().isApprox(cs1.get_acceleration() + cs2.get_acceleration()));
