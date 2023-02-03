@@ -141,10 +141,13 @@ void cartesian_state(py::module_& m) {
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
+  c.def(py::self * Eigen::Vector3d());
   c.def(py::self /= double());
   c.def(py::self / double());
+
   c.def(py::self += py::self);
   c.def(py::self + py::self);
+  c.def("__neg__", [](const CartesianState& self) -> CartesianState { return -self; });
   c.def(py::self -= py::self);
   c.def(py::self - py::self);
 
@@ -210,23 +213,45 @@ void cartesian_pose(py::module_& m) {
   }
 
   c.def(py::self *= py::self);
+  c.def("__imul__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianPose' and 'state_representation.CartesianTwist'"); });
+  c.def("__imul__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianPose' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__imul__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.CartesianPose' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self *= CartesianState());
   c.def(py::self * py::self);
-  c.def(py::self * CartesianState());
   c.def(py::self * CartesianTwist());
+  c.def(py::self * CartesianAcceleration());
   c.def(py::self * CartesianWrench());
-  c.def(py::self * Eigen::Vector3d());
+  c.def(py::self * CartesianState());
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
-
   c.def(py::self / std::chrono::nanoseconds());
+
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianPose' and 'state_representation.CartesianTwist'"); });
+  c.def("__iadd__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianPose' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__iadd__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianPose' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self += CartesianState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianPose' and 'state_representation.CartesianTwist'"); });
+  c.def("__add__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianPose' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__add__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianPose' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self + CartesianState());
+  c.def("__neg__", [](const CartesianPose& self) -> CartesianPose { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianPose' and 'state_representation.CartesianTwist'"); });
+  c.def("__isub__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianPose' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__isub__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianPose' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self -= CartesianState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const CartesianPose& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianPose' and 'state_representation.CartesianTwist'"); });
+  c.def("__sub__", [](const CartesianPose& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianPose' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__sub__", [](const CartesianPose& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianPose' and 'state_representation.CartesianWrench'"); });
+
+  c.def(py::self - CartesianState());
 
   c.def("copy", &CartesianPose::copy, "Return a copy of the CartesianPose");
   c.def("data", &CartesianPose::data, "Returns the pose data as a vector");
@@ -282,22 +307,38 @@ void cartesian_twist(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
-
   c.def(py::self *= double());
   c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const CartesianTwist& self, const Eigen::Matrix<double, 6, 6>& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianTwist' and 'numpy.ndarray'"); });
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
-  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
-  c.def(py::self * std::chrono::nanoseconds());
   c.def(py::self / std::chrono::nanoseconds());
 
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const CartesianTwist& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianTwist' and 'state_representation.CartesianPose'"); });
+  c.def("__iadd__", [](const CartesianTwist& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianTwist' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__iadd__", [](const CartesianTwist& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianTwist' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self += CartesianState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const CartesianTwist& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianTwist' and 'state_representation.CartesianPose'"); });
+  c.def("__add__", [](const CartesianTwist& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianTwist' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__add__", [](const CartesianTwist& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianTwist' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self + CartesianState());
+  c.def("__neg__", [](const CartesianTwist& self) -> CartesianTwist { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const CartesianTwist& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianTwist' and 'state_representation.CartesianPose'"); });
+  c.def("__isub__", [](const CartesianTwist& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianTwist' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__isub__", [](const CartesianTwist& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianTwist' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self -= CartesianState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const CartesianTwist& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianTwist' and 'state_representation.CartesianPose'"); });
+  c.def("__sub__", [](const CartesianTwist& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianTwist' and 'state_representation.CartesianAcceleration'"); });
+  c.def("__sub__", [](const CartesianTwist& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianTwist' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self - CartesianState());
 
   c.def("clamp", &CartesianTwist::clamp, "Clamp inplace the magnitude of the twist to the values in argument", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
   c.def("clamped", &CartesianTwist::clamped, "Return the clamped twist", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
@@ -356,21 +397,37 @@ void cartesian_acceleration(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianAcceleration&) -> void {}, "Deleted method from parent class.");
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
-
   c.def(py::self *= double());
   c.def(py::self * double());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const CartesianAcceleration& self, const Eigen::Matrix<double, 6, 6>& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianAcceleration' and 'numpy.ndarray'"); });
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
-  c.def(py::self *= Eigen::Matrix<double, 6, 6>());
-  c.def(py::self * std::chrono::nanoseconds());
 
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const CartesianAcceleration& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianPose'"); });
+  c.def("__iadd__", [](const CartesianAcceleration& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianTwist'"); });
+  c.def("__iadd__", [](const CartesianAcceleration& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self += CartesianState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const CartesianAcceleration& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianPose'"); });
+  c.def("__add__", [](const CartesianAcceleration& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianTwist'"); });
+  c.def("__add__", [](const CartesianAcceleration& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self + CartesianState());
+  c.def("__neg__", [](const CartesianAcceleration& self) -> CartesianAcceleration { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const CartesianAcceleration& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianPose'"); });
+  c.def("__isub__", [](const CartesianAcceleration& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianTwist'"); });
+  c.def("__isub__", [](const CartesianAcceleration& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self -= CartesianState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const CartesianAcceleration& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianPose'"); });
+  c.def("__sub__", [](const CartesianAcceleration& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianTwist'"); });
+  c.def("__sub__", [](const CartesianAcceleration& self, const CartesianWrench& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianAcceleration' and 'state_representation.CartesianWrench'"); });
+  c.def(py::self - CartesianState());
 
   c.def("clamp", &CartesianAcceleration::clamp, "Clamp inplace the magnitude of the acceleration to the values in argument", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
   c.def("clamped", &CartesianAcceleration::clamped, "Return the clamped acceleration", "max_linear"_a, "max_angular"_a, "linear_noise_ratio"_a=0, "angular_noise_ratio"_a=0);
@@ -428,16 +485,35 @@ void cartesian_wrench(py::module_& m) {
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianWrench&) -> void {}, "Deleted method from parent class.");
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
-
   c.def(py::self *= double());
   c.def(py::self * double());
   c.def(double() * py::self);
+  c.def("__mul__", [](const CartesianWrench& self, const Eigen::Matrix<double, 6, 6>& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.CartesianWrench' and 'numpy.ndarray'"); });
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const CartesianWrench& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianWrench' and 'state_representation.CartesianPose'"); });
+  c.def("__iadd__", [](const CartesianWrench& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianWrench' and 'state_representation.CartesianTwist'"); });
+  c.def("__iadd__", [](const CartesianWrench& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.CartesianWrench' and 'state_representation.CartesianAcceleration'"); });
+  c.def(py::self += CartesianState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const CartesianWrench& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianWrench' and 'state_representation.CartesianPose'"); });
+  c.def("__add__", [](const CartesianWrench& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianWrench' and 'state_representation.CartesianTwist'"); });
+  c.def("__add__", [](const CartesianWrench& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.CartesianWrench' and 'state_representation.CartesianAcceleration'"); });
+  c.def(py::self + CartesianState());
+  c.def("__neg__", [](const CartesianWrench& self) -> CartesianWrench { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const CartesianWrench& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianWrench' and 'state_representation.CartesianPose'"); });
+  c.def("__isub__", [](const CartesianWrench& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianWrench' and 'state_representation.CartesianTwist'"); });
+  c.def("__isub__", [](const CartesianWrench& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.CartesianWrench' and 'state_representation.CartesianAcceleration'"); });
+  c.def(py::self -= CartesianState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const CartesianWrench& self, const CartesianPose& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianWrench' and 'state_representation.CartesianPose'"); });
+  c.def("__sub__", [](const CartesianWrench& self, const CartesianTwist& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianWrench' and 'state_representation.CartesianTwist'"); });
+  c.def("__sub__", [](const CartesianWrench& self, const CartesianAcceleration& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.CartesianWrench' and 'state_representation.CartesianAcceleration'"); });
+  c.def(py::self - CartesianState());
 
   c.def("clamp", &CartesianWrench::clamp, "Clamp inplace the magnitude of the wrench to the values in argument", "max_force"_a, "max_torque"_a, "force_noise_ratio"_a=0, "torque_noise_ratio"_a=0);
   c.def("clamped", &CartesianWrench::clamped, "Return the clamped wrench", "max_force"_a, "max_torque"_a, "force_noise_ratio"_a=0, "torque_noise_ratio"_a=0);

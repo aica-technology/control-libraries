@@ -27,6 +27,7 @@ Release Versions:
 - Refactor operators in CartesianState (addition #23, subtraction #33 and #40, 
   transformation #28 and #45, division #41, multiplication #43)
 - Fix quaternion differentiation (#58)
+- Bind operators of Cartesian states (#60)
 
 ## 6.3.1
 
