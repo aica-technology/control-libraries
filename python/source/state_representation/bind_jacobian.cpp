@@ -7,8 +7,6 @@
 void bind_jacobian(py::module_& m) {
   py::class_<Jacobian, std::shared_ptr<Jacobian>, State> c(m, "Jacobian");
 
-  c.def_property_readonly_static("__array_priority__", [](py::object) { return 10000; });
-
   c.def(py::init(), "Empty constructor for a Jacobian");
   c.def(py::init<const std::string&, unsigned int, const std::string&, const std::string&>(),
         "Constructor with name, number of joints, frame name and reference frame provided",
