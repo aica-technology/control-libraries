@@ -4,7 +4,9 @@ import copy
 import numpy as np
 from pyquaternion.quaternion import Quaternion
 from numpy.testing import assert_array_equal, assert_array_almost_equal
-from state_representation import State, CartesianState, StateType, CartesianStateVariable
+from state_representation import State, CartesianState, StateType, CartesianStateVariable, CartesianPose, \
+    CartesianTwist, CartesianAcceleration, CartesianWrench
+from datetime import timedelta
 
 from ..test_spatial_state import SPATIAL_STATE_METHOD_EXPECTS
 from ...test_state import STATE_METHOD_EXPECTS
@@ -459,6 +461,463 @@ class TestCartesianState(unittest.TestCase):
         empty.set_data(CartesianState().Random("test").data())
         self.assertFalse(empty.is_empty())
         self.assertTrue(empty)
+
+    def test_state_multiplication_operators(self):
+        state = CartesianState.Random("world")
+        pose = CartesianPose.Random("world")
+        twist = CartesianTwist.Random("world")
+        acceleration = CartesianAcceleration.Random("world")
+        wrench = CartesianWrench.Random("world")
+
+        # CartesianState multiplied with any derived stays a CartesianState
+        res = state * state
+        self.assertIsInstance(res, CartesianState)
+        res = state * pose
+        self.assertIsInstance(res, CartesianState)
+        res = state * twist
+        self.assertIsInstance(res, CartesianState)
+        res = state * acceleration
+        self.assertIsInstance(res, CartesianState)
+        res = state * wrench
+        self.assertIsInstance(res, CartesianState)
+
+        # CartesianPose multiplied with any derived type is defined by the right hand type
+        res = pose * state
+        self.assertIsInstance(res, CartesianState)
+        res = pose * pose
+        self.assertIsInstance(res, CartesianPose)
+        res = pose * twist
+        self.assertIsInstance(res, CartesianTwist)
+        res = pose * acceleration
+        self.assertIsInstance(res, CartesianAcceleration)
+        res = pose * wrench
+        self.assertIsInstance(res, CartesianWrench)
+
+        with self.assertRaises(TypeError):
+            res = twist * state
+        with self.assertRaises(TypeError):
+            res = twist * pose
+        with self.assertRaises(TypeError):
+            res = twist * twist
+        with self.assertRaises(TypeError):
+            res = twist * acceleration
+        with self.assertRaises(TypeError):
+            res = twist * wrench
+        with self.assertRaises(TypeError):
+            res = acceleration * state
+        with self.assertRaises(TypeError):
+            res = acceleration * pose
+        with self.assertRaises(TypeError):
+            res = acceleration * twist
+        with self.assertRaises(TypeError):
+            res = acceleration * acceleration
+        with self.assertRaises(TypeError):
+            res = acceleration * wrench
+        with self.assertRaises(TypeError):
+            res = wrench * state
+        with self.assertRaises(TypeError):
+            res = wrench * pose
+        with self.assertRaises(TypeError):
+            res = wrench * twist
+        with self.assertRaises(TypeError):
+            res = wrench * acceleration
+        with self.assertRaises(TypeError):
+            res = wrench * wrench
+
+        state *= state
+        self.assertIsInstance(state, CartesianState)
+        state *= pose
+        self.assertIsInstance(state, CartesianState)
+        state *= twist
+        self.assertIsInstance(state, CartesianState)
+        state *= acceleration
+        self.assertIsInstance(state, CartesianState)
+        state *= wrench
+        self.assertIsInstance(state, CartesianState)
+
+        pose *= state
+        self.assertIsInstance(pose, CartesianPose)
+        pose *= pose
+        self.assertIsInstance(pose, CartesianPose)
+        with self.assertRaises(TypeError):
+            pose *= twist
+        with self.assertRaises(TypeError):
+            pose *= acceleration
+        with self.assertRaises(TypeError):
+            pose *= wrench
+
+        with self.assertRaises(TypeError):
+            twist *= state
+        with self.assertRaises(TypeError):
+            twist *= pose
+        with self.assertRaises(TypeError):
+            twist *= twist
+        with self.assertRaises(TypeError):
+            twist *= acceleration
+        with self.assertRaises(TypeError):
+            twist *= wrench
+
+        with self.assertRaises(TypeError):
+            acceleration *= state
+        with self.assertRaises(TypeError):
+            acceleration *= pose
+        with self.assertRaises(TypeError):
+            acceleration *= twist
+        with self.assertRaises(TypeError):
+            acceleration *= acceleration
+        with self.assertRaises(TypeError):
+            acceleration *= wrench
+
+        with self.assertRaises(TypeError):
+            wrench *= state
+        with self.assertRaises(TypeError):
+            wrench *= pose
+        with self.assertRaises(TypeError):
+            wrench *= twist
+        with self.assertRaises(TypeError):
+            wrench *= acceleration
+        with self.assertRaises(TypeError):
+            wrench *= wrench
+
+    def test_state_addition_operators(self):
+        state = CartesianState.Random("test")
+        pose = CartesianPose.Random("test")
+        twist = CartesianTwist.Random("test")
+        acceleration = CartesianAcceleration.Random("test")
+        wrench = CartesianWrench.Random("test")
+
+        res = pose + pose
+        self.assertIsInstance(res, CartesianPose)
+        res = state + pose
+        self.assertIsInstance(res, CartesianState)
+        res = pose + state
+        self.assertIsInstance(res, CartesianState)
+
+        res = twist + twist
+        self.assertIsInstance(res, CartesianTwist)
+        res = state + twist
+        self.assertIsInstance(res, CartesianState)
+        res = twist + state
+        self.assertIsInstance(res, CartesianState)
+
+        res = acceleration + acceleration
+        self.assertIsInstance(res, CartesianAcceleration)
+        res = state + acceleration
+        self.assertIsInstance(res, CartesianState)
+        res = acceleration + state
+        self.assertIsInstance(res, CartesianState)
+
+        res = wrench + wrench
+        self.assertIsInstance(res, CartesianWrench)
+        res = state + wrench
+        self.assertIsInstance(res, CartesianState)
+        res = wrench + state
+        self.assertIsInstance(res, CartesianState)
+
+        with self.assertRaises(TypeError):
+            res = pose + twist
+        with self.assertRaises(TypeError):
+            res = pose + acceleration
+        with self.assertRaises(TypeError):
+            res = pose + wrench
+
+        with self.assertRaises(TypeError):
+            res = twist + pose
+        with self.assertRaises(TypeError):
+            res = twist + acceleration
+        with self.assertRaises(TypeError):
+            res = twist + wrench
+
+        with self.assertRaises(TypeError):
+            res = acceleration + pose
+        with self.assertRaises(TypeError):
+            res = acceleration + twist
+        with self.assertRaises(TypeError):
+            res = acceleration + wrench
+
+        with self.assertRaises(TypeError):
+            res = wrench + pose
+        with self.assertRaises(TypeError):
+            res = wrench + twist
+        with self.assertRaises(TypeError):
+            res = wrench + acceleration
+
+        state += state
+        self.assertIsInstance(state, CartesianState)
+        state += pose
+        self.assertIsInstance(state, CartesianState)
+        state += twist
+        self.assertIsInstance(state, CartesianState)
+        state += acceleration
+        self.assertIsInstance(state, CartesianState)
+        state += wrench
+        self.assertIsInstance(state, CartesianState)
+
+        pose += state
+        self.assertIsInstance(pose, CartesianPose)
+        pose += pose
+        self.assertIsInstance(pose, CartesianPose)
+        with self.assertRaises(TypeError):
+            pose += twist
+        with self.assertRaises(TypeError):
+            pose += acceleration
+        with self.assertRaises(TypeError):
+            pose += wrench
+
+        twist += state
+        self.assertIsInstance(twist, CartesianTwist)
+        twist += twist
+        self.assertIsInstance(twist, CartesianTwist)
+        with self.assertRaises(TypeError):
+            twist += pose
+        with self.assertRaises(TypeError):
+            twist += acceleration
+        with self.assertRaises(TypeError):
+            twist += wrench
+
+        acceleration += state
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        acceleration += acceleration
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        with self.assertRaises(TypeError):
+            acceleration += pose
+        with self.assertRaises(TypeError):
+            acceleration += twist
+        with self.assertRaises(TypeError):
+            acceleration += wrench
+
+        wrench += state
+        self.assertIsInstance(wrench, CartesianWrench)
+        wrench += wrench
+        self.assertIsInstance(wrench, CartesianWrench)
+        with self.assertRaises(TypeError):
+            wrench += pose
+        with self.assertRaises(TypeError):
+            wrench += twist
+        with self.assertRaises(TypeError):
+            wrench += acceleration
+
+    def test_state_subtraction_operators(self):
+        state = CartesianState.Random("test")
+        pose = CartesianPose.Random("test")
+        twist = CartesianTwist.Random("test")
+        acceleration = CartesianAcceleration.Random("test")
+        wrench = CartesianWrench.Random("test")
+
+        res = pose - pose
+        self.assertIsInstance(res, CartesianPose)
+        res = state - pose
+        self.assertIsInstance(res, CartesianState)
+        res = pose - state
+        self.assertIsInstance(res, CartesianState)
+
+        res = twist - twist
+        self.assertIsInstance(res, CartesianTwist)
+        res = state - twist
+        self.assertIsInstance(res, CartesianState)
+        res = twist - state
+        self.assertIsInstance(res, CartesianState)
+
+        res = acceleration - acceleration
+        self.assertIsInstance(res, CartesianAcceleration)
+        res = state - acceleration
+        self.assertIsInstance(res, CartesianState)
+        res = acceleration - state
+        self.assertIsInstance(res, CartesianState)
+
+        res = wrench - wrench
+        self.assertIsInstance(res, CartesianWrench)
+        res = state - wrench
+        self.assertIsInstance(res, CartesianState)
+        res = wrench - state
+        self.assertIsInstance(res, CartesianState)
+
+        with self.assertRaises(TypeError):
+            res = pose - twist
+        with self.assertRaises(TypeError):
+            res = pose - acceleration
+        with self.assertRaises(TypeError):
+            res = pose - wrench
+
+        with self.assertRaises(TypeError):
+            res = twist - pose
+        with self.assertRaises(TypeError):
+            res = twist - acceleration
+        with self.assertRaises(TypeError):
+            res = twist - wrench
+
+        with self.assertRaises(TypeError):
+            res = acceleration - pose
+        with self.assertRaises(TypeError):
+            res = acceleration - twist
+        with self.assertRaises(TypeError):
+            res = acceleration - wrench
+
+        with self.assertRaises(TypeError):
+            res = wrench - pose
+        with self.assertRaises(TypeError):
+            res = wrench - twist
+        with self.assertRaises(TypeError):
+            res = wrench - acceleration
+
+        state -= state
+        self.assertIsInstance(state, CartesianState)
+        state -= pose
+        self.assertIsInstance(state, CartesianState)
+        state -= twist
+        self.assertIsInstance(state, CartesianState)
+        state -= acceleration
+        self.assertIsInstance(state, CartesianState)
+        state -= wrench
+        self.assertIsInstance(state, CartesianState)
+
+        pose -= state
+        self.assertIsInstance(pose, CartesianPose)
+        pose -= pose
+        self.assertIsInstance(pose, CartesianPose)
+        with self.assertRaises(TypeError):
+            pose -= twist
+        with self.assertRaises(TypeError):
+            pose -= acceleration
+        with self.assertRaises(TypeError):
+            pose -= wrench
+
+        twist -= state
+        self.assertIsInstance(twist, CartesianTwist)
+        twist -= twist
+        self.assertIsInstance(twist, CartesianTwist)
+        with self.assertRaises(TypeError):
+            twist -= pose
+        with self.assertRaises(TypeError):
+            twist -= acceleration
+        with self.assertRaises(TypeError):
+            twist -= wrench
+
+        acceleration -= state
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        acceleration -= acceleration
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        with self.assertRaises(TypeError):
+            acceleration -= pose
+        with self.assertRaises(TypeError):
+            acceleration -= twist
+        with self.assertRaises(TypeError):
+            acceleration -= wrench
+
+        wrench -= state
+        self.assertIsInstance(wrench, CartesianWrench)
+        wrench -= wrench
+        self.assertIsInstance(wrench, CartesianWrench)
+        with self.assertRaises(TypeError):
+            wrench -= pose
+        with self.assertRaises(TypeError):
+            wrench -= twist
+        with self.assertRaises(TypeError):
+            wrench -= acceleration
+
+    def test_multiplication_operators(self):
+        state = CartesianState.Random("world")
+        pose = CartesianPose.Random("world")
+        twist = CartesianTwist.Random("world")
+        acceleration = CartesianAcceleration.Random("world")
+        wrench = CartesianWrench.Random("world")
+
+        # state
+        state *= 3.0
+        self.assertIsInstance(state, CartesianState)
+        result = state * 3.0
+        self.assertIsInstance(result, CartesianState)
+        result = 3.0 * state
+        self.assertIsInstance(result, CartesianState)
+        arr = np.array([1.1, 2.2, 3.3])
+        result = state * np.array([1.1, 2.2, 3.3])
+        self.assertIsInstance(result, type(arr))
+        self.assertTrue(len(result) == 3)
+        state /= 2.0
+        self.assertIsInstance(state, CartesianState)
+        result = state / 2.0
+        self.assertIsInstance(result, CartesianState)
+
+        # pose
+        pose *= 3.0
+        self.assertIsInstance(pose, CartesianPose)
+        result = pose * 3.0
+        self.assertIsInstance(result, CartesianPose)
+        result = 3.0 * pose
+        self.assertIsInstance(result, CartesianPose)
+        result = pose / 2.0
+        self.assertIsInstance(result, CartesianPose)
+        result = pose / timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianTwist)
+        pose /= 2.0
+        self.assertIsInstance(pose, CartesianPose)
+
+        # twist
+        twist *= 3.0
+        self.assertIsInstance(twist, CartesianTwist)
+        result = twist * 3.0
+        self.assertIsInstance(result, CartesianTwist)
+        result = 3.0 * twist
+        self.assertIsInstance(result, CartesianTwist)
+        mat = np.random.rand(6, 6)
+        result = mat * twist
+        self.assertIsInstance(result, CartesianTwist)
+        with self.assertRaises(TypeError):
+            twist *= mat
+        with self.assertRaises(TypeError):
+            result = twist * mat
+        result = twist * timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianPose)
+        result = timedelta(seconds=1) * twist
+        self.assertIsInstance(result, CartesianPose)
+        twist /= 3.0
+        self.assertIsInstance(twist, CartesianTwist)
+        result = twist / 3.0
+        self.assertIsInstance(result, CartesianTwist)
+        result = twist / timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianAcceleration)
+
+        # acceleration
+        acceleration *= 3.0
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        result = acceleration * 3.0
+        self.assertIsInstance(result, CartesianAcceleration)
+        result = 3.0 * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        mat = np.random.rand(6, 6)
+        result = mat * acceleration
+        self.assertIsInstance(result, CartesianAcceleration)
+        with self.assertRaises(TypeError):
+            acceleration *= mat
+        with self.assertRaises(TypeError):
+            result = acceleration * mat
+        result = acceleration * timedelta(seconds=1)
+        self.assertIsInstance(result, CartesianTwist)
+        result = timedelta(seconds=1) * acceleration
+        self.assertIsInstance(result, CartesianTwist)
+        acceleration /= 3.0
+        self.assertIsInstance(acceleration, CartesianAcceleration)
+        result = acceleration / 3.0
+        self.assertIsInstance(result, CartesianAcceleration)
+
+        # wrench
+        wrench *= 3.0
+        self.assertIsInstance(wrench, CartesianWrench)
+        result = wrench * 3.0
+        self.assertIsInstance(result, CartesianWrench)
+        result = 3.0 * wrench
+        self.assertIsInstance(result, CartesianWrench)
+        mat = np.random.rand(6, 6)
+        result = mat * wrench
+        self.assertIsInstance(result, CartesianWrench)
+        with self.assertRaises(TypeError):
+            wrench *= mat
+        with self.assertRaises(TypeError):
+            result = wrench * mat
+        wrench /= 3.0
+        self.assertIsInstance(wrench, CartesianWrench)
+        result = wrench / 3.0
+        self.assertIsInstance(result, CartesianWrench)
 
 
 if __name__ == '__main__':

@@ -28,6 +28,7 @@ void state_type(py::module_& m) {
 
 void state(py::module_& m) {
   py::class_<State, std::shared_ptr<State>> c(m, "State");
+  c.def_property_readonly_static("__array_priority__", [](py::object) { return 10000; });
 
   c.def(py::init(), "Empty constructor");
   c.def(py::init<const std::string&>(), "Constructor with name specification", "name"_a);
