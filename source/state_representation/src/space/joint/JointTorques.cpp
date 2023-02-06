@@ -128,8 +128,17 @@ JointTorques& JointTorques::operator+=(const JointTorques& torques) {
   return (*this);
 }
 
+JointTorques& JointTorques::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
 JointTorques JointTorques::operator+(const JointTorques& torques) const {
   return this->JointState::operator+(torques);
+}
+
+JointState JointTorques::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
 }
 
 JointTorques& JointTorques::operator-=(const JointTorques& torques) {
