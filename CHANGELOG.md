@@ -28,7 +28,7 @@ Release Versions:
   transformation #28 and #45, division #41, multiplication #43)
 - Fix quaternion differentiation (#58)
 - Bind operators of Cartesian states (#60)
-- Refactor operators in JointState (multiplication & division #62)
+- Refactor operators in JointState (multiplication & division #62, addition #63)
 
 ## 6.3.1
 
