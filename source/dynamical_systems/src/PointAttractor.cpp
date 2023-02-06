@@ -190,7 +190,7 @@ CartesianState PointAttractor<CartesianState>::compute_dynamics(const CartesianS
 template<>
 JointState PointAttractor<JointState>::compute_dynamics(const JointState& state) const {
   JointVelocities velocities = JointPositions(this->attractor_->get_value()) - JointPositions(state);
-  velocities *= this->gain_->get_value();
+  velocities = this->gain_->get_value() * velocities;
   return JointVelocities(state.get_name(), this->attractor_->get_value().get_names(), velocities.get_velocities());
 }
 }// namespace dynamical_systems
