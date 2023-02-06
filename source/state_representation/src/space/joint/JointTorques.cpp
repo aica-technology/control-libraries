@@ -108,37 +108,9 @@ JointTorques operator*(double lambda, const JointTorques& torques) {
   return result;
 }
 
-JointTorques& JointTorques::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::TORQUES);
-  return (*this);
-}
-
-JointTorques JointTorques::operator*(const Eigen::MatrixXd& lambda) const {
-  JointTorques result(*this);
-  result *= lambda;
-  return result;
-}
-
 JointTorques operator*(const Eigen::MatrixXd& lambda, const JointTorques& torques) {
   JointTorques result(torques);
-  result *= lambda;
-  return result;
-}
-
-JointTorques& JointTorques::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::TORQUES);
-  return (*this);
-}
-
-JointTorques JointTorques::operator*(const Eigen::ArrayXd& lambda) const {
-  JointTorques result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointTorques operator*(const Eigen::ArrayXd& lambda, const JointTorques& torques) {
-  JointTorques result(torques);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::TORQUES);
   return result;
 }
 

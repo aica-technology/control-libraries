@@ -119,37 +119,9 @@ JointVelocities operator*(double lambda, const JointVelocities& velocities) {
   return result;
 }
 
-JointVelocities& JointVelocities::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(const Eigen::MatrixXd& lambda) const {
-  JointVelocities result(*this);
-  result *= lambda;
-  return result;
-}
-
 JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities) {
   JointVelocities result(velocities);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities& JointVelocities::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(const Eigen::ArrayXd& lambda) const {
-  JointVelocities result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities operator*(const Eigen::ArrayXd& lambda, const JointVelocities& velocities) {
-  JointVelocities result(velocities);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
   return result;
 }
 

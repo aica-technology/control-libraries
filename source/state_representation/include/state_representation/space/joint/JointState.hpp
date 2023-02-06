@@ -431,91 +431,51 @@ public:
   std::vector<double> to_std_vector() const;
 
   /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint state multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @details All joints in all the state variables are scaled by the same factor.
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint state
    */
   JointState& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint state multiplied by lambda
+   * @brief Scale a joint state by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint state
    */
   JointState operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar to multiply with
-   * @return The joint state provided multiplied by lambda
+   * @brief Scale a joint state by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param state The joint state to be scaled
+   * @return The scaled joint state
    */
   friend JointState operator*(double lambda, const JointState& state);
 
   /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @details For this operation to succeed, the matrix needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The matrix to multiply with
-   * @return The joint state multiplied by lambda
-   */
-  JointState& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @details For this operation to succeed, the matrix needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The matrix to multiply with
-   * @return The joint state multiplied by lambda
-   */
-  JointState operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @details For this operation to succeed, the matrix needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The matrix to multiply with
-   * @return The joint state provided multiplied by lambda
+   * @brief Scale a joint state by a matrix
+   * @param lambda The scaling matrix
+   * @param state The joint state to be scaled
+   * @return The scaled joint state
    */
   friend JointState operator*(const Eigen::MatrixXd& lambda, const JointState& state);
 
   /**
-   * @brief Overload the *= operator with an array of gains
-   * @details For this operation to succeed, the array needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The gain array to multiply with
-   * @return The joint state multiplied by lambda
-   */
-  JointState& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @details For this operation to succeed, the array needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The gain array to multiply with
-   * @return The joint state multiplied by lambda
-   */
-  JointState operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @details For this operation to succeed, the array needs to have the same size as the concatenated
-   * data vector of the state
-   * @param lambda The gain array to multiply with
-   * @return The joint state provided multiplied by lambda
-   */
-  friend JointState operator*(const Eigen::ArrayXd& lambda, const JointState& state);
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint state divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint state
    */
   JointState& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint state divided by lambda
+   * @brief Scale a joint state by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint state
    */
   JointState operator/(double lambda) const;
 
@@ -557,16 +517,9 @@ public:
 
 protected:
   /**
-   * @brief Proxy function that multiply the specified state variable by an array of gain
-   * @param lambda The gain array to multiply with
-   * @param state_variable_type The state variable on which to apply the multiplication
-   */
-  void multiply_state_variable(const Eigen::ArrayXd& lambda, const JointStateVariable& state_variable_type);
-
-  /**
-   * @brief Proxy function that multiply the specified state variable by an array of gain
-   * @param lambda The gain array to multiply with
-   * @param state_variable_type The state variable on which to apply the multiplication
+   * @brief Proxy function that scale the specified state variable by a matrix
+   * @param lambda The scaling matrix
+   * @param state_variable_type The state variable on which to apply the scaling
    */
   void multiply_state_variable(const Eigen::MatrixXd& lambda, const JointStateVariable& state_variable_type);
 
