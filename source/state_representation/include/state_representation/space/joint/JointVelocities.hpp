@@ -194,100 +194,73 @@ public:
   JointVelocities copy() const;
 
   /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint velocities multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint velocities
    */
   JointVelocities& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint velocities multiplied by lambda
+   * @brief Scale joint velocities by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint velocities
    */
   JointVelocities operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar gain to multiply with
-   * @return The joint velocities multiplied by lambda
+   * @brief Scale joint velocities by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param velocities The joint velocities to be scaled
+   * @return The scaled joint velocities
    */
   friend JointVelocities operator*(double lambda, const JointVelocities& velocities);
 
   /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint velocities multiplied by lambda
-   */
-  JointVelocities& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint velocities multiplied by lambda
-   */
-  JointVelocities operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint velocities multiplied by lambda
+   * @brief Scale joint velocities by a matrix
+   * @param lambda The scaling matrix
+   * @param velocities The joint velocities to be scaled
+   * @return The scaled joint velocities
    */
   friend JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities);
 
   /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint velocities multiplied by lambda
-   */
-  JointVelocities& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint velocities multiplied by lambda
-   */
-  JointVelocities operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint velocities multiplied by lambda
-   */
-  friend JointVelocities operator*(const Eigen::ArrayXd& lambda, const JointVelocities& velocities);
-
-  /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The joint positions corresponding to the displacement over the time period
+   * @brief Integrate joint velocities over a time period
+   * @param dt The time period used for integration
+   * @return The resulting joint positions after integration
    */
   JointPositions operator*(const std::chrono::nanoseconds& dt) const;
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt The time period to multiply with
-   * @return The joint positions corresponding to the displacement over the time period
+   * @brief Integrate joint velocities over a time period
+   * @param dt The time period used for integration
+   * @param velocities The joint velocities to be integrated
+   * @return The resulting joint positions after integration
    */
   friend JointPositions operator*(const std::chrono::nanoseconds& dt, const JointVelocities& velocities);
 
   /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint velocities divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint velocities
    */
   JointVelocities& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint velocities divided by lambda
+   * @brief Scale joint velocities by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint velocities
    */
   JointVelocities operator/(double lambda) const;
 
   /**
-   * @brief Overload the / operator with a time period
-   * @param dt The time period to multiply with
-   * @return The joint accelerations corresponding to the accelerations over the time period
+   * @brief Differentiate joint velocities pose over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting joint accelerations after derivation
    */
   JointAccelerations operator/(const std::chrono::nanoseconds& dt) const;
 

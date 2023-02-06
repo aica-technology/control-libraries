@@ -184,11 +184,6 @@ TEST(JointVelocitiesTest, MatrixMultiplication) {
   JointVelocities jscaled = gains * jv;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_VELOCITIES);
   EXPECT_EQ(jscaled.data(), gains * jv.data());
-  EXPECT_EQ((jv * gains).data(), jscaled.data());
-  jv *= gains;
-  EXPECT_EQ(jv.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jscaled.data(), jv.data());
-  JointVelocities jscaled2 = jv * gains;
 
   gains = Eigen::VectorXd::Random(2 * jv.get_size()).asDiagonal();
   EXPECT_THROW(gains * jv, exceptions::IncompatibleSizeException);
