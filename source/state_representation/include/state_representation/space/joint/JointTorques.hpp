@@ -175,79 +175,51 @@ public:
   JointTorques copy() const;
 
   /**
-   * @brief Overload the *= operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint torques multiplied by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint torques
    */
   JointTorques& operator*=(double lambda);
 
   /**
-   * @brief Overload the * operator with a double gain
-   * @param lambda The gain to multiply with
-   * @return The joint torques multiplied by lambda
+   * @brief Scale joint torques by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint torques
    */
   JointTorques operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda The scalar gain to multiply with
-   * @return The joint torques multiplied by lambda
+   * @brief Scale joint torques by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param torques The joint torques to be scaled
+   * @return The scaled joint torques
    */
   friend JointTorques operator*(double lambda, const JointTorques& torques);
 
   /**
-   * @brief Overload the *= operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint torques multiplied by lambda
-   */
-  JointTorques& operator*=(const Eigen::MatrixXd& lambda);
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint torques multiplied by lambda
-   */
-  JointTorques operator*(const Eigen::MatrixXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with a matrix of gains
-   * @param lambda The gain matrix to multiply with
-   * @return The joint torques multiplied by lambda
+   * @brief Scale joint torques by a matrix
+   * @param lambda The scaling matrix
+   * @param torques The joint torques to be scaled
+   * @return The scaled joint torques
    */
   friend JointTorques operator*(const Eigen::MatrixXd& lambda, const JointTorques& torques);
 
   /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint torques multiplied by lambda
-   */
-  JointTorques& operator*=(const Eigen::ArrayXd& lambda);
-
-  /**
-   * @brief Overload the *= operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint torques multiplied by lambda
-   */
-  JointTorques operator*(const Eigen::ArrayXd& lambda) const;
-
-  /**
-   * @brief Overload the * operator with an array of gains
-   * @param lambda The gain array to multiply with
-   * @return The joint torques multiplied by lambda
-   */
-  friend JointTorques operator*(const Eigen::ArrayXd& lambda, const JointTorques& torques);
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint torques divided by lambda
+   * @brief Scale inplace by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled joint torques
    */
   JointTorques& operator/=(double lambda);
 
   /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda The scalar to divide with
-   * @return The joint torques divided by lambda
+   * @brief Scale joint torques by a scalar
+   * @copydetails JointState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled joint torques
    */
   JointTorques operator/(double lambda) const;
 

@@ -462,17 +462,6 @@ std::vector<double> JointState::to_std_vector() const {
   return std::vector<double>(data.data(), data.data() + data.size());
 }
 
-void JointState::multiply_state_variable(const Eigen::ArrayXd& lambda, const JointStateVariable& state_variable_type) {
-  Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
-  if (lambda.size() != expected_size) {
-    throw IncompatibleSizeException(
-        "Gain matrix is of incorrect size: expected " + std::to_string(expected_size) + ", given "
-            + std::to_string(lambda.size()));
-  }
-  this->set_state_variable((lambda * state_variable.array()).matrix(), state_variable_type);
-}
-
 void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const JointStateVariable& state_variable_type) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
   int expected_size = state_variable.size();
@@ -506,37 +495,9 @@ JointState operator*(double lambda, const JointState& state) {
   return result;
 }
 
-JointState& JointState::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::ALL);
-  return (*this);
-}
-
-JointState JointState::operator*(const Eigen::MatrixXd& lambda) const {
-  JointState result(*this);
-  result *= lambda;
-  return result;
-}
-
 JointState operator*(const Eigen::MatrixXd& lambda, const JointState& state) {
   JointState result(state);
-  result *= lambda;
-  return result;
-}
-
-JointState& JointState::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::ALL);
-  return (*this);
-}
-
-JointState JointState::operator*(const Eigen::ArrayXd& lambda) const {
-  JointState result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointState operator*(const Eigen::ArrayXd& lambda, const JointState& state) {
-  JointState result(state);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::ALL);
   return result;
 }
 

@@ -138,28 +138,7 @@ TEST(JointTorquesTest, MatrixMultiplication) {
   JointTorques jscaled = gains * jt;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_TORQUES);
   EXPECT_EQ(jscaled.data(), gains * jt.data());
-  EXPECT_EQ((jt * gains).data(), jscaled.data());
-  jt *= gains;
-  EXPECT_EQ(jt.get_type(), StateType::JOINT_TORQUES);
-  EXPECT_EQ(jscaled.data(), jt.data());
-  JointTorques jscaled2 = jt * gains;
 
   gains = Eigen::VectorXd::Random(2 * jt.get_size()).asDiagonal();
-  EXPECT_THROW(gains * jt, exceptions::IncompatibleSizeException);
-}
-
-TEST(JointTorquesTest, ArrayMultiplication) {
-  JointTorques jt = JointTorques::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(jt.get_size());
-
-  JointTorques jscaled = gains * jt;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_TORQUES);
-  EXPECT_EQ(jscaled.data(), (gains * jt.array()).matrix());
-  EXPECT_EQ((jt * gains).data(), jscaled.data());
-  jt *= gains;
-  EXPECT_EQ(jt.get_type(), StateType::JOINT_TORQUES);
-  EXPECT_EQ(jscaled.data(), jt.data());
-
-  gains = Eigen::ArrayXd::Random(2 * jt.get_size());
   EXPECT_THROW(gains * jt, exceptions::IncompatibleSizeException);
 }

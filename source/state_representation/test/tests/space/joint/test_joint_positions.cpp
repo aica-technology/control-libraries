@@ -163,29 +163,8 @@ TEST(JointPositionsTest, MatrixMultiplication) {
   JointPositions jscaled = gains * jp;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_POSITIONS);
   EXPECT_EQ(jscaled.data(), gains * jp.data());
-  EXPECT_EQ((jp * gains).data(), jscaled.data());
-  jp *= gains;
-  EXPECT_EQ(jp.get_type(), StateType::JOINT_POSITIONS);
-  EXPECT_EQ(jscaled.data(), jp.data());
-  JointPositions jscaled2 = jp * gains;
 
   gains = Eigen::VectorXd::Random(2 * jp.get_size()).asDiagonal();
-  EXPECT_THROW(gains * jp, exceptions::IncompatibleSizeException);
-}
-
-TEST(JointPositionsTest, ArrayMultiplication) {
-  JointPositions jp = JointPositions::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(jp.get_size());
-
-  JointPositions jscaled = gains * jp;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_POSITIONS);
-  EXPECT_EQ(jscaled.data(), (gains * jp.array()).matrix());
-  EXPECT_EQ((jp * gains).data(), jscaled.data());
-  jp *= gains;
-  EXPECT_EQ(jp.get_type(), StateType::JOINT_POSITIONS);
-  EXPECT_EQ(jscaled.data(), jp.data());
-
-  gains = Eigen::ArrayXd::Random(2 * jp.get_size());
   EXPECT_THROW(gains * jp, exceptions::IncompatibleSizeException);
 }
 

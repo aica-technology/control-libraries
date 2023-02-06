@@ -396,29 +396,8 @@ TEST(JointStateTest, MatrixMultiplication) {
   JointState jscaled = gains * js;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(jscaled.data(), gains * js.data());
-  EXPECT_EQ((js * gains).data(), jscaled.data());
-  js *= gains;
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), js.data());
-  JointState jscaled2 = js * gains;
 
   gains = Eigen::VectorXd::Random(js.get_size()).asDiagonal();
-  EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
-}
-
-TEST(JointStateTest, ArrayMultiplication) {
-  JointState js = JointState::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(4 * js.get_size());
-
-  JointState jscaled = gains * js;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), (gains * js.array()).matrix());
-  EXPECT_EQ((js * gains).data(), jscaled.data());
-  js *= gains;
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), js.data());
-
-  gains = Eigen::ArrayXd::Random(js.get_size());
   EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
 }
 
