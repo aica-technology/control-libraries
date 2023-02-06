@@ -117,37 +117,9 @@ JointPositions operator*(double lambda, const JointPositions& positions) {
   return result;
 }
 
-JointPositions& JointPositions::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(const Eigen::MatrixXd& lambda) const {
-  JointPositions result(*this);
-  result *= lambda;
-  return result;
-}
-
 JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions) {
   JointPositions result(positions);
-  result *= lambda;
-  return result;
-}
-
-JointPositions& JointPositions::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(const Eigen::ArrayXd& lambda) const {
-  JointPositions result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointPositions operator*(const Eigen::ArrayXd& lambda, const JointPositions& positions) {
-  JointPositions result(positions);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::POSITIONS);
   return result;
 }
 
