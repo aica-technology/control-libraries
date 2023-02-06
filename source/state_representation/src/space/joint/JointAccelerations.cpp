@@ -154,8 +154,17 @@ JointAccelerations& JointAccelerations::operator+=(const JointAccelerations& acc
   return (*this);
 }
 
+JointAccelerations& JointAccelerations::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
 JointAccelerations JointAccelerations::operator+(const JointAccelerations& accelerations) const {
   return this->JointState::operator+(accelerations);
+}
+
+JointState JointAccelerations::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
 }
 
 JointAccelerations& JointAccelerations::operator-=(const JointAccelerations& accelerations) {
