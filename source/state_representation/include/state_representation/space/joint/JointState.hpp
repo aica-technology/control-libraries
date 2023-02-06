@@ -494,6 +494,12 @@ public:
   JointState operator+(const JointState& state) const;
 
   /**
+   * @brief Negate a joint state
+   * @return The negative value of the joint state
+   */
+  JointState operator-() const;
+
+  /**
    * @brief Overload the -= operator
    * @param state The joint state to subtract
    * @return The current joint state subtracted the joint state given in argument
