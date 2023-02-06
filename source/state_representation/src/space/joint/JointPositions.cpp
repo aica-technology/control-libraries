@@ -149,8 +149,17 @@ JointPositions& JointPositions::operator+=(const JointPositions& positions) {
   return (*this);
 }
 
+JointPositions& JointPositions::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
 JointPositions JointPositions::operator+(const JointPositions& positions) const {
   return this->JointState::operator+(positions);
+}
+
+JointState JointPositions::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
 }
 
 JointPositions& JointPositions::operator-=(const JointPositions& positions) {
