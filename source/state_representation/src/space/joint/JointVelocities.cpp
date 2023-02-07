@@ -167,8 +167,17 @@ JointVelocities& JointVelocities::operator+=(const JointVelocities& velocities) 
   return (*this);
 }
 
+JointVelocities& JointVelocities::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
 JointVelocities JointVelocities::operator+(const JointVelocities& velocities) const {
   return this->JointState::operator+(velocities);
+}
+
+JointState JointVelocities::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
 }
 
 JointVelocities& JointVelocities::operator-=(const JointVelocities& velocities) {

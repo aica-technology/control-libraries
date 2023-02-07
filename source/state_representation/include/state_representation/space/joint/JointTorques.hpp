@@ -1,8 +1,15 @@
 #pragma once
 
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
 
 namespace state_representation {
+
+class JointPositions;
+class JointVelocities;
+class JointAccelerations;
 
 /**
  * @class JointTorques
@@ -31,6 +38,12 @@ public:
   void set_accelerations(const std::vector<double>& accelerations) = delete;
   void set_acceleration(double acceleration, unsigned int joint_index) const = delete;
   void set_acceleration(double acceleration, const std::string& joint_name) const = delete;
+  JointState& operator+=(const JointPositions& positions) = delete;
+  JointState& operator+=(const JointVelocities& velocities) = delete;
+  JointState& operator+=(const JointAccelerations& accelerations) = delete;
+  JointState operator+(const JointPositions& positions) const = delete;
+  JointState operator+(const JointVelocities& velocities) const = delete;
+  JointState operator+(const JointAccelerations& accelerations) const = delete;
 
   /**
    * @brief Empty constructor
@@ -224,18 +237,32 @@ public:
   JointTorques operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param torques Joint torques to add
-   * @return The current joint torques added the joint torques given in argument
+   * @brief Add inplace other joint torques
+   * @param torques Joint torques with same name and same joint names
+   * @return The reference to the combined joint torques
    */
   JointTorques& operator+=(const JointTorques& torques);
 
   /**
-   * @brief Overload the + operator
-   * @param torques Joint torques to add
-   * @return The current joint torques added the joint torques given in argument
+   * @brief Add inplace other joint torques from a joint state
+   * @param state A joint state with same name and same joint names
+   * @return The reference to the combined joint torques
+   */
+  JointTorques& operator+=(const JointState& state);
+
+  /**
+   * @brief Add other joint torques
+   * @param torques Joint torques with same name and same joint names
+   * @return The combined joint torques
    */
   JointTorques operator+(const JointTorques& torques) const;
+
+  /**
+   * @brief Add another joint sate
+   * @param state A joint state with same name and same joint names
+   * @return The combined joint state
+   */
+  JointState operator+(const JointState& state) const;
 
   /**
    * @brief Overload the -= operator
