@@ -821,6 +821,8 @@ class TestCartesianState(unittest.TestCase):
         twist = CartesianTwist.Random("world")
         acceleration = CartesianAcceleration.Random("world")
         wrench = CartesianWrench.Random("world")
+        mat = np.random.rand(4, 4)
+        comp_mat = np.random.rand(6, 6)
 
         # state
         state *= 3.0
@@ -833,6 +835,18 @@ class TestCartesianState(unittest.TestCase):
         result = state * np.array([1.1, 2.2, 3.3])
         self.assertIsInstance(result, type(arr))
         self.assertTrue(len(result) == 3)
+        with self.assertRaises(TypeError):
+            state *= mat
+        with self.assertRaises(TypeError):
+            result = state * mat
+        with self.assertRaises(TypeError):
+            result = mat * state
+        with self.assertRaises(TypeError):
+            result = state / mat
+        with self.assertRaises(TypeError):
+            result = mat / state
+        with self.assertRaises(TypeError):
+            state /= mat
         state /= 2.0
         self.assertIsInstance(state, CartesianState)
         result = state / 2.0
@@ -845,6 +859,18 @@ class TestCartesianState(unittest.TestCase):
         self.assertIsInstance(result, CartesianPose)
         result = 3.0 * pose
         self.assertIsInstance(result, CartesianPose)
+        with self.assertRaises(TypeError):
+            result = pose * mat
+        with self.assertRaises(TypeError):
+            result = mat * pose
+        with self.assertRaises(TypeError):
+            pose *= mat
+        with self.assertRaises(TypeError):
+            result = pose / mat
+        with self.assertRaises(TypeError):
+            result = mat / pose
+        with self.assertRaises(TypeError):
+            pose /= mat
         result = pose / 2.0
         self.assertIsInstance(result, CartesianPose)
         result = pose / timedelta(seconds=1)
@@ -859,17 +885,28 @@ class TestCartesianState(unittest.TestCase):
         self.assertIsInstance(result, CartesianTwist)
         result = 3.0 * twist
         self.assertIsInstance(result, CartesianTwist)
-        mat = np.random.rand(6, 6)
-        result = mat * twist
+        result = comp_mat * twist
         self.assertIsInstance(result, CartesianTwist)
         with self.assertRaises(TypeError):
-            twist *= mat
+            twist *= comp_mat
         with self.assertRaises(TypeError):
-            result = twist * mat
+            result = twist * comp_mat
         result = twist * timedelta(seconds=1)
         self.assertIsInstance(result, CartesianPose)
         result = timedelta(seconds=1) * twist
         self.assertIsInstance(result, CartesianPose)
+        with self.assertRaises(TypeError):
+            result = twist * mat
+        with self.assertRaises(TypeError):
+            result = mat * twist
+        with self.assertRaises(TypeError):
+            twist *= mat
+        with self.assertRaises(TypeError):
+            result = twist / mat
+        with self.assertRaises(TypeError):
+            result = mat / twist
+        with self.assertRaises(TypeError):
+            twist /= mat
         twist /= 3.0
         self.assertIsInstance(twist, CartesianTwist)
         result = twist / 3.0
@@ -884,17 +921,28 @@ class TestCartesianState(unittest.TestCase):
         self.assertIsInstance(result, CartesianAcceleration)
         result = 3.0 * acceleration
         self.assertIsInstance(result, CartesianAcceleration)
-        mat = np.random.rand(6, 6)
-        result = mat * acceleration
+        result = comp_mat * acceleration
         self.assertIsInstance(result, CartesianAcceleration)
         with self.assertRaises(TypeError):
-            acceleration *= mat
+            acceleration *= comp_mat
         with self.assertRaises(TypeError):
-            result = acceleration * mat
+            result = acceleration * comp_mat
         result = acceleration * timedelta(seconds=1)
         self.assertIsInstance(result, CartesianTwist)
         result = timedelta(seconds=1) * acceleration
         self.assertIsInstance(result, CartesianTwist)
+        with self.assertRaises(TypeError):
+            result = acceleration * mat
+        with self.assertRaises(TypeError):
+            result = mat * acceleration
+        with self.assertRaises(TypeError):
+            acceleration *= mat
+        with self.assertRaises(TypeError):
+            result = acceleration / mat
+        with self.assertRaises(TypeError):
+            result = mat / acceleration
+        with self.assertRaises(TypeError):
+            acceleration /= mat
         acceleration /= 3.0
         self.assertIsInstance(acceleration, CartesianAcceleration)
         result = acceleration / 3.0
@@ -907,13 +955,24 @@ class TestCartesianState(unittest.TestCase):
         self.assertIsInstance(result, CartesianWrench)
         result = 3.0 * wrench
         self.assertIsInstance(result, CartesianWrench)
-        mat = np.random.rand(6, 6)
-        result = mat * wrench
+        result = comp_mat * wrench
         self.assertIsInstance(result, CartesianWrench)
         with self.assertRaises(TypeError):
-            wrench *= mat
+            wrench *= comp_mat
         with self.assertRaises(TypeError):
-            result = wrench * mat
+            result = wrench * comp_mat
+        with self.assertRaises(TypeError):
+            result = acceleration * mat
+        with self.assertRaises(TypeError):
+            result = mat * acceleration
+        with self.assertRaises(TypeError):
+            acceleration *= mat
+        with self.assertRaises(TypeError):
+            result = acceleration / mat
+        with self.assertRaises(TypeError):
+            result = mat / acceleration
+        with self.assertRaises(TypeError):
+            acceleration /= mat
         wrench /= 3.0
         self.assertIsInstance(wrench, CartesianWrench)
         result = wrench / 3.0
