@@ -44,6 +44,12 @@ public:
   JointState operator+(const JointVelocities& velocities) const = delete;
   JointState operator+(const JointAccelerations& accelerations) const = delete;
   JointState operator+(const JointTorques& torques) const = delete;
+  JointState& operator-=(const JointVelocities& velocities) = delete;
+  JointState& operator-=(const JointAccelerations& accelerations) = delete;
+  JointState& operator-=(const JointTorques& torques) = delete;
+  JointState operator-(const JointVelocities& velocities) const = delete;
+  JointState operator-(const JointAccelerations& accelerations) const = delete;
+  JointState operator-(const JointTorques& torques) const = delete;
 
   /**
    * @brief Empty constructor
@@ -278,18 +284,38 @@ public:
   JointState operator+(const JointState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param positions Joint positions to subtract
-   * @return The current joint positions subtracted the joint positions given in argument
+   * @brief Negate joint positions
+   * @return The negative value of the joint positions
+   */
+  JointPositions operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with other joint positions
+   * @param positions Joint positions with same name and same joint names
+   * @return The reference to the difference in positions
    */
   JointPositions& operator-=(const JointPositions& positions);
 
   /**
-   * @brief Overload the - operator
-   * @param positions Joint positions to subtract
-   * @return The current joint positions subtracted the joint positions given in argument
+   * @brief Compute inplace the difference with a joint state
+   * @param state A joint state with same name and same joint names
+   * @return The reference to the difference in positions
+   */
+  JointPositions& operator-=(const JointState& state);
+
+  /**
+   * @brief Compute the difference with other joint positions
+   * @param positions Joint positions with same name and same joint names
+   * @return The difference in positions
    */
   JointPositions operator-(const JointPositions& positions) const;
+
+  /**
+   * @brief Compute the difference with a joint state
+   * @param state A joint state with same name and same joint names
+   * @return The difference in all the state variables
+   */
+  JointState operator-(const JointState& state) const;
 
   /**
    * @brief Overload the ostream operator for printing

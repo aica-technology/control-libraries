@@ -537,23 +537,19 @@ JointState JointState::operator+(const JointState& state) const {
   return result;
 }
 
-JointState& JointState::operator-=(const JointState& state) {
+JointState JointState::operator-() const {
   // sanity check
   if (this->is_empty()) {
     throw EmptyStateException(this->get_name() + " state is empty");
   }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
-  if (this->is_incompatible(state)) {
-    throw IncompatibleStatesException(
-        "The two joint states are incompatible, check name, joint names and order or size"
-    );
-  }
-  this->set_state_variable(
-      this->get_state_variable(JointStateVariable::ALL) - state.get_state_variable(JointStateVariable::ALL),
-      JointStateVariable::ALL
-  );
+  // create a copy of the state
+  JointState result(*this);
+  result.set_state_variable(-result.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
+  return result;
+}
+
+JointState& JointState::operator-=(const JointState& state) {
+  (*this) += -state;
   return (*this);
 }
 

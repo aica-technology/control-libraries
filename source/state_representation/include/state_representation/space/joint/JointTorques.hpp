@@ -44,6 +44,12 @@ public:
   JointState operator+(const JointPositions& positions) const = delete;
   JointState operator+(const JointVelocities& velocities) const = delete;
   JointState operator+(const JointAccelerations& accelerations) const = delete;
+  JointState& operator-=(const JointPositions& positions) = delete;
+  JointState& operator-=(const JointVelocities& velocities) = delete;
+  JointState& operator-=(const JointAccelerations& accelerations) = delete;
+  JointState operator-(const JointPositions& positions) const = delete;
+  JointState operator-(const JointVelocities& velocities) const = delete;
+  JointState operator-(const JointAccelerations& accelerations) const = delete;
 
   /**
    * @brief Empty constructor
@@ -265,18 +271,38 @@ public:
   JointState operator+(const JointState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param torques Joint torques to subtract
-   * @return The current joint torques subtracted the joint torques given in argument
+   * @brief Negate joint torques
+   * @return The negative value of the joint torques
+   */
+  JointTorques operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with other joint torques
+   * @param torques Joint torques with same name and same joint names
+   * @return The reference to the difference in torques
    */
   JointTorques& operator-=(const JointTorques& torques);
 
   /**
-   * @brief Overload the - operator
-   * @param torques Joint torques to subtract
-   * @return The current joint torques subtracted the joint torques given in argument
+   * @brief Compute inplace the difference with a joint state
+   * @param state A joint state with same name and same joint names
+   * @return The reference to the difference in torques
+   */
+  JointTorques& operator-=(const JointState& state);
+
+  /**
+   * @brief Compute the difference with other joint torques
+   * @param torques Joint torques with same name and same joint names
+   * @return The difference in torques
    */
   JointTorques operator-(const JointTorques& torques) const;
+
+  /**
+   * @brief Compute the difference with a joint state
+   * @param state A joint state with same name and same joint names
+   * @return The difference in all the state variables
+   */
+  JointState operator-(const JointState& state) const;
 
   /**
    * @brief Overload the ostream operator for printing
