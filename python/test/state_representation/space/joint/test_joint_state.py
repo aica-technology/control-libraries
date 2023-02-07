@@ -1,8 +1,9 @@
 import unittest
 import copy
 
-from state_representation import JointState
 import numpy as np
+from state_representation import JointState, JointPositions, JointVelocities, JointAccelerations, JointTorques
+from datetime import timedelta
 
 JOINT_STATE_METHOD_EXPECTS = [
     'Random',
@@ -74,6 +75,383 @@ class TestJointState(unittest.TestCase):
         empty.set_data(JointState().Random("test", 3).data())
         self.assertFalse(empty.is_empty())
         self.assertTrue(empty)
+
+    def test_state_addition_operators(self):
+        state = JointState().Random("test", 3)
+        positions = JointPositions().Random("test", 3)
+        velocities = JointVelocities().Random("test", 3)
+        accelerations = JointAccelerations().Random("test", 3)
+        torques = JointTorques().Random("test", 3)
+
+        res = positions + positions
+        self.assertIsInstance(res, JointPositions)
+        res = state + positions
+        self.assertIsInstance(res, JointState)
+        res = positions + state
+        self.assertIsInstance(res, JointState)
+
+        res = velocities + velocities
+        self.assertIsInstance(res, JointVelocities)
+        res = state + velocities
+        self.assertIsInstance(res, JointState)
+        res = velocities + state
+        self.assertIsInstance(res, JointState)
+
+        res = accelerations + accelerations
+        self.assertIsInstance(res, JointAccelerations)
+        res = state + accelerations
+        self.assertIsInstance(res, JointState)
+        res = accelerations + state
+        self.assertIsInstance(res, JointState)
+
+        res = torques + torques
+        self.assertIsInstance(res, JointTorques)
+        res = state + torques
+        self.assertIsInstance(res, JointState)
+        res = torques + state
+        self.assertIsInstance(res, JointState)
+
+        with self.assertRaises(TypeError):
+            res = positions + velocities
+        with self.assertRaises(TypeError):
+            res = positions + accelerations
+        with self.assertRaises(TypeError):
+            res = positions + torques
+
+        with self.assertRaises(TypeError):
+            res = velocities + positions
+        with self.assertRaises(TypeError):
+            res = velocities + accelerations
+        with self.assertRaises(TypeError):
+            res = velocities + torques
+
+        with self.assertRaises(TypeError):
+            res = accelerations + positions
+        with self.assertRaises(TypeError):
+            res = accelerations + velocities
+        with self.assertRaises(TypeError):
+            res = accelerations + torques
+
+        with self.assertRaises(TypeError):
+            res = torques + positions
+        with self.assertRaises(TypeError):
+            res = torques + velocities
+        with self.assertRaises(TypeError):
+            res = torques + accelerations
+
+        state += state
+        self.assertIsInstance(state, JointState)
+        state += positions
+        self.assertIsInstance(state, JointState)
+        state += velocities
+        self.assertIsInstance(state, JointState)
+        state += accelerations
+        self.assertIsInstance(state, JointState)
+        state += torques
+        self.assertIsInstance(state, JointState)
+
+        positions += state
+        self.assertIsInstance(positions, JointPositions)
+        positions += positions
+        self.assertIsInstance(positions, JointPositions)
+        with self.assertRaises(TypeError):
+            positions += velocities
+        with self.assertRaises(TypeError):
+            positions += accelerations
+        with self.assertRaises(TypeError):
+            positions += torques
+
+        velocities += state
+        self.assertIsInstance(velocities, JointVelocities)
+        velocities += velocities
+        self.assertIsInstance(velocities, JointVelocities)
+        with self.assertRaises(TypeError):
+            velocities += positions
+        with self.assertRaises(TypeError):
+            velocities += accelerations
+        with self.assertRaises(TypeError):
+            velocities += torques
+
+        accelerations += state
+        self.assertIsInstance(accelerations, JointAccelerations)
+        accelerations += accelerations
+        self.assertIsInstance(accelerations, JointAccelerations)
+        with self.assertRaises(TypeError):
+            accelerations += positions
+        with self.assertRaises(TypeError):
+            accelerations += velocities
+        with self.assertRaises(TypeError):
+            accelerations += torques
+
+        torques += state
+        self.assertIsInstance(torques, JointTorques)
+        torques += torques
+        self.assertIsInstance(torques, JointTorques)
+        with self.assertRaises(TypeError):
+            torques += positions
+        with self.assertRaises(TypeError):
+            torques += velocities
+        with self.assertRaises(TypeError):
+            torques += accelerations
+
+    def test_state_subtraction_operators(self):
+        state = JointState().Random("test", 3)
+        positions = JointPositions().Random("test", 3)
+        velocities = JointVelocities().Random("test", 3)
+        accelerations = JointAccelerations().Random("test", 3)
+        torques = JointTorques().Random("test", 3)
+
+        res = positions - positions
+        self.assertIsInstance(res, JointPositions)
+        res = state - positions
+        self.assertIsInstance(res, JointState)
+        res = positions - state
+        self.assertIsInstance(res, JointState)
+
+        res = velocities - velocities
+        self.assertIsInstance(res, JointVelocities)
+        res = state - velocities
+        self.assertIsInstance(res, JointState)
+        res = velocities - state
+        self.assertIsInstance(res, JointState)
+
+        res = accelerations - accelerations
+        self.assertIsInstance(res, JointAccelerations)
+        res = state - accelerations
+        self.assertIsInstance(res, JointState)
+        res = accelerations - state
+        self.assertIsInstance(res, JointState)
+
+        res = torques - torques
+        self.assertIsInstance(res, JointTorques)
+        res = state - torques
+        self.assertIsInstance(res, JointState)
+        res = torques - state
+        self.assertIsInstance(res, JointState)
+
+        with self.assertRaises(TypeError):
+            res = positions - velocities
+        with self.assertRaises(TypeError):
+            res = positions - accelerations
+        with self.assertRaises(TypeError):
+            res = positions - torques
+
+        with self.assertRaises(TypeError):
+            res = velocities - positions
+        with self.assertRaises(TypeError):
+            res = velocities - accelerations
+        with self.assertRaises(TypeError):
+            res = velocities - torques
+
+        with self.assertRaises(TypeError):
+            res = accelerations - positions
+        with self.assertRaises(TypeError):
+            res = accelerations - velocities
+        with self.assertRaises(TypeError):
+            res = accelerations - torques
+
+        with self.assertRaises(TypeError):
+            res = torques - positions
+        with self.assertRaises(TypeError):
+            res = torques - velocities
+        with self.assertRaises(TypeError):
+            res = torques - accelerations
+
+        state -= state
+        self.assertIsInstance(state, JointState)
+        state -= positions
+        self.assertIsInstance(state, JointState)
+        state -= velocities
+        self.assertIsInstance(state, JointState)
+        state -= accelerations
+        self.assertIsInstance(state, JointState)
+        state -= torques
+        self.assertIsInstance(state, JointState)
+
+        positions -= state
+        self.assertIsInstance(positions, JointPositions)
+        positions -= positions
+        self.assertIsInstance(positions, JointPositions)
+        with self.assertRaises(TypeError):
+            positions -= velocities
+        with self.assertRaises(TypeError):
+            positions -= accelerations
+        with self.assertRaises(TypeError):
+            positions -= torques
+
+        velocities -= state
+        self.assertIsInstance(velocities, JointVelocities)
+        velocities -= velocities
+        self.assertIsInstance(velocities, JointVelocities)
+        with self.assertRaises(TypeError):
+            velocities -= positions
+        with self.assertRaises(TypeError):
+            velocities -= accelerations
+        with self.assertRaises(TypeError):
+            velocities -= torques
+
+        accelerations -= state
+        self.assertIsInstance(accelerations, JointAccelerations)
+        accelerations -= accelerations
+        self.assertIsInstance(accelerations, JointAccelerations)
+        with self.assertRaises(TypeError):
+            accelerations -= positions
+        with self.assertRaises(TypeError):
+            accelerations -= velocities
+        with self.assertRaises(TypeError):
+            accelerations -= torques
+
+        torques -= state
+        self.assertIsInstance(torques, JointTorques)
+        torques -= torques
+        self.assertIsInstance(torques, JointTorques)
+        with self.assertRaises(TypeError):
+            torques -= positions
+        with self.assertRaises(TypeError):
+            torques -= velocities
+        with self.assertRaises(TypeError):
+            torques -= accelerations
+
+    def test_multiplication_operators(self):
+        state = JointState().Random("test", 3)
+        positions = JointPositions().Random("test", 3)
+        velocities = JointVelocities().Random("test", 3)
+        accelerations = JointAccelerations().Random("test", 3)
+        torques = JointTorques().Random("test", 3)
+
+        mat = np.random.rand(12, 12)
+        # state
+        state *= 3.0
+        self.assertIsInstance(state, JointState)
+        result = state * 3.0
+        self.assertIsInstance(result, JointState)
+        result = 3.0 * state
+        self.assertIsInstance(result, JointState)
+        result = mat * state
+        self.assertIsInstance(result, JointState)
+        with self.assertRaises(TypeError):
+            state *= mat
+        with self.assertRaises(TypeError):
+            result = state * mat
+        with self.assertRaises(TypeError):
+            result = state / mat
+        with self.assertRaises(TypeError):
+            result = mat / state
+        with self.assertRaises(TypeError):
+            state /= mat
+        state /= 2.0
+        self.assertIsInstance(state, JointState)
+        result = state / 2.0
+        self.assertIsInstance(result, JointState)
+
+        mat = np.random.rand(3, 3)
+        # positions
+        positions *= 3.0
+        self.assertIsInstance(positions, JointPositions)
+        result = positions * 3.0
+        self.assertIsInstance(result, JointPositions)
+        result = 3.0 * positions
+        self.assertIsInstance(result, JointPositions)
+        result = mat * positions
+        self.assertIsInstance(result, JointPositions)
+        with self.assertRaises(TypeError):
+            positions *= mat
+        with self.assertRaises(TypeError):
+            result = positions * mat
+        with self.assertRaises(TypeError):
+            result = positions / mat
+        with self.assertRaises(TypeError):
+            result = mat / positions
+        with self.assertRaises(TypeError):
+            positions /= mat
+        positions /= 2.0
+        self.assertIsInstance(positions, JointPositions)
+        result = positions / 2.0
+        self.assertIsInstance(result, JointPositions)
+        result = positions / timedelta(seconds=1)
+        self.assertIsInstance(result, JointVelocities)
+
+        # velocities
+        velocities *= 3.0
+        self.assertIsInstance(velocities, JointVelocities)
+        result = velocities * 3.0
+        self.assertIsInstance(result, JointVelocities)
+        result = 3.0 * velocities
+        self.assertIsInstance(result, JointVelocities)
+        result = mat * velocities
+        self.assertIsInstance(result, JointVelocities)
+        with self.assertRaises(TypeError):
+            velocities *= mat
+        with self.assertRaises(TypeError):
+            result = velocities * mat
+        result = velocities * timedelta(seconds=1)
+        self.assertIsInstance(result, JointPositions)
+        result = timedelta(seconds=1) * velocities
+        self.assertIsInstance(result, JointPositions)
+        with self.assertRaises(TypeError):
+            result = velocities / mat
+        with self.assertRaises(TypeError):
+            result = mat / velocities
+        with self.assertRaises(TypeError):
+            velocities /= mat
+        velocities /= 2.0
+        self.assertIsInstance(velocities, JointVelocities)
+        result = velocities / 2.0
+        self.assertIsInstance(result, JointVelocities)
+        result = velocities / timedelta(seconds=1)
+        self.assertIsInstance(result, JointAccelerations)
+
+        # accelerations
+        accelerations *= 3.0
+        self.assertIsInstance(accelerations, JointAccelerations)
+        result = accelerations * 3.0
+        self.assertIsInstance(result, JointAccelerations)
+        result = 3.0 * accelerations
+        self.assertIsInstance(result, JointAccelerations)
+        result = mat * accelerations
+        self.assertIsInstance(result, JointAccelerations)
+        with self.assertRaises(TypeError):
+            accelerations *= mat
+        with self.assertRaises(TypeError):
+            result = accelerations * mat
+        result = accelerations * timedelta(seconds=1)
+        self.assertIsInstance(result, JointVelocities)
+        result = timedelta(seconds=1) * accelerations
+        self.assertIsInstance(result, JointVelocities)
+        with self.assertRaises(TypeError):
+            result = accelerations / mat
+        with self.assertRaises(TypeError):
+            result = mat / accelerations
+        with self.assertRaises(TypeError):
+            accelerations /= mat
+        accelerations /= 2.0
+        self.assertIsInstance(accelerations, JointAccelerations)
+        result = accelerations / 2.0
+        self.assertIsInstance(result, JointAccelerations)
+
+        # torques
+        torques *= 3.0
+        self.assertIsInstance(torques, JointTorques)
+        result = torques * 3.0
+        self.assertIsInstance(result, JointTorques)
+        result = 3.0 * torques
+        self.assertIsInstance(result, JointTorques)
+        result = mat * torques
+        self.assertIsInstance(result, JointTorques)
+        with self.assertRaises(TypeError):
+            torques *= mat
+        with self.assertRaises(TypeError):
+            result = torques * mat
+        with self.assertRaises(TypeError):
+            result = torques / mat
+        with self.assertRaises(TypeError):
+            result = mat / torques
+        with self.assertRaises(TypeError):
+            torques /= mat
+        torques /= 2.0
+        self.assertIsInstance(torques, JointTorques)
+        result = torques / 2.0
+        self.assertIsInstance(result, JointTorques)
 
 
 if __name__ == '__main__':
