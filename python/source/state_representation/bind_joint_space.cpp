@@ -74,21 +74,21 @@ void joint_state(py::module_& m) {
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&JointState::set_data), "Set the data of the state from all the state variables in a single vector.", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&JointState::set_data), "Set the data of the state from all the state variables in a single list.", "data"_a);
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
   c.def(py::self *= double());
   c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const JointState& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.JointState' and 'np.ndarray'"); });
+  c.def("__imul__", [](const JointState& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.JointState' and 'np.ndarray'"); });
+  c.def(Eigen::MatrixXd() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
+  c.def("__truediv__", [](const JointState& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for /: 'state_representation.JointState' and 'np.ndarray'"); });
+
+  c.def(py::self += py::self);
+  c.def(py::self + py::self);
+  c.def("__neg__", [](const JointState& self) -> JointState { return -self; });
+  c.def(py::self -= py::self);
+  c.def(py::self - py::self);
 
   c.def("dist", &JointState::dist, "Compute the distance to another state as the sum of distances between each attribute.", "state"_a, "state_variable_type"_a=JointStateVariable::ALL);
 
@@ -138,22 +138,38 @@ void joint_positions(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointPositions& positions) -> JointPositions { return positions; }, "Deleted method from parent class.");
   }
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
   c.def(py::self *= double());
   c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const JointPositions& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.JointPositions' and 'np.ndarray'"); });
+  c.def("__imul__", [](const JointPositions& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.JointPositions' and 'np.ndarray'"); });
+  c.def(Eigen::MatrixXd() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+  c.def("__truediv__", [](const JointPositions& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for /: 'state_representation.JointPositions' and 'np.ndarray'"); });
   c.def(py::self / std::chrono::nanoseconds());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
+
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const JointPositions& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointPositions' and 'state_representation.JointVelocities'"); });
+  c.def("__iadd__", [](const JointPositions& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointPositions' and 'state_representation.JointAccelerations'"); });
+  c.def("__iadd__", [](const JointPositions& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointPositions' and 'state_representation.JointTorques'"); });
+  c.def(py::self += JointState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const JointPositions& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointPositions' and 'state_representation.JointVelocities'"); });
+  c.def("__add__", [](const JointPositions& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointPositions' and 'state_representation.JointAccelerations'"); });
+  c.def("__add__", [](const JointPositions& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointPositions' and 'state_representation.JointTorques'"); });
+  c.def(py::self + JointState());
+  c.def("__neg__", [](const JointPositions& self) -> JointPositions { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const JointPositions& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointPositions' and 'state_representation.JointVelocities'"); });
+  c.def("__isub__", [](const JointPositions& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointPositions' and 'state_representation.JointAccelerations'"); });
+  c.def("__isub__", [](const JointPositions& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointPositions' and 'state_representation.JointTorques'"); });
+  c.def(py::self -= JointState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const JointPositions& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointPositions' and 'state_representation.JointVelocities'"); });
+  c.def("__sub__", [](const JointPositions& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointPositions' and 'state_representation.JointAccelerations'"); });
+  c.def("__sub__", [](const JointPositions& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointPositions' and 'state_representation.JointTorques'"); });
+  c.def(py::self - JointState());
 
   c.def("copy", &JointPositions::copy, "Return a copy of the JointPositions");
   c.def("data", &JointPositions::data, "Returns the positions data as a vector");
@@ -205,25 +221,40 @@ void joint_velocities(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointVelocities& velocities) -> JointVelocities { return velocities; }, "Deleted method from parent class.");
   }
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
   c.def(py::self *= double());
   c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const JointVelocities& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.JointVelocities' and 'np.ndarray'"); });
+  c.def("__imul__", [](const JointVelocities& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.JointVelocities' and 'np.ndarray'"); });
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
+  c.def("__truediv__", [](const JointVelocities& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for /: 'state_representation.JointVelocities' and 'np.ndarray'"); });
   c.def(py::self / std::chrono::nanoseconds());
-  c.def(py::self * std::chrono::nanoseconds());
 
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const JointVelocities& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointVelocities' and 'state_representation.JointPositions'"); });
+  c.def("__iadd__", [](const JointVelocities& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointVelocities' and 'state_representation.JointAccelerations'"); });
+  c.def("__iadd__", [](const JointVelocities& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointVelocities' and 'state_representation.JointTorques'"); });
+  c.def(py::self += JointState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const JointVelocities& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointVelocities' and 'state_representation.JointPositions'"); });
+  c.def("__add__", [](const JointVelocities& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointVelocities' and 'state_representation.JointAccelerations'"); });
+  c.def("__add__", [](const JointVelocities& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointVelocities' and 'state_representation.JointTorques'"); });
+  c.def(py::self + JointState());
+  c.def("__neg__", [](const JointVelocities& self) -> JointVelocities { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const JointVelocities& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointVelocities' and 'state_representation.JointPositions'"); });
+  c.def("__isub__", [](const JointVelocities& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointVelocities' and 'state_representation.JointAccelerations'"); });
+  c.def("__isub__", [](const JointVelocities& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointVelocities' and 'state_representation.JointTorques'"); });
+  c.def(py::self -= JointState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const JointVelocities& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointVelocities' and 'state_representation.JointPositions'"); });
+  c.def("__sub__", [](const JointVelocities& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointVelocities' and 'state_representation.JointAccelerations'"); });
+  c.def("__sub__", [](const JointVelocities& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointVelocities' and 'state_representation.JointTorques'"); });
+  c.def(py::self - JointState());
 
   c.def("copy", &JointVelocities::copy, "Return a copy of the JointVelocities");
   c.def("data", &JointVelocities::data, "Returns the velocities data as a vector");
@@ -279,24 +310,39 @@ void joint_accelerations(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointAccelerations& accelerations) -> JointAccelerations { return accelerations; }, "Deleted method from parent class.");
   }
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
   c.def(py::self *= double());
   c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const JointAccelerations& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.JointAccelerations' and 'np.ndarray'"); });
+  c.def("__imul__", [](const JointAccelerations& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.JointAccelerations' and 'np.ndarray'"); });
+  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self * std::chrono::nanoseconds());
+  c.def(std::chrono::nanoseconds() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
-  c.def(py::self * std::chrono::nanoseconds());
+  c.def("__truediv__", [](const JointAccelerations& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for /: 'state_representation.JointAccelerations' and 'np.ndarray'"); });
 
-  c.def(double() * py::self);
-  c.def(std::chrono::nanoseconds() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const JointAccelerations& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointAccelerations' and 'state_representation.JointPositions'"); });
+  c.def("__iadd__", [](const JointAccelerations& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointAccelerations' and 'state_representation.JointVelocities'"); });
+  c.def("__iadd__", [](const JointAccelerations& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointAccelerations' and 'state_representation.JointTorques'"); });
+  c.def(py::self += JointState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const JointAccelerations& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointAccelerations' and 'state_representation.JointPositions'"); });
+  c.def("__add__", [](const JointAccelerations& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointAccelerations' and 'state_representation.JointVelocities'"); });
+  c.def("__add__", [](const JointAccelerations& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointAccelerations' and 'state_representation.JointTorques'"); });
+  c.def(py::self + JointState());
+  c.def("__neg__", [](const JointAccelerations& self) -> JointAccelerations { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const JointAccelerations& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointAccelerations' and 'state_representation.JointPositions'"); });
+  c.def("__isub__", [](const JointAccelerations& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointAccelerations' and 'state_representation.JointVelocities'"); });
+  c.def("__isub__", [](const JointAccelerations& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointAccelerations' and 'state_representation.JointTorques'"); });
+  c.def(py::self -= JointState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const JointAccelerations& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointAccelerations' and 'state_representation.JointPositions'"); });
+  c.def("__sub__", [](const JointAccelerations& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointAccelerations' and 'state_representation.JointVelocities'"); });
+  c.def("__sub__", [](const JointAccelerations& self, const JointTorques& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointAccelerations' and 'state_representation.JointTorques'"); });
+  c.def(py::self - JointState());
 
   c.def("copy", &JointAccelerations::copy, "Return a copy of the JointAccelerations");
   c.def("data", &JointAccelerations::data, "Returns the accelerations data as a vector");
@@ -351,21 +397,37 @@ void joint_torques(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const JointTorques& torques) -> JointTorques { return torques; }, "Deleted method from parent class.");
   }
 
-  c.def(py::self += py::self);
-  c.def(py::self + py::self);
-  c.def(py::self -= py::self);
-  c.def(py::self - py::self);
   c.def(py::self *= double());
   c.def(py::self * double());
-  c.def(py::self *= Eigen::ArrayXd());
-  c.def(py::self * Eigen::ArrayXd());
-  c.def(py::self *= Eigen::MatrixXd());
-  c.def(py::self * Eigen::MatrixXd());
+  c.def(double() * py::self);
+  c.def("__mul__", [](const JointTorques& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *: 'state_representation.JointTorques' and 'np.ndarray'"); });
+  c.def("__imul__", [](const JointTorques& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for *=: 'state_representation.JointTorques' and 'np.ndarray'"); });
+  c.def(Eigen::MatrixXd() * py::self);
   c.def(py::self /= double());
   c.def(py::self / double());
-  c.def(double() * py::self);
-  c.def(Eigen::ArrayXd() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
+  c.def("__truediv__", [](const JointTorques& self, const Eigen::MatrixXd& other) -> void { throw py::type_error("unsupported operand type(s) for /: 'state_representation.JointTorques' and 'np.ndarray'"); });
+
+  c.def(py::self += py::self);
+  c.def("__iadd__", [](const JointTorques& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointTorques' and 'state_representation.JointPositions'"); });
+  c.def("__iadd__", [](const JointTorques& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointTorques' and 'state_representation.JointVelocities'"); });
+  c.def("__iadd__", [](const JointTorques& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +=: 'state_representation.JointTorques' and 'state_representation.JointAccelerations'"); });
+  c.def(py::self += JointState());
+  c.def(py::self + py::self);
+  c.def("__add__", [](const JointTorques& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointTorques' and 'state_representation.JointPositions'"); });
+  c.def("__add__", [](const JointTorques& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointTorques' and 'state_representation.JointVelocities'"); });
+  c.def("__add__", [](const JointTorques& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for +: 'state_representation.JointTorques' and 'state_representation.JointAccelerations'"); });
+  c.def(py::self + JointState());
+  c.def("__neg__", [](const JointTorques& self) -> JointTorques { return -self; });
+  c.def(py::self -= py::self);
+  c.def("__isub__", [](const JointTorques& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointTorques' and 'state_representation.JointPositions'"); });
+  c.def("__isub__", [](const JointTorques& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointTorques' and 'state_representation.JointVelocities'"); });
+  c.def("__isub__", [](const JointTorques& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -=: 'state_representation.JointTorques' and 'state_representation.JointAccelerations'"); });
+  c.def(py::self -= JointState());
+  c.def(py::self - py::self);
+  c.def("__sub__", [](const JointTorques& self, const JointPositions& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointTorques' and 'state_representation.JointPositions'"); });
+  c.def("__sub__", [](const JointTorques& self, const JointVelocities& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointTorques' and 'state_representation.JointVelocities'"); });
+  c.def("__sub__", [](const JointTorques& self, const JointAccelerations& other) -> void { throw py::type_error("unsupported operand type(s) for -: 'state_representation.JointTorques' and 'state_representation.JointAccelerations'"); });
+  c.def(py::self - JointState());
 
   c.def("copy", &JointTorques::copy, "Return a copy of the JointTorques");
   c.def("data", &JointTorques::data, "Returns the torques data as a vector");
