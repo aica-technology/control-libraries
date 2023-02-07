@@ -494,16 +494,22 @@ public:
   JointState operator+(const JointState& state) const;
 
   /**
-   * @brief Overload the -= operator
-   * @param state The joint state to subtract
-   * @return The current joint state subtracted the joint state given in argument
+   * @brief Negate a joint state
+   * @return The negative value of the joint state
+   */
+  JointState operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another joint state
+   * @param state A joint state with same name and same joint names
+   * @return The reference to the difference in all the state variables
    */
   JointState& operator-=(const JointState& state);
 
   /**
-   * @brief Overload the - operator
-   * @param state The joint state to subtract
-   * @return The current joint state subtracted the joint state given in argument
+   * @brief Compute the difference with another joint state
+   * @param state A joint state with same name and same joint names
+   * @return The difference in all the state variables
    */
   JointState operator-(const JointState& state) const;
 

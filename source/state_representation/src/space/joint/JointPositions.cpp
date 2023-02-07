@@ -162,13 +162,26 @@ JointState JointPositions::operator+(const JointState& state) const {
   return this->JointState::operator+(state);
 }
 
+JointPositions JointPositions::operator-() const {
+  return this->JointState::operator-();
+}
+
 JointPositions& JointPositions::operator-=(const JointPositions& positions) {
   this->JointState::operator-=(positions);
   return (*this);
 }
 
+JointPositions& JointPositions::operator-=(const JointState& state) {
+  this->JointState::operator-=(state);
+  return (*this);
+}
+
 JointPositions JointPositions::operator-(const JointPositions& positions) const {
   return this->JointState::operator-(positions);
+}
+
+JointState JointPositions::operator-(const JointState& state) const {
+  return this->JointState::operator-(state);
 }
 
 std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
