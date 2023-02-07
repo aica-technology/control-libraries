@@ -8,6 +8,10 @@ by using the repository [Discussions](https://github.com/aica-technology/control
 opening an [issue](https://github.com/aica-technology/control-libraries/issues),
 or by contacting the maintainers of this repository directly.
 
+Any contributors who are not employed by AICA must first read and sign
+the [Contributor License Agreement (CLA)](./licenses/CLA.md),
+which grants AICA the rights to use, modify and distribute open source contributions.
+
 ## Development Environment
 
 Our development and testing workflow uses a Docker container to host the project build dependencies which an IDE then
