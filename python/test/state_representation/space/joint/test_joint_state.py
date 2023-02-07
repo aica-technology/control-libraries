@@ -343,6 +343,10 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(state, JointState)
         result = state / 2.0
         self.assertIsInstance(result, JointState)
+        with self.assertRaises(TypeError):
+            timedelta(seconds=1) * state
+        with self.assertRaises(TypeError):
+            state / timedelta(seconds=1)
 
         mat = np.random.rand(3, 3)
         # positions
@@ -368,6 +372,8 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(positions, JointPositions)
         result = positions / 2.0
         self.assertIsInstance(result, JointPositions)
+        with self.assertRaises(TypeError):
+            timedelta(seconds=1) * positions
         result = positions / timedelta(seconds=1)
         self.assertIsInstance(result, JointVelocities)
 
@@ -384,10 +390,6 @@ class TestJointState(unittest.TestCase):
             velocities *= mat
         with self.assertRaises(TypeError):
             result = velocities * mat
-        result = velocities * timedelta(seconds=1)
-        self.assertIsInstance(result, JointPositions)
-        result = timedelta(seconds=1) * velocities
-        self.assertIsInstance(result, JointPositions)
         with self.assertRaises(TypeError):
             result = velocities / mat
         with self.assertRaises(TypeError):
@@ -398,6 +400,10 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(velocities, JointVelocities)
         result = velocities / 2.0
         self.assertIsInstance(result, JointVelocities)
+        result = velocities * timedelta(seconds=1)
+        self.assertIsInstance(result, JointPositions)
+        result = timedelta(seconds=1) * velocities
+        self.assertIsInstance(result, JointPositions)
         result = velocities / timedelta(seconds=1)
         self.assertIsInstance(result, JointAccelerations)
 
@@ -414,10 +420,6 @@ class TestJointState(unittest.TestCase):
             accelerations *= mat
         with self.assertRaises(TypeError):
             result = accelerations * mat
-        result = accelerations * timedelta(seconds=1)
-        self.assertIsInstance(result, JointVelocities)
-        result = timedelta(seconds=1) * accelerations
-        self.assertIsInstance(result, JointVelocities)
         with self.assertRaises(TypeError):
             result = accelerations / mat
         with self.assertRaises(TypeError):
@@ -428,6 +430,12 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(accelerations, JointAccelerations)
         result = accelerations / 2.0
         self.assertIsInstance(result, JointAccelerations)
+        result = accelerations * timedelta(seconds=1)
+        self.assertIsInstance(result, JointVelocities)
+        result = timedelta(seconds=1) * accelerations
+        self.assertIsInstance(result, JointVelocities)
+        with self.assertRaises(TypeError):
+            accelerations / timedelta(seconds=1)
 
         # torques
         torques *= 3.0
@@ -452,6 +460,10 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(torques, JointTorques)
         result = torques / 2.0
         self.assertIsInstance(result, JointTorques)
+        with self.assertRaises(TypeError):
+            timedelta(seconds=1) * torques
+        with self.assertRaises(TypeError):
+            torques / timedelta(seconds=1)
 
 
 if __name__ == '__main__':
