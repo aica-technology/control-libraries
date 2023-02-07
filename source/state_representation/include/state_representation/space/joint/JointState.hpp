@@ -480,16 +480,16 @@ public:
   JointState operator/(double lambda) const;
 
   /**
-   * @brief Overload the += operator
-   * @param state The joint state to add
-   * @return The current joint state added the joint state given in argument
+   * @brief Add inplace another joint state
+   * @param state A joint state with same name and same joint names
+   * @return The reference to the combined joint state
    */
   JointState& operator+=(const JointState& state);
 
   /**
-   * @brief Overload the + operator
-   * @param state The joint state to add
-   * @return The current joint state added the joint state given in argument
+   * @brief Add another joint sate
+   * @param state A joint state with same name and same joint names
+   * @return The combined joint state
    */
   JointState operator+(const JointState& state) const;
 

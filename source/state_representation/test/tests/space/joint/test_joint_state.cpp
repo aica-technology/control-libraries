@@ -1,6 +1,10 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"
@@ -409,4 +413,97 @@ TEST(JointStateTest, Truthiness) {
   empty.set_data(Eigen::VectorXd::Random(4));
   EXPECT_FALSE(empty.is_empty());
   EXPECT_TRUE(empty);
+}
+
+TEST(JointStateTest, TestAdditionOperators) {
+  JointState state = JointState::Random("test", 3);
+  JointPositions positions = JointPositions::Random("test", 3);
+  JointVelocities velocities = JointVelocities::Random("test", 3);
+  JointAccelerations accelerations = JointAccelerations::Random("test", 3);
+  JointTorques torques = JointTorques::Random("test", 3);
+
+  auto r1 = positions + positions;
+  EXPECT_EQ(r1.get_type(), StateType::JOINT_POSITIONS);
+  auto r2 = state + positions;
+  EXPECT_EQ(r2.get_type(), StateType::JOINT_STATE);
+  auto r3 = positions + state;
+  EXPECT_EQ(r3.get_type(), StateType::JOINT_STATE);
+
+  auto r4 = velocities + velocities;
+  EXPECT_EQ(r4.get_type(), StateType::JOINT_VELOCITIES);
+  auto r5 = state + velocities;
+  EXPECT_EQ(r5.get_type(), StateType::JOINT_STATE);
+  auto r6 = velocities + state;
+  EXPECT_EQ(r6.get_type(), StateType::JOINT_STATE);
+
+  auto r7 = accelerations + accelerations;
+  EXPECT_EQ(r7.get_type(), StateType::JOINT_ACCELERATIONS);
+  auto r8 = state + accelerations;
+  EXPECT_EQ(r8.get_type(), StateType::JOINT_STATE);
+  auto r9 = accelerations + state;
+  EXPECT_EQ(r9.get_type(), StateType::JOINT_STATE);
+
+  auto r10 = torques + torques;
+  EXPECT_EQ(r10.get_type(), StateType::JOINT_TORQUES);
+  auto r11 = state + torques;
+  EXPECT_EQ(r11.get_type(), StateType::JOINT_STATE);
+  auto r12 = torques + state;
+  EXPECT_EQ(r12.get_type(), StateType::JOINT_STATE);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  //auto r = positions + velocities;
+  //auto r = positions + accelerations;
+  //auto r = positions + torques;
+
+  //auto r = velocities + positions;
+  //auto r = velocities + accelerations;
+  //auto r = velocities + torques;
+
+  //auto r = accelerations + positions;
+  //auto r = accelerations + velocities;
+  //auto r = accelerations + torques;
+
+  state += state;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += positions;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += velocities;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += accelerations;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += torques;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+
+  positions += state;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  positions += positions;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  //positions += velocities;
+  //positions += accelerations;
+  //positions += torques;
+
+  velocities += state;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  velocities += velocities;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  //velocities += positions;
+  //velocities += accelerations;
+  //velocities += torques;
+
+  accelerations += state;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  accelerations += accelerations;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  //accelerations += positions;
+  //accelerations += velocities;
+  //accelerations += torques;
+
+  torques += state;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  torques += torques;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  //torques += positions;
+  //torques += velocities;
+  //torques += accelerations;
 }
