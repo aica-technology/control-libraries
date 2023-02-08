@@ -49,13 +49,10 @@ JointState::JointState(const std::string& robot_name, const std::vector<std::str
 }
 
 JointState::JointState(const JointState& state) :
-    State(state),
-    names_(state.names_),
-    positions_(state.positions_),
-    velocities_(state.velocities_),
-    accelerations_(state.accelerations_),
-    torques_(state.torques_) {
-  this->set_type(StateType::JOINT_STATE);
+    JointState(state.get_name(), state.names_) {
+  if (state) {
+    this->set_state_variable(state.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
+  }
 }
 
 JointState JointState::Zero(const std::string& robot_name, unsigned int nb_joints) {
