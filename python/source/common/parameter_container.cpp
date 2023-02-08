@@ -163,6 +163,10 @@ void ParameterContainer::initialize() {
 }
 
 ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInterface>& parameter) {
+  if (parameter->is_empty()) {
+    return ParameterContainer(
+        parameter->get_name(), parameter->get_parameter_type(), parameter->get_parameter_state_type());
+  }
   switch (parameter->get_parameter_type()) {
     case ParameterType::INT:
       return ParameterContainer(
@@ -236,6 +240,10 @@ ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInt
 }
 
 std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterContainer& parameter) {
+  if (parameter.is_empty()) {
+    return make_shared_parameter_interface(
+        parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type());
+  }
   switch (parameter.get_parameter_type()) {
     case ParameterType::INT:
       return make_shared_parameter(parameter.get_name(), parameter.values.int_value);
