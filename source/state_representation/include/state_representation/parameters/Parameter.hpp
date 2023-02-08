@@ -11,9 +11,6 @@ namespace state_representation {
 
 template<typename T>
 class Parameter : public ParameterInterface {
-private:
-  T value_;///< Value of the parameter
-
 public:
   /**
    * @brief Constructor with name of the parameter.
@@ -85,6 +82,9 @@ public:
    */
   template<typename U>
   friend std::ostream& operator<<(std::ostream& os, const Parameter<U>& parameter);
+
+private:
+  T value_;///< Value of the parameter
 };
 
 template<typename T>
