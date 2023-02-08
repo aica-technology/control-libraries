@@ -35,6 +35,7 @@ Release Versions:
 - Bind operators of Cartesian states (#60)
 - Refactor operators in JointState (multiplication & division #62, addition #63, subtraction #64)
 - Bind operators of joint states (#65)
+- Add initialize method to Parameter class (#68)
 
 ## 6.3.1
 

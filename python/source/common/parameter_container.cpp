@@ -154,6 +154,11 @@ py::object ParameterContainer::get_value() {
   throw std::invalid_argument("Could not get the value of parameter " + this->get_name());
 }
 
+void ParameterContainer::initialize() {
+  this->State::initialize();
+  values = ParameterValues();
+}
+
 ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInterface>& parameter) {
   switch (parameter->get_parameter_type()) {
     case ParameterType::INT:

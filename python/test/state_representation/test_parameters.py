@@ -49,8 +49,13 @@ class TestParameters(unittest.TestCase):
         self.assertFalse(param.is_empty())
         self.assertEqual(param.get_value(), 1)
         param1 = sr.Parameter("int", 1, sr.ParameterType.INT)
-        self.assertFalse(param.is_empty())
+        self.assertFalse(param1.is_empty())
         self.assertEqual(param1.get_value(), 1)
+
+        # FIXME (#50): Use parametrized pytests for these tests
+        param1.initialize()
+        self.assertTrue(param1.is_empty())
+        self.assertEqual(param1.get_value(), int())
 
     def test_param_int_array(self):
         param = sr.Parameter("int_array", sr.ParameterType.INT_ARRAY)
