@@ -38,6 +38,7 @@ Release Versions:
 - Add initialize method to Parameter class (#68)
 - Allow Parameter construction with empty name (#67)
 - Ignore data fields when copying an empty state (#71)
+- Use pytest to run Python bindings tests (#70)
 
 ## 6.3.1
 
