@@ -32,19 +32,20 @@ static unsigned int get_state_variable_size_factor(const JointStateVariable& sta
 
 JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
-  this->initialize();
 }
 
 JointState::JointState(const std::string& robot_name, unsigned int nb_joints) : State(robot_name), names_(nb_joints) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
-  this->initialize();
+  this->resize(nb_joints);
+  this->set_zero();
 }
 
 JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
     State(robot_name), names_(joint_names) {
   this->set_type(StateType::JOINT_STATE);
-  this->initialize();
+  this->resize(joint_names.size());
+  this->set_zero();
 }
 
 JointState::JointState(const JointState& state) :
