@@ -13,29 +13,29 @@ template<typename T>
 class Parameter : public ParameterInterface {
 public:
   /**
-   * @brief Constructor with name of the parameter.
-   * @param name The name of the parameter
+   * @brief Constructor with the name of the parameter
+   * @param name The name of the parameter (default is empty)
    */
-  explicit Parameter(const std::string& name);
+  explicit Parameter(const std::string& name = "");
 
   /**
-   * @brief Constructor with a name and a value.
+   * @brief Constructor with a name and a value
    * @param name The name of the parameter
    * @param value The value of the parameter
    */
-  explicit Parameter(const std::string& name, const T& value);
-
-  /**
-   * @brief Default virtual destructor
-   */
-  virtual ~Parameter() = default;
+  Parameter(const std::string& name, const T& value);
 
   /**
    * @brief Copy constructor
    * @param parameter The parameter to copy
    */
   template<typename U>
-  Parameter(const Parameter<U>& parameter);
+  explicit Parameter(const Parameter<U>& parameter);
+
+  /**
+   * @brief Default virtual destructor
+   */
+  virtual ~Parameter() = default;
 
   /**
    * @brief Conversion equality
