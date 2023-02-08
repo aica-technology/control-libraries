@@ -33,11 +33,11 @@ JointAccelerations::JointAccelerations(const std::string& robot_name,
 }
 
 JointAccelerations::JointAccelerations(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except accelerations
   this->set_type(StateType::JOINT_ACCELERATIONS);
-  this->set_zero();
-  this->set_accelerations(state.get_accelerations());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_accelerations(state.get_accelerations());
+  }
 }
 
 JointAccelerations::JointAccelerations(const JointAccelerations& accelerations) :

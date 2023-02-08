@@ -30,11 +30,11 @@ JointTorques::JointTorques(const std::string& robot_name, const std::vector<std:
 }
 
 JointTorques::JointTorques(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except torques
   this->set_type(StateType::JOINT_TORQUES);
-  this->set_zero();
-  this->set_torques(state.get_torques());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_torques(state.get_torques());
+  }
 }
 
 JointTorques::JointTorques(const JointTorques& torques) : JointTorques(static_cast<const JointState&>(torques)) {}
