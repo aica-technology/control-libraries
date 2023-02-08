@@ -73,6 +73,11 @@ public:
   virtual void set_value(const T& value);
 
   /**
+   * @copybrief State::initialize
+   */
+  void initialize() override;
+
+  /**
    * @brief Overload the ostream operator for printing.
    * @param os The ostream to append the string representing the State to
    * @param parameter The Parameter to print
@@ -118,6 +123,12 @@ template<typename T>
 inline void Parameter<T>::set_value(const T& value) {
   this->set_empty(false);
   this->value_ = value;
+}
+
+template<typename T>
+inline void Parameter<T>::initialize() {
+  this->State::initialize();
+  this->value_ = T();
 }
 
 template<typename T>
