@@ -565,6 +565,12 @@ protected:
   std::string to_string() const override;
 
 private:
+  /**
+   * @brief Resize the data vectors to a new size
+   * @param size The desired size
+   */
+  void resize(unsigned int size);
+
   std::vector<std::string> names_;///< names of the joints
   Eigen::VectorXd positions_;     ///< joints positions
   Eigen::VectorXd velocities_;    ///< joints velocities
