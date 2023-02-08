@@ -32,29 +32,27 @@ static unsigned int get_state_variable_size_factor(const JointStateVariable& sta
 
 JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
-  this->initialize();
 }
 
 JointState::JointState(const std::string& robot_name, unsigned int nb_joints) : State(robot_name), names_(nb_joints) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
-  this->initialize();
+  this->resize(nb_joints);
+  this->set_zero();
 }
 
 JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
     State(robot_name), names_(joint_names) {
   this->set_type(StateType::JOINT_STATE);
-  this->initialize();
+  this->resize(joint_names.size());
+  this->set_zero();
 }
 
 JointState::JointState(const JointState& state) :
-    State(state),
-    names_(state.names_),
-    positions_(state.positions_),
-    velocities_(state.velocities_),
-    accelerations_(state.accelerations_),
-    torques_(state.torques_) {
-  this->set_type(StateType::JOINT_STATE);
+    JointState(state.get_name(), state.names_) {
+  if (state) {
+    this->set_state_variable(state.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
+  }
 }
 
 JointState JointState::Zero(const std::string& robot_name, unsigned int nb_joints) {
@@ -89,6 +87,13 @@ JointState& JointState::operator=(const JointState& state) {
   JointState tmp(state);
   swap(*this, tmp);
   return *this;
+}
+
+void JointState::resize(unsigned int size) {
+  this->positions_.resize(size);
+  this->velocities_.resize(size);
+  this->accelerations_.resize(size);
+  this->torques_.resize(size);
 }
 
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
@@ -351,7 +356,7 @@ void JointState::clamp_state_variable(
     const Eigen::ArrayXd& noise_ratio_array
 ) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   if (max_absolute_value_array.size() != expected_size) {
     throw IncompatibleSizeException(
         "Array of max values is of incorrect size: expected " + std::to_string(expected_size) + ", given "
@@ -379,7 +384,7 @@ void JointState::clamp_state_variable(
     double max_absolute_value, const JointStateVariable& state_variable_type, double noise_ratio
 ) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   this->clamp_state_variable(
       max_absolute_value * Eigen::ArrayXd::Ones(expected_size), state_variable_type,
       noise_ratio * Eigen::ArrayXd::Ones(expected_size));
@@ -422,13 +427,6 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
 
 void JointState::initialize() {
   this->State::initialize();
-  // resize
-  unsigned int size = this->names_.size();
-  this->positions_.resize(size);
-  this->velocities_.resize(size);
-  this->accelerations_.resize(size);
-  this->torques_.resize(size);
-  // set to zeros
   this->set_zero();
 }
 
@@ -455,16 +453,17 @@ void JointState::set_zero() {
   this->velocities_.setZero();
   this->accelerations_.setZero();
   this->torques_.setZero();
+  // FIXME: reset timestamp
 }
 
 std::vector<double> JointState::to_std_vector() const {
   Eigen::VectorXd data = this->data();
-  return std::vector<double>(data.data(), data.data() + data.size());
+  return {data.data(), data.data() + data.size()};
 }
 
 void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const JointStateVariable& state_variable_type) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   if (lambda.rows() != expected_size || lambda.cols() != expected_size) {
     throw IncompatibleSizeException(
         "Gain matrix is of incorrect size: expected " + std::to_string(expected_size) + "x"

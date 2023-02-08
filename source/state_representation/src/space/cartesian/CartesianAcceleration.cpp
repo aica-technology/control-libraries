@@ -38,11 +38,11 @@ CartesianAcceleration::CartesianAcceleration(
 }
 
 CartesianAcceleration::CartesianAcceleration(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except linear and angular velocities
   this->set_type(StateType::CARTESIAN_ACCELERATION);
-  this->set_zero();
-  this->set_acceleration(state.get_acceleration());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_acceleration(state.get_acceleration());
+  }
 }
 
 CartesianAcceleration::CartesianAcceleration(const CartesianAcceleration& acceleration) :

@@ -68,7 +68,7 @@ public:
   static CartesianState Identity(const std::string& name, const std::string& reference = "world");
 
   /**
-   * @brief Constructor for a random Cartsian state
+   * @brief Constructor for a random Cartesian state
    */
   static CartesianState Random(const std::string& name, const std::string& reference = "world");
 

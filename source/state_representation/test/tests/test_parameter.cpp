@@ -138,15 +138,24 @@ TYPED_TEST_P(ParameterTest, Construction) {
     param.set_name("test");
     EXPECT_EQ(param.get_name(), "test");
     expect_values_equal(param.get_value(), TypeParam());
+
+    auto new_param(param);
+    EXPECT_TRUE(new_param.is_empty());
+
     ParameterInterface param_interface(param);
     EXPECT_EQ(param_interface.get_name(), param.get_name());
     EXPECT_EQ(param_interface.get_type(), StateType::PARAMETER);
     EXPECT_EQ(param_interface.get_parameter_type(), param.get_parameter_type());
     EXPECT_EQ(param_interface.get_parameter_state_type(), param.get_parameter_state_type());
+
     param.set_value(std::get<0>(test_case));
     EXPECT_FALSE(param.is_empty());
     EXPECT_TRUE(param);
     expect_values_equal(param.get_value(), std::get<0>(test_case));
+
+    new_param = param;
+    EXPECT_FALSE(new_param.is_empty());
+    expect_values_equal(param.get_value(), new_param.get_value());
 
     param.initialize();
     EXPECT_TRUE(param.is_empty());

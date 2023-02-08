@@ -44,11 +44,11 @@ CartesianPose::CartesianPose(
 }
 
 CartesianPose::CartesianPose(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except position and orientation
   this->set_type(StateType::CARTESIAN_POSE);
-  this->set_zero();
-  this->set_pose(state.get_pose());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_pose(state.get_pose());
+  }
 }
 
 CartesianPose::CartesianPose(const CartesianPose& pose) : CartesianPose(static_cast<const CartesianState&>(pose)) {}

@@ -37,6 +37,7 @@ Release Versions:
 - Bind operators of joint states (#65)
 - Add initialize method to Parameter class (#68)
 - Allow Parameter construction with empty name (#67)
+- Ignore data fields when copying an empty state (#71)
 
 ## 6.3.1
 

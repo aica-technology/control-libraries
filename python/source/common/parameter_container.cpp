@@ -8,6 +8,8 @@
 
 namespace py_parameter {
 
+// FIXME: Improve exceptions in switch cases and try catch casts
+
 ParameterContainer::ParameterContainer(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type
 ) : ParameterInterface(name, type, parameter_state_type) {
@@ -42,10 +44,13 @@ ParameterContainer::ParameterContainer(
 }
 
 ParameterContainer::ParameterContainer(const ParameterContainer& parameter) :
-    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()),
-    values(parameter.values) {}
+    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()) {
+  if (parameter) {
+    set_value(parameter.get_value());
+  }
+}
 
-void ParameterContainer::set_value(const py::object& value) {
+void ParameterContainer::set_value(py::object value) {
   switch (this->get_parameter_type()) {
     case ParameterType::INT:
       values.int_value = value.cast<int>();
@@ -105,7 +110,7 @@ void ParameterContainer::set_value(const py::object& value) {
   this->set_empty(false);
 }
 
-py::object ParameterContainer::get_value() {
+py::object ParameterContainer::get_value() const {
   switch (this->get_parameter_type()) {
     case ParameterType::INT:
       return py::cast(values.int_value);
@@ -160,6 +165,10 @@ void ParameterContainer::initialize() {
 }
 
 ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInterface>& parameter) {
+  if (parameter->is_empty()) {
+    return ParameterContainer(
+        parameter->get_name(), parameter->get_parameter_type(), parameter->get_parameter_state_type());
+  }
   switch (parameter->get_parameter_type()) {
     case ParameterType::INT:
       return ParameterContainer(
@@ -233,6 +242,10 @@ ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInt
 }
 
 std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterContainer& parameter) {
+  if (parameter.is_empty()) {
+    return make_shared_parameter_interface(
+        parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type());
+  }
   switch (parameter.get_parameter_type()) {
     case ParameterType::INT:
       return make_shared_parameter(parameter.get_name(), parameter.values.int_value);

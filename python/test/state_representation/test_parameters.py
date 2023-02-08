@@ -44,6 +44,10 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param.get_parameter_type(), sr.ParameterType.INT)
         self.assertEqual(param.get_parameter_state_type(), sr.StateType.NONE)
         self.assertEqual(param.get_value(), 0)
+
+        new_param = sr.Parameter(param)
+        self.assertTrue(new_param.is_empty())
+
         param.set_value(1)
         self.assertTrue(param)
         self.assertFalse(param.is_empty())
@@ -51,6 +55,10 @@ class TestParameters(unittest.TestCase):
         param1 = sr.Parameter("int", 1, sr.ParameterType.INT)
         self.assertFalse(param1.is_empty())
         self.assertEqual(param1.get_value(), 1)
+
+        new_param = sr.Parameter(param1)
+        self.assertFalse(new_param.is_empty())
+        self.assertEqual(param1.get_value(), new_param.get_value())
 
         # FIXME (#50): Use parametrized pytests for these tests
         param1.initialize()

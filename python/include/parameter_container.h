@@ -33,9 +33,9 @@ public:
   );
   ParameterContainer(const ParameterContainer& parameter);
 
-  void set_value(const py::object& value);
+  void set_value(py::object value);
 
-  py::object get_value();
+  py::object get_value() const;
 
   void initialize();
 

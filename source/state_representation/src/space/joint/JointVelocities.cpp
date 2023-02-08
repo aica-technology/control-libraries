@@ -33,11 +33,11 @@ JointVelocities::JointVelocities(
 }
 
 JointVelocities::JointVelocities(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except velocities
   this->set_type(StateType::JOINT_VELOCITIES);
-  this->set_zero();
-  this->set_velocities(state.get_velocities());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_velocities(state.get_velocities());
+  }
 }
 
 JointVelocities::JointVelocities(const JointVelocities& velocities) :
