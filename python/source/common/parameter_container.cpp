@@ -8,6 +8,8 @@
 
 namespace py_parameter {
 
+// FIXME (#50): Improve exceptions in switch cases and try catch casts
+
 ParameterContainer::ParameterContainer(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type
 ) : ParameterInterface(name, type, parameter_state_type) {
