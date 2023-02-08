@@ -453,7 +453,7 @@ void JointState::set_zero() {
   this->velocities_.setZero();
   this->accelerations_.setZero();
   this->torques_.setZero();
-  // FIXME (#50): reset timestamp
+  // FIXME: reset timestamp
 }
 
 std::vector<double> JointState::to_std_vector() const {

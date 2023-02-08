@@ -89,7 +89,6 @@ public:
    */
   void reset_timestamp();
 
-  // FIXME (#50): What is the benefit of declaring those here. We can't declare the data() neither.
   /**
    * @brief Set the data of the state from an Eigen vector
    */

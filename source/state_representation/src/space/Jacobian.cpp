@@ -58,7 +58,7 @@ Jacobian::Jacobian(const std::string& robot_name,
   this->set_data(data);
 }
 
-// FIXME (#50): improve copy constructor after Jacobian refactor
+// FIXME: improve copy constructor after Jacobian refactor
 Jacobian::Jacobian(const Jacobian& jacobian) :
     State(jacobian),
     joint_names_(jacobian.joint_names_),
