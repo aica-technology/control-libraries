@@ -356,7 +356,7 @@ void JointState::clamp_state_variable(
     const Eigen::ArrayXd& noise_ratio_array
 ) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   if (max_absolute_value_array.size() != expected_size) {
     throw IncompatibleSizeException(
         "Array of max values is of incorrect size: expected " + std::to_string(expected_size) + ", given "
@@ -384,7 +384,7 @@ void JointState::clamp_state_variable(
     double max_absolute_value, const JointStateVariable& state_variable_type, double noise_ratio
 ) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   this->clamp_state_variable(
       max_absolute_value * Eigen::ArrayXd::Ones(expected_size), state_variable_type,
       noise_ratio * Eigen::ArrayXd::Ones(expected_size));
@@ -453,16 +453,17 @@ void JointState::set_zero() {
   this->velocities_.setZero();
   this->accelerations_.setZero();
   this->torques_.setZero();
+  // FIXME (#50): reset timestamp
 }
 
 std::vector<double> JointState::to_std_vector() const {
   Eigen::VectorXd data = this->data();
-  return std::vector<double>(data.data(), data.data() + data.size());
+  return {data.data(), data.data() + data.size()};
 }
 
 void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const JointStateVariable& state_variable_type) {
   Eigen::VectorXd state_variable = this->get_state_variable(state_variable_type);
-  int expected_size = state_variable.size();
+  long expected_size = state_variable.size();
   if (lambda.rows() != expected_size || lambda.cols() != expected_size) {
     throw IncompatibleSizeException(
         "Gain matrix is of incorrect size: expected " + std::to_string(expected_size) + "x"
