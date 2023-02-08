@@ -130,12 +130,13 @@ TYPED_TEST_SUITE_P(ParameterTest);
 
 TYPED_TEST_P(ParameterTest, Construction) {
   for (auto const& test_case: this->test_cases_) {
-    Parameter<TypeParam> param("test");
-    EXPECT_EQ(param.get_name(), "test");
+    Parameter<TypeParam> param;
     EXPECT_EQ(param.get_parameter_type(), std::get<1>(test_case));
     EXPECT_EQ(param.get_parameter_state_type(), std::get<2>(test_case));
     EXPECT_TRUE(param.is_empty());
     EXPECT_FALSE(param);
+    param.set_name("test");
+    EXPECT_EQ(param.get_name(), "test");
     expect_values_equal(param.get_value(), TypeParam());
     ParameterInterface param_interface(param);
     EXPECT_EQ(param_interface.get_name(), param.get_name());
