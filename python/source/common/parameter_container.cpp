@@ -42,10 +42,13 @@ ParameterContainer::ParameterContainer(
 }
 
 ParameterContainer::ParameterContainer(const ParameterContainer& parameter) :
-    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()),
-    values(parameter.values) {}
+    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()) {
+  if (parameter) {
+    set_value(parameter.get_value());
+  }
+}
 
-void ParameterContainer::set_value(const py::object& value) {
+void ParameterContainer::set_value(py::object value) {
   switch (this->get_parameter_type()) {
     case ParameterType::INT:
       values.int_value = value.cast<int>();
@@ -105,7 +108,7 @@ void ParameterContainer::set_value(const py::object& value) {
   this->set_empty(false);
 }
 
-py::object ParameterContainer::get_value() {
+py::object ParameterContainer::get_value() const {
   switch (this->get_parameter_type()) {
     case ParameterType::INT:
       return py::cast(values.int_value);
