@@ -36,6 +36,7 @@ Release Versions:
 - Refactor operators in JointState (multiplication & division #62, addition #63, subtraction #64)
 - Bind operators of joint states (#65)
 - Add initialize method to Parameter class (#68)
+- Allow Parameter construction with empty name (#67)
 
 ## 6.3.1
 
