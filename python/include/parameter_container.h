@@ -37,6 +37,8 @@ public:
 
   py::object get_value();
 
+  void initialize();
+
   ParameterValues values;
 };
 
