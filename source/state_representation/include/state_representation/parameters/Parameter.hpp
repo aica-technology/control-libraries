@@ -9,6 +9,11 @@
 
 namespace state_representation {
 
+/**
+ * @class Parameter
+ * @brief Class to represent name-value pairs of different types
+ * @tparam T The type of the value stored in the parameter
+ */
 template<typename T>
 class Parameter : public ParameterInterface {
 public:
@@ -44,7 +49,7 @@ public:
   Parameter<T>& operator=(const Parameter<U>& parameter);
 
   /**
-   * @brief Getter of the value attribute.
+   * @brief Getter of the value attribute
    * @tparam U The expected type of the parameter
    * @return The value attribute
    */
@@ -52,20 +57,20 @@ public:
   U get_value() const;
 
   /**
-   * @brief Getter of the value attribute.
+   * @brief Getter of the value attribute
    * @return The value attribute
    */
   const T& get_value() const;
 
   /**
-   * @brief Getter of the value attribute.
+   * @brief Getter of the value attribute
    * @return The value attribute
    */
   T& get_value();
 
   /**
-   * @brief Setter of the value attribute.
-   * @param The new value attribute
+   * @brief Setter of the value attribute
+   * @param value The new value attribute
    */
   virtual void set_value(const T& value);
 
@@ -75,9 +80,9 @@ public:
   void initialize() override;
 
   /**
-   * @brief Overload the ostream operator for printing.
-   * @param os The ostream to append the string representing the State to
-   * @param parameter The Parameter to print
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the state to
+   * @param parameter The parameter to print
    * @return The appended ostream
    */
   template<typename U>
@@ -105,7 +110,7 @@ Parameter<T>& Parameter<T>::operator=(const Parameter<U>& parameter) {
 
 template<typename T>
 template<typename U>
-U Parameter<T>::get_value() const {
+inline U Parameter<T>::get_value() const {
   return static_cast<U>(this->value_);
 }
 
@@ -131,11 +136,25 @@ inline void Parameter<T>::initialize() {
   this->value_ = T();
 }
 
+/**
+ * @brief Create a Parameter object that is owned by a shared_ptr
+ * @tparam T The type of the value stored in the parameter
+ * @param name The name of the parameter
+ * @param param_value The value of the parameter
+ * @return A shared_ptr that owns the newly created Parameter object
+ */
 template<typename T>
 static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& name, const T& param_value) {
   return std::make_shared<Parameter<T>>(name, param_value);
 }
 
+/**
+ * @brief TODO
+ * @param name The name of the parameter
+ * @param type The type of the parameter
+ * @param parameter_state_type The state type of the parameter, if applicable
+ * @return TODO
+ */
 [[maybe_unused]] static std::shared_ptr<ParameterInterface> make_shared_parameter_interface(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type = StateType::NONE
 ) {
@@ -179,7 +198,7 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
     case ParameterType::MATRIX:
       return std::make_shared<Parameter<Eigen::MatrixXd>>(name);
     default:
-      throw exceptions::InvalidParameterException("This StateType is not supported for parameters.");
+      throw exceptions::InvalidParameterException("This ParameterType is not supported for parameters.");
   }
 }
 }// namespace state_representation
