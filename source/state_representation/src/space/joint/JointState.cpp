@@ -429,13 +429,6 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
 
 void JointState::initialize() {
   this->State::initialize();
-  // resize
-  unsigned int size = this->names_.size();
-  this->positions_.resize(size);
-  this->velocities_.resize(size);
-  this->accelerations_.resize(size);
-  this->torques_.resize(size);
-  // set to zeros
   this->set_zero();
 }
 
