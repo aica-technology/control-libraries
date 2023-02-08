@@ -149,11 +149,11 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
 }
 
 /**
- * @brief TODO
+ * @brief Encapsulate a parameter in a ParameterInterface pointer
  * @param name The name of the parameter
  * @param type The type of the parameter
  * @param parameter_state_type The state type of the parameter, if applicable
- * @return TODO
+ * @return A ParameterInterface pointer holding a reference to a Parameter object
  */
 [[maybe_unused]] static std::shared_ptr<ParameterInterface> make_shared_parameter_interface(
     const std::string& name, const ParameterType& type, const StateType& parameter_state_type = StateType::NONE
