@@ -194,9 +194,9 @@ public:
   Jacobian copy() const;
 
   /**
-   * @brief Initialize the matrix to a zero value
+   * @copybrief State::reset
    */
-  void initialize() override;
+  void reset() override;
 
   // FIXME: does it make sense to return Jacobians instead of matrices (inverse, pseudoinverse, transpose)?
   /**

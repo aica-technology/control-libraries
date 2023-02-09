@@ -66,7 +66,7 @@ void State::set_data(const Eigen::MatrixXd&) {
   throw exceptions::NotImplementedException("set_data() is not implemented for the base State class");
 }
 
-void State::initialize() {
+void State::reset() {
   this->empty_ = true;
 }
 

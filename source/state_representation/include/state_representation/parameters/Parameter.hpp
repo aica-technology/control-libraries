@@ -75,9 +75,9 @@ public:
   virtual void set_value(const T& value);
 
   /**
-   * @copybrief State::initialize
+   * @copybrief State::reset
    */
-  void initialize() override;
+  void reset() override;
 
   /**
    * @brief Overload the ostream operator for printing
@@ -131,8 +131,8 @@ inline void Parameter<T>::set_value(const T& value) {
 }
 
 template<typename T>
-inline void Parameter<T>::initialize() {
-  this->State::initialize();
+inline void Parameter<T>::reset() {
+  this->State::reset();
   this->value_ = T();
 }
 

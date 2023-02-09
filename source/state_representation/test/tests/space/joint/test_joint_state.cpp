@@ -171,7 +171,7 @@ TEST(JointStateTest, GetSetFields) {
   EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), false);
-  js.initialize();
+  js.reset();
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), true);
 }
@@ -226,7 +226,7 @@ TEST(JointStateTest, Compatibility) {
 
 TEST(JointStateTest, SetZero) {
   JointState random1 = JointState::Random("test", 3);
-  random1.initialize();
+  random1.reset();
   EXPECT_EQ(random1.data().norm(), 0);
 
   JointState random2 = JointState::Random("test", 3);

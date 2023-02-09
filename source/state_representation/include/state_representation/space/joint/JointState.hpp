@@ -409,9 +409,9 @@ public:
   friend double dist(const JointState& s1, const JointState& s2, const JointStateVariable& state_variable_type);
 
   /**
-   * @brief Initialize the joint state to a zero value
+   * @copybrief State::reset
    */
-  void initialize();
+  void reset() override;
 
   /**
    * @brief Check if the joint state is incompatible for operations with the state given as argument

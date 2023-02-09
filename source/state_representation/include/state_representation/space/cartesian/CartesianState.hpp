@@ -406,9 +406,9 @@ public:
   );
 
   /**
-   * @brief Initialize the CartesianState to a zero value
+   * @copybrief State::reset
    */
-  void initialize() override;
+  void reset() override;
 
   /**
    * @brief Compute the inverse of the current Cartesian state

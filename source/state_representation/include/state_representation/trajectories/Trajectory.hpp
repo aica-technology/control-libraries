@@ -53,7 +53,7 @@ public:
   /**
    * @brief Initialize trajectory
    */
-  void initialize();
+  void reset();
 
   /**
    * @brief Add new point and corresponding time to trajectory
@@ -120,7 +120,7 @@ template<class StateT>
 Trajectory<StateT>::Trajectory():
     State() {
   this->set_type(StateType::TRAJECTORY);
-  this->initialize();
+  this->reset();
 }
 
 template<class StateT>
@@ -128,7 +128,7 @@ Trajectory<StateT>::Trajectory(const std::string& name):
     State(name),
     reference_frame_("") {
   this->set_type(StateType::TRAJECTORY);
-  this->initialize();
+  this->reset();
 }
 
 template<class StateT>
@@ -160,8 +160,8 @@ inline void Trajectory<StateT>::set_joint_names(const std::vector<std::string>& 
 }
 
 template<class StateT>
-void Trajectory<StateT>::initialize() {
-  this->State::initialize();
+void Trajectory<StateT>::reset() {
+  this->State::reset();
   this->points_.clear();
   this->times_.clear();
 }

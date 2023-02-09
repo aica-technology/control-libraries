@@ -157,7 +157,7 @@ TYPED_TEST_P(ParameterTest, Construction) {
     EXPECT_FALSE(new_param.is_empty());
     expect_values_equal(param.get_value(), new_param.get_value());
 
-    param.initialize();
+    param.reset();
     EXPECT_TRUE(param.is_empty());
     EXPECT_FALSE(param);
     expect_values_equal(param.get_value(), TypeParam());
