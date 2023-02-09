@@ -104,8 +104,7 @@ def test_encode_decode_parameters(helpers, name, value, parameter_type, message_
     parameter = sr.Parameter(name, value, parameter_type)
     assert_encode_decode(parameter, clproto.MessageType.PARAMETER_MESSAGE, helpers.assert_parameter_equal, message_type)
     parameter.reset()
-    # FIXME: empty parameters that are encoded and decoded are not empty anymore!
-    # assert_encode_decode(parameter, clproto.MessageType.PARAMETER_MESSAGE, helpers.assert_parameter_equal, message_type)
+    assert_encode_decode(parameter, clproto.MessageType.PARAMETER_MESSAGE, helpers.assert_parameter_equal, message_type)
 
 
 @pytest.mark.parametrize("name,value,parameter_type,parameter_state_type", invalid_parameters)
