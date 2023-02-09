@@ -89,68 +89,110 @@ proto::JointState encoder(const JointState& joint_state) {
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<int>& parameter) {
-  message.mutable_parameter_value()->mutable_int_()->set_value(parameter.get_value());
+  if (parameter) {
+    message.mutable_parameter_value()->mutable_int_()->set_value(parameter.get_value());
+  } else {
+    message.mutable_parameter_value()->mutable_int_()->set_value(int());
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<int>>& parameter) {
-  *message.mutable_parameter_value()->mutable_int_array()->mutable_value() =
-      {parameter.get_value().begin(), parameter.get_value().end()};
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_int_array()->mutable_value() =
+        {parameter.get_value().begin(), parameter.get_value().end()};
+  } else {
+    *message.mutable_parameter_value()->mutable_int_array()->mutable_value() = {};
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<double>& parameter) {
-  message.mutable_parameter_value()->mutable_double_()->set_value(parameter.get_value());
+  if (parameter) {
+    message.mutable_parameter_value()->mutable_double_()->set_value(parameter.get_value());
+  } else {
+    message.mutable_parameter_value()->mutable_double_()->set_value(double());
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<double>>& parameter) {
-  *message.mutable_parameter_value()->mutable_double_array()->mutable_value() =
-      {parameter.get_value().begin(), parameter.get_value().end()};
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_double_array()->mutable_value() =
+        {parameter.get_value().begin(), parameter.get_value().end()};
+  } else {
+    *message.mutable_parameter_value()->mutable_double_array()->mutable_value() = {};
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<bool>& parameter) {
-  message.mutable_parameter_value()->mutable_bool_()->set_value(parameter.get_value());
+  if (parameter) {
+    message.mutable_parameter_value()->mutable_bool_()->set_value(parameter.get_value());
+  } else {
+    message.mutable_parameter_value()->mutable_bool_()->set_value(bool());
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<bool>>& parameter) {
-  *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() =
-      {parameter.get_value().begin(), parameter.get_value().end()};
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() =
+        {parameter.get_value().begin(), parameter.get_value().end()};
+  } else {
+    *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() = {};
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::string>& parameter) {
-  message.mutable_parameter_value()->mutable_string()->set_value(parameter.get_value());
+  if (parameter) {
+    message.mutable_parameter_value()->mutable_string()->set_value(parameter.get_value());
+  } else {
+    message.mutable_parameter_value()->mutable_string()->set_value(std::string ());
+  }
   return message;
 }
 
 template<>
 proto::Parameter
 encoder(proto::Parameter& message, const Parameter<std::vector<std::string>>& parameter) {
-  *message.mutable_parameter_value()->mutable_string_array()->mutable_value() =
-      {parameter.get_value().begin(), parameter.get_value().end()};
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_string_array()->mutable_value() =
+        {parameter.get_value().begin(), parameter.get_value().end()};
+  } else {
+    *message.mutable_parameter_value()->mutable_string_array()->mutable_value() = {};
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::VectorXd>& parameter) {
-  *message.mutable_parameter_value()->mutable_vector()->mutable_value() = matrix_encoder(parameter.get_value());
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_vector()->mutable_value() = matrix_encoder(parameter.get_value());
+  } else {
+    *message.mutable_parameter_value()->mutable_vector()->mutable_value() = matrix_encoder(Eigen::VectorXd());
+  }
   return message;
 }
 
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::MatrixXd>& parameter) {
-  *message.mutable_parameter_value()->mutable_matrix()->mutable_value() = matrix_encoder(parameter.get_value());
-  message.mutable_parameter_value()->mutable_matrix()->set_rows(parameter.get_value().rows());
-  message.mutable_parameter_value()->mutable_matrix()->set_cols(parameter.get_value().cols());
+  if (parameter) {
+    *message.mutable_parameter_value()->mutable_matrix()->mutable_value() = matrix_encoder(parameter.get_value());
+    message.mutable_parameter_value()->mutable_matrix()->set_rows(parameter.get_value().rows());
+    message.mutable_parameter_value()->mutable_matrix()->set_cols(parameter.get_value().cols());
+  } else {
+    *message.mutable_parameter_value()->mutable_matrix()->mutable_value() = matrix_encoder(Eigen::MatrixXd());
+    message.mutable_parameter_value()->mutable_matrix()->set_rows(0);
+    message.mutable_parameter_value()->mutable_matrix()->set_cols(0);
+  }
   return message;
 }
 }

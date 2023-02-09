@@ -76,9 +76,6 @@ template<typename ParamT>
 inline state_representation::proto::Parameter encoder(const state_representation::Parameter<ParamT>& parameter) {
   state_representation::proto::Parameter message;
   *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
-  if (parameter.is_empty()) {
-    return message;
-  }
   return encoder<ParamT>(message, parameter);
 }
 }
