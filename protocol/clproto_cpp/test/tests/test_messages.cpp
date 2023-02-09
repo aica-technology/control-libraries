@@ -6,22 +6,20 @@
 #include <state_representation/space/cartesian/CartesianPose.hpp>
 
 #include "clproto.h"
+#include "test_clproto/encode_decode_helper.hpp"
 
 using namespace state_representation;
 
 TEST(MessageProtoTest, EncodeDecodeState) {
   auto send_state = State("A");
-  std::string msg = clproto::encode(send_state);
-  EXPECT_TRUE(clproto::is_valid(msg));
-  EXPECT_TRUE(clproto::check_message_type(msg) == clproto::STATE_MESSAGE);
-
-  State recv_state;
-  EXPECT_NO_THROW(clproto::decode<State>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state));
-
-  EXPECT_EQ(send_state.is_empty(), recv_state.is_empty());
-  EXPECT_EQ(send_state.get_type(), recv_state.get_type());
-  EXPECT_STREQ(send_state.get_name().c_str(), recv_state.get_name().c_str());
+  clproto::test_encode_decode<State>(
+      send_state, clproto::STATE_MESSAGE, [](
+          const State& send, const State& recv
+      ) {
+        EXPECT_EQ(send.get_type(), recv.get_type());
+        EXPECT_STREQ(send.get_name().c_str(), recv.get_name().c_str());
+      }
+  );
 }
 
 TEST(MessageProtoTest, EncodeDecodeInvalidState) {
