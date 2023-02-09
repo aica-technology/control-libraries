@@ -15,7 +15,7 @@ STATE_METHOD_EXPECTS = [
     'set_name',
     'is_deprecated',
     'is_incompatible',
-    'initialize'
+    'reset'
 ]
 
 
@@ -50,7 +50,7 @@ class TestState(unittest.TestCase):
         state2 = State("test")
         self.assertFalse(state1.is_incompatible(state2))
 
-        state2.initialize()
+        state2.reset()
         self.assertTrue(state2.is_empty())
 
     def test_timestamp(self):

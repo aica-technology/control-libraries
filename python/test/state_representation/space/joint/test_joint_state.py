@@ -27,7 +27,7 @@ JOINT_STATE_METHOD_EXPECTS = [
     'get_type',
     'get_velocities',
     'get_velocity',
-    'initialize',
+    'reset',
     'is_incompatible',
     'is_deprecated',
     'is_empty',
