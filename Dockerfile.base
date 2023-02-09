@@ -83,7 +83,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # install python requirements
-RUN pip3 install numpy setuptools pybind11
+RUN pip3 install pytest numpy setuptools pybind11
 
 # install google dependencies
 COPY --from=google-dependencies /usr/include/gtest /usr/include/gtest

@@ -23,6 +23,6 @@ RUN pip3 install .
 FROM build as testing
 
 COPY test test
-RUN python3 -m unittest
+RUN pytest
 
 CMD ["/bin/bash"]
