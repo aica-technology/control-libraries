@@ -88,7 +88,7 @@ Impedance<S>::Impedance(unsigned int dimensions) :
   this->parameters_.insert(std::make_pair("damping", damping_));
   this->parameters_.insert(std::make_pair("inertia", inertia_));
   this->parameters_.insert(std::make_pair("feed_forward_force", feed_forward_force_));
-  this->parameters_.insert(std::make_pair("force_limit", inertia_));
+  this->parameters_.insert(std::make_pair("force_limit", force_limit_));
 }
 
 template<class S>
