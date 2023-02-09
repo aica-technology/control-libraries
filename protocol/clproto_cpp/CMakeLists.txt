@@ -89,6 +89,7 @@ install(EXPORT ${PROJECT_NAME}_targets
 if (BUILD_TESTING)
   file(GLOB_RECURSE TEST_SOURCES test/ test_*.cpp)
   add_executable(test_${PROJECT_NAME} ${TEST_SOURCES})
+  include_directories(test/tests/include)
   target_link_libraries(test_${PROJECT_NAME}
     protobuf
     ${PROJECT_NAME}
