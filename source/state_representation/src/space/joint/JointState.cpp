@@ -425,8 +425,8 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
   return s1.dist(s2, state_variable_type);
 }
 
-void JointState::initialize() {
-  this->State::initialize();
+void JointState::reset() {
+  this->State::reset();
   this->set_zero();
 }
 

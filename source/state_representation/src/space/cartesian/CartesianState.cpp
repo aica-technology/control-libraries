@@ -506,8 +506,8 @@ double dist(const CartesianState& s1, const CartesianState& s2, const CartesianS
   return s1.dist(s2, state_variable_type);
 }
 
-void CartesianState::initialize() {
-  this->State::initialize();
+void CartesianState::reset() {
+  this->State::reset();
   this->set_zero();
 }
 

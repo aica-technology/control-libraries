@@ -24,7 +24,7 @@ Jacobian::Jacobian(const std::string& robot_name,
     cols_(nb_joints) {
   this->set_type(StateType::JACOBIAN);
   this->set_joint_names(nb_joints);
-  this->initialize();
+  this->reset();
 }
 
 Jacobian::Jacobian(const std::string& robot_name,
@@ -38,7 +38,7 @@ Jacobian::Jacobian(const std::string& robot_name,
     rows_(6),
     cols_(joint_names.size()) {
   this->set_type(StateType::JACOBIAN);
-  this->initialize();
+  this->reset();
 }
 
 Jacobian::Jacobian(const std::string& robot_name,
@@ -166,8 +166,8 @@ Jacobian Jacobian::copy() const {
   return result;
 }
 
-void Jacobian::initialize() {
-  this->State::initialize();
+void Jacobian::reset() {
+  this->State::reset();
   this->data_.resize(this->rows_, this->cols());
   this->data_.setZero();
 }

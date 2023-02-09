@@ -159,8 +159,8 @@ py::object ParameterContainer::get_value() const {
   throw std::invalid_argument("Could not get the value of parameter " + this->get_name());
 }
 
-void ParameterContainer::initialize() {
-  this->State::initialize();
+void ParameterContainer::reset() {
+  this->State::reset();
   values = ParameterValues();
 }
 

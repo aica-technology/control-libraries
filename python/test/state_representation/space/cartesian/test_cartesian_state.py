@@ -37,7 +37,7 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'get_twist',
     'get_type',
     'get_wrench',
-    'initialize',
+    'reset',
     'inverse',
     'is_incompatible',
     'is_deprecated',
@@ -257,12 +257,12 @@ class TestCartesianState(unittest.TestCase):
         cs.set_zero()
         self.assertAlmostEqual(np.linalg.norm(cs.data()), 1)
         self.assertFalse(cs.is_empty())
-        cs.initialize()
+        cs.reset()
         self.assertTrue(cs.is_empty())
 
     def test_set_zero(self):
         random1 = CartesianState().Random("test")
-        random1.initialize()
+        random1.reset()
         self.assertAlmostEqual(np.linalg.norm(random1.data()), 1)
 
         random2 = CartesianState().Random("test")

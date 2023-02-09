@@ -61,7 +61,7 @@ class TestParameters(unittest.TestCase):
         self.assertEqual(param1.get_value(), new_param.get_value())
 
         # FIXME (#50): Use parametrized pytests for these tests
-        param1.initialize()
+        param1.reset()
         self.assertTrue(param1.is_empty())
         self.assertEqual(param1.get_value(), int())
 

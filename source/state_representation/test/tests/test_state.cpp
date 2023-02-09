@@ -31,7 +31,7 @@ TEST(StateTest, Compatibility) {
   State state2("test");
   EXPECT_FALSE(state1.is_incompatible(state2));
 
-  state2.initialize();
+  state2.reset();
   EXPECT_TRUE(state2.is_empty());
 }
 

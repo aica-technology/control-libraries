@@ -37,7 +37,7 @@ public:
 
   py::object get_value() const;
 
-  void initialize();
+  void reset();
 
   ParameterValues values;
 };
