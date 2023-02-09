@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.44</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.45</span>
    </div>
   </td>
  </tr>
@@ -169,9 +169,9 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memitem:af9999161c78b496fe18ca56883ed7fda"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">is_deprecated</a> (const std::chrono::duration&lt; int64_t, DurationT &gt; &amp;time_delay) const</td></tr>
 <tr class="memdesc:af9999161c78b496fe18ca56883ed7fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the state is deprecated given a certain time delay.  <a href="classstate__representation_1_1_state.html#af9999161c78b496fe18ca56883ed7fda">More...</a><br /></td></tr>
 <tr class="separator:af9999161c78b496fe18ca56883ed7fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08938479ccdd3286b2fb1e13795c5ee7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">initialize</a> ()</td></tr>
-<tr class="memdesc:a08938479ccdd3286b2fb1e13795c5ee7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the state to a zero value.  <a href="classstate__representation_1_1_state.html#a08938479ccdd3286b2fb1e13795c5ee7">More...</a><br /></td></tr>
-<tr class="separator:a08938479ccdd3286b2fb1e13795c5ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f9a5e1768cb538f34eea6ad82766dd6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#a7f9a5e1768cb538f34eea6ad82766dd6">reset</a> ()</td></tr>
+<tr class="memdesc:a7f9a5e1768cb538f34eea6ad82766dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the state to be empty with no data.  <a href="classstate__representation_1_1_state.html#a7f9a5e1768cb538f34eea6ad82766dd6">More...</a><br /></td></tr>
+<tr class="separator:a7f9a5e1768cb538f34eea6ad82766dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae57571375a38e9663d51ce6f9d9ad1ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">operator bool</a> () const noexcept</td></tr>
 <tr class="memdesc:ae57571375a38e9663d51ce6f9d9ad1ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator for the truthiness of a state.  <a href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">More...</a><br /></td></tr>
 <tr class="separator:ae57571375a38e9663d51ce6f9d9ad1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,37 +366,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a08938479ccdd3286b2fb1e13795c5ee7" name="a08938479ccdd3286b2fb1e13795c5ee7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08938479ccdd3286b2fb1e13795c5ee7">&#9670;&#160;</a></span>initialize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void state_representation::State::initialize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Initialize the state to a zero value. </p>
-
-<p>Reimplemented in <a class="el" href="classpy__parameter_1_1_parameter_container.html#a381a584d94bf2aa4cab01156cd17d971">py_parameter::ParameterContainer</a>, <a class="el" href="classstate__representation_1_1_dual_quaternion_pose.html#a59e6bf0b1649d9bead1b4b574e07cf04">state_representation::DualQuaternionPose</a>, <a class="el" href="classstate__representation_1_1_dual_quaternion_state.html#aa2419919d63daa22acd2d259ce1caada">state_representation::DualQuaternionState</a>, <a class="el" href="classstate__representation_1_1_dual_quaternion_twist.html#a42492ff813af7097e4a85a3d69178ae1">state_representation::DualQuaternionTwist</a>, <a class="el" href="classstate__representation_1_1_joint_state.html#ad8907dbdb323fdc533d28b708054d1e4">state_representation::JointState</a>, <a class="el" href="classstate__representation_1_1_trajectory.html#a0941a74562ca26a5c435181fa4f840e0">state_representation::Trajectory&lt; StateT &gt;</a>, <a class="el" href="classstate__representation_1_1_parameter.html#ad22d7143ca5b0888d4a13bcecaa777ca">state_representation::Parameter&lt; T &gt;</a>, <a class="el" href="classstate__representation_1_1_parameter.html#ad22d7143ca5b0888d4a13bcecaa777ca">state_representation::Parameter&lt; bool &gt;</a>, <a class="el" href="classstate__representation_1_1_cartesian_state.html#adbd4630f5cb7fae236b150338b4299e7">state_representation::CartesianState</a>, and <a class="el" href="classstate__representation_1_1_jacobian.html#ab70143101fc73842e0a6f66f7ec760e8">state_representation::Jacobian</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00069">69</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
-
-</div>
-</div>
 <a id="af9999161c78b496fe18ca56883ed7fda" name="af9999161c78b496fe18ca56883ed7fda"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9999161c78b496fe18ca56883ed7fda">&#9670;&#160;</a></span>is_deprecated() <span class="overload">[1/2]</span></h2>
 
@@ -578,6 +547,37 @@ template&lt;typename DurationT &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>Reference to the current state with new values </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00018">18</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7f9a5e1768cb538f34eea6ad82766dd6" name="a7f9a5e1768cb538f34eea6ad82766dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f9a5e1768cb538f34eea6ad82766dd6">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::State::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset the state to be empty with no data. </p>
+
+<p>Reimplemented in <a class="el" href="classpy__parameter_1_1_parameter_container.html#a2f10dd18dc80d3b704aa8b05d93069a6">py_parameter::ParameterContainer</a>, <a class="el" href="classstate__representation_1_1_trajectory.html#abe23fd09466053327f17f822e59ca8f8">state_representation::Trajectory&lt; StateT &gt;</a>, <a class="el" href="classstate__representation_1_1_parameter.html#a254829ee3c83a3c81a3e3cbe5108495b">state_representation::Parameter&lt; T &gt;</a>, <a class="el" href="classstate__representation_1_1_parameter.html#a254829ee3c83a3c81a3e3cbe5108495b">state_representation::Parameter&lt; bool &gt;</a>, <a class="el" href="classstate__representation_1_1_cartesian_state.html#aeed3de92c24e2d876ad328e8d87cab5e">state_representation::CartesianState</a>, <a class="el" href="classstate__representation_1_1_jacobian.html#a16a3e55c0473ca54dce34f800aaf71c2">state_representation::Jacobian</a>, and <a class="el" href="classstate__representation_1_1_joint_state.html#a161a4e1c1033e790e9804006733aeb7e">state_representation::JointState</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_state_8cpp_source.html#l00069">69</a> of file <a class="el" href="_state_8cpp_source.html">State.cpp</a>.</p>
 
 </div>
 </div>
