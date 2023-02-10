@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Revert order of upcoming changes in CHANGELOG (#80)
 - Refactor clproto tests (#75)
 - Correct parameter map in impedance controller (#76)
 - Rename State::initialize to State::reset (#73)
