@@ -41,6 +41,7 @@ Release Versions:
 - Use pytest to run Python bindings tests (#70)
 - Rename State::initialize to State::reset (#73)
 - Correct parameter map in impedance controller (#76)
+- Refactor clproto tests (#75)
 
 ## 6.3.1
 

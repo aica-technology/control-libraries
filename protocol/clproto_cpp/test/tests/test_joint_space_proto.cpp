@@ -8,6 +8,7 @@
 #include <state_representation/space/joint/JointTorques.hpp>
 
 #include "clproto.h"
+#include "test_encode_decode.hpp"
 
 using namespace state_representation;
 
@@ -19,7 +20,9 @@ static void test_joint_state_equal(const T& send_state, const T& recv_state) {
   for (std::size_t ind = 0; ind < send_state.get_size(); ++ind) {
     EXPECT_STREQ(send_state.get_names().at(ind).c_str(), recv_state.get_names().at(ind).c_str());
   }
-  EXPECT_NEAR(send_state.dist(recv_state), 0, 1e-5);
+  if (send_state) {
+    EXPECT_NEAR(send_state.dist(recv_state), 0, 1e-5);
+  }
 }
 
 static void test_jacobian_equal(const Jacobian& send_state, const Jacobian& recv_state) {
@@ -33,99 +36,29 @@ static void test_jacobian_equal(const Jacobian& send_state, const Jacobian& recv
   for (std::size_t ind = 0; ind < send_state.get_joint_names().size(); ++ind) {
     EXPECT_STREQ(send_state.get_joint_names().at(ind).c_str(), recv_state.get_joint_names().at(ind).c_str());
   }
-  EXPECT_NEAR(send_state.data().norm(), recv_state.data().norm(), 1e-5);
+  if (send_state) {
+    EXPECT_NEAR(send_state.data().norm(), recv_state.data().norm(), 1e-5);
+  }
 }
 
 template<typename T>
-static void test_encode_decode(const T& send_state, clproto::MessageType type) {
-  std::string msg = clproto::encode(send_state);
-  EXPECT_TRUE(clproto::is_valid(msg));
-  EXPECT_EQ(clproto::check_message_type(msg), type);
-
-  T recv_state;
-  EXPECT_NO_THROW(clproto::decode<T>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state));
-  EXPECT_FALSE(recv_state.is_empty());
-
-  test_joint_state_equal(send_state, recv_state);
-
-  auto send_state_ptr = make_shared_state(send_state);
-  msg = clproto::encode(send_state_ptr);
-  EXPECT_TRUE(clproto::is_valid(msg));
-  EXPECT_EQ(clproto::check_message_type(msg), type);
-
-  T recv_state_2;
-  auto recv_state_ptr = make_shared_state(recv_state_2);
-  EXPECT_NO_THROW(clproto::decode<std::shared_ptr<State>>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state_ptr));
-
-  recv_state_2 = *std::dynamic_pointer_cast<T>(recv_state_ptr);
-  test_joint_state_equal(send_state, recv_state_2);
-}
-
-template<typename T>
-static void test_encode_decode_empty_joint(const T& state) {
-  EXPECT_TRUE(state.is_empty());
-  std::string msg;
-  EXPECT_NO_THROW(msg = clproto::encode(state));
-
-  T recv_state;
-  EXPECT_NO_THROW(recv_state = clproto::decode<T>(msg));
-  EXPECT_TRUE(recv_state.is_empty());
+static void encode_decode_joint(T send_state, clproto::MessageType type) {
+  clproto::test_encode_decode<T>(send_state, type, test_joint_state_equal<T>);
+  send_state.reset();
+  clproto::test_encode_decode<T>(send_state, type, test_joint_state_equal<T>);
 }
 
 TEST(JointProtoTest, EncodeDecodeRandomJoint) {
-  std::vector<std::string> joint_names = {"apple", "orange", "banana", "prune"};
-  auto send_state = JointState::Random("zeiss", joint_names);
-  test_encode_decode(send_state, clproto::JOINT_STATE_MESSAGE);
-  test_encode_decode(JointPositions::Random("robot", 3), clproto::JOINT_POSITIONS_MESSAGE);
-  test_encode_decode(JointVelocities::Random("robot", 3), clproto::JOINT_VELOCITIES_MESSAGE);
-  test_encode_decode(JointAccelerations::Random("robot", 3), clproto::JOINT_ACCELERATIONS_MESSAGE);
-  test_encode_decode(JointTorques::Random("robot", 3), clproto::JOINT_TORQUES_MESSAGE);
-}
-
-TEST(CartesianProtoTest, EncodeDecodeEmptyJoint) {
-  test_encode_decode_empty_joint(JointState());
-  test_encode_decode_empty_joint(JointPositions());
-  test_encode_decode_empty_joint(JointVelocities());
-  test_encode_decode_empty_joint(JointAccelerations());
-  test_encode_decode_empty_joint(JointTorques());
+  encode_decode_joint(JointState::Random("robot", {"one", "two", "three"}), clproto::JOINT_STATE_MESSAGE);
+  encode_decode_joint(JointPositions::Random("robot", {"one", "two", "three"}), clproto::JOINT_POSITIONS_MESSAGE);
+  encode_decode_joint(JointVelocities::Random("robot", {"one", "two", "three"}), clproto::JOINT_VELOCITIES_MESSAGE);
+  encode_decode_joint(JointAccelerations::Random("robot", {"one", "two", "three"}), clproto::JOINT_ACCELERATIONS_MESSAGE);
+  encode_decode_joint(JointTorques::Random("robot", {"one", "two", "three"}), clproto::JOINT_TORQUES_MESSAGE);
 }
 
 TEST(JointProtoTest, EncodeDecodeJacobian) {
   auto send_state = Jacobian::Random("robot", {"one", "two", "three"}, "A", "B");
-  std::string msg = clproto::encode(send_state);
-  EXPECT_TRUE(clproto::is_valid(msg));
-  EXPECT_EQ(clproto::check_message_type(msg), clproto::JACOBIAN_MESSAGE);
-
-  Jacobian recv_state;
-  EXPECT_NO_THROW(clproto::decode<Jacobian>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state));
-  EXPECT_FALSE(recv_state.is_empty());
-
-  test_jacobian_equal(send_state, recv_state);
-
-  auto send_state_ptr = make_shared_state(send_state);
-  msg = clproto::encode(send_state_ptr);
-  EXPECT_TRUE(clproto::is_valid(msg));
-  EXPECT_EQ(clproto::check_message_type(msg), clproto::JACOBIAN_MESSAGE);
-
-  Jacobian recv_state_2;
-  auto recv_state_ptr = make_shared_state(recv_state_2);
-  EXPECT_NO_THROW(clproto::decode<std::shared_ptr<State>>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state_ptr));
-
-  recv_state_2 = *std::dynamic_pointer_cast<Jacobian>(recv_state_ptr);
-  test_jacobian_equal(send_state, recv_state_2);
-}
-
-TEST(JointProtoTest, EncodeDecodeEmptyJacobian) {
-  Jacobian empty_state;
-  EXPECT_TRUE(empty_state.is_empty());
-  std::string msg;
-  EXPECT_NO_THROW(msg = clproto::encode(empty_state));
-
-  Jacobian recv_state;
-  EXPECT_NO_THROW(recv_state = clproto::decode<Jacobian>(msg));
-  EXPECT_TRUE(recv_state.is_empty());
+  clproto::test_encode_decode<Jacobian>(send_state, clproto::JACOBIAN_MESSAGE, test_jacobian_equal);
+  send_state.reset();
+  clproto::test_encode_decode<Jacobian>(send_state, clproto::JACOBIAN_MESSAGE, test_jacobian_equal);
 }
