@@ -4,7 +4,7 @@
 #include <state_representation/space/cartesian/CartesianState.hpp>
 
 #include "clproto.h"
-#include "encode_decode_helper.hpp"
+#include "test_encode_decode.hpp"
 
 using namespace state_representation;
 
