@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Fix encoding of empty parameters (#78)
 - Automatic update of version and changelog upon PR creation (#81)
 - Revert order of upcoming changes in CHANGELOG (#80)
 - Refactor clproto tests (#75)
