@@ -61,100 +61,66 @@ void parameter(py::module_& m) {
   c.def("__repr__", [](const ParameterContainer& parameter) {
     std::stringstream buffer;
     switch (parameter.get_parameter_type()) {
-      case ParameterType::INT: {
-        Parameter<int> param(parameter.get_name(), parameter.values.int_value);
-        buffer << param;
+      case ParameterType::INT:
+        buffer << container_to_parameter<int>(parameter);
         break;
-      }
-      case ParameterType::INT_ARRAY: {
-        Parameter<std::vector<int>> param(parameter.get_name(), parameter.values.int_array_value);
-        buffer << param;
+      case ParameterType::INT_ARRAY:
+        buffer << container_to_parameter<std::vector<int>>(parameter);
         break;
-      }
-      case ParameterType::DOUBLE: {
-        Parameter<double> param(parameter.get_name(), parameter.values.double_value);
-        buffer << param;
+      case ParameterType::DOUBLE:
+        buffer << container_to_parameter<double>(parameter);
         break;
-      }
-      case ParameterType::DOUBLE_ARRAY: {
-        Parameter<std::vector<double>> param(parameter.get_name(), parameter.values.double_array_value);
-        buffer << param;
+      case ParameterType::DOUBLE_ARRAY:
+        buffer << container_to_parameter<std::vector<double>>(parameter);
         break;
-      }
-      case ParameterType::BOOL: {
-        Parameter<bool> param(parameter.get_name(), parameter.values.bool_value);
-        buffer << param;
+      case ParameterType::BOOL:
+        buffer << container_to_parameter<bool>(parameter);
         break;
-      }
-      case ParameterType::BOOL_ARRAY: {
-        Parameter<std::vector<bool>> param(parameter.get_name(), parameter.values.bool_array_value);
-        buffer << param;
+      case ParameterType::BOOL_ARRAY:
+        buffer << container_to_parameter<std::vector<bool>>(parameter);
         break;
-      }
-      case ParameterType::STRING: {
-        Parameter<std::string> param(parameter.get_name(), parameter.values.string_value);
-        buffer << param;
+      case ParameterType::STRING:
+        buffer << container_to_parameter<std::string>(parameter);
         break;
-      }
-      case ParameterType::STRING_ARRAY: {
-        Parameter<std::vector<std::string>> param(parameter.get_name(), parameter.values.string_array_value);
-        buffer << param;
+      case ParameterType::STRING_ARRAY:
+        buffer << container_to_parameter<std::vector<std::string>>(parameter);
         break;
-      }
       case ParameterType::STATE: {
         try {
           switch (parameter.get_parameter_state_type()) {
-            case StateType::CARTESIAN_STATE: {
-              Parameter<CartesianState> param
-                  (parameter.get_name(), *std::dynamic_pointer_cast<CartesianState>(parameter.values.state_pointer));
-              buffer << param;
+            case StateType::CARTESIAN_STATE:
+              buffer << container_to_parameter<CartesianState>(parameter);
               break;
-            }
-            case StateType::CARTESIAN_POSE: {
-              Parameter<CartesianPose> param
-                  (parameter.get_name(), *std::dynamic_pointer_cast<CartesianPose>(parameter.values.state_pointer));
-              buffer << param;
+            case StateType::CARTESIAN_POSE:
+              buffer << container_to_parameter<CartesianPose>(parameter);
               break;
-            }
-            case StateType::JOINT_STATE: {
-              Parameter<JointState> param
-                  (parameter.get_name(), *std::dynamic_pointer_cast<JointState>(parameter.values.state_pointer));
-              buffer << param;
+            case StateType::JOINT_STATE:
+              buffer << container_to_parameter<JointState>(parameter);
               break;
-            }
-            case StateType::JOINT_POSITIONS: {
-              Parameter<JointPositions> param
-                  (parameter.get_name(), *std::dynamic_pointer_cast<JointPositions>(parameter.values.state_pointer));
-              buffer << param;
+            case StateType::JOINT_POSITIONS:
+              buffer << container_to_parameter<JointPositions>(parameter);
               break;
-            }
-            case StateType::GEOMETRY_ELLIPSOID: {
-              Parameter<Ellipsoid> param
-                  (parameter.get_name(), *std::dynamic_pointer_cast<Ellipsoid>(parameter.values.state_pointer));
-              buffer << param;
+            case StateType::GEOMETRY_ELLIPSOID:
+              buffer << container_to_parameter<Ellipsoid>(parameter);
               break;
-            }
             default:
-              buffer << "Parameter " << parameter.get_name() << " contains an unsupported state type" << std::endl;
+              buffer << "Parameter '" << parameter.get_name() << "' contains an unsupported state type" << std::endl;
               break;
           }
         } catch (const std::exception&) {
-          buffer << "Parameter " << parameter.get_name() << " is invalid" << std::endl;
+          buffer << "Parameter '" << parameter.get_name() << "' is invalid" << std::endl;
           break;
         }
         break;
       }
-      case ParameterType::MATRIX: {
-        Parameter<Eigen::MatrixXd> param(parameter.get_name(), parameter.values.matrix_value);
-        buffer << param;
+      case ParameterType::MATRIX:
+        buffer << container_to_parameter<Eigen::MatrixXd>(parameter);
         break;
-      }
-      case ParameterType::VECTOR: {
-        Parameter<Eigen::VectorXd> param(parameter.get_name(), parameter.values.vector_value);
-        buffer << param;
+      case ParameterType::VECTOR:
+        buffer << container_to_parameter<Eigen::VectorXd>(parameter);
         break;
-      }
       default:
+        buffer << "Parameter '" << parameter.get_name() << "' has an invalid parameter type" << std::endl;
         break;
     }
     return buffer.str();
