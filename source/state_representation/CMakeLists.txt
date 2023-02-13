@@ -68,6 +68,7 @@ install(EXPORT ${LIBRARY_NAME}_targets
 )
 
 if (BUILD_TESTING)
+  include_directories(test/tests/include)
   add_executable(test_${LIBRARY_NAME} test/test_state_representation.cpp)
   file(GLOB_RECURSE MODULE_TEST_SOURCES test/tests test_*.cpp)
   target_sources(test_${LIBRARY_NAME} PRIVATE ${MODULE_TEST_SOURCES})
