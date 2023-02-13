@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Bind state representation error objects with Pybind (#83)
 - Fix encoding of empty parameters (#78)
 - Automatic update of version and changelog upon PR creation (#81)
 - Revert order of upcoming changes in CHANGELOG (#80)
