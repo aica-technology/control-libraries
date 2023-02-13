@@ -46,6 +46,15 @@ ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInt
 
 std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterContainer& parameter);
 
+template<typename T>
+inline Parameter<T> container_to_parameter(const ParameterContainer& container) {
+  if (container.is_empty()) {
+    return Parameter<T>(container.get_name());
+  } else {
+    return *container_to_interface_ptr(container)->get_parameter<T>();
+  }
+}
+
 std::map<std::string, ParameterContainer>
 interface_ptr_to_container_map(const std::map<std::string, std::shared_ptr<ParameterInterface>>& parameters);
 

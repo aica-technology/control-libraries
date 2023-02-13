@@ -27,15 +27,6 @@ inline py::bytes encode_bytes(const T& object) {
   return py::bytes(encode(object));
 }
 
-template<typename T>
-inline Parameter<T> container_to_parameter(const ParameterContainer& container) {
-  if (container.is_empty()) {
-    return Parameter<T>(container.get_name());
-  } else {
-    return *container_to_interface_ptr(container)->get_parameter<T>();
-  }
-}
-
 py::bytes encode_parameter_container(const ParameterContainer& container) {
   switch (container.get_parameter_type()) {
     case ParameterType::INT:
