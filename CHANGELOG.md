@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Automatic update of version and changelog upon PR creation (#81)
 - Revert order of upcoming changes in CHANGELOG (#80)
 - Refactor clproto tests (#75)
 - Correct parameter map in impedance controller (#76)
