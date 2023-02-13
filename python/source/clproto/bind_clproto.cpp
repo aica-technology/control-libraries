@@ -76,7 +76,6 @@ inline py::object message_to_parameter(const std::string& msg) {
 }
 
 py::object decode_parameter(const std::string& msg) {
-  py::object PyParameter = py::module_::import("state_representation").attr("Parameter");
   switch (check_parameter_message_type(msg)) {
     case ParameterMessageType::INT: {
       return message_to_parameter<int>(msg);
