@@ -57,9 +57,8 @@ TYPED_TEST_P(ParameterProtoTest, EncodeDecodeParameter) {
   clproto::test_encode_decode<Parameter<TypeParam>>(
       param, clproto::PARAMETER_MESSAGE, test_parameter_equal<Parameter<TypeParam>>, std::get<1>(this->test_case_));
   param.reset();
-  // FIXME(#50): Encoding of empty parameters is incorrect
-//  clproto::test_encode_decode<Parameter<TypeParam>>(
-//      param, clproto::PARAMETER_MESSAGE, test_parameter_equal<Parameter<TypeParam>>, std::get<1>(this->test_case_));
+  clproto::test_encode_decode<Parameter<TypeParam>>(
+      param, clproto::PARAMETER_MESSAGE, test_parameter_equal<Parameter<TypeParam>>, std::get<1>(this->test_case_));
 }
 
 TEST(ParameterProtoTest, EncodeDecodeInvalidParameter) {
