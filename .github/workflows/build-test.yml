@@ -30,7 +30,7 @@ jobs:
           if ! [ "${VER_DIFF}" ]; then
             bash update_version.sh --commit && git push
           fi
-          CL_DIFF=$(git diff ${{ github.base_ref }} ${{ github.sha }} -- ./CHANGELOG.md)
+          CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./CHANGELOG.md)
           if ! [ "${CL_DIFF}" ]; then
             SEARCH_STRING="## Upcoming changes (in development)"
             NEW_TITLE="${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
