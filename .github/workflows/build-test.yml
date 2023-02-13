@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
       - name: Check contributions
         if: ${{ github.event.pull_request.base.sha }}
         run: |
@@ -57,7 +58,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test action
       - name: Build and Test
         uses: ./.github/actions/build-test
@@ -72,7 +73,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test action
       - name: Build and Test
         uses: ./.github/actions/build-test
@@ -89,7 +90,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test-python action
       - name: Build and Test Python
         uses: ./.github/actions/build-test-python
@@ -104,7 +105,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test-python action
       - name: Build and Test Protocol
         uses: ./.github/actions/build-test-protocol
