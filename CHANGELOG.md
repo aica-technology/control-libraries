@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Clean up parameter container class and tests (#85)
 - Use organization build and push workflow (#82)
 - Bind state representation error objects with Pybind (#83)
 - Fix encoding of empty parameters (#78)
