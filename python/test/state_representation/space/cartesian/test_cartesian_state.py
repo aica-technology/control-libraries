@@ -6,6 +6,8 @@ from pyquaternion.quaternion import Quaternion
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from state_representation import State, CartesianState, StateType, CartesianStateVariable, CartesianPose, \
     CartesianTwist, CartesianAcceleration, CartesianWrench
+from state_representation.exceptions import EmptyStateError, IncompatibleReferenceFramesError, IncompatibleSizeError, \
+    NotImplementedError
 from datetime import timedelta
 
 from ..test_spatial_state import SPATIAL_STATE_METHOD_EXPECTS
@@ -186,7 +188,7 @@ class TestCartesianState(unittest.TestCase):
         [self.assertAlmostEqual(cs.get_position()[i], position[i]) for i in range(3)]
         cs.set_position(1.1, 2.2, 3.3)
         assert_array_equal(np.array([1.1, 2.2, 3.3]), cs.get_position())
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleSizeError):
             cs.set_position([1., 2., 3., 4.])
 
         # orientation coefficients
@@ -194,8 +196,8 @@ class TestCartesianState(unittest.TestCase):
         orientation_vec = orientation_vec / np.linalg.norm(orientation_vec)
         cs.set_orientation(orientation_vec)
         [self.assertAlmostEqual(cs.get_orientation()[i], orientation_vec[i]) for i in range(4)]
-        with self.assertRaises(RuntimeError):
-            cs.set_orientation(orientation_vec[:3])
+        with self.assertRaises(IncompatibleSizeError):
+            cs.set_orientation(orientation_vec[:3].tolist())
 
         # orientation quaternion
         quaternion = Quaternion.random()
@@ -218,7 +220,7 @@ class TestCartesianState(unittest.TestCase):
         orientation_vec = orientation_vec / np.linalg.norm(orientation_vec)
         cs.set_pose(np.hstack((position, orientation_vec)))
         assert_array_almost_equal(np.hstack((position, orientation_vec)), cs.get_pose())
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleSizeError):
             cs.set_pose(position)
 
         # twist
@@ -284,16 +286,16 @@ class TestCartesianState(unittest.TestCase):
         cs1.set_data(state_vec)
         [self.assertAlmostEqual(cs1.data()[i], state_vec[i]) for i in range(len(state_vec))]
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleSizeError):
             cs1.set_data(np.array([0, 0]))
 
     def test_clamping(self):
         state = CartesianState().Identity("test")
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(NotImplementedError):
             state.clamp_state_variable(1, CartesianStateVariable.ORIENTATION)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(NotImplementedError):
             state.clamp_state_variable(1, CartesianStateVariable.POSE)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(NotImplementedError):
             state.clamp_state_variable(1, CartesianStateVariable.ALL)
 
         self.clamping_helper(state, state.get_position, state.set_position, CartesianStateVariable.POSITION, 3)
@@ -341,11 +343,11 @@ class TestCartesianState(unittest.TestCase):
         cs1 = CartesianState().Random("test")
         cs2 = CartesianState().Random("test", "robot")
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyStateError):
             empty.dist(cs1)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyStateError):
             cs1.dist(empty)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleReferenceFramesError):
             cs1.dist(cs2)
 
         data1 = np.random.rand(25)
@@ -377,7 +379,7 @@ class TestCartesianState(unittest.TestCase):
         cs2 = CartesianState().Random("test")
         cs3 = CartesianState().Random("test", "reference")
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleReferenceFramesError):
             cs1 + cs3
 
         csum = cs1 + cs2
@@ -397,7 +399,7 @@ class TestCartesianState(unittest.TestCase):
         cs2 = CartesianState().Random("test")
         cs3 = CartesianState().Random("test", "reference")
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(IncompatibleReferenceFramesError):
             cs1 - cs3
 
         cdiff = cs1 - cs2
@@ -428,7 +430,7 @@ class TestCartesianState(unittest.TestCase):
         assert_array_almost_equal(cs.data(), cscaled.data())
 
         empty = CartesianState()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyStateError):
             scalar * empty
 
     def test_scalar_division(self):
@@ -450,7 +452,7 @@ class TestCartesianState(unittest.TestCase):
             cs / 0.0
 
         empty = CartesianState()
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyStateError):
             empty / scalar
 
     def test_truthiness(self):
