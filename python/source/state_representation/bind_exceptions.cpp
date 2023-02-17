@@ -1,4 +1,4 @@
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <state_representation/exceptions/EmptyStateException.hpp>
 #include <state_representation/exceptions/IncompatibleReferenceFramesException.hpp>

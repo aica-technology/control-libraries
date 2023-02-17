@@ -1,4 +1,4 @@
-#include "controllers_bindings.h"
+#include "controllers_bindings.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)

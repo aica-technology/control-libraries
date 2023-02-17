@@ -1,4 +1,4 @@
-#include "parameter_container.h"
+#include "parameter_container.hpp"
 
 #include <state_representation/exceptions/InvalidCastException.hpp>
 #include <state_representation/exceptions/InvalidParameterException.hpp>

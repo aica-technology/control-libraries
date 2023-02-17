@@ -1,4 +1,4 @@
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <tuple>
 #include <state_representation/State.hpp>

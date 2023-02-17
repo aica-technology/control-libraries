@@ -1,4 +1,4 @@
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <state_representation/State.hpp>
 #include <state_representation/space/SpatialState.hpp>

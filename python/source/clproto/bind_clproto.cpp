@@ -1,5 +1,5 @@
-#include "clproto_bindings.h"
-#include "parameter_container.h"
+#include "clproto_bindings.hpp"
+#include "parameter_container.hpp"
 
 #include <string>
 

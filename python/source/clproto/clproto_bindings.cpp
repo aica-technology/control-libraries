@@ -1,4 +1,4 @@
-#include "clproto_bindings.h"
+#include "clproto_bindings.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)

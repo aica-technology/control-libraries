@@ -1,4 +1,4 @@
-#include "robot_model_bindings.h"
+#include "robot_model_bindings.hpp"
 
 #include <robot_model/Model.hpp>
 

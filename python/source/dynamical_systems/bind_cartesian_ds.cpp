@@ -1,10 +1,10 @@
-#include "dynamical_systems_bindings.h"
+#include "dynamical_systems_bindings.hpp"
 
 #include <dynamical_systems/DynamicalSystemFactory.hpp>
 #include <dynamical_systems/IDynamicalSystem.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 
-#include "py_dynamical_system.h"
+#include "py_dynamical_system.hpp"
 
 using namespace state_representation;
 using namespace py_parameter;
