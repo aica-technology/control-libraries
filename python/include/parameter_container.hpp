@@ -1,6 +1,6 @@
 #pragma once
 
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <state_representation/State.hpp>
 #include <state_representation/geometry/Ellipsoid.hpp>
