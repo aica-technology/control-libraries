@@ -412,7 +412,12 @@ public:
 
   /**
    * @brief Compute the inverse of the current Cartesian state
-   * @return The inverse corresponding to b_S_f (assuming this is f_S_b)
+   * @details The spatial properties of a CartesianState are measured at the frame and expressed in the reference frame
+   * coordinate system. The inverse operation yields the spatial properties of the reference frame as measured from
+   * the previous frame.
+   * For a state A expressed in reference frame B, the result will be frame B expressed in reference frame A.
+   * @warning The wrench is not supported by this operation will be set to zero
+   * @return The inverse state
    */
   CartesianState inverse() const;
 
