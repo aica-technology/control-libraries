@@ -644,6 +644,7 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
     throw IncompatibleReferenceFramesException("Expected " + this->get_name() + ", got " + state.get_reference_frame());
   }
   this->set_name(state.get_name());
+
   // intermediate variables for f_S_b
   Eigen::Vector3d f_P_b = this->get_position();
   Eigen::Quaterniond f_R_b = this->get_orientation();
@@ -651,11 +652,9 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   Eigen::Vector3d f_omega_b = this->get_angular_velocity();
   Eigen::Vector3d f_a_b = this->get_linear_acceleration();
   Eigen::Vector3d f_alpha_b = this->get_angular_acceleration();
-  Eigen::Vector3d f_F_b = this->get_force();
-  Eigen::Vector3d f_T_b = this->get_torque();
+
   // intermediate variables for b_S_c
   Eigen::Vector3d b_P_c = state.get_position();
-  // specific operation on quaternion using Hamilton product, keeping the resulting quaternion on the same hemisphere
   Eigen::Quaterniond b_R_c = state.get_orientation();
   Eigen::Vector3d b_v_c = state.get_linear_velocity();
   Eigen::Vector3d b_omega_c = state.get_angular_velocity();
@@ -666,21 +665,27 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   // pose
   this->set_position(f_P_b + f_R_b * b_P_c);
   auto orientation = f_R_b * b_R_c;
+
+  // specific operation on quaternion using Hamilton product, keeping the resulting quaternion on the same hemisphere
   if (orientation.dot(this->get_orientation()) < 0) {
     orientation = Eigen::Quaterniond(-orientation.coeffs());
   }
   this->set_orientation(orientation);
+
   // twist
   this->set_linear_velocity(f_v_b + f_R_b * b_v_c + f_omega_b.cross(f_R_b * b_P_c));
   this->set_angular_velocity(f_omega_b + f_R_b * b_omega_c);
+
   // acceleration
   this->set_linear_acceleration(
       f_a_b + f_R_b * b_a_c + f_alpha_b.cross(f_R_b * b_P_c) + 2 * f_omega_b.cross(f_R_b * b_v_c)
           + f_omega_b.cross(f_omega_b.cross(f_R_b * b_P_c)));
   this->set_angular_acceleration(f_alpha_b + f_R_b * b_alpha_c + f_omega_b.cross(f_R_b * b_omega_c));
-  // wrench
-  this->set_force(f_F_b + f_R_b * b_F_c + f_T_b.cross(f_R_b * b_P_c));
-  this->set_torque(f_T_b + f_R_b * b_T_c);
+
+  // keep only the wrench measured at the distal frame, aligned with the new reference frame
+  this->set_force(f_R_b * b_F_c);
+  this->set_torque(f_R_b * b_T_c);
+
   return (*this);
 }
 

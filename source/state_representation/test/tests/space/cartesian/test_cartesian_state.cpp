@@ -442,6 +442,7 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(a_state_b.dist(new_a_state_b, CartesianStateVariable::ALL), 0, 1e-5);
 
   // the product of a state and its inverse should result in an identity / zero state
+  // (wrench is the exception because the transform product operation is handled differently)
   auto expect_null = a_state_b * b_state_a;
   EXPECT_STREQ(expect_null.get_name().c_str(), expect_null.get_reference_frame().c_str());
   EXPECT_STREQ(expect_null.get_name().c_str(), a_state_b.get_reference_frame().c_str());
@@ -450,8 +451,6 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
-  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
-  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
 
   // conservation of power must hold
   auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
