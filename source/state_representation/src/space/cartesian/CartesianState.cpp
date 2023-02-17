@@ -531,10 +531,6 @@ CartesianState CartesianState::inverse() const {
   inverse_linear_acceleration -=
       inverse_angular_velocity.cross(inverse_angular_velocity.cross(inverse_position)); // centrifugal acceleration
 
-  Eigen::Vector3d inverse_torque = inverse_orientation * (-this->get_torque());
-  Eigen::Vector3d inverse_force = inverse_orientation * (-this->get_force());
-  inverse_force += inverse_torque.cross(inverse_position); // radially induced velocity
-
   // collect the results
   inverse.set_position(inverse_position);
   inverse.set_orientation(inverse_orientation);
@@ -542,8 +538,9 @@ CartesianState CartesianState::inverse() const {
   inverse.set_angular_velocity(inverse_angular_velocity);
   inverse.set_linear_acceleration(inverse_linear_acceleration);
   inverse.set_angular_acceleration(inverse_angular_acceleration);
-  inverse.set_force(inverse_force);
-  inverse.set_torque(inverse_torque);
+
+  // the inverse wrench is not supported by this operation
+  inverse.set_wrench(Eigen::Vector<double, 6>::Zero());
 
   return inverse;
 }

@@ -435,7 +435,11 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_STREQ(b_state_a.get_name().c_str(), a_state_b.get_reference_frame().c_str());
   EXPECT_STREQ(b_state_a.get_reference_frame().c_str(), a_state_b.get_name().c_str());
 
-  // the double inverse should be the same as the original state
+  // the wrench should be set to zero
+  EXPECT_EQ(b_state_a.get_wrench().sum(), 0);
+
+  // the double inverse should be the same as the original state, excluding the wrench
+  a_state_b.set_wrench(Eigen::Vector<double, 6>::Zero());
   auto new_a_state_b = b_state_a.inverse();
   EXPECT_STREQ(new_a_state_b.get_name().c_str(), a_state_b.get_name().c_str());
   EXPECT_STREQ(new_a_state_b.get_reference_frame().c_str(), a_state_b.get_reference_frame().c_str());
@@ -451,11 +455,6 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
-
-  // conservation of power must hold
-  auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
-  auto power_inverse = b_state_a.get_twist().transpose() * b_state_a.get_wrench();
-  EXPECT_NEAR(power, power_inverse, 1e-5);
 }
 
 TEST(CartesianStateTest, InverseStaticFrame) {
@@ -690,65 +689,6 @@ TEST(CartesianStateTest, InverseAcceleratingFrame) {
   EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
 }
 
-TEST(CartesianStateTest, InverseWrench) {
-  auto state = CartesianState::Identity("test");
-  auto random = CartesianState::Random("random");
-
-  // with no pose offset, the wrench is simply negated
-  state.set_wrench(random.get_wrench());
-  auto inverse = state.inverse();
-  EXPECT_EQ(inverse.get_force().x(), -state.get_force().x());
-  EXPECT_EQ(inverse.get_force().y(), -state.get_force().y());
-  EXPECT_EQ(inverse.get_force().z(), -state.get_force().z());
-  EXPECT_EQ(inverse.get_torque().x(), -state.get_torque().x());
-  EXPECT_EQ(inverse.get_torque().y(), -state.get_torque().y());
-  EXPECT_EQ(inverse.get_torque().z(), -state.get_torque().z());
-
-  // with no orientation offset, the inverse torque is always the negative for any position or force
-  state.set_position(random.get_position());
-  inverse = state.inverse();
-  EXPECT_EQ(inverse.get_torque().x(), -state.get_torque().x());
-  EXPECT_EQ(inverse.get_torque().y(), -state.get_torque().y());
-  EXPECT_EQ(inverse.get_torque().z(), -state.get_torque().z());
-
-  // general case with any position and no orientation offset
-  state.set_position(random.get_position());
-  inverse = state.inverse();
-  Eigen::Vector3d v = -state.get_force() + state.get_torque().cross(state.get_position());
-  EXPECT_FLOAT_EQ(inverse.get_force().x(), v.x());
-  EXPECT_FLOAT_EQ(inverse.get_force().y(), v.y());
-  EXPECT_FLOAT_EQ(inverse.get_force().z(), v.z());
-
-  // with orientation offset and no position offset, the force and torque are simply negated and rotated
-  state.set_position(0, 0, 0);
-  state.set_orientation(random.get_orientation());
-  state.set_wrench(random.get_wrench());
-  inverse = state.inverse();
-  v = state.get_orientation().conjugate() * (-state.get_force());
-  Eigen::Vector3d w = state.get_orientation().conjugate() * (-state.get_torque());
-  EXPECT_FLOAT_EQ(inverse.get_force().x(), v.x());
-  EXPECT_FLOAT_EQ(inverse.get_force().y(), v.y());
-  EXPECT_FLOAT_EQ(inverse.get_force().z(), v.z());
-  EXPECT_FLOAT_EQ(inverse.get_torque().x(), w.x());
-  EXPECT_FLOAT_EQ(inverse.get_torque().y(), w.y());
-  EXPECT_FLOAT_EQ(inverse.get_torque().z(), w.z());
-
-  // in the general case for any pose and wrench, the inverse torque is simply negated and rotated, while the
-  // inverse force is negated, rotated and offset by the cross product of the torque and pose.
-  state.set_pose(random.get_pose());
-  state.set_wrench(random.get_wrench());
-  inverse = state.inverse();
-  v = state.get_orientation().conjugate() * (-state.get_force());
-  w = state.get_orientation().conjugate() * (-state.get_torque());
-  v += w.cross(inverse.get_position());
-  EXPECT_FLOAT_EQ(inverse.get_force().x(), v.x());
-  EXPECT_FLOAT_EQ(inverse.get_force().y(), v.y());
-  EXPECT_FLOAT_EQ(inverse.get_force().z(), v.z());
-  EXPECT_FLOAT_EQ(inverse.get_torque().x(), w.x());
-  EXPECT_FLOAT_EQ(inverse.get_torque().y(), w.y());
-  EXPECT_FLOAT_EQ(inverse.get_torque().z(), w.z());
-}
-
 TEST(CartesianStateTest, Addition) {
   CartesianState cs1 = CartesianState::Random("test");
   CartesianState cs2 = CartesianState::Random("test");
@@ -821,6 +761,19 @@ TEST(CartesianStateTest, ScalarDivision) {
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);
+}
+
+TEST(CartesianStateTest, Multiplication) {
+  CartesianState world_cs_first = CartesianState::Random("first");
+  CartesianState first_cs_second = CartesianState::Random("second", "first");
+  CartesianState world_cs_second = world_cs_first * first_cs_second;
+
+  EXPECT_STREQ(world_cs_second.get_name().c_str(), first_cs_second.get_name().c_str());
+  EXPECT_STREQ(world_cs_second.get_reference_frame().c_str(), world_cs_first.get_reference_frame().c_str());
+
+  // only the wrench of the second state is preserved, but aligned with the base frame
+  auto expect_wrench = CartesianPose(world_cs_first) * CartesianWrench(first_cs_second);
+  EXPECT_FLOAT_EQ(world_cs_second.dist(expect_wrench, CartesianStateVariable::WRENCH), 0);
 }
 
 TEST(CartesianStateTest, Truthiness) {
