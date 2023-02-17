@@ -1,10 +1,10 @@
-#include "clproto.h"
+#include "clproto.hpp"
 
 #include <google/protobuf/util/json_util.h>
 #include <google/protobuf/util/type_resolver_util.h>
 
-#include "clproto/encoders.h"
-#include "clproto/decoders.h"
+#include "clproto/encoders.hpp"
+#include "clproto/decoders.hpp"
 
 #include <state_representation/State.hpp>
 #include <state_representation/parameters/Parameter.hpp>

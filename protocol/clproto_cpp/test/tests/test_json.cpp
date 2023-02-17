@@ -4,7 +4,7 @@
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/Jacobian.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 
 using namespace state_representation;
 

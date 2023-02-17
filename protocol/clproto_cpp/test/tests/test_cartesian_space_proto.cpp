@@ -7,7 +7,7 @@
 #include <state_representation/space/cartesian/CartesianAcceleration.hpp>
 #include <state_representation/space/cartesian/CartesianWrench.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 #include "test_encode_decode.hpp"
 
 using namespace state_representation;

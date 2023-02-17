@@ -9,7 +9,7 @@
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/parameters/Parameter.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 #include "state_representation/state_message.pb.h"
 
 namespace clproto {

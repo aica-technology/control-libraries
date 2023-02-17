@@ -5,7 +5,7 @@ control library type objects to and from a serialized binary string
 representation (the wire format).
 
 ```c++
-#include <clproto.h>
+#include <clproto.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 
 auto state = state_representation::CartesianState::Random("frame");
@@ -58,7 +58,7 @@ and the data size of each ordered field method. This allows the `unpack_fields` 
 the encoded fields back into an ordered vector to be decoded.
 
 ```c++
-#include <clproto.h>
+#include <clproto.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/joint/JointState.hpp>
 

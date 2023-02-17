@@ -1,4 +1,4 @@
-#include "clproto/encoders.h"
+#include "clproto/encoders.hpp"
 
 using namespace state_representation;
 

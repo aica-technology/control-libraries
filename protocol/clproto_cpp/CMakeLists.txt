@@ -62,7 +62,7 @@ target_include_directories(${PROJECT_NAME}
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/clproto.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/clproto.hpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROTOBUF_LIBRARY} state_representation PRIVATE ${PROJECT_NAME}_bindings)
 
 # install the target and create export-set
