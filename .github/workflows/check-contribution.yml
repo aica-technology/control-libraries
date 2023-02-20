@@ -30,9 +30,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           allowlist: alexialechot,buschbapti,domire8,eeberhard
-          branch: contributors
+          branch: cla-signatures
           custom-notsigned-prcomment: <br/>You must read and agree to our [Contributor License Agreement](${{ env.PATH_TO_CLA }}) before your contribution can be accepted. You can sign the CLA by posting a Pull Request Comment with the text below:<br/>
           custom-pr-sign-comment: ${{ env.SIGNATURE_COMMENT }}
           path-to-document: ${{ env.PATH_TO_CLA }}
-          path-to-signatures: signatures/cla.json
+          path-to-signatures: cla-signatures.json
           lock-pullrequest-aftermerge: true
