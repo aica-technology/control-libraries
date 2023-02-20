@@ -125,20 +125,12 @@ CartesianAcceleration operator*(double lambda, const CartesianAcceleration& acce
 }
 
 CartesianAcceleration operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianAcceleration& acceleration) {
-  // sanity check
-  if (acceleration.is_empty()) {
-    throw EmptyStateException(acceleration.get_name() + " state is empty");
-  }
   CartesianAcceleration result(acceleration);
   result.set_acceleration(lambda * result.get_acceleration());
   return result;
 }
 
 CartesianTwist CartesianAcceleration::operator*(const std::chrono::nanoseconds& dt) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // operations
   CartesianTwist twist(this->get_name(), this->get_reference_frame());
   // convert the period to a double with the second as reference

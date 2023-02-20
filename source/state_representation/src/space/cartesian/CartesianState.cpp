@@ -473,13 +473,6 @@ CartesianState CartesianState::copy() const {
 }
 
 double CartesianState::dist(const CartesianState& state, const CartesianStateVariable& state_variable_type) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (!(this->get_reference_frame() == state.get_reference_frame())) {
     throw IncompatibleReferenceFramesException("The two states do not have the same reference frame");
   }
@@ -651,13 +644,6 @@ std::vector<double> CartesianState::norms(const CartesianStateVariable& state_va
 }
 
 CartesianState& CartesianState::operator*=(const CartesianState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (this->get_name() != state.get_reference_frame()) {
     throw IncompatibleReferenceFramesException("Expected " + this->get_name() + ", got " + state.get_reference_frame());
   }
@@ -714,10 +700,6 @@ CartesianState CartesianState::operator*(const CartesianState& state) const {
 }
 
 CartesianState& CartesianState::operator*=(double lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // operation
   this->set_position(lambda * this->get_position());
   // calculate the scaled rotation as a displacement from identity
@@ -760,13 +742,6 @@ CartesianState CartesianState::operator/(double lambda) const {
 }
 
 CartesianState& CartesianState::operator+=(const CartesianState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (!(this->get_reference_frame() == state.get_reference_frame())) {
     throw IncompatibleReferenceFramesException("The two states do not have the same reference frame");
   }
@@ -794,10 +769,6 @@ CartesianState CartesianState::operator+(const CartesianState& state) const {
 }
 
 CartesianState CartesianState::operator-() const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // create a copy of the state
   CartesianState result(*this);
   // operation on pose
