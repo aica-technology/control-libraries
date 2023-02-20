@@ -129,13 +129,13 @@ public:
    * @brief Set the ellipsoid data from an Eigen vector
    * @param The data vector with [center_position, rotation_angle, axis_lengths]
    */
-  virtual void set_data(const Eigen::VectorXd& data) override;
+  void set_data(const Eigen::VectorXd& data) override;
 
   /**
    * @brief Set the ellipsoid data from a std vector
    * @param The data vector with [center_position, rotation_angle, axis_lengths]
    */
-  virtual void set_data(const std::vector<double>& data) override;
+  void set_data(const std::vector<double>& data) override;
 
   /**
     * @brief Overload the ostream operator for printing
@@ -153,10 +153,9 @@ inline void swap(Ellipsoid& state1, Ellipsoid& state2) {
 }
 
 inline Ellipsoid& Ellipsoid::operator=(const Ellipsoid& state) {
-  Shape::operator=(state);
-  this->set_axis_lengths(state.get_axis_lengths());
-  this->set_rotation_angle(state.get_rotation_angle());
-  return (*this);
+  Ellipsoid tmp(state);
+  swap(*this, tmp);
+  return *this;
 }
 
 inline const std::vector<double>& Ellipsoid::get_axis_lengths() const {
@@ -187,8 +186,8 @@ inline void Ellipsoid::set_rotation_angle(double rotation_angle) {
 }
 
 inline const std::vector<double> Ellipsoid::to_std_vector() const {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException(this->get_name() + " state is empty");
   }
   std::vector<double> representation(6);
   // position
@@ -204,8 +203,8 @@ inline const std::vector<double> Ellipsoid::to_std_vector() const {
 }
 
 inline const CartesianPose Ellipsoid::get_rotation() const {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException(this->get_name() + " state is empty");
   }
   Eigen::Quaterniond rotation(Eigen::AngleAxisd(this->rotation_angle_, Eigen::Vector3d::UnitZ()));
   return CartesianPose(
