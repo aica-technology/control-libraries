@@ -398,9 +398,6 @@ JointState JointState::copy() const {
 }
 
 double JointState::dist(const JointState& state, const JointStateVariable& state_variable_type) const {
-  // sanity check
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
   if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
@@ -479,9 +476,6 @@ void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const Jo
 }
 
 JointState& JointState::operator*=(double lambda) {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   this->set_state_variable(lambda * this->get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   return (*this);
 }
@@ -493,7 +487,6 @@ JointState JointState::operator*(double lambda) const {
 }
 
 JointState operator*(double lambda, const JointState& state) {
-  if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
   JointState result(state);
   result *= lambda;
   return result;
@@ -516,13 +509,6 @@ JointState JointState::operator/(double lambda) const {
 }
 
 JointState& JointState::operator+=(const JointState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
@@ -542,10 +528,6 @@ JointState JointState::operator+(const JointState& state) const {
 }
 
 JointState JointState::operator-() const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // create a copy of the state
   JointState result(*this);
   result.set_state_variable(-result.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
