@@ -1,0 +1,38 @@
+name: "Contribution License Agreement"
+on:
+  issue_comment:
+    types:
+      - created
+  pull_request_target:
+    types:
+      - opened
+      - closed
+      - synchronize
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+  statuses: write
+
+env:
+  PATH_TO_CLA: https://github.com/aica-technology/control-libraries/blob/main/licenses/CLA.md
+  SIGNATURE_COMMENT: I have read and understood the Contributor License Agreement and hereby sign it
+
+jobs:
+  contribution-licensing-assistant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "CLA Assistant"
+        if: (github.event.comment.body == env.SIGNATURE_COMMENT) || github.event.comment.body == 'recheck' || github.event_name == 'pull_request_target'
+        uses: contributor-assistant/github-action@v2.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          allowlist: alexialechot,buschbapti,domire8,eeberhard
+          branch: contributors
+          custom-notsigned-prcomment: <br/>You must read and agree to our [Contributor License Agreement](${{ env.PATH_TO_CLA }}) before your contribution can be accepted. You can sign the CLA by posting a Pull Request Comment with the text below:<br/>
+          custom-pr-sign-comment: ${{ env.SIGNATURE_COMMENT }}
+          path-to-document: ${{ env.PATH_TO_CLA }}
+          path-to-signatures: signatures/cla.json
+          lock-pullrequest-aftermerge: true
