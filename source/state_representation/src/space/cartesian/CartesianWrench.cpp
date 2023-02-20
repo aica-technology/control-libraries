@@ -92,10 +92,6 @@ CartesianWrench CartesianWrench::copy() const {
   return result;
 }
 
-CartesianWrench CartesianWrench::inverse() const {
-  return this->CartesianState::inverse();
-}
-
 CartesianWrench CartesianWrench::normalized(const CartesianStateVariable& state_variable_type) const {
   return CartesianState::normalized(state_variable_type);
 }

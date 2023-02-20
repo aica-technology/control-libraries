@@ -532,7 +532,6 @@ void cartesian_wrench(py::module_& m) {
 
   c.def("copy", &CartesianWrench::copy, "Return a copy of the CartesianWrench");
   c.def("data", &CartesianWrench::data, "Returns the wrench data as a vector");
-  c.def("inverse", &CartesianWrench::inverse, "Compute the inverse of the current CartesianWrench");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&CartesianWrench::set_data), "Set the wrench data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&CartesianWrench::set_data), "Set the wrench data from a list", "data"_a);
   c.def("norms", &CartesianWrench::norms, "Compute the norms of the state variable specified by the input type (default is full wrench)", "state_variable_type"_a=CartesianStateVariable::WRENCH);

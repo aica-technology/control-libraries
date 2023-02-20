@@ -435,13 +435,18 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_STREQ(b_state_a.get_name().c_str(), a_state_b.get_reference_frame().c_str());
   EXPECT_STREQ(b_state_a.get_reference_frame().c_str(), a_state_b.get_name().c_str());
 
-  // the double inverse should be the same as the original state
+  // the wrench should be set to zero
+  EXPECT_EQ(b_state_a.get_wrench().sum(), 0);
+
+  // the double inverse should be the same as the original state, excluding the wrench
+  a_state_b.set_wrench(Eigen::Vector<double, 6>::Zero());
   auto new_a_state_b = b_state_a.inverse();
   EXPECT_STREQ(new_a_state_b.get_name().c_str(), a_state_b.get_name().c_str());
   EXPECT_STREQ(new_a_state_b.get_reference_frame().c_str(), a_state_b.get_reference_frame().c_str());
   EXPECT_NEAR(a_state_b.dist(new_a_state_b, CartesianStateVariable::ALL), 0, 1e-5);
 
   // the product of a state and its inverse should result in an identity / zero state
+  // (wrench is the exception because the transform product operation is handled differently)
   auto expect_null = a_state_b * b_state_a;
   EXPECT_STREQ(expect_null.get_name().c_str(), expect_null.get_reference_frame().c_str());
   EXPECT_STREQ(expect_null.get_name().c_str(), a_state_b.get_reference_frame().c_str());
@@ -450,15 +455,6 @@ TEST(CartesianStateTest, Inverse) {
   EXPECT_NEAR(expect_null.get_angular_velocity().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_linear_acceleration().norm(), 0, 1e-5);
   EXPECT_NEAR(expect_null.get_angular_acceleration().norm(), 0, 1e-5);
-
-  // TODO(#30): wrench inverse and transform
-//  EXPECT_NEAR(expect_null.get_force().norm(), 0, 1e-5);
-//  EXPECT_NEAR(expect_null.get_torque().norm(), 0, 1e-5);
-
-  // TODO(#30): conservation of power must hold
-//  auto power = a_state_b.get_twist().transpose() * a_state_b.get_wrench();
-//  auto power_inverse = b_state_a.get_twist().transpose() * b_state_a.get_wrench();
-//  EXPECT_NEAR(power, power_inverse, 1e-5);
 }
 
 TEST(CartesianStateTest, InverseStaticFrame) {
@@ -765,6 +761,19 @@ TEST(CartesianStateTest, ScalarDivision) {
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);
+}
+
+TEST(CartesianStateTest, Multiplication) {
+  CartesianState world_cs_first = CartesianState::Random("first");
+  CartesianState first_cs_second = CartesianState::Random("second", "first");
+  CartesianState world_cs_second = world_cs_first * first_cs_second;
+
+  EXPECT_STREQ(world_cs_second.get_name().c_str(), first_cs_second.get_name().c_str());
+  EXPECT_STREQ(world_cs_second.get_reference_frame().c_str(), world_cs_first.get_reference_frame().c_str());
+
+  // only the wrench of the second state is preserved, but aligned with the base frame
+  auto expect_wrench = CartesianPose(world_cs_first) * CartesianWrench(first_cs_second);
+  EXPECT_FLOAT_EQ(world_cs_second.dist(expect_wrench, CartesianStateVariable::WRENCH), 0);
 }
 
 TEST(CartesianStateTest, Truthiness) {

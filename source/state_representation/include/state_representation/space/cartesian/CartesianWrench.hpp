@@ -55,6 +55,7 @@ public:
   void set_angular_acceleration(const double& x, const double& y, const double& z) = delete;
   void set_acceleration(const Eigen::Matrix<double, 6, 1>& acceleration) = delete;
   void set_acceleration(const std::vector<double>& acceleration) = delete;
+  CartesianState inverse() const = delete;
   CartesianState& operator*=(const CartesianState& state) = delete;
   CartesianState operator*(const CartesianState& state) const = delete;
   Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
@@ -182,11 +183,6 @@ public:
    * @brief Return a copy of the Cartesian wrench
    */
   CartesianWrench copy() const;
-
-  /**
- * @brief Compute the inverse of the current Cartesian wrench
- */
-  CartesianWrench inverse() const;
 
   /**
    * @brief Compute the normalized wrench at the state variable given in argument (default is full wrench)
