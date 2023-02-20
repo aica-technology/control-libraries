@@ -1,4 +1,5 @@
 #include "state_representation/State.hpp"
+#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
 
 namespace state_representation {
@@ -48,6 +49,12 @@ void State::set_name(const std::string& name) {
 
 void State::set_empty(bool empty) {
   this->empty_ = empty;
+}
+
+void State::throw_if_empty() const {
+  if (this->empty_) {
+    throw exceptions::EmptyStateException(this->name_ + " state is empty");
+  }
 }
 
 void State::reset_timestamp() {
