@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.55</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.56</span>
    </div>
   </td>
  </tr>
@@ -211,6 +211,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> 
 <tr class="memitem:aa93418134469d1fd4c4604cb89f41bac"><td class="memItemLeft" align="right" valign="top"><a id="aa93418134469d1fd4c4604cb89f41bac" name="aa93418134469d1fd4c4604cb89f41bac"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_acceleration</b> (const std::vector&lt; double &gt; &amp;acceleration)=delete</td></tr>
 <tr class="separator:aa93418134469d1fd4c4604cb89f41bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe6412a8840c201231349c9e5ed90222"><td class="memItemLeft" align="right" valign="top"><a id="abe6412a8840c201231349c9e5ed90222" name="abe6412a8840c201231349c9e5ed90222"></a>
+<a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>inverse</b> () const =delete</td></tr>
+<tr class="separator:abe6412a8840c201231349c9e5ed90222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1681f6c7890abfe4df946ec46823f681"><td class="memItemLeft" align="right" valign="top"><a id="a1681f6c7890abfe4df946ec46823f681" name="a1681f6c7890abfe4df946ec46823f681"></a>
 <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state)=delete</td></tr>
 <tr class="separator:a1681f6c7890abfe4df946ec46823f681"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -298,9 +301,6 @@ Eigen::Vector3d&#160;</td><td class="memItemRight" valign="bottom"><b>operator*<
 <tr class="memitem:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">copy</a> () const</td></tr>
 <tr class="memdesc:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a7bfaae16c7ae67c98dc6b4e9597601a2">More...</a><br /></td></tr>
 <tr class="separator:a7bfaae16c7ae67c98dc6b4e9597601a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">inverse</a> () const</td></tr>
-<tr class="memdesc:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian wrench.  <a href="classstate__representation_1_1_cartesian_wrench.html#a971204c60a5c5d2829ae63dbfbf9fc22">More...</a><br /></td></tr>
-<tr class="separator:a971204c60a5c5d2829ae63dbfbf9fc22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">normalized</a> (const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::WRENCH) const</td></tr>
 <tr class="memdesc:a356f382caa1b1fbf3fd01908db02e8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the normalized wrench at the state variable given in argument (default is full wrench)  <a href="classstate__representation_1_1_cartesian_wrench.html#a356f382caa1b1fbf3fd01908db02e8e4">More...</a><br /></td></tr>
 <tr class="separator:a356f382caa1b1fbf3fd01908db02e8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1154,27 +1154,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a971204c60a5c5d2829ae63dbfbf9fc22" name="a971204c60a5c5d2829ae63dbfbf9fc22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a971204c60a5c5d2829ae63dbfbf9fc22">&#9670;&#160;</a></span>inverse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_wrench.html">CartesianWrench</a> state_representation::CartesianWrench::inverse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Compute the inverse of the current Cartesian wrench. </p>
-
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00095">95</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
-
-</div>
-</div>
 <a id="a356f382caa1b1fbf3fd01908db02e8e4" name="a356f382caa1b1fbf3fd01908db02e8e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a356f382caa1b1fbf3fd01908db02e8e4">&#9670;&#160;</a></span>normalized()</h2>
 
@@ -1200,7 +1179,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00099">99</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00095">95</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1239,7 +1218,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00103">103</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00099">99</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1254,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00116">116</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1311,7 +1290,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00107">107</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00103">103</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1319,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00153">153</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00149">149</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1369,7 +1348,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00149">149</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00145">145</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1398,7 +1377,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00144">144</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00140">140</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1427,7 +1406,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00139">139</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00135">135</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1449,7 +1428,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate a Cartesian wrench. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00157">157</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00153">153</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1478,7 +1457,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00175">175</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00171">171</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1507,7 +1486,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00171">171</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00167">167</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1536,7 +1515,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00166">166</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00162">162</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1565,7 +1544,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00161">161</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00157">157</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1601,7 +1580,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00135">135</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00131">131</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1637,7 +1616,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00130">130</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00126">126</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1881,7 +1860,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00120">120</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00116">116</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1936,7 +1915,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian wrench </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
@@ -1984,7 +1963,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00179">179</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_wrench_8cpp_source.html#l00175">175</a> of file <a class="el" href="_cartesian_wrench_8cpp_source.html">CartesianWrench.cpp</a>.</p>
 
 </div>
 </div>
