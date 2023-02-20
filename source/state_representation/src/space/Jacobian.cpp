@@ -99,7 +99,7 @@ unsigned int Jacobian::rows() const {
 }
 
 Eigen::VectorXd Jacobian::row(unsigned int index) const {
-  return this->data_.row(index);
+  return this->data().row(index);
 }
 
 unsigned int Jacobian::cols() const {
@@ -107,7 +107,7 @@ unsigned int Jacobian::cols() const {
 }
 
 Eigen::VectorXd Jacobian::col(unsigned int index) const {
-  return this->data_.col(index);
+  return this->data().col(index);
 }
 
 const std::vector<std::string>& Jacobian::get_joint_names() const {
@@ -123,6 +123,7 @@ const std::string& Jacobian::get_reference_frame() const {
 }
 
 const Eigen::MatrixXd& Jacobian::data() const {
+  this->throw_if_empty();
   return this->data_;
 }
 
@@ -389,6 +390,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 }
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
+  this->throw_if_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }
@@ -399,6 +401,7 @@ double& Jacobian::operator()(unsigned int row, unsigned int col) {
 }
 
 const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
+  this->throw_if_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }
