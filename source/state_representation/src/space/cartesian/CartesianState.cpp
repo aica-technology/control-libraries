@@ -658,7 +658,7 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   Eigen::Vector3d b_a_c = state.get_linear_acceleration();
   Eigen::Vector3d b_alpha_c = state.get_angular_acceleration();
   Eigen::Vector3d b_F_c = state.get_force();
-  Eigen::Vector3d b_T_c = state.get_torque();
+  Eigen::Vector3d b_tau_c = state.get_torque();
   // pose
   this->set_position(f_P_b + f_R_b * b_P_c);
   auto orientation = f_R_b * b_R_c;
@@ -681,7 +681,7 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
 
   // keep only the wrench measured at the distal frame, aligned with the new reference frame
   this->set_force(f_R_b * b_F_c);
-  this->set_torque(f_R_b * b_T_c);
+  this->set_torque(f_R_b * b_tau_c);
 
   return (*this);
 }
