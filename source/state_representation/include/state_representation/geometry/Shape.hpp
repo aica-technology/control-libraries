@@ -21,84 +21,91 @@ public:
   Shape();
 
   /**
-   * @brief Constructor with name but empty state
-   * @param name name of the shape
-   * @param reference_frame the reference frame in which the state is expressed
+   * @brief Constructor with name and reference frame
+   * @param name Name of the Shape and its state
+   * @param reference_frame The reference frame in which the state is expressed (default is "world")
    */
   explicit Shape(const std::string& name, const std::string& reference_frame = "world");
 
   /**
-   * @brief Copy constructor from another shape
-   * @param shape the shape to copy
+   * @brief Copy constructor from another Shape
+   * @param shape The Shape to copy from
    */
   Shape(const Shape& shape);
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator
-   * @param state the state with value to assign
-   * @return reference to the current state with new values
+   * @brief Swap the values of the two Shapes
+   * @param state1 Shape to be swapped with 2
+   * @param state2 Shape to be swapped with 1
+   */
+  friend void swap(Shape& state1, Shape& state2);
+
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param state The Shape with value to assign
+   * @return Reference to the current Shape with new values
    */
   Shape& operator=(const Shape& state);
 
   /**
    * @brief Getter of the state
-   * @return the state
+   * @return The state of the Shape
    */
   const CartesianState& get_center_state() const;
 
   /**
    * @brief Getter of the pose from the state
-   * @return the pose of the shape
+   * @return The pose of the Shape
    */
   const CartesianPose& get_center_pose() const;
 
   /**
    * @brief Getter of the position from the state
-   * @return the position of the shape
+   * @return The position of the Shape
    */
   const Eigen::Vector3d get_center_position() const;
 
   /**
    * @brief Getter of the orientation from the state
-   * @return the orientation of the shape
+   * @return The orientation of the Shape
    */
   const Eigen::Quaterniond get_center_orientation() const;
 
   /**
    * @brief Getter of the twist from the state
-   * @return the twist of the shape
+   * @return The twist of the Shape
    */
   const CartesianTwist& get_center_twist() const;
 
   /**
    * @brief Setter of the state
-   * @param state the new state
+   * @param state The new state
    */
   void set_center_state(const CartesianState& state);
 
   /**
    * @brief Setter of the pose
-   * @param pose the new pose
+   * @param pose The new pose
    */
   void set_center_pose(const CartesianPose& pose);
 
   /**
    * @brief Setter of the position
-   * @param position the new position
+   * @param position The new position
    */
   void set_center_position(const Eigen::Vector3d& position);
 
   /**
    * @brief Setter of the pose
-   * @param pose the new pose
+   * @param pose The new pose
    */
   void set_center_orientation(const Eigen::Quaterniond& orientation);
 
   /**
     * @brief Overload the ostream operator for printing
-    * @param os the ostream to append the string representing the Shape to
-    * @param shape the Shape to print
-    * @return the appended ostream
+    * @param os The ostream to append the string representing the state
+    * @param state The state to print
+    * @return The appended ostream
      */
   friend std::ostream& operator<<(std::ostream& os, const Shape& shape);
 
@@ -111,6 +118,11 @@ protected:
 private:
   CartesianState center_state_; ///< pose and potentially velocities and accelerations of the shape if moving
 };
+
+inline void swap(Shape& state1, Shape& state2) {
+  swap(static_cast<State&>(state1), static_cast<State&>(state2));
+  std::swap(state1.center_state_, state2.center_state_);
+}
 
 inline Shape& Shape::operator=(const Shape& state) {
   State::operator=(state);
