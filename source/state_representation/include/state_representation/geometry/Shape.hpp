@@ -158,6 +158,9 @@ inline const CartesianTwist& Shape::get_center_twist() const {
 }
 
 inline void Shape::set_center_state(const CartesianState& state) {
+  if (state.is_empty()) {
+    throw exceptions::EmptyStateException(state.get_name() + " state is empty");
+  }
   this->center_state_ = state;
   this->set_empty(false);
   this->reset_timestamp();
