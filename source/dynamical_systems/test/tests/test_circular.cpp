@@ -47,11 +47,11 @@ TEST_F(CircularDSTest, TestPositionOnRadius) {
 
 TEST_F(CircularDSTest, EmptyConstructor) {
   // base frame and attractor should be empty
-  EXPECT_TRUE(ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().is_empty());
+  EXPECT_TRUE(ds->get_parameter_value<Ellipsoid>("limit_cycle").is_empty());
   EXPECT_TRUE(ds->get_base_frame().is_empty());
 
   ds->set_parameter_value("limit_cycle", limit_cycle);
-  EXPECT_FALSE(ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().is_empty());
+  EXPECT_FALSE(ds->get_parameter_value<Ellipsoid>("limit_cycle").is_empty());
   EXPECT_FALSE(ds->get_base_frame().is_empty());
   // when attractor was set without a base frame, expect base frame to be identity with name / reference_frame of attractor
   EXPECT_EQ(ds->get_base_frame().get_name(), center.get_reference_frame());
@@ -63,7 +63,7 @@ TEST_F(CircularDSTest, EvaluateCompatibility) {
   CartesianState state1 = CartesianState::Identity("world", "A");
   CartesianState state2("D", "C");
   CartesianState state3("C", "A");
-  CartesianState state4("C", "world");
+  CartesianState state4 = CartesianState::Identity("C", "world");
   // if no base frame is set, an exception is thrown
   EXPECT_THROW(ds->evaluate(state1), dynamical_systems::exceptions::EmptyBaseFrameException);
   ds->set_base_frame(state1);
@@ -96,7 +96,7 @@ TEST_F(CircularDSTest, TestPositionOnRadiusRandomCenter) {
 }
 
 TEST_F(CircularDSTest, SetCenterAndBase) {
-  Ellipsoid cycle("B", "A");
+  auto cycle = Ellipsoid::Unit("B", "A");
   auto BinA = CartesianState::Identity("B", "A");
   auto CinA = CartesianState::Identity("C", "A");
   auto CinB = CartesianState::Identity("C", "B");
@@ -114,7 +114,7 @@ TEST_F(CircularDSTest, SetCenterAndBase) {
   // setting the center is only valid if it matches the base reference frame
   cycle.set_center_state(CinA);
   EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", cycle));
-  Ellipsoid cycle2("C", "B");
+  auto cycle2 = Ellipsoid::Unit("C", "B");
   EXPECT_THROW(ds->set_parameter_value("limit_cycle", cycle2),
                state_representation::exceptions::IncompatibleReferenceFramesException);
 
@@ -129,5 +129,7 @@ TEST_F(CircularDSTest, SetCenterAndBase) {
   EXPECT_THROW(ds->set_parameter_value("limit_cycle", cycle),
                state_representation::exceptions::IncompatibleReferenceFramesException);
   EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", cycle2));
-  EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", Ellipsoid("B", "C")));
+  EXPECT_THROW(ds->set_parameter_value("limit_cycle", Ellipsoid("B", "C")),
+               state_representation::exceptions::EmptyStateException);
+  EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", Ellipsoid::Unit("B", "C")));
 }
