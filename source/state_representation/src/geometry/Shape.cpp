@@ -2,7 +2,7 @@
 
 namespace state_representation {
 
-Shape::Shape() : State() {
+Shape::Shape() : State(), center_state_(CartesianState::Identity("")) {
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
@@ -11,8 +11,10 @@ Shape::Shape(const std::string& name, const std::string& reference_frame) :
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
-Shape::Shape(const Shape& shape) : State(shape), center_state_(shape.center_state_) {
-  this->set_type(StateType::GEOMETRY_SHAPE);
+Shape::Shape(const Shape& shape) : Shape(shape.get_name()) {
+  if (shape) {
+    this->set_center_state(shape.get_center_state());
+  }
 }
 
 std::string Shape::to_string() const {

@@ -125,9 +125,9 @@ inline void swap(Shape& state1, Shape& state2) {
 }
 
 inline Shape& Shape::operator=(const Shape& state) {
-  State::operator=(state);
-  this->center_state_ = state.center_state_;
-  return (*this);
+  Shape tmp(state);
+  swap(*this, tmp);
+  return *this;
 }
 
 inline const CartesianState& Shape::get_center_state() const {
@@ -151,29 +151,30 @@ inline const CartesianTwist& Shape::get_center_twist() const {
 }
 
 inline void Shape::set_center_state(const CartesianState& state) {
-  this->set_name(state.get_name());
   this->center_state_ = state;
+  this->set_empty(false);
+  this->reset_timestamp();
 }
 
 inline void Shape::set_center_pose(const CartesianPose& pose) {
-  if (!this->center_state_.is_empty() && this->center_state_.get_reference_frame() != pose.get_reference_frame()) {
+  if (this->center_state_.get_reference_frame() != pose.get_reference_frame()) {
     throw exceptions::IncompatibleReferenceFramesException(
         "The shape state and the given pose are not expressed in the same reference frame");
   }
   this->center_state_.set_pose(pose.get_position(), pose.get_orientation());
+  this->set_empty(false);
+  this->reset_timestamp();
 }
 
 inline void Shape::set_center_position(const Eigen::Vector3d& position) {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Shape is not set yet.");
-  }
   this->center_state_.set_position(position);
+  this->set_empty(false);
+  this->reset_timestamp();
 }
 
 inline void Shape::set_center_orientation(const Eigen::Quaterniond& orientation) {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Shape is not set yet.");
-  }
   this->center_state_.set_orientation(orientation);
+  this->set_empty(false);
+  this->reset_timestamp();
 }
 }
