@@ -51,15 +51,15 @@ TEST(CartesianStateTest, Constructors) {
   CartesianState empty1;
   EXPECT_EQ(empty1.get_type(), StateType::CARTESIAN_STATE);
   assert_name_empty_frame_equal(empty1, "", true, "world");
-  EXPECT_FLOAT_EQ(empty1.data().norm(), 1);
+  EXPECT_THROW(empty1.data(), exceptions::EmptyStateException);
 
   CartesianState empty2("test");
   assert_name_empty_frame_equal(empty2, "test", true, "world");
-  EXPECT_FLOAT_EQ(empty2.data().norm(), 1);
+  EXPECT_THROW(empty1.data(), exceptions::EmptyStateException);
 
   CartesianState empty3("test", "reference");
   assert_name_empty_frame_equal(empty3, "test", true, "reference");
-  EXPECT_FLOAT_EQ(empty3.data().norm(), 1);
+  EXPECT_THROW(empty1.data(), exceptions::EmptyStateException);
 }
 
 TEST(CartesianStateTest, IdentityInitialization) {
@@ -270,7 +270,7 @@ TEST(CartesianStateTest, GetSetFields) {
   EXPECT_FLOAT_EQ(cs.data().norm(), 1);
   EXPECT_EQ(cs.is_empty(), false);
   cs.reset();
-  EXPECT_FLOAT_EQ(cs.data().norm(), 1);
+  EXPECT_THROW(cs.data(), exceptions::EmptyStateException);
   EXPECT_EQ(cs.is_empty(), true);
 }
 
@@ -279,7 +279,7 @@ TEST(CartesianStateTest, SetZero) {
   EXPECT_FALSE(random1.is_empty());
   random1.reset();
   EXPECT_TRUE(random1.is_empty());
-  EXPECT_FLOAT_EQ(random1.data().norm(), 1);
+  EXPECT_THROW(random1.data(), exceptions::EmptyStateException);
 
   CartesianState random2 = CartesianState::Random("test");
   random2.set_zero();

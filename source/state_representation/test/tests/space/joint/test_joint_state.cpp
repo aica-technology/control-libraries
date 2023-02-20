@@ -18,7 +18,7 @@ TEST(JointStateTest, Constructors) {
   EXPECT_EQ(empty.get_name(), "");
   EXPECT_TRUE(empty.is_empty());
   EXPECT_EQ(empty.get_size(), 0);
-  EXPECT_EQ(empty.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 
   JointState js1("test", 3);
   EXPECT_EQ(js1.get_type(), StateType::JOINT_STATE);
@@ -28,7 +28,7 @@ TEST(JointStateTest, Constructors) {
   for (std::size_t i = 0; i < 3; ++i) {
     EXPECT_EQ(js1.get_names().at(i), "joint" + std::to_string(i));
   }
-  EXPECT_EQ(js1.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 
   std::vector<std::string> joint_names{"joint_10", "joint_20"};
   JointState js2("test", joint_names);
@@ -39,7 +39,7 @@ TEST(JointStateTest, Constructors) {
   for (std::size_t i = 0; i < joint_names.size(); ++i) {
     EXPECT_EQ(js2.get_names().at(i), joint_names.at(i));
   }
-  EXPECT_EQ(js2.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 }
 
 TEST(JointStateTest, ZeroInitialization) {
@@ -172,7 +172,7 @@ TEST(JointStateTest, GetSetFields) {
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), false);
   js.reset();
-  EXPECT_EQ(js.data().norm(), 0);
+  EXPECT_THROW(js.data(), exceptions::EmptyStateException);
   EXPECT_EQ(js.is_empty(), true);
 }
 
@@ -227,7 +227,7 @@ TEST(JointStateTest, Compatibility) {
 TEST(JointStateTest, SetZero) {
   JointState random1 = JointState::Random("test", 3);
   random1.reset();
-  EXPECT_EQ(random1.data().norm(), 0);
+  EXPECT_THROW(random1.data(), exceptions::EmptyStateException);
 
   JointState random2 = JointState::Random("test", 3);
   random2.set_zero();
@@ -315,7 +315,7 @@ TEST(JointStateTest, GetIndexByName) {
 }
 
 TEST(JointStateTest, Distance) {
-  JointState js;
+  JointState js("test", 3);
   JointState js1 = JointState::Random("test", 3);
   JointState js2 = JointState::Random("test", 2);
   EXPECT_THROW(js.dist(js1), exceptions::EmptyStateException);
