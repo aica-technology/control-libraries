@@ -17,6 +17,12 @@ Shape::Shape(const Shape& shape) : Shape(shape.get_name()) {
   }
 }
 
+Shape Shape::Unit(const std::string& name, const std::string& reference_frame) {
+  Shape unit = Shape(name, reference_frame);
+  unit.set_empty(false);
+  return unit;
+}
+
 std::string Shape::to_string() const {
   std::stringstream s;
   s << this->State::to_string();

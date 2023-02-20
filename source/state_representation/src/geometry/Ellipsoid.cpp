@@ -23,6 +23,12 @@ Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) : Ellipsoid(ellipsoid.get_name(
   }
 }
 
+Ellipsoid Ellipsoid::Unit(const std::string& name, const std::string& reference_frame) {
+  Ellipsoid unit = Ellipsoid(name, reference_frame);
+  unit.set_empty(false);
+  return unit;
+}
+
 const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned int nb_samples) const {
   if (this->is_empty()) {
     throw exceptions::EmptyStateException(this->get_name() + " state is empty");

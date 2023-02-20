@@ -34,6 +34,13 @@ public:
   Shape(const Shape& shape);
 
   /**
+   * @brief Constructor for a Shape with identity state
+   * @param name Name of the Shape and its state
+   * @param reference_frame The reference frame in which the state is expressed (default is "world")
+   */
+  static Shape Unit(const std::string& name, const std::string& reference_frame = "world");
+
+  /**
    * @brief Swap the values of the two Shapes
    * @param state1 Shape to be swapped with 2
    * @param state2 Shape to be swapped with 1

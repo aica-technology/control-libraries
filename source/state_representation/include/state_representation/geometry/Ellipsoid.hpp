@@ -37,6 +37,13 @@ public:
   Ellipsoid(const Ellipsoid& ellipsoid);
 
   /**
+   * @brief Constructor for a Ellipsoid with identity state, unit axis lengths and zero rotation angle
+   * @param name Name of the Ellipsoid and its state
+   * @param reference_frame The reference frame in which the state is expressed (default is "world")
+   */
+  static Ellipsoid Unit(const std::string& name, const std::string& reference_frame = "world");
+
+  /**
    * @brief Swap the values of the two Ellipsoids
    * @param state1 Ellipsoid to be swapped with 2
    * @param state2 Ellipsoid to be swapped with 1
