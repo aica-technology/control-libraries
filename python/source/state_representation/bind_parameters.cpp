@@ -1,4 +1,4 @@
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <state_representation/parameters/ParameterType.hpp>
 #include <state_representation/parameters/Parameter.hpp>
@@ -10,8 +10,8 @@
 #include <state_representation/space/joint/JointPositions.hpp>
 #include <state_representation/geometry/Ellipsoid.hpp>
 
-#include "parameter_container.h"
-#include "py_parameter_map.h"
+#include "parameter_container.hpp"
+#include "py_parameter_map.hpp"
 
 using namespace py_parameter;
 

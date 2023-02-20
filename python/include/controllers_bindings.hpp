@@ -5,7 +5,7 @@
 
 #include <controllers/IController.hpp>
 
-#include "parameter_container.h"
+#include "parameter_container.hpp"
 
 namespace py = pybind11;
 using namespace pybind11::literals;

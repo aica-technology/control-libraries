@@ -3,7 +3,7 @@
 #include <gtest/gtest.h>
 #include <state_representation/State.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 
 namespace clproto {
 

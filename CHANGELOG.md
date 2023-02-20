@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Use hpp extension for header files consistently (#87)
 - Clean up parameter container class and tests (#85)
 - Use organization build and push workflow (#82)
 - Bind state representation error objects with Pybind (#83)

@@ -1,4 +1,4 @@
-#include "robot_model_bindings.h"
+#include "robot_model_bindings.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)

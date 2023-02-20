@@ -7,7 +7,7 @@
 #include <state_representation/space/joint/JointAccelerations.hpp>
 #include <state_representation/space/joint/JointTorques.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 #include "test_encode_decode.hpp"
 
 using namespace state_representation;

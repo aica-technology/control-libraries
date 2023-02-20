@@ -13,7 +13,7 @@
 
 #include <eigen3/Eigen/Core>
 
-#include <clproto.h>
+#include <clproto.hpp>
 
 namespace py = pybind11;
 using namespace pybind11::literals;

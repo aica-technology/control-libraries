@@ -1,4 +1,4 @@
-#include "dynamical_systems_bindings.h"
+#include "dynamical_systems_bindings.hpp"
 
 #include <dynamical_systems/DynamicalSystemType.hpp>
 
