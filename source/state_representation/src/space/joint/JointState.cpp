@@ -91,6 +91,7 @@ JointState& JointState::operator=(const JointState& state) {
 }
 
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
+  this->throw_if_empty();
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
       return this->positions_;
@@ -127,6 +128,7 @@ unsigned int JointState::get_joint_index(const std::string& joint_name) const {
 }
 
 const Eigen::VectorXd& JointState::get_positions() const {
+  this->throw_if_empty();
   return this->positions_;
 }
 
@@ -135,11 +137,13 @@ double JointState::get_position(const std::string& joint_name) const {
 }
 
 double JointState::get_position(unsigned int joint_index) const {
+  this->throw_if_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->positions_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_velocities() const {
+  this->throw_if_empty();
   return this->velocities_;
 }
 
@@ -148,11 +152,13 @@ double JointState::get_velocity(const std::string& joint_name) const {
 }
 
 double JointState::get_velocity(unsigned int joint_index) const {
+  this->throw_if_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->velocities_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_accelerations() const {
+  this->throw_if_empty();
   return this->accelerations_;
 }
 
@@ -161,11 +167,13 @@ double JointState::get_acceleration(const std::string& joint_name) const {
 }
 
 double JointState::get_acceleration(unsigned int joint_index) const {
+  this->throw_if_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->accelerations_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_torques() const {
+  this->throw_if_empty();
   return this->torques_;
 }
 
@@ -174,6 +182,7 @@ double JointState::get_torque(const std::string& joint_name) const {
 }
 
 double JointState::get_torque(unsigned int joint_index) const {
+  this->throw_if_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->torques_(joint_index);
 }
