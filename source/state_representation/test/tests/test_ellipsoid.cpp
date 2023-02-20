@@ -14,7 +14,7 @@ TEST(EllipsoidTest, EmptyConstructor) {
 }
 
 TEST(EllipsoidTest, Sampling) {
-  auto ellipse = Ellipsoid::Identity("test");
+  auto ellipse = Ellipsoid::Unit("test");
 
   // simplest case circle centered of radius 1
   auto points = ellipse.sample_from_parameterization(100);
@@ -38,7 +38,7 @@ TEST(EllipsoidTest, Sampling) {
 
 TEST(EllipsoidTest, EllipsoidFitting) {
   GTEST_SKIP() << "Skipping Ellipsoid fit test to reduce computational burden";
-  auto ellipse = Ellipsoid::Identity("test");
+  auto ellipse = Ellipsoid::Unit("test");
 
   // sample from the parameterization
   auto points = ellipse.sample_from_parameterization(100);
