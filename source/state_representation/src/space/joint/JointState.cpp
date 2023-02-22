@@ -427,8 +427,11 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
 }
 
 void JointState::reset() {
+  this->positions_.setZero();
+  this->velocities_.setZero();
+  this->accelerations_.setZero();
+  this->torques_.setZero();
   this->State::reset();
-  this->set_zero();
 }
 
 bool JointState::is_incompatible(const State& state) const {
@@ -450,11 +453,10 @@ bool JointState::is_incompatible(const State& state) const {
 }
 
 void JointState::set_zero() {
-  this->positions_.setZero();
-  this->velocities_.setZero();
-  this->accelerations_.setZero();
-  this->torques_.setZero();
-  // FIXME: reset timestamp
+  this->reset();
+  if (this->get_size() > 0) {
+    this->set_empty(false);
+  }
 }
 
 std::vector<double> JointState::to_std_vector() const {

@@ -427,14 +427,8 @@ void CartesianState::set_data(const std::vector<double>& data) {
 }
 
 void CartesianState::set_zero() {
-  this->position_.setZero();
-  this->orientation_.setIdentity();
-  this->linear_velocity_.setZero();
-  this->angular_velocity_.setZero();
-  this->linear_acceleration_.setZero();
-  this->angular_acceleration_.setZero();
-  this->force_.setZero();
-  this->torque_.setZero();
+  this->reset();
+  this->set_empty(false);
 }
 
 void CartesianState::clamp_state_variable(
@@ -515,8 +509,15 @@ double dist(const CartesianState& s1, const CartesianState& s2, const CartesianS
 }
 
 void CartesianState::reset() {
+  this->position_.setZero();
+  this->orientation_.setIdentity();
+  this->linear_velocity_.setZero();
+  this->angular_velocity_.setZero();
+  this->linear_acceleration_.setZero();
+  this->angular_acceleration_.setZero();
+  this->force_.setZero();
+  this->torque_.setZero();
   this->State::reset();
-  this->set_zero();
 }
 
 CartesianState CartesianState::inverse() const {
