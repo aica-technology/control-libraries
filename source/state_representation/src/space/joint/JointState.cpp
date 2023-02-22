@@ -34,22 +34,23 @@ JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
 }
 
-JointState::JointState(const std::string& robot_name, unsigned int nb_joints) : State(robot_name), names_(nb_joints) {
+JointState::JointState(const std::string& robot_name, unsigned int nb_joints) :
+    State(robot_name),
+    names_(nb_joints),
+    positions_(Eigen::VectorXd::Zero(nb_joints)),
+    velocities_(Eigen::VectorXd::Zero(nb_joints)),
+    accelerations_(Eigen::VectorXd::Zero(nb_joints)),
+    torques_(Eigen::VectorXd::Zero(nb_joints)) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
-  this->resize(nb_joints);
-  this->set_zero();
 }
 
 JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    State(robot_name), names_(joint_names) {
-  this->set_type(StateType::JOINT_STATE);
-  this->resize(joint_names.size());
-  this->set_zero();
+    JointState(robot_name, joint_names.size()) {
+  this->set_names(joint_names);
 }
 
-JointState::JointState(const JointState& state) :
-    JointState(state.get_name(), state.names_) {
+JointState::JointState(const JointState& state) : JointState(state.get_name(), state.names_) {
   if (state) {
     this->set_state_variable(state.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   }
