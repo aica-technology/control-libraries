@@ -90,13 +90,6 @@ JointState& JointState::operator=(const JointState& state) {
   return *this;
 }
 
-void JointState::resize(unsigned int size) {
-  this->positions_.resize(size);
-  this->velocities_.resize(size);
-  this->accelerations_.resize(size);
-  this->torques_.resize(size);
-}
-
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
@@ -265,7 +258,6 @@ void JointState::set_names(unsigned int nb_joints) {
         "Input number of joints is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
             + std::to_string(nb_joints));
   }
-  this->names_.resize(nb_joints);
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
   }
