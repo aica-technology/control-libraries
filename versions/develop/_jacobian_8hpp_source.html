@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.56</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.57</span>
    </div>
   </td>
  </tr>
@@ -203,8 +203,8 @@ $(function() {
 <div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  Eigen::MatrixXd data_;                </div>
 <div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>};</div>
 <div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_jacobian.html#a0127414a5e56f1f84094b41e1c42c7d1">  327</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacestate__representation.html#a7b029559fdd5c2b0f67aeea8ce759a11">swap</a>(<a class="code hl_class" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&amp; jacobian1, <a class="code hl_class" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&amp; jacobian2) {</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <a class="code hl_function" href="namespacestate__representation.html#a7b029559fdd5c2b0f67aeea8ce759a11">swap</a>(<span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classstate__representation_1_1_state.html">State</a>&amp;<span class="keyword">&gt;</span>(jacobian1), <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classstate__representation_1_1_state.html">State</a>&amp;<span class="keyword">&gt;</span>(jacobian2));</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno"><a class="line" href="classstate__representation_1_1_jacobian.html#a0127414a5e56f1f84094b41e1c42c7d1">  327</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacestate__representation.html#a3cc6f20db28f849d2e0bcd2bc47642df">swap</a>(<a class="code hl_class" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&amp; jacobian1, <a class="code hl_class" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&amp; jacobian2) {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>  <a class="code hl_function" href="namespacestate__representation.html#a3cc6f20db28f849d2e0bcd2bc47642df">swap</a>(<span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classstate__representation_1_1_state.html">State</a>&amp;<span class="keyword">&gt;</span>(jacobian1), <span class="keyword">static_cast&lt;</span><a class="code hl_class" href="classstate__representation_1_1_state.html">State</a>&amp;<span class="keyword">&gt;</span>(jacobian2));</div>
 <div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  std::swap(jacobian1.joint_names_, jacobian2.joint_names_);</div>
 <div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>  std::swap(jacobian1.frame_, jacobian2.frame_);</div>
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>  std::swap(jacobian1.reference_frame_, jacobian2.reference_frame_);</div>
@@ -246,7 +246,7 @@ $(function() {
 <div class="ttc" id="aclassstate__representation_1_1_joint_velocities_html"><div class="ttname"><a href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a></div><div class="ttdoc">Class to define velocities of the joints.</div><div class="ttdef"><b>Definition:</b> <a href="_joint_velocities_8hpp_source.html#l00018">JointVelocities.hpp:18</a></div></div>
 <div class="ttc" id="aclassstate__representation_1_1_state_html"><div class="ttname"><a href="classstate__representation_1_1_state.html">state_representation::State</a></div><div class="ttdoc">Abstract class to represent a state.</div><div class="ttdef"><b>Definition:</b> <a href="_state_8hpp_source.html#l00025">State.hpp:25</a></div></div>
 <div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition:</b> <a href="_empty_state_exception_8hpp_source.html#l00006">EmptyStateException.hpp:6</a></div></div>
-<div class="ttc" id="anamespacestate__representation_html_a7b029559fdd5c2b0f67aeea8ce759a11"><div class="ttname"><a href="namespacestate__representation.html#a7b029559fdd5c2b0f67aeea8ce759a11">state_representation::swap</a></div><div class="ttdeci">void swap(CartesianState &amp;state1, CartesianState &amp;state2)</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8hpp_source.html#l00590">CartesianState.hpp:590</a></div></div>
+<div class="ttc" id="anamespacestate__representation_html_a3cc6f20db28f849d2e0bcd2bc47642df"><div class="ttname"><a href="namespacestate__representation.html#a3cc6f20db28f849d2e0bcd2bc47642df">state_representation::swap</a></div><div class="ttdeci">void swap(Ellipsoid &amp;state1, Ellipsoid &amp;state2)</div><div class="ttdef"><b>Definition:</b> <a href="_ellipsoid_8hpp_source.html#l00156">Ellipsoid.hpp:156</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

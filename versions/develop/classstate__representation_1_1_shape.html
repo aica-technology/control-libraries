@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.56</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.57</span>
    </div>
   </td>
  </tr>
@@ -75,6 +75,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classstate__representation_1_1_shape-members.html">List of all members</a>  </div>
@@ -98,13 +99,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a90640ac0607a26af05706a06e2c06ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="classstate__representation_1_1_shape.html#a90640ac0607a26af05706a06e2c06ef6">More...</a><br /></td></tr>
 <tr class="separator:a90640ac0607a26af05706a06e2c06ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91b97a92308f2011813a90876e7dd291"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a91b97a92308f2011813a90876e7dd291">Shape</a> (const std::string &amp;name, const std::string &amp;reference_frame=&quot;world&quot;)</td></tr>
-<tr class="memdesc:a91b97a92308f2011813a90876e7dd291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with name but empty state.  <a href="classstate__representation_1_1_shape.html#a91b97a92308f2011813a90876e7dd291">More...</a><br /></td></tr>
+<tr class="memdesc:a91b97a92308f2011813a90876e7dd291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor with name and reference frame.  <a href="classstate__representation_1_1_shape.html#a91b97a92308f2011813a90876e7dd291">More...</a><br /></td></tr>
 <tr class="separator:a91b97a92308f2011813a90876e7dd291"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa054e19b5e6e409e990399a30114f82e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#aa054e19b5e6e409e990399a30114f82e">Shape</a> (const <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
-<tr class="memdesc:aa054e19b5e6e409e990399a30114f82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another shape.  <a href="classstate__representation_1_1_shape.html#aa054e19b5e6e409e990399a30114f82e">More...</a><br /></td></tr>
+<tr class="memdesc:aa054e19b5e6e409e990399a30114f82e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor from another <a class="el" href="classstate__representation_1_1_shape.html">Shape</a>.  <a href="classstate__representation_1_1_shape.html#aa054e19b5e6e409e990399a30114f82e">More...</a><br /></td></tr>
 <tr class="separator:aa054e19b5e6e409e990399a30114f82e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5795cec6d6e16ce369a7a7758d7fdb6b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a5795cec6d6e16ce369a7a7758d7fdb6b">operator=</a> (const <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state)</td></tr>
-<tr class="memdesc:a5795cec6d6e16ce369a7a7758d7fdb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that have to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_shape.html#a5795cec6d6e16ce369a7a7758d7fdb6b">More...</a><br /></td></tr>
+<tr class="memdesc:a5795cec6d6e16ce369a7a7758d7fdb6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator that has to be defined to the custom assignment operator.  <a href="classstate__representation_1_1_shape.html#a5795cec6d6e16ce369a7a7758d7fdb6b">More...</a><br /></td></tr>
 <tr class="separator:a5795cec6d6e16ce369a7a7758d7fdb6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41e61e8f00ed98176a79b883a509409"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#aa41e61e8f00ed98176a79b883a509409">get_center_state</a> () const</td></tr>
 <tr class="memdesc:aa41e61e8f00ed98176a79b883a509409"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter of the state.  <a href="classstate__representation_1_1_shape.html#aa41e61e8f00ed98176a79b883a509409">More...</a><br /></td></tr>
@@ -197,6 +198,12 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~State</b> ()=defa
 <tr class="memdesc:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean operator for the truthiness of a state.  <a href="classstate__representation_1_1_state.html#ae57571375a38e9663d51ce6f9d9ad1ce">More...</a><br /></td></tr>
 <tr class="separator:ae57571375a38e9663d51ce6f9d9ad1ce inherit pub_methods_classstate__representation_1_1_state"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7b12abb6cd6167ef63a3fb3e61f06458"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classstate__representation_1_1_shape.html">Shape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a7b12abb6cd6167ef63a3fb3e61f06458">Unit</a> (const std::string &amp;name, const std::string &amp;reference_frame=&quot;world&quot;)</td></tr>
+<tr class="memdesc:a7b12abb6cd6167ef63a3fb3e61f06458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> with identity state.  <a href="classstate__representation_1_1_shape.html#a7b12abb6cd6167ef63a3fb3e61f06458">More...</a><br /></td></tr>
+<tr class="separator:a7b12abb6cd6167ef63a3fb3e61f06458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9cf5c6e2299b75d5967cefd96f7e21a8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a9cf5c6e2299b75d5967cefd96f7e21a8">to_string</a> () const override</td></tr>
@@ -215,6 +222,9 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
+<tr class="memitem:a53e9f81a949bbffde6187803973dcc87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#a53e9f81a949bbffde6187803973dcc87">swap</a> (<a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state1, <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state2)</td></tr>
+<tr class="memdesc:a53e9f81a949bbffde6187803973dcc87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap the values of the two Shapes.  <a href="classstate__representation_1_1_shape.html#a53e9f81a949bbffde6187803973dcc87">More...</a><br /></td></tr>
+<tr class="separator:a53e9f81a949bbffde6187803973dcc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;shape)</td></tr>
 <tr class="memdesc:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the ostream operator for printing.  <a href="classstate__representation_1_1_shape.html#ac9c8a61ee3ea6e807a978fb7c61da35c">More...</a><br /></td></tr>
 <tr class="separator:ac9c8a61ee3ea6e807a978fb7c61da35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,11 +288,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Constructor with name but empty state. </p>
+<p>Constructor with name and reference frame. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>name of the shape </td></tr>
-    <tr><td class="paramname">reference_frame</td><td>the reference frame in which the state is expressed </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> and its state </td></tr>
+    <tr><td class="paramname">reference_frame</td><td>The reference frame in which the state is expressed (default is "world") </td></tr>
   </table>
   </dd>
 </dl>
@@ -307,10 +317,10 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Copy constructor from another shape. </p>
+<p>Copy constructor from another <a class="el" href="classstate__representation_1_1_shape.html">Shape</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">shape</td><td>the shape to copy </td></tr>
+    <tr><td class="paramname">shape</td><td>The <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to copy from </td></tr>
   </table>
   </dd>
 </dl>
@@ -344,9 +354,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter of the orientation from the state. </p>
-<dl class="section return"><dt>Returns</dt><dd>the orientation of the shape </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The orientation of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00133">133</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00152">152</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -374,9 +384,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter of the pose from the state. </p>
-<dl class="section return"><dt>Returns</dt><dd>the pose of the shape </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The pose of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00125">125</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00144">144</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -404,9 +414,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter of the position from the state. </p>
-<dl class="section return"><dt>Returns</dt><dd>the position of the shape </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The position of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00129">129</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00148">148</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -434,9 +444,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter of the state. </p>
-<dl class="section return"><dt>Returns</dt><dd>the state </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The state of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00121">121</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00140">140</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -464,9 +474,9 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Getter of the twist from the state. </p>
-<dl class="section return"><dt>Returns</dt><dd>the twist of the shape </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The twist of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00137">137</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00156">156</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -494,16 +504,16 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Copy assignment operator that have to be defined to the custom assignment operator. </p>
+<p>Copy assignment operator that has to be defined to the custom assignment operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>the state with value to assign </td></tr>
+    <tr><td class="paramname">state</td><td>The <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> with value to assign </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>reference to the current state with new values </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the current <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00115">115</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00134">134</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -534,12 +544,12 @@ Friends</h2></td></tr>
 <p>Setter of the pose. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pose</td><td>the new pose </td></tr>
+    <tr><td class="paramname">pose</td><td>The new pose </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00161">161</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00185">185</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -570,12 +580,12 @@ Friends</h2></td></tr>
 <p>Setter of the pose. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pose</td><td>the new pose </td></tr>
+    <tr><td class="paramname">pose</td><td>The new pose </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00146">146</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00169">169</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -606,12 +616,12 @@ Friends</h2></td></tr>
 <p>Setter of the position. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td>the new position </td></tr>
+    <tr><td class="paramname">position</td><td>The new position </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00154">154</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00179">179</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -642,12 +652,12 @@ Friends</h2></td></tr>
 <p>Setter of the state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>the new state </td></tr>
+    <tr><td class="paramname">state</td><td>The new state </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00141">141</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00160">160</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>
@@ -678,7 +688,54 @@ Friends</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a5337896f96dd7cc23c945aa4142b6161">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00018">18</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00026">26</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7b12abb6cd6167ef63a3fb3e61f06458" name="a7b12abb6cd6167ef63a3fb3e61f06458"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b12abb6cd6167ef63a3fb3e61f06458">&#9670;&#160;</a></span>Unit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> state_representation::Shape::Unit </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>reference_frame</em> = <code>&quot;world&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for a <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> with identity state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>Name of the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> and its state </td></tr>
+    <tr><td class="paramname">reference_frame</td><td>The reference frame in which the state is expressed (default is "world") </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00020">20</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
 
 </div>
 </div>
@@ -720,14 +777,61 @@ Friends</h2></td></tr>
 <p>Overload the ostream operator for printing. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to </td></tr>
-    <tr><td class="paramname">shape</td><td>the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00029">29</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00037">37</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a53e9f81a949bbffde6187803973dcc87" name="a53e9f81a949bbffde6187803973dcc87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e9f81a949bbffde6187803973dcc87">&#9670;&#160;</a></span>swap</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>state1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>state2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Swap the values of the two Shapes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state1</td><td><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to be swapped with 2 </td></tr>
+    <tr><td class="paramname">state2</td><td><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to be swapped with 1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00129">129</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
 
 </div>
 </div>

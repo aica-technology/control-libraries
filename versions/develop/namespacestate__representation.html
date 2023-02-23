@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.56</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.57</span>
    </div>
   </td>
  </tr>
@@ -239,6 +239,10 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a3cc6f20db28f849d2e0bcd2bc47642df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a3cc6f20db28f849d2e0bcd2bc47642df">swap</a> (<a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> &amp;state1, <a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> &amp;state2)</td></tr>
+<tr class="separator:a3cc6f20db28f849d2e0bcd2bc47642df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1df0e0655f0519f24d028708997205f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1df0e0655f0519f24d028708997205f2">swap</a> (<a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state1, <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state2)</td></tr>
+<tr class="separator:a1df0e0655f0519f24d028708997205f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d515e5b5252641cf0796315baef1f6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a19d515e5b5252641cf0796315baef1f6">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;s1, const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;s2, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
 <tr class="memdesc:a19d515e5b5252641cf0796315baef1f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance between two Cartesian states.  <a href="namespacestate__representation.html#a19d515e5b5252641cf0796315baef1f6">More...</a><br /></td></tr>
 <tr class="separator:a19d515e5b5252641cf0796315baef1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2092,14 +2096,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the <a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> to </td></tr>
-    <tr><td class="paramname">ellipsoid</td><td>the <a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_ellipsoid_8cpp_source.html#l00191">191</a> of file <a class="el" href="_ellipsoid_8cpp_source.html">Ellipsoid.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_ellipsoid_8cpp_source.html#l00196">196</a> of file <a class="el" href="_ellipsoid_8cpp_source.html">Ellipsoid.cpp</a>.</p>
 
 </div>
 </div>
@@ -2594,14 +2598,14 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">os</td><td>the ostream to append the string representing the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to </td></tr>
-    <tr><td class="paramname">shape</td><td>the <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to print </td></tr>
+    <tr><td class="paramname">os</td><td>The ostream to append the string representing the state </td></tr>
+    <tr><td class="paramname">state</td><td>The state to print </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the appended ostream </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00029">29</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shape_8cpp_source.html#l00037">37</a> of file <a class="el" href="_shape_8cpp_source.html">Shape.cpp</a>.</p>
 
 </div>
 </div>
@@ -2682,7 +2686,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a7b029559fdd5c2b0f67aeea8ce759a11" name="a7b029559fdd5c2b0f67aeea8ce759a11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b029559fdd5c2b0f67aeea8ce759a11">&#9670;&#160;</a></span>swap() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b029559fdd5c2b0f67aeea8ce759a11">&#9670;&#160;</a></span>swap() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2726,8 +2730,53 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a3cc6f20db28f849d2e0bcd2bc47642df" name="a3cc6f20db28f849d2e0bcd2bc47642df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cc6f20db28f849d2e0bcd2bc47642df">&#9670;&#160;</a></span>swap() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> &amp;&#160;</td>
+          <td class="paramname"><em>state1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> &amp;&#160;</td>
+          <td class="paramname"><em>state2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state1</td><td><a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> to be swapped with 2 </td></tr>
+    <tr><td class="paramname">state2</td><td><a class="el" href="classstate__representation_1_1_ellipsoid.html">Ellipsoid</a> to be swapped with 1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_ellipsoid_8hpp_source.html#l00156">156</a> of file <a class="el" href="_ellipsoid_8hpp_source.html">Ellipsoid.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a832ff2cdc279aeecd369f8c1dc920a9a" name="a832ff2cdc279aeecd369f8c1dc920a9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a832ff2cdc279aeecd369f8c1dc920a9a">&#9670;&#160;</a></span>swap() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a832ff2cdc279aeecd369f8c1dc920a9a">&#9670;&#160;</a></span>swap() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2772,7 +2821,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="aeb43830cd7d4bb607ab7aa93537c6df4" name="aeb43830cd7d4bb607ab7aa93537c6df4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb43830cd7d4bb607ab7aa93537c6df4">&#9670;&#160;</a></span>swap() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb43830cd7d4bb607ab7aa93537c6df4">&#9670;&#160;</a></span>swap() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2816,8 +2865,53 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a1df0e0655f0519f24d028708997205f2" name="a1df0e0655f0519f24d028708997205f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1df0e0655f0519f24d028708997205f2">&#9670;&#160;</a></span>swap() <span class="overload">[5/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::swap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>state1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;&#160;</td>
+          <td class="paramname"><em>state2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">state1</td><td><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to be swapped with 2 </td></tr>
+    <tr><td class="paramname">state2</td><td><a class="el" href="classstate__representation_1_1_shape.html">Shape</a> to be swapped with 1 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shape_8hpp_source.html#l00129">129</a> of file <a class="el" href="_shape_8hpp_source.html">Shape.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a12f179ef6871fd79ae70b847651fdd61" name="a12f179ef6871fd79ae70b847651fdd61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12f179ef6871fd79ae70b847651fdd61">&#9670;&#160;</a></span>swap() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a12f179ef6871fd79ae70b847651fdd61">&#9670;&#160;</a></span>swap() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2862,7 +2956,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="af345b0edaa0326532a3f5dce4072438a" name="af345b0edaa0326532a3f5dce4072438a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af345b0edaa0326532a3f5dce4072438a">&#9670;&#160;</a></span>swap() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af345b0edaa0326532a3f5dce4072438a">&#9670;&#160;</a></span>swap() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
