@@ -70,7 +70,7 @@ void Ellipsoid::set_axis_lengths(unsigned int index, double axis_length) {
   this->set_empty(false);
 }
 
-inline void Ellipsoid::set_rotation_angle(double rotation_angle) {
+void Ellipsoid::set_rotation_angle(double rotation_angle) {
   this->rotation_angle_ = rotation_angle;
   this->set_empty(false);
 }
