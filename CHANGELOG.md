@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Setting state to zero results in non empty state (#93)
 - Clean up geometry classes to define emptiness (#91)
 - Fix wrench product and inverse (#53)
 - Require CLA signatures with PR workflow (#89)

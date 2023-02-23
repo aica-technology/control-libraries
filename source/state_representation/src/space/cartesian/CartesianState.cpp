@@ -40,14 +40,22 @@ static unsigned long get_state_variable_size(const CartesianStateVariable& state
   }
 }
 
-CartesianState::CartesianState() : SpatialState() {
+CartesianState::CartesianState() :
+    SpatialState(),
+    position_(Eigen::Vector3d::Zero()),
+    orientation_(Eigen::Quaterniond::Identity()),
+    linear_velocity_(Eigen::Vector3d::Zero()),
+    angular_velocity_(Eigen::Vector3d::Zero()),
+    linear_acceleration_(Eigen::Vector3d::Zero()),
+    angular_acceleration_(Eigen::Vector3d::Zero()),
+    force_(Eigen::Vector3d::Zero()),
+    torque_(Eigen::Vector3d::Zero()) {
   this->set_type(StateType::CARTESIAN_STATE);
-  this->set_zero();
 }
 
-CartesianState::CartesianState(const std::string& name, const std::string& reference) : SpatialState(name, reference) {
-  this->set_type(StateType::CARTESIAN_STATE);
-  this->set_zero();
+CartesianState::CartesianState(const std::string& name, const std::string& reference) : CartesianState() {
+  this->set_name(name);
+  this->set_reference_frame(reference);
 }
 
 CartesianState::CartesianState(const CartesianState& state) :
@@ -427,6 +435,8 @@ void CartesianState::set_zero() {
   this->angular_acceleration_.setZero();
   this->force_.setZero();
   this->torque_.setZero();
+  // FIXME(#15): reset timestamp
+  this->set_empty(false);
 }
 
 void CartesianState::clamp_state_variable(
@@ -507,8 +517,8 @@ double dist(const CartesianState& s1, const CartesianState& s2, const CartesianS
 }
 
 void CartesianState::reset() {
-  this->State::reset();
   this->set_zero();
+  this->State::reset();
 }
 
 CartesianState CartesianState::inverse() const {

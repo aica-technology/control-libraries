@@ -34,22 +34,23 @@ JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
 }
 
-JointState::JointState(const std::string& robot_name, unsigned int nb_joints) : State(robot_name), names_(nb_joints) {
+JointState::JointState(const std::string& robot_name, unsigned int nb_joints) :
+    State(robot_name),
+    names_(nb_joints),
+    positions_(Eigen::VectorXd::Zero(nb_joints)),
+    velocities_(Eigen::VectorXd::Zero(nb_joints)),
+    accelerations_(Eigen::VectorXd::Zero(nb_joints)),
+    torques_(Eigen::VectorXd::Zero(nb_joints)) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
-  this->resize(nb_joints);
-  this->set_zero();
 }
 
 JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    State(robot_name), names_(joint_names) {
-  this->set_type(StateType::JOINT_STATE);
-  this->resize(joint_names.size());
-  this->set_zero();
+    JointState(robot_name, joint_names.size()) {
+  this->set_names(joint_names);
 }
 
-JointState::JointState(const JointState& state) :
-    JointState(state.get_name(), state.names_) {
+JointState::JointState(const JointState& state) : JointState(state.get_name(), state.names_) {
   if (state) {
     this->set_state_variable(state.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   }
@@ -87,13 +88,6 @@ JointState& JointState::operator=(const JointState& state) {
   JointState tmp(state);
   swap(*this, tmp);
   return *this;
-}
-
-void JointState::resize(unsigned int size) {
-  this->positions_.resize(size);
-  this->velocities_.resize(size);
-  this->accelerations_.resize(size);
-  this->torques_.resize(size);
 }
 
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
@@ -264,7 +258,6 @@ void JointState::set_names(unsigned int nb_joints) {
         "Input number of joints is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
             + std::to_string(nb_joints));
   }
-  this->names_.resize(nb_joints);
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
   }
@@ -426,8 +419,8 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
 }
 
 void JointState::reset() {
-  this->State::reset();
   this->set_zero();
+  this->State::reset();
 }
 
 bool JointState::is_incompatible(const State& state) const {
@@ -449,11 +442,14 @@ bool JointState::is_incompatible(const State& state) const {
 }
 
 void JointState::set_zero() {
-  this->positions_.setZero();
-  this->velocities_.setZero();
-  this->accelerations_.setZero();
-  this->torques_.setZero();
-  // FIXME: reset timestamp
+  if (this->get_size() > 0) {
+    this->positions_.setZero();
+    this->velocities_.setZero();
+    this->accelerations_.setZero();
+    this->torques_.setZero();
+    this->set_empty(false);
+    // FIXME(#15): reset timestamp
+  }
 }
 
 std::vector<double> JointState::to_std_vector() const {
