@@ -54,7 +54,7 @@ void Circular::set_base_frame(const CartesianState& base_frame) {
   }
   IDynamicalSystem<CartesianState>::set_base_frame(base_frame);
   // update reference frame of center
-  if (!this->limit_cycle_->get_value().is_empty()) {
+  if (this->limit_cycle_->get_value()) {
     auto center_state = this->limit_cycle_->get_value().get_center_state();
     center_state.set_reference_frame(base_frame.get_name());
     this->limit_cycle_->get_value().set_center_state(center_state);

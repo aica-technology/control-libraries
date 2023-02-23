@@ -10,6 +10,7 @@ TEST(EllipsoidTest, EmptyConstructor) {
   EXPECT_THROW(ellipse.set_data(Eigen::Vector3d::Zero()), exceptions::IncompatibleSizeException);
 
   ellipse.set_center_state(CartesianState::Identity("A"));
+  EXPECT_FALSE(ellipse.is_empty());
   EXPECT_FALSE(ellipse.get_center_state().is_empty());
 }
 

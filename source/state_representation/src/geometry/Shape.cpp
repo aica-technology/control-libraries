@@ -7,7 +7,7 @@ Shape::Shape() : State(), center_state_(CartesianState::Identity("")) {
 }
 
 Shape::Shape(const std::string& name, const std::string& reference_frame) :
-    State(name), center_state_(CartesianPose::Identity(name, reference_frame)) {
+    State(name), center_state_(CartesianState::Identity(name, reference_frame)) {
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
