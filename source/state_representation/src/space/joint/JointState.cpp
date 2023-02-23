@@ -419,10 +419,7 @@ double dist(const JointState& s1, const JointState& s2, const JointStateVariable
 }
 
 void JointState::reset() {
-  this->positions_.setZero();
-  this->velocities_.setZero();
-  this->accelerations_.setZero();
-  this->torques_.setZero();
+  this->set_zero();
   this->State::reset();
 }
 
@@ -445,9 +442,13 @@ bool JointState::is_incompatible(const State& state) const {
 }
 
 void JointState::set_zero() {
-  this->reset();
   if (this->get_size() > 0) {
+    this->positions_.setZero();
+    this->velocities_.setZero();
+    this->accelerations_.setZero();
+    this->torques_.setZero();
     this->set_empty(false);
+    // FIXME(#15): reset timestamp
   }
 }
 

@@ -427,7 +427,15 @@ void CartesianState::set_data(const std::vector<double>& data) {
 }
 
 void CartesianState::set_zero() {
-  this->reset();
+  this->position_.setZero();
+  this->orientation_.setIdentity();
+  this->linear_velocity_.setZero();
+  this->angular_velocity_.setZero();
+  this->linear_acceleration_.setZero();
+  this->angular_acceleration_.setZero();
+  this->force_.setZero();
+  this->torque_.setZero();
+  // FIXME(#15): reset timestamp
   this->set_empty(false);
 }
 
@@ -509,14 +517,7 @@ double dist(const CartesianState& s1, const CartesianState& s2, const CartesianS
 }
 
 void CartesianState::reset() {
-  this->position_.setZero();
-  this->orientation_.setIdentity();
-  this->linear_velocity_.setZero();
-  this->angular_velocity_.setZero();
-  this->linear_acceleration_.setZero();
-  this->angular_acceleration_.setZero();
-  this->force_.setZero();
-  this->torque_.setZero();
+  this->set_zero();
   this->State::reset();
 }
 
