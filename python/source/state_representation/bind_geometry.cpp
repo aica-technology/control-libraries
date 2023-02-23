@@ -11,6 +11,7 @@ void shape(py::module_& m) {
   c.def(py::init<>(), "Empty constructor");
   c.def(py::init<const std::string&, const std::string&>(), "Constructor with name but empty state.", "name"_a, "reference_frame"_a=std::string("world"));
   c.def(py::init<const Shape&>(), "Copy constructor from another Shape.", "shape"_a);
+  c.def_static("Unit", py::overload_cast<const std::string&, const std::string&>(&Shape::Unit), "Constructor for a Shape with identity state", "name"_a, "reference_frame"_a=std::string("world"));
 
   c.def("get_center_state", &Shape::get_center_state, "Getter of the state.");
   c.def("get_center_pose", &Shape::get_center_pose, "Getter of the pose from the state.");
@@ -42,6 +43,7 @@ void ellipsoid(py::module_& m) {
   c.def(py::init(), "Empty constructor.");
   c.def(py::init<const std::string&, const std::string&>(), "Constructor with name but empty state.", "name"_a, "reference_frame"_a=std::string("world"));
   c.def(py::init<const Ellipsoid&>(), "Copy constructor from another Ellipsoid.", "ellipsoid"_a);
+  c.def_static("Unit", py::overload_cast<const std::string&, const std::string&>(&Ellipsoid::Unit), "Constructor for a Ellipsoid with identity state", "name"_a, "reference_frame"_a=std::string("world"));
 
   c.def("get_axis_lengths", &Ellipsoid::get_axis_lengths, "Getter of the axis lengths.");
   c.def("get_axis_length", &Ellipsoid::get_axis_length, "Getter of the axis length in one direction.", "index"_a);

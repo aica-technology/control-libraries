@@ -14,7 +14,6 @@ Circular::Circular() :
     planar_gain_(std::make_shared<Parameter<double>>("planar_gain", 1.0)),
     normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
     circular_velocity_(std::make_shared<Parameter<double>>("circular_velocity", M_PI / 2)) {
-  this->limit_cycle_->get_value().set_center_state(CartesianState("limit_cycle", "limit_cycle"));
   this->parameters_.insert(std::make_pair("limit_cycle", this->limit_cycle_));
   this->parameters_.insert(std::make_pair("planar_gain", this->planar_gain_));
   this->parameters_.insert(std::make_pair("normal_gain", this->normal_gain_));
@@ -27,10 +26,10 @@ Circular::Circular(const std::list<std::shared_ptr<state_representation::Paramet
 }
 
 void Circular::set_limit_cycle(Ellipsoid& limit_cycle) {
-  const auto& center = limit_cycle.get_center_state();
-  if (center.is_empty()) {
-    throw state_representation::exceptions::EmptyStateException(center.get_name() + " state is empty");
+  if (limit_cycle.is_empty()) {
+    throw state_representation::exceptions::EmptyStateException(limit_cycle.get_name() + " limit cycle is empty");
   }
+  const auto& center = limit_cycle.get_center_state();
   if (this->get_base_frame().is_empty()) {
     IDynamicalSystem<CartesianState>::set_base_frame(
         CartesianState::Identity(
@@ -55,7 +54,7 @@ void Circular::set_base_frame(const CartesianState& base_frame) {
   }
   IDynamicalSystem<CartesianState>::set_base_frame(base_frame);
   // update reference frame of center
-  if (!this->limit_cycle_->get_value().get_center_state().is_empty()) {
+  if (this->limit_cycle_->get_value()) {
     auto center_state = this->limit_cycle_->get_value().get_center_state();
     center_state.set_reference_frame(base_frame.get_name());
     this->limit_cycle_->get_value().set_center_state(center_state);
@@ -83,7 +82,7 @@ void Circular::validate_and_set_parameter(const std::shared_ptr<ParameterInterfa
 }
 
 CartesianState Circular::compute_dynamics(const CartesianState& state) const {
-  if (this->limit_cycle_->get_value().get_center_state().is_empty()) {
+  if (this->limit_cycle_->get_value().is_empty()) {
     throw exceptions::EmptyAttractorException("The limit cycle of the dynamical system is empty.");
   }
   // put the point in the reference of the center

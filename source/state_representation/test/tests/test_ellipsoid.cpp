@@ -6,16 +6,16 @@ using namespace state_representation;
 TEST(EllipsoidTest, EmptyConstructor) {
   Ellipsoid ellipse;
   EXPECT_TRUE(ellipse.get_name().empty());
-  EXPECT_TRUE(ellipse.get_center_state().is_empty());
-  EXPECT_THROW(ellipse.set_data(Eigen::Vector3d::Zero()), exceptions::EmptyStateException);
+  EXPECT_TRUE(ellipse.is_empty());
+  EXPECT_THROW(ellipse.set_data(Eigen::Vector3d::Zero()), exceptions::IncompatibleSizeException);
 
   ellipse.set_center_state(CartesianState::Identity("A"));
-  EXPECT_EQ(ellipse.get_name(), "A");
+  EXPECT_FALSE(ellipse.is_empty());
   EXPECT_FALSE(ellipse.get_center_state().is_empty());
 }
 
 TEST(EllipsoidTest, Sampling) {
-  Ellipsoid ellipse("test");
+  auto ellipse = Ellipsoid::Unit("test");
 
   // simplest case circle centered of radius 1
   auto points = ellipse.sample_from_parameterization(100);
@@ -39,7 +39,7 @@ TEST(EllipsoidTest, Sampling) {
 
 TEST(EllipsoidTest, EllipsoidFitting) {
   GTEST_SKIP() << "Skipping Ellipsoid fit test to reduce computational burden";
-  Ellipsoid ellipse("test");
+  auto ellipse = Ellipsoid::Unit("test");
 
   // sample from the parameterization
   auto points = ellipse.sample_from_parameterization(100);

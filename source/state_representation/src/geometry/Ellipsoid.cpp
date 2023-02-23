@@ -13,17 +13,25 @@ Ellipsoid::Ellipsoid() : Shape(), axis_lengths_({1., 1.}), rotation_angle_(0) {
 Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :
     Shape(name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
   this->set_type(StateType::GEOMETRY_ELLIPSOID);
-  this->set_empty(false);
 }
 
-Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) :
-    Shape(ellipsoid), axis_lengths_(ellipsoid.axis_lengths_), rotation_angle_(ellipsoid.rotation_angle_) {
-  this->set_type(StateType::GEOMETRY_ELLIPSOID);
+Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) : Ellipsoid(ellipsoid.get_name()) {
+  if (ellipsoid) {
+    this->set_center_state(ellipsoid.get_center_state());
+    this->set_axis_lengths(ellipsoid.get_axis_lengths());
+    this->set_rotation_angle(ellipsoid.get_rotation_angle());
+  }
+}
+
+Ellipsoid Ellipsoid::Unit(const std::string& name, const std::string& reference_frame) {
+  Ellipsoid unit = Ellipsoid(name, reference_frame);
+  unit.set_empty(false);
+  return unit;
 }
 
 const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned int nb_samples) const {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException(this->get_name() + " state is empty");
   }
   // use a linspace to have a full rotation angle between [0, 2pi]
   std::vector<double> alpha = math_tools::linspace(0, 2 * M_PI, nb_samples);
@@ -172,9 +180,6 @@ const Ellipsoid Ellipsoid::fit(
 }
 
 void Ellipsoid::set_data(const Eigen::VectorXd& data) {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
-  }
   if (data.size() != 6) {
     throw exceptions::IncompatibleSizeException(
         "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));

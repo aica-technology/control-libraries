@@ -26,7 +26,7 @@ class TestCircular(unittest.TestCase):
 
     def test_empty_constructor(self):
         ds = create_cartesian_ds(DYNAMICAL_SYSTEM_TYPE.CIRCULAR)
-        self.assertTrue(ds.get_parameter_value("limit_cycle").get_center_state().is_empty())
+        self.assertTrue(ds.get_parameter_value("limit_cycle").is_empty())
         self.assertTrue(ds.get_base_frame().is_empty())
 
         ds.set_parameter(sr.Parameter("limit_cycle", self.limit_cycle, sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID))
@@ -42,7 +42,7 @@ class TestCircular(unittest.TestCase):
         state1 = sr.CartesianState.Identity("world", "A")
         state2 = sr.CartesianState("D", "C")
         state3 = sr.CartesianState("C", "A")
-        state4 = sr.CartesianState("C", "world")
+        state4 = sr.CartesianState().Identity("C", "world")
 
         with self.assertRaises(RuntimeError):
             ds.evaluate(state1)

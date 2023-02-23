@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Clean up geometry classes to define emptiness (#91)
 - Fix wrench product and inverse (#53)
 - Require CLA signatures with PR workflow (#89)
 - Use hpp extension for header files consistently (#87)
