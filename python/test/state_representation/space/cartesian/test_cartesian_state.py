@@ -112,19 +112,22 @@ class TestCartesianState(unittest.TestCase):
         self.assertEqual(type(empty1), CartesianState)
         self.assertEqual(empty1.get_type(), StateType.CARTESIAN_STATE)
         self.assert_name_empty_frame_equal(empty1, "", True, "world")
-        self.assertAlmostEqual(np.linalg.norm(empty1.data()), 1)
+        with self.assertRaises(EmptyStateError):
+            empty1.data()
 
         empty2 = CartesianState("test")
         self.assertEqual(type(empty1), CartesianState)
         self.assertEqual(empty2.get_type(), StateType.CARTESIAN_STATE)
         self.assert_name_empty_frame_equal(empty2, "test", True, "world")
-        self.assertAlmostEqual(np.linalg.norm(empty2.data()), 1)
+        with self.assertRaises(EmptyStateError):
+            empty2.data()
 
         empty3 = CartesianState("test", "reference")
         self.assertEqual(type(empty1), CartesianState)
         self.assertEqual(empty3.get_type(), StateType.CARTESIAN_STATE)
         self.assert_name_empty_frame_equal(empty3, "test", True, "reference")
-        self.assertAlmostEqual(np.linalg.norm(empty3.data()), 1)
+        with self.assertRaises(EmptyStateError):
+            empty3.data()
 
     def test_identity_initialization(self):
         identity = CartesianState().Identity("test")
@@ -265,11 +268,12 @@ class TestCartesianState(unittest.TestCase):
     def test_set_zero(self):
         random1 = CartesianState().Random("test")
         random1.reset()
-        self.assertAlmostEqual(np.linalg.norm(random1.data()), 1)
+        with self.assertRaises(EmptyStateError):
+            random1.data()
 
         random2 = CartesianState().Random("test")
         random2.set_zero()
-        self.assertAlmostEqual(np.linalg.norm(random1.data()), 1)
+        self.assertAlmostEqual(np.linalg.norm(random2.data()), 1)
 
     def test_get_set_data(self):
         cs1 = CartesianState().Identity("test")
