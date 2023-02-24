@@ -5,6 +5,7 @@
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
 
+#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/InvalidParameterCastException.hpp"
 #include "state_representation/exceptions/InvalidPointerException.hpp"
 
@@ -61,7 +62,7 @@ static std::tuple<ParamT<bool>,
                                  JointPositions::Random("test", 3), ParameterType::STATE, StateType::JOINT_POSITIONS
                              )
                          }, {
-                             std::make_tuple(Ellipsoid("test"), ParameterType::STATE, StateType::GEOMETRY_ELLIPSOID)
+                             std::make_tuple(Ellipsoid::Unit("test"), ParameterType::STATE, StateType::GEOMETRY_ELLIPSOID)
                          }, {
                              std::make_tuple(Eigen::VectorXd::Random(2), ParameterType::VECTOR, StateType::NONE)
                          }, {
@@ -77,14 +78,20 @@ template<>
 void expect_values_equal(const CartesianState& value_1, const CartesianState& value_2) {
   EXPECT_EQ(value_1.get_name(), value_2.get_name());
   EXPECT_EQ(value_1.get_reference_frame(), value_2.get_reference_frame());
-  EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  EXPECT_EQ(value_1.is_empty(), value_2.is_empty());
+  if (value_1) {
+    EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  }
 }
 
 template<>
 void expect_values_equal(const CartesianPose& value_1, const CartesianPose& value_2) {
   EXPECT_EQ(value_1.get_name(), value_2.get_name());
   EXPECT_EQ(value_1.get_reference_frame(), value_2.get_reference_frame());
-  EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  EXPECT_EQ(value_1.is_empty(), value_2.is_empty());
+  if (value_1) {
+    EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  }
 }
 
 template<>
@@ -94,7 +101,10 @@ void expect_values_equal(const JointState& value_1, const JointState& value_2) {
   for (std::size_t i = 0; i < value_1.get_size(); ++i) {
     EXPECT_EQ(value_1.get_names().at(i), value_2.get_names().at(i));
   }
-  EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  EXPECT_EQ(value_1.is_empty(), value_2.is_empty());
+  if (value_1) {
+    EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  }
 }
 
 template<>
@@ -104,19 +114,25 @@ void expect_values_equal(const JointPositions& value_1, const JointPositions& va
   for (std::size_t i = 0; i < value_1.get_size(); ++i) {
     EXPECT_EQ(value_1.get_names().at(i), value_2.get_names().at(i));
   }
-  EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  EXPECT_EQ(value_1.is_empty(), value_2.is_empty());
+  if (value_1) {
+    EXPECT_TRUE(value_1.data().isApprox(value_2.data()));
+  }
 }
 
 template<>
 void expect_values_equal(const Ellipsoid& value_1, const Ellipsoid& value_2) {
   EXPECT_EQ(value_1.get_name(), value_2.get_name());
-  ASSERT_EQ(value_1.get_axis_lengths().size(), value_2.get_axis_lengths().size());
-  for (std::size_t i = 0; i < value_1.get_axis_lengths().size(); ++i) {
-    EXPECT_EQ(value_1.get_axis_length(i), value_1.get_axis_length(i));
+  EXPECT_EQ(value_1.is_empty(), value_2.is_empty());
+  if (value_1) {
+    ASSERT_EQ(value_1.get_axis_lengths().size(), value_2.get_axis_lengths().size());
+    for (std::size_t i = 0; i < value_1.get_axis_lengths().size(); ++i) {
+      EXPECT_EQ(value_1.get_axis_length(i), value_1.get_axis_length(i));
+    }
+    EXPECT_EQ(value_1.get_center_state().get_name(), value_2.get_center_state().get_name());
+    EXPECT_EQ(value_1.get_center_state().get_reference_frame(), value_2.get_center_state().get_reference_frame());
+    EXPECT_TRUE(value_1.get_center_state().data().isApprox(value_2.get_center_state().data()));
   }
-  EXPECT_EQ(value_1.get_center_pose().get_name(), value_2.get_center_pose().get_name());
-  EXPECT_EQ(value_1.get_center_pose().get_reference_frame(), value_2.get_center_pose().get_reference_frame());
-  EXPECT_TRUE(value_1.get_center_pose().data().isApprox(value_2.get_center_pose().data()));
 }
 
 template<typename T>
@@ -137,7 +153,7 @@ TYPED_TEST_P(ParameterTest, Construction) {
     EXPECT_FALSE(param);
     param.set_name("test");
     EXPECT_EQ(param.get_name(), "test");
-    expect_values_equal(param.get_value(), TypeParam());
+    EXPECT_THROW(param.get_value(), exceptions::EmptyStateException);
 
     auto new_param(param);
     EXPECT_TRUE(new_param.is_empty());
@@ -160,7 +176,7 @@ TYPED_TEST_P(ParameterTest, Construction) {
     param.reset();
     EXPECT_TRUE(param.is_empty());
     EXPECT_FALSE(param);
-    expect_values_equal(param.get_value(), TypeParam());
+    EXPECT_THROW(param.get_value(), exceptions::EmptyStateException);
   }
 }
 
