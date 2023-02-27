@@ -165,73 +165,80 @@ void methods(py::module_& m) {
   }, "Unpack a data array into an ordered vector of encoded field messages.", "data"_a);
 
   m.def("encode", [](const py::object& object, const MessageType& type) -> py::bytes {
-    switch (type) {
-      case MessageType::STATE_MESSAGE:
-        return encode_bytes<State>(object.cast<State>());
-      case MessageType::SPATIAL_STATE_MESSAGE:
-        return encode_bytes<SpatialState>(object.cast<SpatialState>());
-      case MessageType::CARTESIAN_STATE_MESSAGE:
-        return encode_bytes<CartesianState>(object.cast<CartesianState>());
-      case MessageType::CARTESIAN_POSE_MESSAGE:
-        return encode_bytes<CartesianPose>(object.cast<CartesianPose>());
-      case MessageType::CARTESIAN_TWIST_MESSAGE:
-        return encode_bytes<CartesianTwist>(object.cast<CartesianTwist>());
-      case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
-        return encode_bytes<CartesianAcceleration>(object.cast<CartesianAcceleration>());
-      case MessageType::CARTESIAN_WRENCH_MESSAGE:
-        return encode_bytes<CartesianWrench>(object.cast<CartesianWrench>());
-      case MessageType::JACOBIAN_MESSAGE:
-        return encode_bytes<Jacobian>(object.cast<Jacobian>());
-      case MessageType::JOINT_STATE_MESSAGE:
-        return encode_bytes<JointState>(object.cast<JointState>());
-      case MessageType::JOINT_POSITIONS_MESSAGE:
-        return encode_bytes<JointPositions>(object.cast<JointPositions>());
-      case MessageType::JOINT_VELOCITIES_MESSAGE:
-        return encode_bytes<JointVelocities>(object.cast<JointVelocities>());
-      case MessageType::JOINT_ACCELERATIONS_MESSAGE:
-        return encode_bytes<JointAccelerations>(object.cast<JointAccelerations>());
-      case MessageType::JOINT_TORQUES_MESSAGE:
-        return encode_bytes<JointTorques>(object.cast<JointTorques>());
-      case MessageType::PARAMETER_MESSAGE:
-        return encode_parameter_container(object.cast<ParameterContainer>());
-      default:
-        throw std::invalid_argument("The message is not a valid encoded StateMessage.");
-        break;
+    try {
+      switch (type) {
+        case MessageType::STATE_MESSAGE:
+          return encode_bytes<State>(object.cast<State>());
+        case MessageType::SPATIAL_STATE_MESSAGE:
+          return encode_bytes<SpatialState>(object.cast<SpatialState>());
+        case MessageType::CARTESIAN_STATE_MESSAGE:
+          return encode_bytes<CartesianState>(object.cast<CartesianState>());
+        case MessageType::CARTESIAN_POSE_MESSAGE:
+          return encode_bytes<CartesianPose>(object.cast<CartesianPose>());
+        case MessageType::CARTESIAN_TWIST_MESSAGE:
+          return encode_bytes<CartesianTwist>(object.cast<CartesianTwist>());
+        case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+          return encode_bytes<CartesianAcceleration>(object.cast<CartesianAcceleration>());
+        case MessageType::CARTESIAN_WRENCH_MESSAGE:
+          return encode_bytes<CartesianWrench>(object.cast<CartesianWrench>());
+        case MessageType::JACOBIAN_MESSAGE:
+          return encode_bytes<Jacobian>(object.cast<Jacobian>());
+        case MessageType::JOINT_STATE_MESSAGE:
+          return encode_bytes<JointState>(object.cast<JointState>());
+        case MessageType::JOINT_POSITIONS_MESSAGE:
+          return encode_bytes<JointPositions>(object.cast<JointPositions>());
+        case MessageType::JOINT_VELOCITIES_MESSAGE:
+          return encode_bytes<JointVelocities>(object.cast<JointVelocities>());
+        case MessageType::JOINT_ACCELERATIONS_MESSAGE:
+          return encode_bytes<JointAccelerations>(object.cast<JointAccelerations>());
+        case MessageType::JOINT_TORQUES_MESSAGE:
+          return encode_bytes<JointTorques>(object.cast<JointTorques>());
+        case MessageType::PARAMETER_MESSAGE:
+          return encode_parameter_container(object.cast<ParameterContainer>());
+        default:
+          throw std::invalid_argument("The message is not a valid encoded StateMessage.");
+      }
+    } catch (const std::exception& ex) {
+      throw EncodingException(ex.what());
     }
   }, "Encode a control libraries object into a serialized binary string representation (wire format).", py::arg("object"), py::arg("type"));
 
   m.def("decode", [](const std::string& msg) -> py::object {
-    switch (check_message_type(msg)) {
-      case MessageType::STATE_MESSAGE:
-        return py::cast(decode<State>(msg));
-      case MessageType::SPATIAL_STATE_MESSAGE:
-        return py::cast(decode<SpatialState>(msg));
-      case MessageType::CARTESIAN_STATE_MESSAGE:
-        return py::cast<CartesianState>(decode<CartesianState>(msg));
-      case MessageType::CARTESIAN_POSE_MESSAGE:
-        return py::cast(decode<CartesianPose>(msg));
-      case MessageType::CARTESIAN_TWIST_MESSAGE:
-        return py::cast(decode<CartesianTwist>(msg));
-      case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
-        return py::cast(decode<CartesianAcceleration>(msg));
-      case MessageType::CARTESIAN_WRENCH_MESSAGE:
-        return py::cast(decode<CartesianWrench>(msg));
-      case MessageType::JACOBIAN_MESSAGE:
-        return py::cast(decode<Jacobian>(msg));
-      case MessageType::JOINT_STATE_MESSAGE:
-        return py::cast(decode<JointState>(msg));
-      case MessageType::JOINT_POSITIONS_MESSAGE:
-        return py::cast(decode<JointPositions>(msg));
-      case MessageType::JOINT_VELOCITIES_MESSAGE:
-        return py::cast(decode<JointVelocities>(msg));
-      case MessageType::JOINT_ACCELERATIONS_MESSAGE:
-        return py::cast(decode<JointAccelerations>(msg));
-      case MessageType::JOINT_TORQUES_MESSAGE:
-        return py::cast(decode<JointTorques>(msg));
-      case MessageType::PARAMETER_MESSAGE:
-        return decode_parameter(msg);
-      default:
-        return py::none();
+    try{
+      switch (check_message_type(msg)) {
+        case MessageType::STATE_MESSAGE:
+          return py::cast(decode<State>(msg));
+        case MessageType::SPATIAL_STATE_MESSAGE:
+          return py::cast(decode<SpatialState>(msg));
+        case MessageType::CARTESIAN_STATE_MESSAGE:
+          return py::cast<CartesianState>(decode<CartesianState>(msg));
+        case MessageType::CARTESIAN_POSE_MESSAGE:
+          return py::cast(decode<CartesianPose>(msg));
+        case MessageType::CARTESIAN_TWIST_MESSAGE:
+          return py::cast(decode<CartesianTwist>(msg));
+        case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+          return py::cast(decode<CartesianAcceleration>(msg));
+        case MessageType::CARTESIAN_WRENCH_MESSAGE:
+          return py::cast(decode<CartesianWrench>(msg));
+        case MessageType::JACOBIAN_MESSAGE:
+          return py::cast(decode<Jacobian>(msg));
+        case MessageType::JOINT_STATE_MESSAGE:
+          return py::cast(decode<JointState>(msg));
+        case MessageType::JOINT_POSITIONS_MESSAGE:
+          return py::cast(decode<JointPositions>(msg));
+        case MessageType::JOINT_VELOCITIES_MESSAGE:
+          return py::cast(decode<JointVelocities>(msg));
+        case MessageType::JOINT_ACCELERATIONS_MESSAGE:
+          return py::cast(decode<JointAccelerations>(msg));
+        case MessageType::JOINT_TORQUES_MESSAGE:
+          return py::cast(decode<JointTorques>(msg));
+        case MessageType::PARAMETER_MESSAGE:
+          return decode_parameter(msg);
+        default:
+          throw std::invalid_argument("Decoding not possible: Unknown or unsupported message type");
+      }
+    } catch (const std::exception& ex) {
+      throw clproto::DecodingException(ex.what());
     }
   }, "Decode a serialized binary string from wire format into a control libraries object instance.", "msg"_a);
 
