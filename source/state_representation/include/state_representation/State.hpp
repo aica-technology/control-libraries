@@ -129,7 +129,7 @@ public:
   bool is_deprecated(const std::chrono::duration<int64_t, DurationT>& time_delay) const;
 
   /**
-   * @brief Reset the state to be empty with no data
+   * @brief Reset the object to a post-construction state
    */
   virtual void reset();
 
