@@ -7,7 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- Bind remaining exception (#98)
+- Bind remaining exceptions (#98)
 - Move inlined functions of geometry classes to source files (#95)
 - Setting state to zero results in non empty state (#93)
 - Clean up geometry classes to define emptiness (#91)
