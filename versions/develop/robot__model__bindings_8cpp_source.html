@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.59</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.60</span>
    </div>
   </td>
  </tr>
@@ -90,8 +90,10 @@ $(function() {
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  m.attr(<span class="stringliteral">&quot;__version__&quot;</span>) = <span class="stringliteral">&quot;dev&quot;</span>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">  #endif</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  bind_model(m);</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">auto</span> m_sub = m.def_submodule(<span class="stringliteral">&quot;exceptions&quot;</span>, <span class="stringliteral">&quot;Submodule for custom robot model exceptions&quot;</span>);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  bind_exceptions(m_sub);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  bind_model(m);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 <div class="ttc" id="anamespacerobot__model_html"><div class="ttname"><a href="namespacerobot__model.html">robot_model</a></div><div class="ttdoc">Robot kinematics and dynamics.</div><div class="ttdef"><b>Definition:</b> <a href="_frame_not_found_exception_8hpp_source.html#l00005">FrameNotFoundException.hpp:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
