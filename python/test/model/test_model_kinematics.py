@@ -3,6 +3,7 @@ import os
 import unittest
 from datetime import timedelta
 from robot_model import Model, InverseKinematicsParameters, QPInverseVelocityParameters
+from robot_model.exceptions import FrameNotFoundError, InvalidJointStateSizeError, InverseKinematicsNotConvergingErrors
 from state_representation import CartesianPose, CartesianTwist, JointState, JointPositions, JointTorques, \
     JointVelocities
 
@@ -56,10 +57,10 @@ class TestRobotModelKinematics(unittest.TestCase):
 
     def test_fk_joint_state_size(self):
         dummy = JointPositions(self.robot_model.get_robot_name(), 6)
-        self.assertRaises(ValueError, self.robot_model.forward_kinematics, dummy)
+        self.assertRaises(InvalidJointStateSizeError, self.robot_model.forward_kinematics, dummy)
 
     def test_fk_invalid_frame(self):
-        self.assertRaises(ValueError, self.robot_model.forward_kinematics, JointPositions(self.joint_state),
+        self.assertRaises(FrameNotFoundError, self.robot_model.forward_kinematics, JointPositions(self.joint_state),
                           "panda_link99")
 
     def test_fk_ee(self):
@@ -96,7 +97,7 @@ class TestRobotModelKinematics(unittest.TestCase):
         param.max_number_of_iterations = 1
 
         reference = self.robot_model.forward_kinematics(config, "panda_link8")
-        self.assertRaises(RuntimeError, self.robot_model.inverse_kinematics, reference, param, "panda_link8")
+        self.assertRaises(InverseKinematicsNotConvergingErrors, self.robot_model.inverse_kinematics, reference, param, "panda_link8")
 
     def test_inverse_velocity(self):
         eef_frame = self.robot_model.get_frames()[-1]

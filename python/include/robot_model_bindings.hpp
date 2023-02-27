@@ -19,4 +19,5 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 using namespace robot_model;
 
+void bind_exceptions(py::module_& m);
 void bind_model(py::module_& m);
