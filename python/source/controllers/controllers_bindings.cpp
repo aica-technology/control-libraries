@@ -14,6 +14,8 @@ PYBIND11_MODULE(controllers, m) {
 
   py::module_::import("state_representation");
 
+  auto m_sub = m.def_submodule("exceptions", "Submodule for custom controllers exceptions");
+  bind_exceptions(m_sub);
   bind_controller_type(m);
   bind_computational_space(m);
   bind_cartesian_controllers(m);

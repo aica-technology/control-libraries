@@ -3,6 +3,7 @@ import unittest
 
 import numpy as np
 from robot_model import Model, create_urdf_from_string
+from robot_model.exceptions import FrameNotFoundError
 from state_representation import JointPositions, Jacobian
 
 ROBOT_MODEL_METHOD_EXPECTS = [
@@ -93,7 +94,7 @@ class TestRobotModel(unittest.TestCase):
 
     def test_jacobian_invalid(self):
         dummy = JointPositions(self.robot_name, 6)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(FrameNotFoundError):
             self.robot_model.compute_jacobian(self.joint_positions, "panda_link99")
             self.robot_model.compute_jacobian(dummy, "panda_link8")
 

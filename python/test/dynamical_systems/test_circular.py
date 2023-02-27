@@ -3,6 +3,7 @@ import state_representation as sr
 import unittest
 from datetime import timedelta
 from dynamical_systems import create_cartesian_ds, DYNAMICAL_SYSTEM_TYPE
+from dynamical_systems.exceptions import EmptyAttractorError, EmptyBaseFrameError
 
 
 class TestCircular(unittest.TestCase):
@@ -44,15 +45,15 @@ class TestCircular(unittest.TestCase):
         state3 = sr.CartesianState("C", "A")
         state4 = sr.CartesianState().Identity("C", "world")
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyBaseFrameError):
             ds.evaluate(state1)
 
         ds.set_base_frame(state1)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(sr.exceptions.IncompatibleReferenceFramesError):
             ds.evaluate(state2)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(sr.exceptions.EmptyStateError):
             ds.evaluate(state3)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyAttractorError):
             ds.evaluate(state4)
 
         ds.set_parameter(sr.Parameter("limit_cycle", self.limit_cycle, sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID))

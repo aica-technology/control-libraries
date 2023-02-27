@@ -18,5 +18,9 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
+class EncodingException : public std::runtime_error {
+public:
+  explicit EncodingException(const std::string& msg) : std::runtime_error(msg) {}
+};
+
 void bind_clproto(py::module_& m);
-void bind_clproto_parameters(py::module_& m);
