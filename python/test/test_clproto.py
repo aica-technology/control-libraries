@@ -109,8 +109,7 @@ def test_encode_decode_parameters(helpers, name, value, parameter_type, message_
 
 @pytest.mark.parametrize("name,value,parameter_type,parameter_state_type", invalid_parameters)
 def test_encode_invalid_parameter(name, value, parameter_type, parameter_state_type):
-    # FIXME: this should rather raise a clproto.DecodingError
-    with pytest.raises(ValueError):
+    with pytest.raises(clproto.EncodingError):
         clproto.encode(sr.Parameter(name, value, parameter_type, parameter_state_type),
                        clproto.MessageType.PARAMETER_MESSAGE)
 
@@ -140,6 +139,8 @@ def test_decode_invalid_string():
     dummy_msg = "hello world"
     assert not clproto.is_valid(dummy_msg)
     assert clproto.check_message_type(dummy_msg) == clproto.MessageType.UNKNOWN_MESSAGE
-    # FIXME: this should rather raise a clproto.DecodingError
-    recv_state = clproto.decode(dummy_msg)
-    assert recv_state is None
+    with pytest.raises(clproto.DecodingError):
+        clproto.decode(dummy_msg)
+
+    with pytest.raises(clproto.JsonParsingError):
+        clproto.from_json("")

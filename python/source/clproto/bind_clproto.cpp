@@ -247,6 +247,9 @@ void methods(py::module_& m) {
 }
 
 void bind_clproto(py::module_& m) {
+  py::register_exception<clproto::JsonParsingException>(m, "JsonParsingError", PyExc_RuntimeError);
+  py::register_exception<clproto::DecodingException>(m, "DecodingError", PyExc_RuntimeError);
+  py::register_exception<EncodingException>(m, "EncodingError", PyExc_RuntimeError);
   message_type(m);
   parameter_message_type(m);
   methods(m);
