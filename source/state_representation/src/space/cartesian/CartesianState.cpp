@@ -445,7 +445,7 @@ void CartesianState::set_zero() {
   this->angular_acceleration_.setZero();
   this->force_.setZero();
   this->torque_.setZero();
-  // FIXME(#15): reset timestamp
+  this->reset_timestamp();
   this->set_empty(false);
 }
 
@@ -595,6 +595,7 @@ void CartesianState::normalize(const CartesianStateVariable& state_variable_type
       || state_variable_type == CartesianStateVariable::ALL) {
     this->torque_.normalize();
   }
+  this->reset_timestamp();
 }
 
 CartesianState CartesianState::normalized(const CartesianStateVariable& state_variable_type) const {

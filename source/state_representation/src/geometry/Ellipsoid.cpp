@@ -63,16 +63,19 @@ const CartesianPose Ellipsoid::get_rotation() const {
 
 void Ellipsoid::set_axis_lengths(const std::vector<double>& axis_lengths) {
   this->axis_lengths_ = axis_lengths;
+  this->reset_timestamp();
   this->set_empty(false);
 }
 
 void Ellipsoid::set_axis_lengths(unsigned int index, double axis_length) {
   this->axis_lengths_[index] = axis_length;
+  this->reset_timestamp();
   this->set_empty(false);
 }
 
 void Ellipsoid::set_rotation_angle(double rotation_angle) {
   this->rotation_angle_ = rotation_angle;
+  this->reset_timestamp();
   this->set_empty(false);
 }
 

@@ -453,8 +453,8 @@ void JointState::set_zero() {
     this->velocities_.setZero();
     this->accelerations_.setZero();
     this->torques_.setZero();
+    this->reset_timestamp();
     this->set_empty(false);
-    // FIXME(#15): reset timestamp
   }
 }
 
