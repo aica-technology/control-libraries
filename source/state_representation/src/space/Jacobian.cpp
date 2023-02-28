@@ -138,11 +138,7 @@ void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
 }
 
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
-  if (this->rows() != data.rows() || this->cols() != data.cols()) {
-    throw exceptions::IncompatibleSizeException(
-        "Input matrix is of incorrect size, expected " + std::to_string(this->rows()) + "x" + std::to_string(this->cols())
-            + " got " + std::to_string(data.rows()) + "x" + std::to_string(data.cols()));
-  }
+  assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
   this->data_ = data;
 }
