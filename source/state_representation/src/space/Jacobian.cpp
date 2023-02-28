@@ -159,14 +159,12 @@ void Jacobian::reset() {
   this->State::reset();
 }
 
-Jacobian Jacobian::inverse() const {
+Eigen::MatrixXd Jacobian::inverse() const {
   if (this->rows() != this->cols()) {
     throw exceptions::IncompatibleSizeException(
         "The Jacobian matrix is not invertible, use the pseudoinverse function instead");
   }
-  Jacobian result(*this);
-  result.set_data(result.data().inverse());
-  return result;
+  return this->data().inverse();
 }
 
 bool Jacobian::is_incompatible(const State& state) const {
@@ -222,11 +220,8 @@ bool Jacobian::is_incompatible(const State& state) const {
   }
 }
 
-Jacobian Jacobian::pseudoinverse() const {
-  Jacobian result(*this);
-  Eigen::MatrixXd pinv = this->data().completeOrthogonalDecomposition().pseudoInverse();
-  result.set_data(pinv);
-  return result;
+Eigen::MatrixXd Jacobian::pseudoinverse() const {
+  return this->data().completeOrthogonalDecomposition().pseudoInverse();
 }
 
 Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
@@ -249,10 +244,8 @@ JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
   return result;
 }
 
-Jacobian Jacobian::transpose() const {
-  Jacobian result(*this);
-  result.set_data(result.data().transpose());
-  return result;
+Eigen::MatrixXd Jacobian::transpose() const {
+  return this->data().transpose();
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {

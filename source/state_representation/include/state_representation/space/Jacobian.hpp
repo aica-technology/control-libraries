@@ -203,14 +203,13 @@ public:
    */
   void reset() override;
 
-  // FIXME: does it make sense to return Jacobians instead of matrices (inverse, pseudoinverse, transpose)?
   /**
    * @brief Return the inverse of the Jacobian matrix
    * @details If the matrix is not invertible, an error is thrown advising to use the
    * pseudoinverse function instead
    * @return The inverse of the Jacobian
    */
-  Jacobian inverse() const;
+  Eigen::MatrixXd inverse() const;
 
   /**
    * @brief Check if the Jacobian is incompatible for operations with the state given as argument
@@ -222,7 +221,7 @@ public:
    * @brief Return the pseudoinverse of the Jacobian matrix
    * @return The pseudoinverse of the Jacobian
    */
-  Jacobian pseudoinverse() const;
+  Eigen::MatrixXd pseudoinverse() const;
 
   /**
    * @brief Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse
@@ -240,9 +239,9 @@ public:
 
   /**
     * @brief Return the transpose of the Jacobian matrix
-    * @return The transposed Jacobian
+    * @return The transposed Jacobian matrix
     */
-  Jacobian transpose() const;
+  Eigen::MatrixXd transpose() const;
 
   /**
    * @brief Overload the * operator with an arbitrary matrix
