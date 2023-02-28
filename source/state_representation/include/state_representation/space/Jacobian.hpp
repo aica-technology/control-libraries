@@ -212,6 +212,21 @@ public:
   Eigen::MatrixXd inverse() const;
 
   /**
+   * @brief Solve the system X = inv(J) * M to obtain X which is more efficient than multiplying with the inverse
+   * @param matrix The matrix to solve the system with
+   * @return The result of X = J.solve(M) from Eigen decomposition
+   */
+  Eigen::MatrixXd inverse(const Eigen::MatrixXd& matrix) const;
+
+  /**
+   * @brief Transform the given Cartesian twist to joint space by solving the system dq = inv(J) * dX to obtain dq
+   * which is more efficient than multiplying with the inverse of the Jacobian matrix
+   * @param twist The Cartesian twist to be transformed to joint space
+   * @return The corresponding joint velocities
+   */
+  JointVelocities inverse(const CartesianTwist& twist) const;
+
+  /**
    * @brief Check if the Jacobian is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
@@ -224,24 +239,33 @@ public:
   Eigen::MatrixXd pseudoinverse() const;
 
   /**
-   * @brief Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse
-   * @param matrix The matrix to solve the system with
-   * @return The result of X = J.solve(M) from Eigen decomposition
+   * @brief Multiply the given matrix by the pseudoinverse of the Jacobian matrix
+   * @param matrix The matrix to be multiplied with the Jacobian
+   * @return The result of the matrix multiplication
    */
-  Eigen::MatrixXd solve(const Eigen::MatrixXd& matrix) const;
+  Eigen::MatrixXd pseudoinverse(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Solve the system dX = J*dq to obtain dq which is more efficient than multiplying with the pseudo-inverse
-   * @param dX The Cartesian twist to multiply with
+   * @brief Transform the given Cartesian twist to joint space by multiplication with the pseudoinverse of the
+   * Jacobian matrix
+   * @param twist The Cartesian twist to be transformed to joint space
    * @return The corresponding joint velocities
    */
-  JointVelocities solve(const CartesianTwist& twist) const;
+  JointVelocities pseudoinverse(const CartesianTwist& twist) const;
 
   /**
     * @brief Return the transpose of the Jacobian matrix
     * @return The transposed Jacobian matrix
     */
   Eigen::MatrixXd transpose() const;
+
+  /**
+    * @brief Transform the given Cartesian wrench to joint space by multiplication with the transpose of the
+    * Jacobian matrix
+    * @param wrench The Cartesian wrench to be transformed to joint space
+    * @return The corresponding joint torques
+    */
+  JointTorques transpose(const CartesianWrench& wrench) const;
 
   /**
    * @brief Overload the * operator with an arbitrary matrix

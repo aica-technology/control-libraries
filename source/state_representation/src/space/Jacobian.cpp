@@ -138,6 +138,7 @@ void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
   *this = reference_frame * (*this);
 }
 
+// use either rows_ or rows()
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
   assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
@@ -165,6 +166,18 @@ Eigen::MatrixXd Jacobian::inverse() const {
         "The Jacobian matrix is not invertible, use the pseudoinverse function instead");
   }
   return this->data().inverse();
+}
+
+Eigen::MatrixXd Jacobian::inverse(const Eigen::MatrixXd& matrix) const {
+  assert_matrix_size(matrix, this->rows(), matrix.cols());
+  return this->data().colPivHouseholderQr().solve(matrix);
+}
+
+JointVelocities Jacobian::inverse(const CartesianTwist& twist) const {
+  if (this->is_incompatible(twist)) {
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian twist are incompatible");
+  }
+  return JointVelocities(this->get_name(), this->get_joint_names(), this->inverse(twist.data()));
 }
 
 bool Jacobian::is_incompatible(const State& state) const {
@@ -224,28 +237,27 @@ Eigen::MatrixXd Jacobian::pseudoinverse() const {
   return this->data().completeOrthogonalDecomposition().pseudoInverse();
 }
 
-Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
-  if (this->rows() != matrix.rows()) {
-    throw IncompatibleSizeException(
-        "Input matrix is of incorrect size, expected " + std::to_string(this->rows()) + " rows, got "
-            + std::to_string(matrix.rows()));
-  }
-  return this->data().colPivHouseholderQr().solve(matrix);
+Eigen::MatrixXd Jacobian::pseudoinverse(const Eigen::MatrixXd& matrix) const {
+  assert_matrix_size(matrix, this->rows(), matrix.cols());
+  return this->pseudoinverse() * matrix;
 }
 
-JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
+JointVelocities Jacobian::pseudoinverse(const CartesianTwist& twist) const {
   if (this->is_incompatible(twist)) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian twist are incompatible");
   }
-  // this uses the solve operation instead of using the inverse or pseudo-inverse of the Jacobian
-  Eigen::VectorXd joint_velocities = this->solve(twist.data());
-  // return a JointVelocities state
-  JointVelocities result(this->get_name(), this->get_joint_names(), joint_velocities);
-  return result;
+  return JointVelocities(this->get_name(), this->get_joint_names(), this->pseudoinverse(twist.data()));
 }
 
 Eigen::MatrixXd Jacobian::transpose() const {
   return this->data().transpose();
+}
+
+JointTorques Jacobian::transpose(const CartesianWrench& wrench) const {
+  if (this->is_incompatible(wrench)) {
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian wrench are incompatible");
+  }
+  return JointTorques(this->get_name(), this->get_joint_names(), this->transpose() * wrench.data());
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
