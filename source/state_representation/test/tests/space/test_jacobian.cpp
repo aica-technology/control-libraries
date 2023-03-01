@@ -38,13 +38,7 @@ TEST(JacobianTest, TestSetData) {
   for (std::size_t i = 0; i < jac.cols(); ++i) {
     EXPECT_GT(jac.col(i).norm(), 0);
   }
-  bool except_thrown = false;
-  try {
-    jac.set_data(Eigen::MatrixXd::Random(7, 6));
-  } catch (const IncompatibleSizeException& e) {
-    except_thrown = true;
-  }
-  EXPECT_TRUE(except_thrown);
+  EXPECT_THROW(jac.set_data(Eigen::MatrixXd::Random(7, 6)), IncompatibleSizeException);
 }
 
 TEST(JacobianTest, TestRandomCreate) {
@@ -58,14 +52,13 @@ TEST(JacobianTest, TestRandomCreate) {
 
 TEST(JacobianTest, TestTranspose) {
   Jacobian jac = Jacobian::Random("robot", 7, "test");
-  Jacobian jact = jac.transpose();
-  EXPECT_EQ(jact.get_type(), StateType::JACOBIAN);
+  auto jact = jac.transpose();
 
   EXPECT_EQ(jact.rows(), 7);
   EXPECT_EQ(jact.cols(), 6);
 
   for (std::size_t i = 0; i < jac.cols(); ++i) {
-    EXPECT_TRUE(jac.col(i).isApprox(jact.row(i)));
+    EXPECT_TRUE(jac.col(i).isApprox(jact.row(i).transpose()));
   }
 
   jac.reset();
@@ -87,34 +80,18 @@ TEST(JacobianTest, TestMutltiplyWithEigen) {
   EXPECT_THROW(jac * mat1, EmptyStateException);
 }
 
-TEST(JacobianTest, TestMutltiplyJacobian) {
-  Jacobian jac = Jacobian::Random("robot", 7, "test");
-  Jacobian jac2 = Jacobian::Random("robot", 7, "test");
-  Eigen::MatrixXd res = jac * jac2.transpose();
-  EXPECT_TRUE(res.isApprox(jac.data() * jac2.data().transpose()));
-
-  EXPECT_THROW(jac * jac2, IncompatibleSizeException);
-
-  // check with incorrect number of joints
-  Jacobian jac3 = Jacobian::Random("robot", 6, "test");
-  EXPECT_THROW(jac * jac3.transpose(), IncompatibleStatesException);
-
-  // check with incorrect reference frames
-  Jacobian jac4 = Jacobian::Random("robot", 7, "test", "frameA");
-  EXPECT_THROW(jac * jac4.transpose(), IncompatibleStatesException);
-
-  jac.reset();
-  EXPECT_THROW(jac * jac.transpose(), EmptyStateException);
-}
-
 TEST(JacobianTest, TestSolve) {
   Jacobian jac = Jacobian::Random("robot", 7, "test");
   Eigen::MatrixXd mat1 = Eigen::VectorXd::Random(7, 1);
-  EXPECT_THROW(jac.solve(mat1), IncompatibleSizeException);
+  EXPECT_THROW(jac.inverse(mat1), IncompatibleSizeException);
+  EXPECT_THROW(jac.pseudoinverse(mat1), IncompatibleSizeException);
 
   Eigen::MatrixXd mat2 = Eigen::VectorXd::Random(6, 1);
-  Eigen::MatrixXd res2 = jac.solve(mat2);
+  Eigen::MatrixXd res2 = jac.inverse(mat2);
+  EXPECT_EQ(res2.rows(), 7);
+  EXPECT_EQ(res2.cols(), 1);
 
+  res2 = jac.pseudoinverse(mat2);
   EXPECT_EQ(res2.rows(), 7);
   EXPECT_EQ(res2.cols(), 1);
 
@@ -140,10 +117,13 @@ TEST(JacobianTest, TestCartesianToJoint) {
   CartesianTwist cvel = CartesianTwist::Random("test");
   EXPECT_THROW(jac.solve(cvel), IncompatibleStatesException);
 
+  EXPECT_THROW(JointVelocities jvel = jac.inverse(cvel), IncompatibleStatesException);
+  EXPECT_THROW(JointVelocities jvel = jac.pseudoinverse(cvel), IncompatibleStatesException);
+
   cvel.set_reference_frame("test_ref");
 
   state_representation::JointVelocities jvel2;
-  EXPECT_NO_THROW(jvel2 = jac.pseudoinverse() * cvel);
+  EXPECT_NO_THROW(jvel2 = jac.pseudoinverse(cvel));
   EXPECT_GT(jvel2.data().norm(), 0);
 
   jac.reset();
@@ -158,8 +138,8 @@ TEST(JacobianTest, TestChangeReferenceFrame) {
   // use a proxy operation with a twist to check correctness
   CartesianTwist vel_in_world = CartesianTwist::Random("test", "world");
   CartesianTwist vel_in_test_ref = wTtest_ref.inverse() * vel_in_world;
-  JointVelocities jt1 = jac_in_world.solve(vel_in_world);
-  JointVelocities jt2 = jac_in_test_ref.solve(vel_in_test_ref);
+  JointVelocities jt1 = jac_in_world.inverse(vel_in_world);
+  JointVelocities jt2 = jac_in_test_ref.inverse(vel_in_test_ref);
   EXPECT_TRUE(jt1.data().isApprox(jt2.data()));
 
   jac_in_test_ref.reset();
