@@ -8,84 +8,71 @@ namespace state_representation {
 
 using namespace exceptions;
 
+static void assert_matrix_size(const Eigen::MatrixXd& matrix, unsigned int expected_rows, unsigned int expected_cols) {
+  if (expected_rows != matrix.rows() || expected_cols != matrix.cols()) {
+    throw exceptions::IncompatibleSizeException(
+        "Matrix is of incorrect size, expected " + std::to_string(expected_rows) + "x" + std::to_string(expected_cols)
+            + " got " + std::to_string(matrix.rows()) + "x" + std::to_string(matrix.cols()));
+  }
+}
+
 Jacobian::Jacobian() : State() {
   this->set_type(StateType::JACOBIAN);
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   unsigned int nb_joints,
-                   const std::string& frame,
-                   const std::string& reference_frame) :
+Jacobian::Jacobian(
+    const std::string& robot_name, unsigned int nb_joints, const std::string& frame, const std::string& reference_frame
+) :
     State(robot_name),
     joint_names_(nb_joints),
     frame_(frame),
     reference_frame_(reference_frame),
-    rows_(6),
-    cols_(nb_joints) {
+    data_(Eigen::MatrixXd::Zero(6, nb_joints)) {
   this->set_type(StateType::JACOBIAN);
   this->set_joint_names(nb_joints);
-  this->reset();
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::vector<std::string>& joint_names,
-                   const std::string& frame,
-                   const std::string& reference_frame) :
-    State(robot_name),
-    joint_names_(joint_names),
-    frame_(frame),
-    reference_frame_(reference_frame),
-    rows_(6),
-    cols_(joint_names.size()) {
-  this->set_type(StateType::JACOBIAN);
-  this->reset();
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const std::string& reference_frame
+) : Jacobian(robot_name, joint_names.size(), frame, reference_frame) {
+  this->set_joint_names(joint_names);
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::string& frame,
-                   const Eigen::MatrixXd& data,
-                   const std::string& reference_frame) :
-    Jacobian(robot_name, data.cols(), frame, reference_frame) {
-  this->set_data(data);
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::string& frame, const Eigen::MatrixXd& data,
+    const std::string& reference_frame
+) : Jacobian(robot_name, data.cols(), frame, reference_frame) {
+  assert_matrix_size(data, 6, data.cols());
+  this->data_ = data;
+  this->set_empty(false);
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::vector<std::string>& joint_names,
-                   const std::string& frame,
-                   const Eigen::MatrixXd& data,
-                   const std::string& reference_frame) :
-    Jacobian(robot_name, joint_names, frame, reference_frame) {
-  this->set_data(data);
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const Eigen::MatrixXd& data, const std::string& reference_frame
+) : Jacobian(robot_name, frame, data, reference_frame) {
+  this->set_joint_names(joint_names);
 }
 
-// FIXME: improve copy constructor after Jacobian refactor
 Jacobian::Jacobian(const Jacobian& jacobian) :
-    State(jacobian),
-    joint_names_(jacobian.joint_names_),
-    frame_(jacobian.frame_),
-    reference_frame_(jacobian.reference_frame_),
-    rows_(jacobian.rows_),
-    cols_(jacobian.cols_),
-    data_(jacobian.data_) {
-  this->set_type(StateType::JACOBIAN);
+    Jacobian(jacobian.get_name(), jacobian.joint_names_, jacobian.frame_, jacobian.reference_frame_) {
+  if (jacobian) {
+    this->data_ = jacobian.data_;
+  }
 }
 
-Jacobian Jacobian::Random(const std::string& robot_name,
-                          unsigned int nb_joints,
-                          const std::string& frame,
-                          const std::string& reference_frame) {
-  Jacobian random(robot_name, nb_joints, frame, reference_frame);
-  random.set_data(Eigen::MatrixXd::Random(random.rows_, random.cols_));
-  return random;
+Jacobian Jacobian::Random(
+    const std::string& robot_name, unsigned int nb_joints, const std::string& frame, const std::string& reference_frame
+) {
+  return {robot_name, frame, Eigen::MatrixXd::Random(6, nb_joints), reference_frame};
 }
 
-Jacobian Jacobian::Random(const std::string& robot_name,
-                          const std::vector<std::string>& joint_names,
-                          const std::string& frame,
-                          const std::string& reference_frame) {
-  Jacobian random(robot_name, joint_names, frame, reference_frame);
-  random.set_data(Eigen::MatrixXd::Random(random.rows_, random.cols_));
-  return random;
+Jacobian Jacobian::Random(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const std::string& reference_frame
+) {
+  return {robot_name, joint_names, frame, Eigen::MatrixXd::Random(6, joint_names.size()), reference_frame};
 }
 
 Jacobian& Jacobian::operator=(const Jacobian& jacobian) {
@@ -95,7 +82,7 @@ Jacobian& Jacobian::operator=(const Jacobian& jacobian) {
 }
 
 unsigned int Jacobian::rows() const {
-  return this->rows_;
+  return 6;
 }
 
 Eigen::VectorXd Jacobian::row(unsigned int index) const {
@@ -103,7 +90,7 @@ Eigen::VectorXd Jacobian::row(unsigned int index) const {
 }
 
 unsigned int Jacobian::cols() const {
-  return this->cols_;
+  return this->joint_names_.size();
 }
 
 Eigen::VectorXd Jacobian::col(unsigned int index) const {
@@ -129,9 +116,9 @@ const Eigen::MatrixXd& Jacobian::data() const {
 
 void Jacobian::set_joint_names(unsigned int nb_joints) {
   if (this->joint_names_.size() != nb_joints) {
-    throw exceptions::IncompatibleSizeException("Input number of joints is of incorrect size, expected "
-                                                    + std::to_string(this->joint_names_.size())
-                                                    + " got " + std::to_string(nb_joints));
+    throw exceptions::IncompatibleSizeException(
+        "Input number of joints is of incorrect size, expected " + std::to_string(this->joint_names_.size()) + " got "
+            + std::to_string(nb_joints));
   }
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->joint_names_[i] = "joint" + std::to_string(i);
@@ -140,9 +127,9 @@ void Jacobian::set_joint_names(unsigned int nb_joints) {
 
 void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
   if (this->joint_names_.size() != joint_names.size()) {
-    throw exceptions::IncompatibleSizeException("Input vector of joint names is of incorrect size, expected "
-                                                    + std::to_string(this->joint_names_.size())
-                                                    + " got " + std::to_string(joint_names.size()));
+    throw exceptions::IncompatibleSizeException(
+        "Input vector of joint names is of incorrect size, expected " + std::to_string(this->joint_names_.size())
+            + " got " + std::to_string(joint_names.size()));
   }
   this->joint_names_ = joint_names;
 }
@@ -152,14 +139,14 @@ void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
 }
 
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
-  if (this->rows() != data.rows() || this->cols() != data.cols()) {
-    throw exceptions::IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                                    + std::to_string(this->rows()) + "x" + std::to_string(this->cols())
-                                                    + " got " + std::to_string(data.rows()) + "x"
-                                                    + std::to_string(data.cols()));
-  }
+  assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
   this->data_ = data;
+}
+
+void Jacobian::set_zero() {
+  this->data_.resize(this->rows(), this->cols());
+  this->data_.setZero();
 }
 
 Jacobian Jacobian::copy() const {
@@ -168,19 +155,16 @@ Jacobian Jacobian::copy() const {
 }
 
 void Jacobian::reset() {
+  this->set_zero();
   this->State::reset();
-  this->data_.resize(this->rows_, this->cols());
-  this->data_.setZero();
 }
 
 Jacobian Jacobian::inverse() const {
-  if (this->rows_ != this->cols_) {
+  if (this->rows() != this->cols()) {
     throw exceptions::IncompatibleSizeException(
         "The Jacobian matrix is not invertible, use the pseudoinverse function instead");
   }
   Jacobian result(*this);
-  result.cols_ = this->cols_;
-  result.rows_ = this->rows_;
   result.set_data(result.data().inverse());
   return result;
 }
@@ -190,13 +174,13 @@ bool Jacobian::is_incompatible(const State& state) const {
     switch (state.get_type()) {
       case StateType::JACOBIAN: {
         auto other = dynamic_cast<const Jacobian&>(state);
-        if (this->cols_ != other.joint_names_.size()) {
+        if (this->cols() != other.joint_names_.size()) {
           return true;
         }
         if (this->reference_frame_ != other.reference_frame_) {
           return true;
         }
-        for (unsigned int i = 0; i < this->cols_; ++i) {
+        for (unsigned int i = 0; i < this->cols(); ++i) {
           if (this->joint_names_[i] != other.joint_names_[i]) {
             return true;
           }
@@ -209,10 +193,10 @@ bool Jacobian::is_incompatible(const State& state) const {
       case StateType::JOINT_ACCELERATIONS:
       case StateType::JOINT_TORQUES: {
         auto other = dynamic_cast<const JointState&>(state);
-        if (this->cols_ != other.get_names().size()) {
+        if (this->cols() != other.get_names().size()) {
           return true;
         }
-        for (unsigned int i = 0; i < this->cols_; ++i) {
+        for (unsigned int i = 0; i < this->cols(); ++i) {
           if (this->joint_names_[i] != other.get_names()[i]) {
             return true;
           }
@@ -241,16 +225,15 @@ bool Jacobian::is_incompatible(const State& state) const {
 Jacobian Jacobian::pseudoinverse() const {
   Jacobian result(*this);
   Eigen::MatrixXd pinv = this->data().completeOrthogonalDecomposition().pseudoInverse();
-  result.cols_ = pinv.cols();
-  result.rows_ = pinv.rows();
   result.set_data(pinv);
   return result;
 }
 
 Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
-  if (this->rows_ != matrix.rows()) {
-    throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                        + std::to_string(this->rows_) + " rows, got " + std::to_string(matrix.rows()));
+  if (this->rows() != matrix.rows()) {
+    throw IncompatibleSizeException(
+        "Input matrix is of incorrect size, expected " + std::to_string(this->rows()) + " rows, got "
+            + std::to_string(matrix.rows()));
   }
   return this->data().colPivHouseholderQr().solve(matrix);
 }
@@ -268,16 +251,15 @@ JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
 
 Jacobian Jacobian::transpose() const {
   Jacobian result(*this);
-  result.cols_ = this->rows_;
-  result.rows_ = this->cols_;
   result.set_data(result.data().transpose());
   return result;
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
   if (matrix.rows() != this->cols()) {
-    throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                        + std::to_string(this->cols()) + " rows, got " + std::to_string(matrix.rows()));
+    throw IncompatibleSizeException(
+        "Input matrix is of incorrect size, expected " + std::to_string(this->cols()) + " rows, got "
+            + std::to_string(matrix.rows()));
   }
   return this->data() * matrix;
 }
@@ -330,8 +312,9 @@ JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
 
 Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
   if (pose.get_name() != jacobian.get_reference_frame()) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianPose are incompatible, expected pose of "
-                                          + jacobian.get_reference_frame() + " got " + pose.get_name());
+    throw IncompatibleStatesException(
+        "The Jacobian and the input CartesianPose are incompatible, expected pose of " + jacobian.get_reference_frame()
+            + " got " + pose.get_name());
   }
   // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
   // FIXME transpose is weird and confusing with the statement above (also what does it mean for the incompatibility?)
@@ -354,22 +337,22 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
   this->assert_not_empty();
-  if (row > this->rows_) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
+  if (row > this->rows()) {
+    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
   }
-  if (col > this->cols_) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols_));
+  if (col > this->cols()) {
+    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
   }
   return this->data_(row, col);
 }
 
 const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
   this->assert_not_empty();
-  if (row > this->rows_) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
+  if (row > this->rows()) {
+    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
   }
-  if (col > this->cols_) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols_));
+  if (col > this->cols()) {
+    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
   }
   return this->data_(row, col);
 }
