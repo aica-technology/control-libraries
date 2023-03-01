@@ -189,7 +189,7 @@ public:
   void set_data(const Eigen::MatrixXd& data) override;
 
   /**
-   * @brief Set the Jacobian to a zero value
+   * @brief Set the Jacobian matrix to a zero value
    */
   void set_zero();
 
@@ -277,7 +277,7 @@ public:
   /**
    * @brief Overload the * operator with an 6x6 matrix on the left side
    * @param matrix The matrix to multiply with
-   * @param jacobian The Jacobian matrix
+   * @param jacobian The Jacobian
    * @return The Jacobian transformed by the matrix
    */
   friend Jacobian operator*(const Eigen::Matrix<double, 6, 6>& matrix, const Jacobian& jacobian);
