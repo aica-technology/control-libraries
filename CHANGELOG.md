@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Refactor Jacobian methods and operators (#101)
 - Remove rows_ and cols_ and improve constructors (#100)
 - Raise exception in getters if state is empty (#97)
 - Bind error objects of all library modules with Pybind (#98)
