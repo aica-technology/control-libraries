@@ -160,6 +160,12 @@ protected:
   void set_empty(bool empty = true);
 
   /**
+   * @brief Throw an exception if the state is empty
+   * @throws exceptions::EmptyStateException
+   */
+  void assert_not_empty() const;
+
+  /**
    * @brief Convert the state to its string representation
    */
   virtual std::string to_string() const;

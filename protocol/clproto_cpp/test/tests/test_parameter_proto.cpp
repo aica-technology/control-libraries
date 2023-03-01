@@ -34,8 +34,11 @@ static std::tuple<ParamT<bool>,
 template<typename T>
 static void test_parameter_equal(const T& send_state, const T& recv_state) {
   EXPECT_STREQ(send_state.get_name().c_str(), recv_state.get_name().c_str());
-  EXPECT_EQ(send_state.get_value(), recv_state.get_value());
   EXPECT_EQ(send_state.get_type(), recv_state.get_type());
+  EXPECT_EQ(send_state.is_empty(), recv_state.is_empty());
+  if (send_state) {
+    EXPECT_EQ(send_state.get_value(), recv_state.get_value());
+  }
 }
 
 template<typename T>

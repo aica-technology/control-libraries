@@ -87,6 +87,7 @@ CartesianState& CartesianState::operator=(const CartesianState& state) {
 }
 
 Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable& state_variable_type) const {
+  this->assert_not_empty();
   switch (state_variable_type) {
     case CartesianStateVariable::POSITION:
       return this->position_;
@@ -136,10 +137,12 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
 }
 
 const Eigen::Vector3d& CartesianState::get_position() const {
+  this->assert_not_empty();
   return this->position_;
 }
 
 const Eigen::Quaterniond& CartesianState::get_orientation() const {
+  this->assert_not_empty();
   return this->orientation_;
 }
 
@@ -152,16 +155,19 @@ Eigen::Matrix<double, 7, 1> CartesianState::get_pose() const {
 }
 
 Eigen::Matrix4d CartesianState::get_transformation_matrix() const {
+  this->assert_not_empty();
   Eigen::Matrix4d pose;
   pose << this->orientation_.toRotationMatrix(), this->position_, 0., 0., 0., 1;
   return pose;
 }
 
 const Eigen::Vector3d& CartesianState::get_linear_velocity() const {
+  this->assert_not_empty();
   return this->linear_velocity_;
 }
 
 const Eigen::Vector3d& CartesianState::get_angular_velocity() const {
+  this->assert_not_empty();
   return this->angular_velocity_;
 }
 
@@ -170,10 +176,12 @@ Eigen::Matrix<double, 6, 1> CartesianState::get_twist() const {
 }
 
 const Eigen::Vector3d& CartesianState::get_linear_acceleration() const {
+  this->assert_not_empty();
   return this->linear_acceleration_;
 }
 
 const Eigen::Vector3d& CartesianState::get_angular_acceleration() const {
+  this->assert_not_empty();
   return this->angular_acceleration_;
 }
 
@@ -182,10 +190,12 @@ Eigen::Matrix<double, 6, 1> CartesianState::get_acceleration() const {
 }
 
 const Eigen::Vector3d& CartesianState::get_force() const {
+  this->assert_not_empty();
   return this->force_;
 }
 
 const Eigen::Vector3d& CartesianState::get_torque() const {
+  this->assert_not_empty();
   return this->torque_;
 }
 
@@ -463,13 +473,6 @@ CartesianState CartesianState::copy() const {
 }
 
 double CartesianState::dist(const CartesianState& state, const CartesianStateVariable& state_variable_type) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (!(this->get_reference_frame() == state.get_reference_frame())) {
     throw IncompatibleReferenceFramesException("The two states do not have the same reference frame");
   }
@@ -556,6 +559,7 @@ CartesianState CartesianState::inverse() const {
 }
 
 void CartesianState::normalize(const CartesianStateVariable& state_variable_type) {
+  this->assert_not_empty();
   if (state_variable_type == CartesianStateVariable::POSITION || state_variable_type == CartesianStateVariable::POSE
       || state_variable_type == CartesianStateVariable::ALL) {
     this->position_.normalize();
@@ -640,13 +644,6 @@ std::vector<double> CartesianState::norms(const CartesianStateVariable& state_va
 }
 
 CartesianState& CartesianState::operator*=(const CartesianState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (this->get_name() != state.get_reference_frame()) {
     throw IncompatibleReferenceFramesException("Expected " + this->get_name() + ", got " + state.get_reference_frame());
   }
@@ -703,10 +700,6 @@ CartesianState CartesianState::operator*(const CartesianState& state) const {
 }
 
 CartesianState& CartesianState::operator*=(double lambda) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // operation
   this->set_position(lambda * this->get_position());
   // calculate the scaled rotation as a displacement from identity
@@ -749,13 +742,6 @@ CartesianState CartesianState::operator/(double lambda) const {
 }
 
 CartesianState& CartesianState::operator+=(const CartesianState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (!(this->get_reference_frame() == state.get_reference_frame())) {
     throw IncompatibleReferenceFramesException("The two states do not have the same reference frame");
   }
@@ -783,10 +769,6 @@ CartesianState CartesianState::operator+(const CartesianState& state) const {
 }
 
 CartesianState CartesianState::operator-() const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // create a copy of the state
   CartesianState result(*this);
   // operation on pose

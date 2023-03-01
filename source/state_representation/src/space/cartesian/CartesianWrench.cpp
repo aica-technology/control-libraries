@@ -114,10 +114,6 @@ CartesianWrench CartesianWrench::operator*(double lambda) const {
 }
 
 CartesianWrench operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench) {
-  // sanity check
-  if (wrench.is_empty()) {
-    throw EmptyStateException(wrench.get_name() + " state is empty");
-  }
   CartesianWrench result(wrench);
   result.set_wrench(lambda * result.get_wrench());
   return result;

@@ -133,7 +133,6 @@ JointPositions JointPositions::operator/(double lambda) const {
 }
 
 JointVelocities JointPositions::operator/(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
   // operations
   JointVelocities velocities(this->get_name(), this->get_names());
   // convert the period to a double with the second as reference

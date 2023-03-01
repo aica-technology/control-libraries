@@ -127,20 +127,12 @@ CartesianTwist operator*(double lambda, const CartesianTwist& twist) {
 }
 
 CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist) {
-  // sanity check
-  if (twist.is_empty()) {
-    throw EmptyStateException(twist.get_name() + " state is empty");
-  }
   CartesianTwist result(twist);
   result.set_twist(lambda * result.get_twist());
   return result;
 }
 
 CartesianPose CartesianTwist::operator*(const std::chrono::nanoseconds& dt) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // operations
   CartesianPose displacement(this->get_name(), this->get_reference_frame());
   // convert the period to a double with the second as reference
@@ -173,9 +165,6 @@ CartesianTwist CartesianTwist::operator/(double lambda) const {
 }
 
 CartesianAcceleration CartesianTwist::operator/(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   CartesianAcceleration acceleration(this->get_name(), this->get_reference_frame());
   // convert the period to a double with the second as reference
   double period = dt.count();

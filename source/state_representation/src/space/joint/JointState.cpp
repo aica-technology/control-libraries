@@ -91,6 +91,7 @@ JointState& JointState::operator=(const JointState& state) {
 }
 
 Eigen::VectorXd JointState::get_state_variable(const JointStateVariable& state_variable_type) const {
+  this->assert_not_empty();
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
       return this->positions_;
@@ -127,6 +128,7 @@ unsigned int JointState::get_joint_index(const std::string& joint_name) const {
 }
 
 const Eigen::VectorXd& JointState::get_positions() const {
+  this->assert_not_empty();
   return this->positions_;
 }
 
@@ -135,11 +137,13 @@ double JointState::get_position(const std::string& joint_name) const {
 }
 
 double JointState::get_position(unsigned int joint_index) const {
+  this->assert_not_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->positions_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_velocities() const {
+  this->assert_not_empty();
   return this->velocities_;
 }
 
@@ -148,11 +152,13 @@ double JointState::get_velocity(const std::string& joint_name) const {
 }
 
 double JointState::get_velocity(unsigned int joint_index) const {
+  this->assert_not_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->velocities_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_accelerations() const {
+  this->assert_not_empty();
   return this->accelerations_;
 }
 
@@ -161,11 +167,13 @@ double JointState::get_acceleration(const std::string& joint_name) const {
 }
 
 double JointState::get_acceleration(unsigned int joint_index) const {
+  this->assert_not_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->accelerations_(joint_index);
 }
 
 const Eigen::VectorXd& JointState::get_torques() const {
+  this->assert_not_empty();
   return this->torques_;
 }
 
@@ -174,6 +182,7 @@ double JointState::get_torque(const std::string& joint_name) const {
 }
 
 double JointState::get_torque(unsigned int joint_index) const {
+  this->assert_not_empty();
   assert_index_in_range(joint_index, this->get_size());
   return this->torques_(joint_index);
 }
@@ -389,9 +398,6 @@ JointState JointState::copy() const {
 }
 
 double JointState::dist(const JointState& state, const JointStateVariable& state_variable_type) const {
-  // sanity check
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
   if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
@@ -470,9 +476,6 @@ void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const Jo
 }
 
 JointState& JointState::operator*=(double lambda) {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   this->set_state_variable(lambda * this->get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);
   return (*this);
 }
@@ -484,7 +487,6 @@ JointState JointState::operator*(double lambda) const {
 }
 
 JointState operator*(double lambda, const JointState& state) {
-  if (state.is_empty()) { throw EmptyStateException(state.get_name() + " state is empty"); }
   JointState result(state);
   result *= lambda;
   return result;
@@ -507,13 +509,6 @@ JointState JointState::operator/(double lambda) const {
 }
 
 JointState& JointState::operator+=(const JointState& state) {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (state.is_empty()) {
-    throw EmptyStateException(state.get_name() + " state is empty");
-  }
   if (this->is_incompatible(state)) {
     throw IncompatibleStatesException(
         "The two joint states are incompatible, check name, joint names and order or size"
@@ -533,10 +528,6 @@ JointState JointState::operator+(const JointState& state) const {
 }
 
 JointState JointState::operator-() const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // create a copy of the state
   JointState result(*this);
   result.set_state_variable(-result.get_state_variable(JointStateVariable::ALL), JointStateVariable::ALL);

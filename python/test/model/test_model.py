@@ -80,7 +80,7 @@ class TestRobotModel(unittest.TestCase):
         self.assertEqual(tmp.get_number_of_joints(), 7)
 
     def test_jacobian_names(self):
-        zero = JointPositions(self.robot_name, 7)
+        zero = JointPositions().Zero(self.robot_name, 7)
         jac = self.robot_model.compute_jacobian(zero)
         self.assertTrue(isinstance(jac, Jacobian))
         [self.assertEqual("panda_joint" + str(i + 1), jac.get_joint_names()[i]) for i in range(7)]
@@ -99,6 +99,7 @@ class TestRobotModel(unittest.TestCase):
             self.robot_model.compute_jacobian(dummy, "panda_link8")
 
     def test_jacobian_size(self):
+        self.joint_positions.set_zero()
         jac = self.robot_model.compute_jacobian(self.joint_positions, "panda_link2")
         self.assertEqual(jac.cols(), self.joint_positions.get_size())
         self.assertEqual(jac.rows(), 6)

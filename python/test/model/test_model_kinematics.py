@@ -64,6 +64,7 @@ class TestRobotModelKinematics(unittest.TestCase):
                           "panda_link99")
 
     def test_fk_ee(self):
+        self.joint_state.set_zero()
         self.assert_np_array_equal(self.robot_model.forward_kinematics(JointPositions(self.joint_state)).get_position(),
                                    self.robot_model.forward_kinematics(JointPositions(self.joint_state),
                                                                        "panda_link8").get_position())

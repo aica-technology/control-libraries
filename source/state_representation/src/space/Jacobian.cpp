@@ -99,7 +99,7 @@ unsigned int Jacobian::rows() const {
 }
 
 Eigen::VectorXd Jacobian::row(unsigned int index) const {
-  return this->data_.row(index);
+  return this->data().row(index);
 }
 
 unsigned int Jacobian::cols() const {
@@ -107,7 +107,7 @@ unsigned int Jacobian::cols() const {
 }
 
 Eigen::VectorXd Jacobian::col(unsigned int index) const {
-  return this->data_.col(index);
+  return this->data().col(index);
 }
 
 const std::vector<std::string>& Jacobian::get_joint_names() const {
@@ -123,6 +123,7 @@ const std::string& Jacobian::get_reference_frame() const {
 }
 
 const Eigen::MatrixXd& Jacobian::data() const {
+  this->assert_not_empty();
   return this->data_;
 }
 
@@ -153,7 +154,7 @@ void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
   if (this->rows() != data.rows() || this->cols() != data.cols()) {
     throw exceptions::IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                                    + std::to_string(this->rows_) + "x" + std::to_string(this->cols_)
+                                                    + std::to_string(this->rows()) + "x" + std::to_string(this->cols())
                                                     + " got " + std::to_string(data.rows()) + "x"
                                                     + std::to_string(data.cols()));
   }
@@ -247,9 +248,6 @@ Jacobian Jacobian::pseudoinverse() const {
 }
 
 Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   if (this->rows_ != matrix.rows()) {
     throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
                                         + std::to_string(this->rows_) + " rows, got " + std::to_string(matrix.rows()));
@@ -258,12 +256,6 @@ Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
 }
 
 JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (twist.is_empty()) {
-    throw EmptyStateException(twist.get_name() + " state is empty");
-  }
   if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
@@ -283,12 +275,9 @@ Jacobian Jacobian::transpose() const {
 }
 
 Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (matrix.rows() != this->cols_) {
+  if (matrix.rows() != this->cols()) {
     throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                        + std::to_string(this->cols_) + " rows, got " + std::to_string(matrix.rows()));
+                                        + std::to_string(this->cols()) + " rows, got " + std::to_string(matrix.rows()));
   }
   return this->data() * matrix;
 }
@@ -313,12 +302,6 @@ Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobia
 }
 
 CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (dq.is_empty()) {
-    throw EmptyStateException(dq.get_name() + " state is empty");
-  }
   if (this->is_incompatible(dq)) {
     throw IncompatibleStatesException("The Jacobian and the input JointVelocities are incompatible");
   }
@@ -328,12 +311,6 @@ CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
 }
 
 JointVelocities Jacobian::operator*(const CartesianTwist& twist) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (twist.is_empty()) {
-    throw EmptyStateException(twist.get_name() + " state is empty");
-  }
   if (this->is_incompatible(twist)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
   }
@@ -343,12 +320,6 @@ JointVelocities Jacobian::operator*(const CartesianTwist& twist) const {
 }
 
 JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (wrench.is_empty()) {
-    throw EmptyStateException(wrench.get_name() + " state is empty");
-  }
   if (this->is_incompatible(wrench)) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianWrench are incompatible");
   }
@@ -358,30 +329,23 @@ JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
 }
 
 Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
-  // check compatibility
-  if (jacobian.is_empty()) {
-    throw EmptyStateException(jacobian.get_name() + " state is empty");
-  }
-  if (pose.is_empty()) {
-    throw EmptyStateException(pose.get_name() + " state is empty");
-  }
   if (pose.get_name() != jacobian.get_reference_frame()) {
     throw IncompatibleStatesException("The Jacobian and the input CartesianPose are incompatible, expected pose of "
                                           + jacobian.get_reference_frame() + " got " + pose.get_name());
   }
   // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
   // FIXME transpose is weird and confusing with the statement above (also what does it mean for the incompatibility?)
-  if (jacobian.rows_ != 6) {
+  if (jacobian.rows() != 6) {
     throw IncompatibleStatesException(
         "The Jacobian and the input CartesianPose are incompatible, the Jacobian has probably been transposed before");
   }
   Jacobian result(jacobian);
   // change the reference frame of all the columns
-  for (unsigned int i = 0; i < jacobian.cols_; ++i) {
+  for (unsigned int i = 0; i < jacobian.cols(); ++i) {
     // update position part
-    result.data_.col(i).head(3) = pose.get_orientation() * jacobian.data_.col(i).head(3);
+    result.data_.col(i).head(3) = pose.get_orientation() * jacobian.col(i).head(3);
     // update orientation part
-    result.data_.col(i).tail(3) = pose.get_orientation() * jacobian.data_.col(i).tail(3);
+    result.data_.col(i).tail(3) = pose.get_orientation() * jacobian.col(i).tail(3);
   }
   // change the reference frame
   result.reference_frame_ = pose.get_reference_frame();
@@ -389,6 +353,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 }
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
+  this->assert_not_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }
@@ -399,6 +364,7 @@ double& Jacobian::operator()(unsigned int row, unsigned int col) {
 }
 
 const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
+  this->assert_not_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }

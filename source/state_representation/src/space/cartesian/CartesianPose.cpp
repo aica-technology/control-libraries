@@ -149,10 +149,6 @@ CartesianPose CartesianPose::operator/(double lambda) const {
 }
 
 CartesianTwist CartesianPose::operator/(const std::chrono::nanoseconds& dt) const {
-  // sanity check
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
   // operations
   CartesianTwist twist(this->get_name(), this->get_reference_frame());
   // convert the period to a double with the second as reference
