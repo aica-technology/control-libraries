@@ -275,19 +275,12 @@ public:
   Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Overload the * operator with another Jacobian
-   * @param jacobian The Jacobian to multiply with
-   * @return The current Jacobian multiplied by the one in parameter
-   */
-  Eigen::MatrixXd operator*(const Jacobian& jacobian) const;
-
-  /**
-   * @brief Overload the * operator with an arbitrary matrix on the left side
+   * @brief Overload the * operator with an 6x6 matrix on the left side
    * @param matrix The matrix to multiply with
    * @param jacobian The Jacobian matrix
-   * @return The matrix multiplied by the Jacobian matrix
+   * @return The Jacobian transformed by the matrix
    */
-  friend Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobian);
+  friend Jacobian operator*(const Eigen::Matrix<double, 6, 6>& matrix, const Jacobian& jacobian);
 
   /**
    * @brief Overload the * operator with a JointVelocities
@@ -295,20 +288,6 @@ public:
    * @return The corresponding Cartesian twist of the Jacobian frame
    */
   CartesianTwist operator*(const JointVelocities& dq) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian twist
-   * @param twist The Cartesian twist to multiply with
-   * @return The corresponding joint velocities
-   */
-  JointVelocities operator*(const CartesianTwist& twist) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian wrench
-   * @param wrench The Cartesian wrench to multiply with
-   * @return The corresponding joint torques
-   */
-  JointTorques operator*(const CartesianWrench& wrench) const;
 
   /**
    * @brief Overload the * operator with a Cartesian pose on left side
