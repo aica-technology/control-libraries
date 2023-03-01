@@ -161,8 +161,9 @@ protected:
 
   /**
    * @brief Throw an exception if the state is empty
+   * @throws exceptions::EmptyStateException
    */
-  void throw_if_empty() const;
+  void assert_not_empty() const;
 
   /**
    * @brief Convert the state to its string representation

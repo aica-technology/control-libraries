@@ -111,19 +111,19 @@ Parameter<T>& Parameter<T>::operator=(const Parameter<U>& parameter) {
 template<typename T>
 template<typename U>
 inline U Parameter<T>::get_value() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return static_cast<U>(this->value_);
 }
 
 template<typename T>
 inline const T& Parameter<T>::get_value() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->value_;
 }
 
 template<typename T>
 inline T& Parameter<T>::get_value() {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->value_;
 }
 

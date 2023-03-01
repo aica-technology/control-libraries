@@ -39,22 +39,22 @@ Ellipsoid& Ellipsoid::operator=(const Ellipsoid& state) {
 }
 
 const std::vector<double>& Ellipsoid::get_axis_lengths() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->axis_lengths_;
 }
 
 double Ellipsoid::get_axis_length(unsigned int index) const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->axis_lengths_[index];
 }
 
 double Ellipsoid::get_rotation_angle() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->rotation_angle_;
 }
 
 const CartesianPose Ellipsoid::get_rotation() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   Eigen::Quaterniond rotation(Eigen::AngleAxisd(this->rotation_angle_, Eigen::Vector3d::UnitZ()));
   return CartesianPose(
       this->get_center_pose().get_name() + "_rotated", Eigen::Vector3d::Zero(), rotation,
@@ -241,7 +241,7 @@ const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned 
 }
 
 const std::vector<double> Ellipsoid::to_std_vector() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   std::vector<double> representation(6);
   // position
   representation[0] = this->get_center_position()(0);

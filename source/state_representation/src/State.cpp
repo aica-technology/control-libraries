@@ -51,7 +51,7 @@ void State::set_empty(bool empty) {
   this->empty_ = empty;
 }
 
-void State::throw_if_empty() const {
+void State::assert_not_empty() const {
   if (this->empty_) {
     throw exceptions::EmptyStateException(this->name_ + " state is empty");
   }

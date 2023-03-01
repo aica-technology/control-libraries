@@ -123,7 +123,7 @@ const std::string& Jacobian::get_reference_frame() const {
 }
 
 const Eigen::MatrixXd& Jacobian::data() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->data_;
 }
 
@@ -353,7 +353,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 }
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
-  this->throw_if_empty();
+  this->assert_not_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }
@@ -364,7 +364,7 @@ double& Jacobian::operator()(unsigned int row, unsigned int col) {
 }
 
 const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   if (row > this->rows_) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows_));
   }

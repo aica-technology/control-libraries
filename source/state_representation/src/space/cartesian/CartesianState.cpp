@@ -87,7 +87,7 @@ CartesianState& CartesianState::operator=(const CartesianState& state) {
 }
 
 Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable& state_variable_type) const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   switch (state_variable_type) {
     case CartesianStateVariable::POSITION:
       return this->position_;
@@ -137,12 +137,12 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
 }
 
 const Eigen::Vector3d& CartesianState::get_position() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->position_;
 }
 
 const Eigen::Quaterniond& CartesianState::get_orientation() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->orientation_;
 }
 
@@ -155,19 +155,19 @@ Eigen::Matrix<double, 7, 1> CartesianState::get_pose() const {
 }
 
 Eigen::Matrix4d CartesianState::get_transformation_matrix() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   Eigen::Matrix4d pose;
   pose << this->orientation_.toRotationMatrix(), this->position_, 0., 0., 0., 1;
   return pose;
 }
 
 const Eigen::Vector3d& CartesianState::get_linear_velocity() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->linear_velocity_;
 }
 
 const Eigen::Vector3d& CartesianState::get_angular_velocity() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->angular_velocity_;
 }
 
@@ -176,12 +176,12 @@ Eigen::Matrix<double, 6, 1> CartesianState::get_twist() const {
 }
 
 const Eigen::Vector3d& CartesianState::get_linear_acceleration() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->linear_acceleration_;
 }
 
 const Eigen::Vector3d& CartesianState::get_angular_acceleration() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->angular_acceleration_;
 }
 
@@ -190,12 +190,12 @@ Eigen::Matrix<double, 6, 1> CartesianState::get_acceleration() const {
 }
 
 const Eigen::Vector3d& CartesianState::get_force() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->force_;
 }
 
 const Eigen::Vector3d& CartesianState::get_torque() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->torque_;
 }
 
@@ -559,7 +559,7 @@ CartesianState CartesianState::inverse() const {
 }
 
 void CartesianState::normalize(const CartesianStateVariable& state_variable_type) {
-  this->throw_if_empty();
+  this->assert_not_empty();
   if (state_variable_type == CartesianStateVariable::POSITION || state_variable_type == CartesianStateVariable::POSE
       || state_variable_type == CartesianStateVariable::ALL) {
     this->position_.normalize();

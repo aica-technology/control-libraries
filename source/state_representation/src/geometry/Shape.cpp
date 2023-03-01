@@ -33,27 +33,27 @@ Shape& Shape::operator=(const Shape& state) {
 }
 
 const CartesianState& Shape::get_center_state() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->center_state_;
 }
 
 const CartesianPose& Shape::get_center_pose() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return static_cast<const CartesianPose&>(this->center_state_);
 }
 
 const Eigen::Vector3d Shape::get_center_position() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->center_state_.get_position();
 }
 
 const Eigen::Quaterniond Shape::get_center_orientation() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return this->center_state_.get_orientation();
 }
 
 const CartesianTwist& Shape::get_center_twist() const {
-  this->throw_if_empty();
+  this->assert_not_empty();
   return static_cast<const CartesianTwist&>(this->center_state_);
 }
 
