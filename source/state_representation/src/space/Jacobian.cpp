@@ -139,7 +139,6 @@ void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
   *this = reference_frame * (*this);
 }
 
-// use either rows_ or rows()
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
   assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
@@ -267,10 +266,6 @@ Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
 }
 
 Jacobian operator*(const Eigen::Matrix<double, 6, 6>& matrix, const Jacobian& jacobian) {
-  // check compatibility
-  if (jacobian.is_empty()) {
-    throw EmptyStateException(jacobian.get_name() + " state is empty");
-  }
   Jacobian result(jacobian);
   result.set_data(matrix * jacobian.data());
   return result;

@@ -80,7 +80,7 @@ TEST(JacobianTest, TestMutltiplyWithEigen) {
   EXPECT_THROW(jac * mat1, EmptyStateException);
 }
 
-TEST(JacobianTest, TestSolve) {
+TEST(JacobianTest, TestInverse) {
   Jacobian jac = Jacobian::Random("robot", 7, "test");
   Eigen::MatrixXd mat1 = Eigen::VectorXd::Random(7, 1);
   EXPECT_THROW(jac.inverse(mat1), IncompatibleSizeException);
@@ -96,7 +96,8 @@ TEST(JacobianTest, TestSolve) {
   EXPECT_EQ(res2.cols(), 1);
 
   jac.reset();
-  EXPECT_THROW(jac.solve(mat2), EmptyStateException);
+  EXPECT_THROW(jac.inverse(mat2), EmptyStateException);
+  EXPECT_THROW(jac.pseudoinverse(mat2), EmptyStateException);
 }
 
 TEST(JacobianTest, TestJointToCartesian) {
@@ -115,7 +116,7 @@ TEST(JacobianTest, TestJointToCartesian) {
 TEST(JacobianTest, TestCartesianToJoint) {
   Jacobian jac = Jacobian::Random("robot", 7, "test", "test_ref");
   CartesianTwist cvel = CartesianTwist::Random("test");
-  EXPECT_THROW(jac.solve(cvel), IncompatibleStatesException);
+  EXPECT_THROW(jac.pseudoinverse(cvel), IncompatibleStatesException);
 
   EXPECT_THROW(JointVelocities jvel = jac.inverse(cvel), IncompatibleStatesException);
   EXPECT_THROW(JointVelocities jvel = jac.pseudoinverse(cvel), IncompatibleStatesException);
@@ -125,9 +126,6 @@ TEST(JacobianTest, TestCartesianToJoint) {
   state_representation::JointVelocities jvel2;
   EXPECT_NO_THROW(jvel2 = jac.pseudoinverse(cvel));
   EXPECT_GT(jvel2.data().norm(), 0);
-
-  jac.reset();
-  EXPECT_THROW(jac.solve(cvel), EmptyStateException);
 }
 
 TEST(JacobianTest, TestChangeReferenceFrame) {
