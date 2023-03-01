@@ -59,6 +59,7 @@ Jacobian::Jacobian(const Jacobian& jacobian) :
     Jacobian(jacobian.get_name(), jacobian.joint_names_, jacobian.frame_, jacobian.reference_frame_) {
   if (jacobian) {
     this->data_ = jacobian.data_;
+    this->set_empty(false);
   }
 }
 
