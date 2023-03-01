@@ -189,6 +189,11 @@ public:
   void set_data(const Eigen::MatrixXd& data) override;
 
   /**
+   * @brief Set the Jacobian to a zero value
+   */
+  void set_zero();
+
+  /**
    * @brief Return a copy of the Jacobian
    */
   Jacobian copy() const;
@@ -319,8 +324,6 @@ private:
   std::vector<std::string> joint_names_;///< names of the joints
   std::string frame_;                   ///< name of the frame at which the Jacobian is computed
   std::string reference_frame_;         ///< name of the reference frame in which the Jacobian is expressed
-  unsigned int rows_;                   ///< number of rows
-  unsigned int cols_;                   ///< number of columns
   Eigen::MatrixXd data_;                ///< internal storage of the Jacobian matrix
 };
 
@@ -329,8 +332,6 @@ inline void swap(Jacobian& jacobian1, Jacobian& jacobian2) {
   std::swap(jacobian1.joint_names_, jacobian2.joint_names_);
   std::swap(jacobian1.frame_, jacobian2.frame_);
   std::swap(jacobian1.reference_frame_, jacobian2.reference_frame_);
-  std::swap(jacobian1.cols_, jacobian2.cols_);
-  std::swap(jacobian1.rows_, jacobian2.rows_);
   std::swap(jacobian1.data_, jacobian2.data_);
 }
 }// namespace state_representation
