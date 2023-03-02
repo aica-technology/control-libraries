@@ -148,6 +148,7 @@ void Jacobian::set_data(const Eigen::MatrixXd& data) {
 void Jacobian::set_zero() {
   this->data_.resize(this->rows(), this->cols());
   this->data_.setZero();
+  this->set_empty(false);
 }
 
 Jacobian Jacobian::copy() const {
