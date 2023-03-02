@@ -212,17 +212,20 @@ public:
   Eigen::MatrixXd inverse() const;
 
   /**
-   * @brief Solve the system X = inv(J) * M to obtain X which is more efficient than multiplying with the inverse
+   * @brief Solve the system X = inv(J) * M to obtain X
+   * @details This uses QR decomposition to solve for X, which is more efficient than calculating and multiplying
+   * by the Jacobian inverse independently.
    * @param matrix The matrix to solve the system with
-   * @return The result of X = J.solve(M) from Eigen decomposition
+   * @return The result of the product inv(J) * M
    */
   Eigen::MatrixXd inverse(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Transform the given Cartesian twist to joint space by solving the system dq = inv(J) * dX to obtain dq
-   * which is more efficient than multiplying with the inverse of the Jacobian matrix
+   * @brief Transform the given Cartesian twist to joint space
+   * @details This uses QR decomposition to solve for the joint velocities, which is more efficient than calculating
+   * and multiplying by the Jacobian inverse independently.
    * @param twist The Cartesian twist to be transformed to joint space
-   * @return The corresponding joint velocities
+   * @return The resulting joint velocities from the product inv(J) * twist
    */
   JointVelocities inverse(const CartesianTwist& twist) const;
 
@@ -246,8 +249,7 @@ public:
   Eigen::MatrixXd pseudoinverse(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Transform the given Cartesian twist to joint space by multiplication with the pseudoinverse of the
-   * Jacobian matrix
+   * @brief Transform a Cartesian twist to joint space by pre-multiplying the Jacobian pseudoinverse
    * @param twist The Cartesian twist to be transformed to joint space
    * @return The corresponding joint velocities
    */
@@ -260,8 +262,7 @@ public:
   Eigen::MatrixXd transpose() const;
 
   /**
-    * @brief Transform the given Cartesian wrench to joint space by multiplication with the transpose of the
-    * Jacobian matrix
+    * @brief Transform a Cartesian wrench to joint space by pre-multiplying the Jacobian transpose
     * @param wrench The Cartesian wrench to be transformed to joint space
     * @return The corresponding joint torques
     */
@@ -275,7 +276,7 @@ public:
   Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Overload the * operator with an 6x6 matrix on the left side
+   * @brief Overload the * operator with a 6x6 matrix on the left side
    * @param matrix The matrix to multiply with
    * @param jacobian The Jacobian
    * @return The Jacobian transformed by the matrix
