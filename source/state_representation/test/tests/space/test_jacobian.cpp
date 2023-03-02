@@ -23,6 +23,22 @@ TEST(JacobianTest, TestCreate) {
   EXPECT_THROW(jac.data(), EmptyStateException);
 }
 
+TEST(JacobianTest, CopyConstruction) {
+  Jacobian jac("robot", 7, "test");
+  auto jac_copy = jac;
+  EXPECT_EQ(jac.is_empty(), jac_copy.is_empty());
+
+  jac.set_zero();
+  EXPECT_FALSE(jac.is_empty());
+
+  jac_copy = jac;
+  EXPECT_EQ(jac.is_empty(), jac_copy.is_empty());
+  EXPECT_EQ(jac.data().norm(), 0);
+
+  jac.reset();
+  EXPECT_TRUE(jac.is_empty());
+}
+
 TEST(JacobianTest, TestCreateWithVectorOfJoints) {
   Jacobian jac("robot", std::vector<std::string>{"j1", "j2"}, "test", "test_ref");
   EXPECT_EQ(jac.get_type(), StateType::JACOBIAN);
