@@ -2,32 +2,8 @@ syntax = "proto3";
 
 package state_representation.proto;
 
-// The values and order of this enumeration must match the original
-// state_representation::StateType in C++.
-enum StateType {
-  NONE = 0;
-  STATE = 1;
-  SPATIAL_STATE = 2;
-  CARTESIAN_STATE = 3;
-  CARTESIAN_POSE = 4;
-  CARTESIAN_TWIST = 5;
-  CARTESIAN_ACCELERATION = 6;
-  CARTESIAN_WRENCH = 7;
-  JOINT_STATE = 8;
-  JOINT_POSITIONS = 9;
-  JOINT_VELOCITIES = 10;
-  JOINT_ACCELERATIONS = 11;
-  JOINT_TORQUES = 12;
-  JACOBIAN = 13;
-  PARAMETER = 14;
-  GEOMETRY_SHAPE = 15;
-  GEOMETRY_ELLIPSOID = 16;
-  TRAJECTORY = 17;
-};
-
 message State {
+  reserved 2, 4;
   string name = 1;
-  StateType type = 2 [deprecated = true];
   bool empty = 3;
-  int64 timestamp = 4 [deprecated = true];
 }
