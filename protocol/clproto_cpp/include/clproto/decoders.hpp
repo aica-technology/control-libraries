@@ -42,7 +42,6 @@ state_representation::Parameter<ParamT> decoder(const state_representation::prot
  * Declarations for decoding helpers
  */
 std::vector<bool> decoder(const google::protobuf::RepeatedField<bool>& message);
-state_representation::StateType decoder(const state_representation::proto::StateType& message);
 Eigen::Vector3d decoder(const state_representation::proto::Vector3d& message);
 Eigen::Quaterniond decoder(const state_representation::proto::Quaterniond& message);
 

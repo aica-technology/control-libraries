@@ -55,7 +55,6 @@ google::protobuf::RepeatedField<double> matrix_encoder(const Eigen::MatrixXd& ma
 /*
  * Declarations for encoding helpers
  */
-state_representation::proto::StateType encoder(const state_representation::StateType& type);
 state_representation::proto::State encoder(const state_representation::State& state);
 state_representation::proto::SpatialState encoder(const state_representation::SpatialState& spatial_state);
 state_representation::proto::Vector3d encoder(const Eigen::Vector3d& vector);
