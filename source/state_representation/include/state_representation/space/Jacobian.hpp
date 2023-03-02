@@ -173,15 +173,10 @@ public:
    */
   void set_joint_names(const std::vector<std::string>& joint_names);
 
-  // FIXME: why no setter for frame?
   /**
-   * @brief Setter of the reference frame attribute from a CartesianPose
-   * Update the value of the data matrix accordingly by changing the reference frame of each columns.
-   * This means that the computation needs to be compatible, i.e. the previous reference frame should
-   * match the name of the new reference frame as input.
-   * @param reference_frame The reference frame as a Cartesian pose
+   * @brief Setter of the reference frame
    */
-  void set_reference_frame(const CartesianPose& reference_frame);
+  void set_reference_frame(const std::string& reference_frame);
 
   /**
    * @brief Setter of the data attribute
@@ -291,7 +286,7 @@ public:
   CartesianTwist operator*(const JointVelocities& dq) const;
 
   /**
-   * @brief Overload the * operator with a Cartesian pose on left side
+   * @brief Overload the * operator with a Cartesian pose on the left side
    * @details This operation is equivalent to a change of reference frame of the Jacobian
    * @param pose The Cartesian pose to multiply with
    * @param jacobian The Jacobian to be multiplied with the Cartesian pose

@@ -135,8 +135,8 @@ void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
   this->joint_names_ = joint_names;
 }
 
-void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
-  *this = reference_frame * (*this);
+void Jacobian::set_reference_frame(const std::string& reference_frame) {
+  this->reference_frame_ = reference_frame;
 }
 
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
@@ -282,14 +282,8 @@ CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
 Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
   if (pose.get_name() != jacobian.get_reference_frame()) {
     throw IncompatibleStatesException(
-        "The Jacobian and the input CartesianPose are incompatible, expected pose of " + jacobian.get_reference_frame()
-            + " got " + pose.get_name());
-  }
-  // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
-  // FIXME transpose is weird and confusing with the statement above (also what does it mean for the incompatibility?)
-  if (jacobian.rows() != 6) {
-    throw IncompatibleStatesException(
-        "The Jacobian and the input CartesianPose are incompatible, the Jacobian has probably been transposed before");
+        "The CartesianPose and the Jacobian are incompatible, expected pose of '" + jacobian.get_reference_frame()
+            + "', got '" + pose.get_name() + "'.");
   }
   Jacobian result(jacobian);
   // change the reference frame of all the columns
