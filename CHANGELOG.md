@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Update python bindings after Jacobian refactor (#105)
 - Set reference frame of Jacobian with string instead of pose (#103)
 - Refactor Jacobian methods and operators (#101)
 - Remove rows_ and cols_ and improve constructors (#100)
