@@ -189,7 +189,7 @@ public:
   void set_data(const Eigen::MatrixXd& data) override;
 
   /**
-   * @brief Set the Jacobian to a zero value
+   * @brief Set the Jacobian matrix to a zero value
    */
   void set_zero();
 
@@ -203,14 +203,31 @@ public:
    */
   void reset() override;
 
-  // FIXME: does it make sense to return Jacobians instead of matrices (inverse, pseudoinverse, transpose)?
   /**
    * @brief Return the inverse of the Jacobian matrix
    * @details If the matrix is not invertible, an error is thrown advising to use the
    * pseudoinverse function instead
    * @return The inverse of the Jacobian
    */
-  Jacobian inverse() const;
+  Eigen::MatrixXd inverse() const;
+
+  /**
+   * @brief Solve the system X = inv(J) * M to obtain X
+   * @details This uses QR decomposition to solve for X, which is more efficient than calculating and multiplying
+   * by the Jacobian inverse independently.
+   * @param matrix The matrix to solve the system with
+   * @return The result of the product inv(J) * M
+   */
+  Eigen::MatrixXd inverse(const Eigen::MatrixXd& matrix) const;
+
+  /**
+   * @brief Transform the given Cartesian twist to joint space
+   * @details This uses QR decomposition to solve for the joint velocities, which is more efficient than calculating
+   * and multiplying by the Jacobian inverse independently.
+   * @param twist The Cartesian twist to be transformed to joint space
+   * @return The resulting joint velocities from the product inv(J) * twist
+   */
+  JointVelocities inverse(const CartesianTwist& twist) const;
 
   /**
    * @brief Check if the Jacobian is incompatible for operations with the state given as argument
@@ -222,27 +239,34 @@ public:
    * @brief Return the pseudoinverse of the Jacobian matrix
    * @return The pseudoinverse of the Jacobian
    */
-  Jacobian pseudoinverse() const;
+  Eigen::MatrixXd pseudoinverse() const;
 
   /**
-   * @brief Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse
-   * @param matrix The matrix to solve the system with
-   * @return The result of X = J.solve(M) from Eigen decomposition
+   * @brief Multiply the given matrix by the pseudoinverse of the Jacobian matrix
+   * @param matrix The matrix to be multiplied with the Jacobian
+   * @return The result of the matrix multiplication
    */
-  Eigen::MatrixXd solve(const Eigen::MatrixXd& matrix) const;
+  Eigen::MatrixXd pseudoinverse(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Solve the system dX = J*dq to obtain dq which is more efficient than multiplying with the pseudo-inverse
-   * @param dX The Cartesian twist to multiply with
+   * @brief Transform a Cartesian twist to joint space by pre-multiplying the Jacobian pseudoinverse
+   * @param twist The Cartesian twist to be transformed to joint space
    * @return The corresponding joint velocities
    */
-  JointVelocities solve(const CartesianTwist& twist) const;
+  JointVelocities pseudoinverse(const CartesianTwist& twist) const;
 
   /**
     * @brief Return the transpose of the Jacobian matrix
-    * @return The transposed Jacobian
+    * @return The transposed Jacobian matrix
     */
-  Jacobian transpose() const;
+  Eigen::MatrixXd transpose() const;
+
+  /**
+    * @brief Transform a Cartesian wrench to joint space by pre-multiplying the Jacobian transpose
+    * @param wrench The Cartesian wrench to be transformed to joint space
+    * @return The corresponding joint torques
+    */
+  JointTorques transpose(const CartesianWrench& wrench) const;
 
   /**
    * @brief Overload the * operator with an arbitrary matrix
@@ -252,19 +276,12 @@ public:
   Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix) const;
 
   /**
-   * @brief Overload the * operator with another Jacobian
-   * @param jacobian The Jacobian to multiply with
-   * @return The current Jacobian multiplied by the one in parameter
-   */
-  Eigen::MatrixXd operator*(const Jacobian& jacobian) const;
-
-  /**
-   * @brief Overload the * operator with an arbitrary matrix on the left side
+   * @brief Overload the * operator with a 6x6 matrix on the left side
    * @param matrix The matrix to multiply with
-   * @param jacobian The Jacobian matrix
-   * @return The matrix multiplied by the Jacobian matrix
+   * @param jacobian The Jacobian
+   * @return The Jacobian transformed by the matrix
    */
-  friend Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobian);
+  friend Jacobian operator*(const Eigen::Matrix<double, 6, 6>& matrix, const Jacobian& jacobian);
 
   /**
    * @brief Overload the * operator with a JointVelocities
@@ -272,20 +289,6 @@ public:
    * @return The corresponding Cartesian twist of the Jacobian frame
    */
   CartesianTwist operator*(const JointVelocities& dq) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian twist
-   * @param twist The Cartesian twist to multiply with
-   * @return The corresponding joint velocities
-   */
-  JointVelocities operator*(const CartesianTwist& twist) const;
-
-  /**
-   * @brief Overload the * operator with a Cartesian wrench
-   * @param wrench The Cartesian wrench to multiply with
-   * @return The corresponding joint torques
-   */
-  JointTorques operator*(const CartesianWrench& wrench) const;
 
   /**
    * @brief Overload the * operator with a Cartesian pose on left side

@@ -23,7 +23,7 @@ JointState IController<CartesianState>::compute_command(
     const CartesianState& command_state, const CartesianState& feedback_state,
     const Jacobian& jacobian
 ) {
-  return jacobian.transpose() * CartesianWrench(this->compute_command(command_state, feedback_state));
+  return jacobian.transpose(CartesianWrench(this->compute_command(command_state, feedback_state)));
 }
 
 template<>
