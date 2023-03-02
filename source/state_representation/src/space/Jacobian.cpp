@@ -142,6 +142,7 @@ void Jacobian::set_reference_frame(const std::string& reference_frame) {
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
   assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
+  this->reset_timestamp();
   this->data_ = data;
 }
 
@@ -149,6 +150,7 @@ void Jacobian::set_zero() {
   this->data_.resize(this->rows(), this->cols());
   this->data_.setZero();
   this->set_empty(false);
+  this->reset_timestamp();
 }
 
 Jacobian Jacobian::copy() const {
@@ -300,6 +302,7 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 }
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
+  // FIXME what do we do here?
   this->assert_not_empty();
   if (row > this->rows()) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
