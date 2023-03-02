@@ -8,10 +8,6 @@ google::protobuf::RepeatedField<double> matrix_encoder(const Eigen::MatrixXd& ma
   return encoder(std::vector<double>{matrix.data(), matrix.data() + matrix.size()});
 }
 
-proto::StateType encoder(const StateType& type) {
-  return static_cast<proto::StateType>(type);
-}
-
 proto::State encoder(const State& state) {
   proto::State message;
   message.set_name(state.get_name());
