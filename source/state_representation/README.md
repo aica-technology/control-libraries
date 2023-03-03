@@ -373,6 +373,7 @@ to operate only with specific state variables. The following derived classes are
 The `CartesianPose` class defines only the position and orientation of a frame.
 
 It provides the same constructors as `CartesianState`:
+
 ```c++
 CartesianPose::Identity("frame", "reference_frame");
 CartesianPose::Random("frame", "reference_frame");
@@ -382,6 +383,7 @@ Addition and subtraction is supported between `CartesianPose` and `CartesianStat
 not commutative in orientation; the order of operations matters.
 
 The return type of each compatible operation is shown below.
+
 ```c++
 
 CartesianPose r1 = pose + other_pose;
@@ -419,6 +421,7 @@ pose *= state; // equivalent to pose = pose * state
 The `CartesianTwist` class defines only the linear and angular velocity of a frame.
 
 It provides the following constructors:
+
 ```c++
 CartesianTwist::Zero("frame", "reference_frame");
 CartesianTwist::Random("frame", "reference_frame");
@@ -427,6 +430,7 @@ CartesianTwist::Random("frame", "reference_frame");
 Addition and subtraction is supported between `CartesianTwist` and `CartesianState`.
 
 The return type of each compatible operation is shown below.
+
 ```c++
 
 CartesianTwist r1 = twist + other_twist;
@@ -444,13 +448,88 @@ twist -= other_twist;
 twist -= state;
 ```
 
-TODO: clarify the internal representation and how it differs from body or spatial twist
+#### Representations of twist
+
+<!-- This section uses GitHub markdown syntax for rendering mathematical expressions -->
+
+A `CartesianTwist("B", "A")` represents linear and angular velocity of the body frame B with respect to fixed frame A,
+as viewed from A.
+
+$$^A\mathcal{V}_B =
+\begin{bmatrix}
+^Av_B \\
+^A\omega_B
+\end{bmatrix}$$
+
+The *body twist* $^B\mathcal{V}^b_{AB}$ is a special 6-vector that represents linear and angular velocity of the body
+frame B with respect to fixed frame A, *as viewed from B*. The relationship between ${^A}\mathcal{V_B}$ and
+${^B}\mathcal{V}{^b}_{AB}$ is given by the rotation matrix $^BR_A = ({^A}R_B)^T$.
+
+$$^B\mathcal{V}^b_{AB} =
+\begin{bmatrix}
+v_b \\
+\omega_b
+\end{bmatrix} =
+\begin{bmatrix}
+^BR_A * {^A}v_B \\
+^BR_A * {^A}\omega_B
+\end{bmatrix}$$
+
+For example, a spinning top (body frame) on a table (spatial reference frame) has angular velocity about its local Z
+axis. While the top is vertical (aligned with the table), the CartesianTwist and the body twist are equivalent. If the
+top begins to precess and tips over, then the CartesianTwist (expressed in the table frame) will show an angular
+velocity with components in X and Y, but the body twist will remain expressed in the local body Z axis. Importantly, the
+magnitude of the twist is the same in both representations, because they are both measuring the twist of the top with
+respect to the table.
+
+There is another type of twist called the *spatial twist*. Just like our `CartesianTwist`, it represents angular
+velocity of the body frame B with respect to fixed frame A, as viewed from A. However, the spatial linear velocity $v_s$
+represents the velocity of an imaginary point at A as if it were attached to the body B, measured with respect to A, as
+viewed from A.
+
+$$^A\mathcal{V}^s_{AB} =
+\begin{bmatrix}
+v_s \\
+\omega_s
+\end{bmatrix} =
+\begin{bmatrix}
+{^A}v_B + {^A}t_B \times {^A}\omega_B \\
+{^A}\omega_B
+\end{bmatrix}$$
+
+The quantity $v_s$ is the body linear velocity plus the radially induced velocity as the cross product of the distance
+from A to B ${^A}t_B$ with the body angular velocity.
+
+Our internal CartesianTwist representation is arguably the most intuitive out of all three options presented here.
+Still, depending on the geometric operations involved, both the body and spatial twist vectors can be useful.
+
+The equations above have shown the derivations of each in terms of the original CartesianTwist. To conclude, I will also
+mention the conversion between the body and spatial representations, which uses the Adjoint map.
+
+$$\mathcal{V}_s = [Ad_{T}] \mathcal{V}_b$$
+
+The Adjoint map is defined for a given transformation matrix $T$ (with rotation matrix $R$ and displacement vector $t$)
+as the adjoint matrix:
+
+$$[Ad_{T}] =
+\begin{bmatrix}
+0 & R \\
+R & [t]_{\times}R
+\end{bmatrix}$$
+
+The inverse of the adjoint matrix maps from spatial to body frame, and can be found by using the inverse transformation
+matrix.
+
+$$^A\mathcal{V}^s_{AB} = [Ad_{^AT_B}] ^B\mathcal{V}^b_{AB}$$
+
+$$^B\mathcal{V}^b_{AB} = [Ad_{^BT_A}] ^A\mathcal{V}^s_{AB}$$
 
 ### Cartesian acceleration
 
 The `CartesianAcceleration` class defines only the linear and angular acceleration of a frame.
 
 It provides the following constructors:
+
 ```c++
 CartesianAcceleration::Zero("frame", "reference_frame");
 CartesianAcceleration::Random("frame", "reference_frame");
@@ -459,6 +538,7 @@ CartesianAcceleration::Random("frame", "reference_frame");
 Addition and subtraction is supported between `CartesianAcceleration` and `CartesianState`.
 
 The return type of each compatible operation is shown below.
+
 ```c++
 
 CartesianAcceleration r1 = acceleration + other_acceleration;
@@ -481,6 +561,7 @@ acceleration -= state;
 The `CartesianWrench` class defines only the linear and angular acceleration of a frame.
 
 It provides the following constructors:
+
 ```c++
 CartesianWrench::Zero("frame", "reference_frame");
 CartesianWrench::Random("frame", "reference_frame");
@@ -489,6 +570,7 @@ CartesianWrench::Random("frame", "reference_frame");
 Addition and subtraction is supported between `CartesianWrench` and `CartesianState`.
 
 The return type of each compatible operation is shown below.
+
 ```c++
 
 CartesianWrench r1 = wrench + other_wrench;
