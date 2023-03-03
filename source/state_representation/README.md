@@ -448,6 +448,7 @@ twist -= other_twist;
 twist -= state;
 ```
 
+
 #### Representations of twist
 
 <!-- This section uses GitHub markdown syntax for rendering mathematical expressions -->
@@ -558,7 +559,13 @@ acceleration -= state;
 
 ### Cartesian wrench
 
-The `CartesianWrench` class defines only the linear and angular acceleration of a frame.
+The `CartesianWrench` class defines only the force and torque as applied to a frame.
+
+The wrench is distinct from the other state variables as it is not a relative spatial property. It is considered as
+the measurement of a force/torque sensor at the frame, as seen from the reference frame.
+
+Changing the observer does not change magnitude of the force or wrench measured at the frame. It only changes the
+apparent direction of the wrench vector, depending on the orientation of the reference frame.
 
 It provides the following constructors:
 
@@ -588,7 +595,19 @@ wrench -= other_wrench;
 wrench -= state;
 ```
 
-TODO: repeat the special case of transform and inverse, and discuss wrench transform with the adjoint matrix
+#### Considerations of wrench
+
+Because the `CartesianWrench` is different from other spatial properties, it is handled uniquely in the transform
+and inverse operations.
+
+A transformation of states involving a wrench will only preserve the wrench measured at the last frame, rotated to
+the new reference frame. The wrench of the intermediate (inner) frame is discarded.
+
+The inverse of a state will set the wrench to zero.
+
+#### Representations of wrench
+
+TODO: discuss wrench transform with the transposed adjoint matrix, similar to twist
 
 ### Cartesian integration and derivation
 
