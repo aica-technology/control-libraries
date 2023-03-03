@@ -15,31 +15,32 @@ state is a **parameter**, which this library defines as a container class to for
 The following sections describe the properties of the main state classes in the library.
 
 ## Table of contents:
+
 * [State](#state)
-  * [Name](#name)
-  * [State Type](#state-type)
-  * [Timestamp](#timestamp)
-  * [Emptiness](#emptiness)
+    * [Name](#name)
+    * [State Type](#state-type)
+    * [Timestamp](#timestamp)
+    * [Emptiness](#emptiness)
 * [Cartesian state](#cartesian-state)
-  * [Reference frame](#reference-frames)
-  * [Construction](#construction)
-  * [Cartesian getters and setters](#cartesian-getters-and-setters)
-  * [Cartesian addition and subtraction](#cartesian-addition-and-subtraction)
-  * [Cartesian transforms: changing the reference frame](#cartesian-transforms--changing-the-reference-frame)
-  * [Specific state variables](#specific-state-variables)
+    * [Reference frame](#reference-frames)
+    * [Construction](#construction)
+    * [Cartesian getters and setters](#cartesian-getters-and-setters)
+    * [Cartesian addition and subtraction](#cartesian-addition-and-subtraction)
+    * [Cartesian transforms: changing the reference frame](#cartesian-transforms--changing-the-reference-frame)
+* [Derived Cartesian classes](#derived-cartesian-classes)
     * [Cartesian pose](#cartesian-pose)
     * [Cartesian twist](#cartesian-twist)
     * [Cartesian acceleration](#cartesian-acceleration)
     * [Cartesian wrench](#cartesian-wrench)
-  * [Cartesian integration and derivation](#cartesian-integration-and-derivation)
+    * [Cartesian integration and derivation](#cartesian-integration-and-derivation)
 * [Joint state](#joint-state)
-  * [Joint state operations](#joint-state-operations)
-  * [Conversion between joint state variables](#conversion-between-joint-state-variables)
+    * [Joint state operations](#joint-state-operations)
+    * [Conversion between joint state variables](#conversion-between-joint-state-variables)
 * [The Jacobian matrix](#the-jacobian-matrix)
-  * [Conversion between JointVelocities and CartesianTwist](#conversion-between-jointvelocities-and-cartesiantwist)
-  * [Conversion between JointTorques and CartesianWrench](#conversion-between-jointtorques-and-cartesianwrench)
-  * [Matrix multiplication](#matrix-multiplication)
-  * [Changing the Jacobian reference frame](#changing-the-jacobian-reference-frame)
+    * [Conversion between JointVelocities and CartesianTwist](#conversion-between-jointvelocities-and-cartesiantwist)
+    * [Conversion between JointTorques and CartesianWrench](#conversion-between-jointtorques-and-cartesianwrench)
+    * [Matrix multiplication](#matrix-multiplication)
+    * [Changing the Jacobian reference frame](#changing-the-jacobian-reference-frame)
 
 ## State
 
@@ -98,6 +99,7 @@ A state can be marked as "empty" by calling `reset()`. The state remains empty u
 ## Cartesian state
 
 A `CartesianState` represents a spatial frame in 3D space, containing the following spatial and dynamic properties:
+
 - `position`
 - `orientation`
 - `linear_velocity`
@@ -124,12 +126,14 @@ Each _paired_ state variable is represented as a 6D vector (`Eigen::VectorXd(6)`
 represented as a 7D vector (3 for `position` and 4 for `orientation`).
 
 ### Reference frames
+
 The spatial properties are expressed relative to a named reference frame. For a `CartesianState` with name "A" and
 reference frame "B", each state variable represents the instantaneous spatial property measured at or around frame A
 from the perspective of frame B.
 
 In some contexts, `twist` or `wrench` vectors may be interpreted differently. For example, there is a concept of
-"body twist" and "spatial twist". See the sections on `CartesianTwist` and `CartesianWrench` for more details (TODO).
+"body twist" and "spatial twist". See the sections on [`CartesianTwist`](#cartesian-twist) and
+[`CartesianWrench`](#cartesian-wrench) for more details.
 
 ### Construction
 
@@ -143,8 +147,8 @@ quaternion. The latter sets all state variables to a unit random state within a 
 state_representation::CartesianState s1("A"); // frame A expressed in world (default)
 state_representation::CartesianState s2("B", "A"); // frame B expressed in A
 
-state = state_representation::CartesianState::Identity("I"); // identity frame I expressed in world
-state = state_representation::CartesianState::Random("R", "B"); // random frame R expressed in B
+auto s3 = state_representation::CartesianState::Identity("I"); // identity frame I expressed in world
+auto s4 = state_representation::CartesianState::Random("R", "B"); // random frame R expressed in B
 ```
 
 ### Cartesian getters and setters
@@ -165,7 +169,8 @@ state.set_position(xyz);
 state.set_position(0, 0.001, 0); // 1 millimeter in Y
 ```
 
-The orientation operates with a quaternion instead of a 3D vector. 
+The orientation operates with a quaternion instead of a 3D vector.
+
 ```c++
 // get the orientation as a unit quaternion
 Eigen::Quaterniond q = state.get_orientation();
@@ -186,6 +191,7 @@ s2.get_orientation(); // Eigen::Quaterniond(0.70710678, 0.70710678, 0., 0.)
 ```
 
 Every other 3D state variable has equivalent getters and setters to the position:
+
 - `get_linear_velocity()`, `set_linear_velocity(xyz)` or `set_linear_velocity(x, y, z)` in meters per second
 - `get_angular_velocity()`, `set_angular_velocity(xyz)` or `set_angular_velocity(x, y, z)` in radians per second
 - `get_linear_acceleration()`, `set_linear_acceleration(xyz)` or `set_linear_acceleration(x, y, z)` in meters per second
@@ -241,14 +247,13 @@ For example, If `s1` has position `(x1, y1, z1)` and `s2` has position `(x1, y1,
 `(x1 + x2, y1 + y2, z1 + z2)`. The same applies for subtraction and is true for all state variables represented as 3D
 vectors.
 
-In the case of orientation, the addition and subtraction operations are **not commutative**. 
+In the case of orientation, the addition and subtraction operations are **not commutative**.
 
 Addition of orientation uses the quaternion product; the addition `s1 + s2` corresponds to the rotation of `s1` followed
 by the rotation in `s2`, while `s2 + s1` corresponds to the rotation of `s2` followed by the rotation of `s1`.
 
-Subtraction of orientation uses the quaternion inverse (quaternion conjugate); `-s1` yields the inverse orientation of 
+Subtraction of orientation uses the quaternion inverse (quaternion conjugate); `-s1` yields the inverse orientation of
 `s1`, and `s1 - s2` is equivalent to the rotation of `s1` followed by the inverse rotation of `s2`.
-
 
 ### Cartesian transforms: changing the reference frame
 
@@ -267,7 +272,7 @@ different reference frames is known as a **transformation** and is one of the mo
 A transformation affects all state variables as a combination of the two connected frames.
 In the simplest case, the relative distance between each frame is combined to yield a new position value.
 In another example, if frame A is rotated by 45 degrees relative to B and B is rotated 45 degrees relative to C, then A
-is rotated 90 degrees relative to C. 
+is rotated 90 degrees relative to C.
 
 When states have non-zero position, orientation, velocity or acceleration offsets, the transformation involves a more
 complicated combination of the different state variables.
@@ -280,14 +285,14 @@ frames and their relative angular velocities. Finally, the transformation of acc
 Coriolis and centrifugal effects.
 
 Transformation applies only to the relative spatial properties of the frame (pose, twist, and acceleration).
-The wrench is not transformed in the same way because forces applied to spatial frames do not "add together" like 
+The wrench is not transformed in the same way because forces applied to spatial frames do not "add together" like
 relative positions or velocities. A measured force or torque will therefore not change in magnitude when expressed
-in different reference frames, and is only rotated to the new reference frame coordinate system. 
+in different reference frames, and is only rotated to the new reference frame coordinate system.
 
 The concept of a wrench transform does exist in the context of static forces across rigid bodies. This is described
-further in the `CartesianWrench` section (TODO).
+further in the [`CartesianWrench`](#cartesian-wrench) section.
 
-#### The transform operator 
+#### The transform operator
 
 For clarity in the examples below, the name given to each `CartesianState` variable will have the reference name
 as the prefix and the frame name as a suffix. This will highlight the "chain rule" that occurs during frame
@@ -321,6 +326,7 @@ wSa * bSc;
 ```
 
 In some cases, there may be enough information to perform a transformation, but the inner frames are not compatible.
+
 ```c++
 // inner frames are not compatible, but it should still be possible to find "b" relative to "world"
 wSa * bSa;
@@ -352,53 +358,159 @@ As with transformation, the wrench is the special case. For a state `aSb`, the w
 measured at `b` as seen from `a`. For the inverted state `bSa`, the wrench at `a` is unknown without further
 underlying assumptions. For this reason, the inverse operator sets the resulting wrench to zero.
 
-### Specific state variables
+## Derived Cartesian classes
 
 The `CartesianState` class contains all spatial and dynamic state variables of a frame. In some cases, it is convenient
-to operate only specific state variables. 
+to operate only with specific state variables. The following derived classes are defined:
 
-#### Cartesian pose
+- `CartesianPose`
+- `CartesianTwist`
+- `CartesianAcceleration`
+- `CartesianWrench`
+
+### Cartesian pose
 
 The `CartesianPose` class defines only the position and orientation of a frame.
 
-#### Cartesian twist
+It provides the same constructors as `CartesianState`:
+```c++
+CartesianPose::Identity("frame", "reference_frame");
+CartesianPose::Random("frame", "reference_frame");
+```
+
+Addition and subtraction is supported between `CartesianPose` and `CartesianState`. Recall that these operations are
+not commutative in orientation; the order of operations matters.
+
+The return type of each compatible operation is shown below.
+```c++
+
+CartesianPose r1 = pose + other_pose;
+CartesianState r2 = pose + state;
+CartesianState r3 = state + pose;
+
+CartesianPose r4 = pose - other_pose;
+CartesianState r5 = pose - state;
+CartesianState r6 = state - pose;
+
+pose += other_pose; // equivalent to pose = pose + other_pose
+pose += state; // equivalent to pose = pose + state
+
+pose -= other_pose;
+pose -= state;
+```
+
+A `CartesianPose` can be used to transform any other Cartesian class by applying the position and orientation offset.
+Recall that the frame and reference frames must be compatible according to the chain rule as described in the
+[Cartesian transformation](#cartesian-transforms--changing-the-reference-frame) section.
+
+```c++
+CartesianPose transformed_pose = pose * other_pose;
+CartesianTwist transformed_twist = pose * twist;
+CartesianAcceleration transformed_acceleration = pose * acceleration;
+CartesianWrench transformed_wrench = pose * wrench;
+CartesianState transformed_state = pose * state
+    
+pose *= other_pose; // equivalent to pose = pose * other_pose
+pose *= state; // equivalent to pose = pose * state
+```
+
+### Cartesian twist
 
 The `CartesianTwist` class defines only the linear and angular velocity of a frame.
 
+It provides the following constructors:
+```c++
+CartesianTwist::Zero("frame", "reference_frame");
+CartesianTwist::Random("frame", "reference_frame");
+```
+
+Addition and subtraction is supported between `CartesianTwist` and `CartesianState`.
+
+The return type of each compatible operation is shown below.
+```c++
+
+CartesianTwist r1 = twist + other_twist;
+CartesianState r2 = twist + state;
+CartesianState r3 = state + twist;
+
+CartesianTwist r4 = twist - other_twist;
+CartesianState r5 = twist - state;
+CartesianState r6 = state - twist;
+
+twist += other_twist; // equivalent to twist = twist + other_twist
+twist += state; // equivalent to twist = twist + state
+
+twist -= other_twist;
+twist -= state;
+```
+
 TODO: clarify the internal representation and how it differs from body or spatial twist
 
-#### Cartesian acceleration
+### Cartesian acceleration
 
 The `CartesianAcceleration` class defines only the linear and angular acceleration of a frame.
 
-#### Cartesian wrench
+It provides the following constructors:
+```c++
+CartesianAcceleration::Zero("frame", "reference_frame");
+CartesianAcceleration::Random("frame", "reference_frame");
+```
+
+Addition and subtraction is supported between `CartesianAcceleration` and `CartesianState`.
+
+The return type of each compatible operation is shown below.
+```c++
+
+CartesianAcceleration r1 = acceleration + other_acceleration;
+CartesianState r2 = acceleration + state;
+CartesianState r3 = state + acceleration;
+
+CartesianAcceleration r4 = acceleration - other_acceleration;
+CartesianState r5 = acceleration - state;
+CartesianState r6 = state - acceleration;
+
+acceleration += other_acceleration; // equivalent to acceleration = acceleration + other_acceleration
+acceleration += state; // equivalent to acceleration = acceleration + state
+
+acceleration -= other_acceleration;
+acceleration -= state;
+```
+
+### Cartesian wrench
 
 The `CartesianWrench` class defines only the linear and angular acceleration of a frame.
 
+It provides the following constructors:
+```c++
+CartesianWrench::Zero("frame", "reference_frame");
+CartesianWrench::Random("frame", "reference_frame");
+```
+
+Addition and subtraction is supported between `CartesianWrench` and `CartesianState`.
+
+The return type of each compatible operation is shown below.
+```c++
+
+CartesianWrench r1 = wrench + other_wrench;
+CartesianState r2 = wrench + state;
+CartesianState r3 = state + wrench;
+
+CartesianWrench r4 = wrench - other_wrench;
+CartesianState r5 = wrench - state;
+CartesianState r6 = state - wrench;
+
+wrench += other_wrench; // equivalent to wrench = wrench + other_wrench
+wrench += state; // equivalent to wrench = wrench + state
+
+wrench -= other_wrench;
+wrench -= state;
+```
+
 TODO: repeat the special case of transform and inverse, and discuss wrench transform with the adjoint matrix
 
-you just want to express a `pose` without `twist`, `accelerations` or `wrench`.
-Therefore, extra classes representing only those specific state variables have been defined, `CartesianPose`,
-`CartesianTwist`, `CartesianAcceleration` and `CartesianWrench`.
-Effectively, they all extend from `CartesianState` hence they can be intertwined as will.
-
-```c++
-state_representation::CartesianPose wPa("a");
-state_representation::CartesianState aSb("b", "a");
-
-// the result is state b expressed in world
-state_representation::CartesianState wSa = wPa + aSb;
-```
-
-```c++
-state_representation::CartesianPose wPa("a");
-state_representation::CartesianTwist aVb("b", "a");
-
-// the result is twist b expressed in world
-state_representation::CartesianTwist wVa = wPa + aVb;
-```
-
 ### Cartesian integration and derivation
+
+TODO: move the contents of this section into the relevant derived class descriptions
 
 The distinction with those specific extra variables allows to define some extra conversion operations.
 Therefore, dividing a `CartesianPose` by a time (`std::chrono_literals`) returns a `CartesianTwist`:
@@ -439,7 +551,8 @@ d = dist(cs1, cs2)
 ```
 
 By default, the distance is computed over all the state variables.
-It is worth noting that it has no physical units, but is still relevant to check how far two states are in all their features.
+It is worth noting that it has no physical units, but is still relevant to check how far two states are in all their
+features.
 One can specify the state variable to consider using the `CartesianStateVariable` enumeration:
 
 ```c++
@@ -475,14 +588,15 @@ CartesianState csn = cs.normalized(CartesianStateVariable::LINEAR_VELOCITY)
 ## Joint state
 
 `JointState` follows the same logic as `CartesianState` but for representing robot states.
-Similarly to the `CartesianState` the class `JointState`, `JointPositions`, `JointVelocities` and `JointTorques` have been developed.
+Similarly to the `CartesianState` the class `JointState`, `JointPositions`, `JointVelocities` and `JointTorques` have
+been developed.
 The API follows exactly the same logic with similar operations implemented.
 
 A `JointState` is defined by the name of the corresponding robot and the name of each joints.
 
 ```c++
 // create a state for myrobot with 3 joints
-state_representation::JointState js("myrobot", std::vector<string>({"joint0", "joint1", "joint2"}));
+state_representation::JointState js("myrobot", std::vector<string>({ "joint0", "joint1", "joint2" }));
 ```
 
 Note that if the joints of the robot are named `{"joint0", "joint1", ..., "jointN"}` as above,
@@ -563,7 +677,7 @@ frame name and a reference frame.
 
 ```c++
 // create a Jacobian for myrobot with 3 joints, associated to frame A and expressed in B
-state_representation::Jacobian jac("myrobot", std::vector<string>({"joint0", "joint1", "joint2"}), "A", "B");
+state_representation::Jacobian jac("myrobot", std::vector<string>({ "joint0", "joint1", "joint2" }), "A", "B");
 ```
 
 The API is the same as the `JointState`, hence the constructor can also accept the number of joints to initialize the
@@ -582,7 +696,8 @@ Therefore, the data can be set from an `Eigen::MatrixXd` of correct dimensions.
 jac.set_data(Eigen::MatrixXd::Random(6, 3)); // throw an IncompatibleSizeException if the size is not correct
 ```
 
-All the functionalities of the `Jacobian` have been implemented such as `transpose`, `inverse` or `pseudoinverse` functions.
+All the functionalities of the `Jacobian` have been implemented such as `transpose`, `inverse` or `pseudoinverse`
+functions.
 
 ```c++
 /// returns the 3 x 6 transposed matrix
@@ -597,7 +712,8 @@ Those operations are very useful to convert `JointState` from `CartesianState` a
 
 ### Conversion between JointVelocities and CartesianTwist
 
-The simplest conversion is to transform a `JointVelocities` into a `CartesiantTwist` by multiplication with the `Jacobian`
+The simplest conversion is to transform a `JointVelocities` into a `CartesiantTwist` by multiplication with
+the `Jacobian`
 
 ```c++
 state_representation::Jacobian jac("myrobot", 3, "eef_frame", "base_frame");
@@ -640,7 +756,8 @@ state_representation::JointTorques jt = jac.transpose() * eef_wrench;
 
 ### Matrix multiplication
 
-The `Jacobian` object contains an underlying `Eigen::MatrixXd` which can be retrieved using the `Jacobian::data()` method.
+The `Jacobian` object contains an underlying `Eigen::MatrixXd` which can be retrieved using the `Jacobian::data()`
+method.
 Direct multiplication of the `Jacobian` object with another `Eigen::MatrixXd` has also been implemented and returns the
 `Eigen::MatrixXd` product.
 
