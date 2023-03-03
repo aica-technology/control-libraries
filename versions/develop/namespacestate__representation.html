@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.62</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.66</span>
    </div>
   </td>
  </tr>
@@ -362,8 +362,8 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="separator:a50c4cb02a4ffccd71acf0d5c0b6e6cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9cd9c4dd3e3e0bc38c7493e5070b6604"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a9cd9c4dd3e3e0bc38c7493e5070b6604">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_dual_quaternion_twist.html">DualQuaternionTwist</a> &amp;state)</td></tr>
 <tr class="separator:a9cd9c4dd3e3e0bc38c7493e5070b6604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d1aa2faa1692a0c73ce73b8bada8550"><td class="memItemLeft" align="right" valign="top">Eigen::MatrixXd&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4d1aa2faa1692a0c73ce73b8bada8550">operator*</a> (const Eigen::MatrixXd &amp;matrix, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
-<tr class="separator:a4d1aa2faa1692a0c73ce73b8bada8550"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a747574d2e1a3343289ac82c85ec2df03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a747574d2e1a3343289ac82c85ec2df03">operator*</a> (const Eigen::Matrix&lt; double, 6, 6 &gt; &amp;matrix, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
+<tr class="separator:a747574d2e1a3343289ac82c85ec2df03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a74f0ee08214ae0f7f1354b0f6e858767">operator*</a> (const <a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> &amp;pose, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
 <tr class="separator:a74f0ee08214ae0f7f1354b0f6e858767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5c6ad00c289f8a859e23f19f8067895"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ae5c6ad00c289f8a859e23f19f8067895">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian)</td></tr>
@@ -750,7 +750,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> expressed in the new reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00331">331</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00283">283</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -868,8 +868,46 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a747574d2e1a3343289ac82c85ec2df03" name="a747574d2e1a3343289ac82c85ec2df03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a747574d2e1a3343289ac82c85ec2df03">&#9670;&#160;</a></span>operator*() <span class="overload">[5/25]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> state_representation::operator* </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Matrix&lt; double, 6, 6 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;&#160;</td>
+          <td class="paramname"><em>jacobian</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">matrix</td><td>The matrix to multiply with </td></tr>
+    <tr><td class="paramname">jacobian</td><td>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> transformed by the matrix </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00269">269</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ab217a73c660f86e987323abce3a689f4" name="ab217a73c660f86e987323abce3a689f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab217a73c660f86e987323abce3a689f4">&#9670;&#160;</a></span>operator*() <span class="overload">[5/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab217a73c660f86e987323abce3a689f4">&#9670;&#160;</a></span>operator*() <span class="overload">[6/25]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -907,7 +945,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a9019045800d04022d1bade922e94e841" name="a9019045800d04022d1bade922e94e841"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9019045800d04022d1bade922e94e841">&#9670;&#160;</a></span>operator*() <span class="overload">[6/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9019045800d04022d1bade922e94e841">&#9670;&#160;</a></span>operator*() <span class="overload">[7/25]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -945,7 +983,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a9df08c49ebb7a5b7fd6045b160fdcb00" name="a9df08c49ebb7a5b7fd6045b160fdcb00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9df08c49ebb7a5b7fd6045b160fdcb00">&#9670;&#160;</a></span>operator*() <span class="overload">[7/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9df08c49ebb7a5b7fd6045b160fdcb00">&#9670;&#160;</a></span>operator*() <span class="overload">[8/25]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -983,7 +1021,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a7568276bd5f56d86c48480aca1937980" name="a7568276bd5f56d86c48480aca1937980"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7568276bd5f56d86c48480aca1937980">&#9670;&#160;</a></span>operator*() <span class="overload">[8/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7568276bd5f56d86c48480aca1937980">&#9670;&#160;</a></span>operator*() <span class="overload">[9/25]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1021,7 +1059,7 @@ template&lt;typename T &gt; </div>
 </div>
 </div>
 <a id="a17eed679b5d1d20668d0e83683d0d114" name="a17eed679b5d1d20668d0e83683d0d114"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17eed679b5d1d20668d0e83683d0d114">&#9670;&#160;</a></span>operator*() <span class="overload">[9/25]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a17eed679b5d1d20668d0e83683d0d114">&#9670;&#160;</a></span>operator*() <span class="overload">[10/25]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1055,44 +1093,6 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint velocities </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00122">122</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a4d1aa2faa1692a0c73ce73b8bada8550" name="a4d1aa2faa1692a0c73ce73b8bada8550"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d1aa2faa1692a0c73ce73b8bada8550">&#9670;&#160;</a></span>operator*() <span class="overload">[10/25]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Eigen::MatrixXd state_representation::operator* </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::MatrixXd &amp;&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;&#160;</td>
-          <td class="paramname"><em>jacobian</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">matrix</td><td>The matrix to multiply with </td></tr>
-    <tr><td class="paramname">jacobian</td><td>The <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The matrix multiplied by the <a class="el" href="classstate__representation_1_1_jacobian.html" title="Class to define a robot Jacobian matrix.">Jacobian</a> matrix </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00293">293</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -2179,7 +2179,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00377">377</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8cpp_source.html#l00324">324</a> of file <a class="el" href="_jacobian_8cpp_source.html">Jacobian.cpp</a>.</p>
 
 </div>
 </div>
@@ -2816,7 +2816,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_jacobian_8hpp_source.html#l00327">327</a> of file <a class="el" href="_jacobian_8hpp_source.html">Jacobian.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_jacobian_8hpp_source.html#l00328">328</a> of file <a class="el" href="_jacobian_8hpp_source.html">Jacobian.hpp</a>.</p>
 
 </div>
 </div>
