@@ -124,6 +124,7 @@ void Jacobian::set_joint_names(unsigned int nb_joints) {
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->joint_names_[i] = "joint" + std::to_string(i);
   }
+  this->reset_timestamp();
 }
 
 void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
@@ -133,10 +134,12 @@ void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
             + " got " + std::to_string(joint_names.size()));
   }
   this->joint_names_ = joint_names;
+  this->reset_timestamp();
 }
 
 void Jacobian::set_reference_frame(const std::string& reference_frame) {
   this->reference_frame_ = reference_frame;
+  this->reset_timestamp();
 }
 
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
@@ -300,7 +303,6 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 }
 
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
-  // FIXME what do we do here?
   this->assert_not_empty();
   if (row > this->rows()) {
     throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
@@ -308,6 +310,7 @@ double& Jacobian::operator()(unsigned int row, unsigned int col) {
   if (col > this->cols()) {
     throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
   }
+  this->reset_timestamp();
   return this->data_(row, col);
 }
 

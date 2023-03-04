@@ -29,6 +29,7 @@ const std::string& SpatialState::get_reference_frame() const {
 
 void SpatialState::set_reference_frame(const std::string& reference_frame) {
   this->reference_frame_ = reference_frame;
+  this->reset_timestamp();
 }
 
 bool SpatialState::is_incompatible(const State& state) const {

@@ -44,6 +44,7 @@ void State::set_type(const StateType& type) {
 
 void State::set_name(const std::string& name) {
   this->name_ = name;
+  this->reset_timestamp();
 }
 
 void State::set_empty(bool empty) {

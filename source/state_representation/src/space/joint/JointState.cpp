@@ -268,6 +268,7 @@ void JointState::set_names(unsigned int nb_joints) {
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
   }
+  this->reset_timestamp();
 }
 
 void JointState::set_names(const std::vector<std::string>& names) {
@@ -277,6 +278,7 @@ void JointState::set_names(const std::vector<std::string>& names) {
             + std::to_string(names.size()));
   }
   this->names_ = names;
+  this->reset_timestamp();
 }
 
 void JointState::set_positions(const Eigen::VectorXd& positions) {
