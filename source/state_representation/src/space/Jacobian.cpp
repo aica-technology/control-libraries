@@ -142,7 +142,6 @@ void Jacobian::set_reference_frame(const std::string& reference_frame) {
 void Jacobian::set_data(const Eigen::MatrixXd& data) {
   assert_matrix_size(data, this->rows(), this->cols());
   this->set_empty(false);
-  this->reset_timestamp();
   this->data_ = data;
 }
 
@@ -150,7 +149,6 @@ void Jacobian::set_zero() {
   this->data_.resize(this->rows(), this->cols());
   this->data_.setZero();
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 Jacobian Jacobian::copy() const {

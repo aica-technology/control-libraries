@@ -48,6 +48,7 @@ void State::set_name(const std::string& name) {
 
 void State::set_empty(bool empty) {
   this->empty_ = empty;
+  this->reset_timestamp();
 }
 
 void State::assert_not_empty() const {
@@ -73,8 +74,7 @@ void State::set_data(const Eigen::MatrixXd&) {
 }
 
 void State::reset() {
-  this->empty_ = true;
-  this->reset_timestamp();
+  this->set_empty();
 }
 
 double State::get_age() const {

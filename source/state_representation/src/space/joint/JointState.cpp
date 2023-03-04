@@ -231,7 +231,6 @@ void JointState::set_state_variable(const Eigen::VectorXd& new_value, const Join
     }
   }
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void JointState::set_state_variable(
@@ -258,7 +257,6 @@ void JointState::set_state_variable(
       this->torques_(joint_index) = new_value;
   }
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void JointState::set_names(unsigned int nb_joints) {
@@ -453,7 +451,6 @@ void JointState::set_zero() {
     this->velocities_.setZero();
     this->accelerations_.setZero();
     this->torques_.setZero();
-    this->reset_timestamp();
     this->set_empty(false);
   }
 }

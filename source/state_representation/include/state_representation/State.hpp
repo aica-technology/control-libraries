@@ -155,6 +155,7 @@ protected:
 
   /**
    * @brief Setter of the empty attribute
+   * @details Calling this function will also reset the timestamp
    * @param empty Flag to specify if the state should be empty or not, default true
    */
   void set_empty(bool empty = true);
