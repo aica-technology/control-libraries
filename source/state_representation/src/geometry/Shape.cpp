@@ -63,7 +63,6 @@ void Shape::set_center_state(const CartesianState& state) {
   }
   this->center_state_ = state;
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void Shape::set_center_pose(const CartesianPose& pose) {
@@ -73,19 +72,16 @@ void Shape::set_center_pose(const CartesianPose& pose) {
   }
   this->center_state_.set_pose(pose.get_position(), pose.get_orientation());
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void Shape::set_center_position(const Eigen::Vector3d& position) {
   this->center_state_.set_position(position);
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void Shape::set_center_orientation(const Eigen::Quaterniond& orientation) {
   this->center_state_.set_orientation(orientation);
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 std::string Shape::to_string() const {

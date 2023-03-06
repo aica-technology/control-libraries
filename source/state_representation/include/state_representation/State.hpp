@@ -129,7 +129,7 @@ public:
   bool is_deprecated(const std::chrono::duration<int64_t, DurationT>& time_delay) const;
 
   /**
-   * @brief Reset the state to be empty with no data
+   * @brief Reset the object to a post-construction state
    */
   virtual void reset();
 
@@ -155,6 +155,7 @@ protected:
 
   /**
    * @brief Setter of the empty attribute
+   * @details Calling this function will also reset the timestamp
    * @param empty Flag to specify if the state should be empty or not, default true
    */
   void set_empty(bool empty = true);

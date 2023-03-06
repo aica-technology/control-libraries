@@ -231,7 +231,6 @@ void JointState::set_state_variable(const Eigen::VectorXd& new_value, const Join
     }
   }
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void JointState::set_state_variable(
@@ -258,7 +257,6 @@ void JointState::set_state_variable(
       this->torques_(joint_index) = new_value;
   }
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void JointState::set_names(unsigned int nb_joints) {
@@ -270,6 +268,7 @@ void JointState::set_names(unsigned int nb_joints) {
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
   }
+  this->reset_timestamp();
 }
 
 void JointState::set_names(const std::vector<std::string>& names) {
@@ -279,6 +278,7 @@ void JointState::set_names(const std::vector<std::string>& names) {
             + std::to_string(names.size()));
   }
   this->names_ = names;
+  this->reset_timestamp();
 }
 
 void JointState::set_positions(const Eigen::VectorXd& positions) {
@@ -454,7 +454,6 @@ void JointState::set_zero() {
     this->accelerations_.setZero();
     this->torques_.setZero();
     this->set_empty(false);
-    // FIXME(#15): reset timestamp
   }
 }
 

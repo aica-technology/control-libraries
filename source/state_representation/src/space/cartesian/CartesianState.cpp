@@ -284,7 +284,6 @@ void CartesianState::set_state_variable(
       break;
   }
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void CartesianState::set_position(const Eigen::Vector3d& position) {
@@ -301,10 +300,9 @@ void CartesianState::set_position(const double& x, const double& y, const double
 
 void CartesianState::set_orientation(const Eigen::Quaterniond& orientation) {
   // orientation is a special case, to avoid transforming between vector and quaternion, set it here directly
-  // but also set filled and reset timestamp as in set_state_variable
+  // but also set filled as in set_state_variable
   this->orientation_ = orientation.normalized();
   this->set_empty(false);
-  this->reset_timestamp();
 }
 
 void CartesianState::set_orientation(const Eigen::Vector4d& orientation) {
@@ -445,7 +443,6 @@ void CartesianState::set_zero() {
   this->angular_acceleration_.setZero();
   this->force_.setZero();
   this->torque_.setZero();
-  // FIXME(#15): reset timestamp
   this->set_empty(false);
 }
 
@@ -595,6 +592,7 @@ void CartesianState::normalize(const CartesianStateVariable& state_variable_type
       || state_variable_type == CartesianStateVariable::ALL) {
     this->torque_.normalize();
   }
+  this->reset_timestamp();
 }
 
 CartesianState CartesianState::normalized(const CartesianStateVariable& state_variable_type) const {
