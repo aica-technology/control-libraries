@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.67</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;6.3.68</span>
    </div>
   </td>
  </tr>
@@ -72,14 +72,33 @@ $(function() {
   <div class="headertitle"><div class="title">State Representation </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p >This library provides a set of classes to represent <b>states</b> in <b>Cartesian</b> or <b>joint</b> space, <b>parameters</b>, or <b>geometrical shapes</b> that can be used as obstacles. Those are a set of helpers functions to handle common concepts in robotics such as transformations between frames and the link between them and the robot state. This description covers most of the functionalities starting from the spatial transformations.</p>
+<div class="textblock"><p >This library provides a set of classes to represent <b>states</b>, which are specific data points (state variables) associated with a name.</p>
+<p >In robotics, the most useful types of state refer to spatial properties. The joint angles of a robot arm, the 3D position and velocity of a flying drone, or the measurement of an accelerometer or force-torque sensor are all examples of instantaneous state variables. The `CartesianState` and `JointState` classes can represent such values in an internally consistent way while providing useful functions for conversions, transformations and other manipulations.</p>
+<p >State classes are designed to be extensible to support more abstract state variables or properties. Another type of state is a <b>parameter</b>, which this library defines as a container class to for generic named variables.</p>
+<p >The following sections describe the properties of the main state classes in the library.</p>
 <h1>Table of contents:</h1>
 <ul>
+<li>State<ul>
+<li>Name</li>
+<li>State Type</li>
+<li>Timestamp</li>
+<li>Emptiness</li>
+</ul>
+</li>
 <li>Cartesian state<ul>
-<li>Cartesian state operations</li>
-<li>Changing of reference frame</li>
-<li>Specific state variables</li>
-<li>Conversion between Cartesian state variables</li>
+<li>Reference frame</li>
+<li>Construction</li>
+<li>Cartesian getters and setters</li>
+<li>Cartesian addition and subtraction</li>
+<li>Cartesian transforms: changing the reference frame</li>
+<li>Cartesian distances and norms</li>
+</ul>
+</li>
+<li>Derived Cartesian classes<ul>
+<li>Cartesian pose</li>
+<li>Cartesian twist</li>
+<li>Cartesian acceleration</li>
+<li>Cartesian wrench</li>
 </ul>
 </li>
 <li>Joint state<ul>
@@ -95,227 +114,595 @@ $(function() {
 </ul>
 </li>
 </ul>
+<h1>State</h1>
+<p >The <code>State</code> base class defines the following attributes common to all derived states:</p>
+<ul>
+<li>name: the name associated with the state</li>
+<li>type: the specific StateType of the object</li>
+<li>timestamp: an internal timestamp which refers to the last modification</li>
+</ul>
+<h2>Name</h2>
+<p >The name is used to label a specific state instance, and can be used to disambiguate multiple states or check their compatibility. The name can be accessed or modified with <code>get_name()</code> and <code>set_name()</code> respectively.</p>
+<h2>State Type</h2>
+<p >A state can hold different data depending on its type. The available state types are defined by the <code><a class="el" href="namespacestate__representation.html#ab8356a8dcadd21825f50bc1fd41a9e87" title="The class types inheriting from State.">state_representation::StateType</a></code> enumeration. The type field is accessible using the <code>get_type()</code> method and allows introspection when working with state pointers. It is a readonly property, determined by the constructor implementation.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">void check_state_type(const std::shared_ptr&lt;state_representation::State&gt;&amp; state) {</div>
+<div class="line">  if (state-&gt;get_type() == ...) {</div>
+<div class="line">    // </div>
+<div class="line">  }</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2>Timestamp</h2>
+<p >The timestamp of a state records when it was last modified. Any non-const operations or mutations, including copy constructions, will reset the timestamp.</p>
+<p ><code>get_age()</code> returns the time since last modification in seconds, while <code>is_deprecated(time_delay)</code> can be used to check the age of a state against a maximum time delay.</p>
+<h2>Emptiness</h2>
+<p >In addition, all states have a concept of "emptiness". The <code>State</code> base class does not refer to any specific state variable, and therefore holds no data. Derived classes that implement state variables do hold data. If a state is empty, it indicates that the data is uninitialized or otherwise invalid. The <code>is_empty()</code> method can be used to check emptiness, or otherwise the state object can be evaluated directly.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::State state;</div>
+<div class="line"> </div>
+<div class="line">if (state) {</div>
+<div class="line">  // the state is not empty</div>
+<div class="line">} else {</div>
+<div class="line">  // the state is empty</div>
+<div class="line">}</div>
+</div><!-- fragment --><p >A state can be marked as "empty" by calling <code>reset()</code>. The state remains empty until any data is set.</p>
 <h1>Cartesian state</h1>
-<p >A <code>CartesianState</code> represents the transformations between frames in space as well as their dynamic properties (velocities, accelerations and forces). It comprises the name of the frame it is associated to and is expressed in a reference frame (by default <code>world</code>). A state contains all the variables that define its dynamic properties, i.e <code>position</code>, <code>orientation</code>, <code>linear_velocity</code>, <code>angular_velocity</code>, <code>linear_acceleration</code>, <code>angular_acceleration</code>, <code>force</code> and <code>torque</code>. All those state variables use <code>Eigen::Vector3d</code> internally, except for the orientation that is <code>Eigen::Quaterniond</code> based. All getters and setters are implemented.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s1(<span class="stringliteral">&quot;a&quot;</span>); <span class="comment">// frame a expressed in world (default)</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s2(<span class="stringliteral">&quot;b&quot;</span>, <span class="stringliteral">&quot;a&quot;</span>); <span class="comment">// frame b expressed in a</span></div>
+<p >A <code>CartesianState</code> represents a spatial frame in 3D space, containing the following spatial and dynamic properties:</p>
+<ul>
+<li><code>position</code></li>
+<li><code>orientation</code></li>
+<li><code>linear_velocity</code></li>
+<li><code>angular_velocity</code></li>
+<li><code>linear_acceleration</code></li>
+<li><code>angular_acceleration</code></li>
+<li><code>force</code></li>
+<li><code>torque</code></li>
+</ul>
+<p >Each state variable is represented as a 3D vector (<code>Eigen::Vector3d</code>), except for the orientation, which is represented by a unit quaternion (<code>Eigen::Quaterniond</code>). The values are assumed to be in standard SI units (meters, radians, seconds, and Newtons).</p>
+<p >The state variables can also be considered in pairs:</p>
+<ul>
+<li><code>pose</code> (<code>position</code> and <code>orientation</code>)</li>
+<li><code>twist</code> (<code>linear_velocity</code> and <code>angular_velocity</code>)</li>
+<li><code>accelerations</code> (<code>linear_acceleration</code> and <code>angular_acceleration</code>)</li>
+<li><code>wrench</code> (<code>force</code> and <code>torque</code>)</li>
+</ul>
+<p >The linear terms always come first, followed by the angular terms.</p>
+<p >Each <em>paired</em> state variable is represented as a 6D vector (<code>Eigen::VectorXd(6)</code>), except for the pose, which is represented as a 7D vector (3 for <code>position</code> and 4 for <code>orientation</code>).</p>
+<h2>Reference frames</h2>
+<p >The spatial properties are expressed relative to a named reference frame. For a <code>CartesianState</code> with name "A" and reference frame "B", each state variable represents the instantaneous spatial property measured at or around frame A from the perspective of frame B.</p>
+<p >In some contexts, <code>twist</code> or <code>wrench</code> vectors may be interpreted differently. For example, there is a concept of "body twist" and "spatial twist". See the sections on `CartesianTwist` and `CartesianWrench` for more details.</p>
+<h2>Construction</h2>
+<p ><code>CartesianState</code> constructors take a name and an optional reference frame; by default, the reference frame is "world".</p>
+<p >Constructing a state without any data results in an empty state. To set initial data, the static constructors <code>Identity()</code> or <code>Random()</code> can be used. The former sets all vectors to zero and sets the orientation to the null quaternion. The latter sets all state variables to a unit random state within a uniform distribution.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::CartesianState s1(&quot;A&quot;); // frame A expressed in world (default)</div>
+<div class="line">state_representation::CartesianState s2(&quot;B&quot;, &quot;A&quot;); // frame B expressed in A</div>
 <div class="line"> </div>
-<div class="line">s1.set_position(Eigen::Vector3d(0, 1, 0)); <span class="comment">// 1 meter in y direction</span></div>
-<div class="line">s1.set_orientation(Eigen::Quaterniond(0, 1, 0, 0));</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_state_html"><div class="ttname"><a href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a></div><div class="ttdoc">Class to represent a state in Cartesian space.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8hpp_source.html#l00048">CartesianState.hpp:48</a></div></div>
-</div><!-- fragment --><p >By default, quaternions are normalized on setting, therefore:</p>
-<div class="fragment"><div class="line"><span class="comment">// will be rendered as Eigen::Quaterniond(0.70710678, 0.70710678, 0. , 0.)</span></div>
-<div class="line">s2.set_orientation(Eigen::Quaterniond(1, 1, 0, 0));</div>
-</div><!-- fragment --><p >The state variables are also grouped in <code>pose</code> (<code>position</code> and <code>orientation</code>), <code>twist</code> (<code>linear_velocity</code> and <code>angular_velocity</code>), <code>accelerations</code> (<code>linear_acceleration</code> and <code>angular_acceleration</code>) and <code>wrench</code> (<code>force</code> and <code>torque</code>). Getter and setters are also implemented to do those bulk operations.</p>
-<div class="fragment"><div class="line">s2.set_twist(Eigen::VectorXd::Random(6));</div>
-</div><!-- fragment --><p >Note that for <code>pose</code>, it will be a <code>7d</code> vector (3 for <code>position</code> and 4 for <code>orientation</code>):</p>
-<div class="fragment"><div class="line">s2.set_pose(Eigen::VectorXd::Random(7));</div>
-</div><!-- fragment --><h2>Cartesian state operations</h2>
-<p >Basic operations between frames such as addition, subtractions, scaling are defined, and applied on all the state variables. It is very important to note that those operations are only valid if both states are expressed in the same reference frame.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s1(<span class="stringliteral">&quot;a&quot;</span>); <span class="comment">// reference frame is world by default</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s2(<span class="stringliteral">&quot;b&quot;</span>);</div>
-<div class="line"><span class="keywordtype">double</span> lamda = 0.5</div>
+<div class="line">auto s3 = state_representation::CartesianState::Identity(&quot;I&quot;); // identity frame I expressed in world</div>
+<div class="line">auto s4 = state_representation::CartesianState::Random(&quot;R&quot;, &quot;B&quot;); // random frame R expressed in B</div>
+</div><!-- fragment --><h2>Cartesian getters and setters</h2>
+<p >Each state variable has a corresponding getter and setter to access or modify the data after construction.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">auto state = state_representation::CartesianState::Random(&quot;A&quot;);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// for those operation to be valid both s1 and s2</span></div>
-<div class="line"><span class="comment">// should be expressed in the same reference frame</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> ssum = s1 + s2;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> sdiff = s1 - s2;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> sscaled = lambda * s1;</div>
-</div><!-- fragment --><p >Also, despite common mathematical interpretation, the <code>+</code> operator is <b>not commutative</b> due to the orientation part of the state. The addition <code>s1 + s2</code> corresponds to the transformation from the <code>world</code> frame to frame <code>a</code> followed by the transformation from <code>world</code> frame to frame <code>b</code>. If both frames have the same orientation then the <code>+</code> operator is commutative.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s1(<span class="stringliteral">&quot;a&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> s2(<span class="stringliteral">&quot;b&quot;</span>);</div>
-<div class="line">s1.set_orientation(Eigen::Quaterniond(0, 1, 0, 0));</div>
-<div class="line">s2.set_orientation(Eigen::Quaterniond::UnitRandom());</div>
+<div class="line">// get the position as a 3D vector</div>
+<div class="line">Eigen::Vector3d xyz = state.get_position();</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> ssum1 = s1 + s2;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> ssum2 = s2 + s1;</div>
+<div class="line">// set the position with a 3D vector</div>
+<div class="line">xyz = Eigen::Vector3d(1, 0, 0); // 1 meter in X</div>
+<div class="line">state.set_position(xyz);</div>
 <div class="line"> </div>
-<div class="line">ssum1 != ssum2;</div>
-</div><!-- fragment --><h2>Changing of reference frame</h2>
-<p >One of the most useful operation is the multiplication between two states that corresponds to a changing of reference frame:</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> wSa(<span class="stringliteral">&quot;a&quot;</span>); <span class="comment">// reference frame is world by default</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> aSb(<span class="stringliteral">&quot;b&quot;</span>, <span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line">// or, set X, Y, Z values directly</div>
+<div class="line">state.set_position(0, 0.001, 0); // 1 millimeter in Y</div>
+</div><!-- fragment --><p >The orientation operates with a quaternion instead of a 3D vector.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// get the orientation as a unit quaternion</div>
+<div class="line">Eigen::Quaterniond q = state.get_orientation();</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// for this operation to be valid aSb should be expressed in a (wSa)</span></div>
-<div class="line"><span class="comment">// the result is b expressed in world</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> wSb = wSa * aSb;</div>
-</div><!-- fragment --><p >Not only does that apply a changing of reference frame but it also express all the state variables of <code>aSb</code> in the desired reference frame (here <code>world</code>), taking into account the dynamic of the frame <code>wSa</code>, i.e. if <code>wSa</code> has a <code>twist</code> or <code>acceleration</code> it will affect the state variables of <code>wSb</code>.</p>
-<h2>Specific state variables</h2>
-<p >Full <code>CartesianState</code> can be difficult to handle as they contain all the dynamics of the frame when, sometime, you just want to express a <code>pose</code> without <code>twist</code>, <code>accelerations</code> or <code>wrench</code>. Therefore, extra classes representing only those specific state variables have been defined, <code>CartesianPose</code>, <code>CartesianTwist</code>, <code>CartesianAcceleration</code> and <code>CartesianWrench</code>. Effectively, they all extend from <code>CartesianState</code> hence they can be intertwined as will.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a> wPa(<span class="stringliteral">&quot;a&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> aSb(<span class="stringliteral">&quot;b&quot;</span>, <span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line">// set the orientation with a quaternion object</div>
+<div class="line">q = Eigen::Quaterniond(0, 1, 0, 0); // 180º rotation around X</div>
+<div class="line">state.set_orientation(q);</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// the result is state b expressed in world</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">state_representation::CartesianState</a> wSa = wPa + aSb;</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_pose_html"><div class="ttname"><a href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a></div><div class="ttdoc">Class to define Cartesian pose in Cartesian space as 3D position and quaternion based orientation.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_pose_8hpp_source.html#l00018">CartesianPose.hpp:18</a></div></div>
-</div><!-- fragment --><div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a> wPa(<span class="stringliteral">&quot;a&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> aVb(<span class="stringliteral">&quot;b&quot;</span>, <span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line">// or, set W, X, Y, Z values directly</div>
+<div class="line">state.set_orientation(0, 0, 0, 1); // 180º rotation around Z</div>
+</div><!-- fragment --><p >Whenever setting the orientation, the values are automatically normalized to ensure a unit quaternion.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">s2.set_orientation(1, 1, 0, 0); // 90º rotation around X</div>
+<div class="line">s2.get_orientation(); // Eigen::Quaterniond(0.70710678, 0.70710678, 0., 0.)</div>
+</div><!-- fragment --><p >Every other 3D state variable has equivalent getters and setters to the position:</p>
+<ul>
+<li><code>get_linear_velocity()</code>, <code>set_linear_velocity(xyz)</code> or <code>set_linear_velocity(x, y, z)</code> in meters per second</li>
+<li><code>get_angular_velocity()</code>, <code>set_angular_velocity(xyz)</code> or <code>set_angular_velocity(x, y, z)</code> in radians per second</li>
+<li><code>get_linear_acceleration()</code>, <code>set_linear_acceleration(xyz)</code> or <code>set_linear_acceleration(x, y, z)</code> in meters per second squared</li>
+<li><code>get_angular_acceleration()</code>, <code>set_angular_acceleration(xyz)</code> or <code>set_angular_acceleration(x, y, z)</code> in radians per second squared</li>
+<li><code>get_force()</code>, <code>set_force(xyz)</code> or <code>set_force(x, y, z)</code> in Newtons</li>
+<li><code>get_torque()</code>, <code>set_torque(xyz)</code> or <code>set_torque(x, y, z)</code> in Newton-meters</li>
+</ul>
+<p >The paired state variables (<code>pose</code>, <code>twist</code>, <code>acceleration</code>, <code>wrench</code>) also have their own getters and setters to modify the underlying terms in one operation.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">Eigen::VectorXd pose = state.get_pose(); // 7D vector of position and orientation</div>
+<div class="line">pose = {x, y, z, qw, qx, qy, qz};</div>
+<div class="line">s2.set_pose(pose); // update the position and orientation</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// the result is twist b expressed in world</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> wVa = wPa + aVb;</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_twist_html"><div class="ttname"><a href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a></div><div class="ttdoc">Class to define twist in Cartesian space as 3D linear and angular velocity vectors.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_twist_8hpp_source.html#l00018">CartesianTwist.hpp:18</a></div></div>
-</div><!-- fragment --><h2>Conversion between Cartesian state variables</h2>
-<p >The distinction with those specific extra variables allows to define some extra conversion operations. Therefore, dividing a <code>CartesianPose</code> by a time (<code>std::chrono_literals</code>) returns a <code>CartesianTwist</code>:</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span>std::chrono_literals;</div>
-<div class="line"><span class="keyword">auto</span> period = 1h;</div>
+<div class="line">Eigen::VectorXd twist = state.get_twist(); // 6D vector of linear and angular velocity</div>
+<div class="line">state.set_twist(Eigen::VectorXd::Random(6)); // update the linear and angular velocity</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a> wPa(<span class="stringliteral">&quot;a&quot;</span>, Eigen::Vector3d(1, 0, 0));</div>
-<div class="line"><span class="comment">// the result is a twist of 1m/h in x direction converted in m/s</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> wVa = wPa / period;</div>
-</div><!-- fragment --><p >Conversely, multiplying a <code>CartesianTwist</code> (by default expressed internally in <code>m/s</code> and <code>rad/s</code>) to a <code>CartesianPose</code> is simply multiplying it by a time period:</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span>std::chrono_literals;</div>
-<div class="line"><span class="keyword">auto</span> period = 10s;</div>
+<div class="line">Eigen::VectorXd acceleration = state.get_acceleration(); // 6D vector of linear and angular acceleration</div>
+<div class="line">state.set_acceleration(Eigen::VectorXd::Random(6)); // update the linear and angular acceleration</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> wVa(<span class="stringliteral">&quot;a&quot;</span>, Eigen::Vector3d(1, 0, 0));</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a> wPa = period * wVa; <span class="comment">// note that wVa * period is also implemented</span></div>
-</div><!-- fragment --><h2>Cartesian state distance and norms</h2>
+<div class="line">Eigen::VectorXd wrench = state.get_wrench(); // 6D vector of force and torque</div>
+<div class="line">state.set_wrench(Eigen::VectorXd::Random(6)); // update the force and torque</div>
+</div><!-- fragment --><h2>Cartesian addition and subtraction</h2>
+<p >In robotics and control, a state variable can represent a command or desired value, rather than a real measurement. For this reason, it's often desirable to combine and manipulate state variables in different ways.</p>
+<p >For example, a simple controller might be driving the linear velocity of a robot to approach a moving object. Then, the desired velocity of the robot would be the velocity of the object <em>plus</em> some additional velocity in the direction of the object.</p>
+<p >If two <code>CartesianState</code> objects can be combined with addition or subtraction, <b>provided they are expressed in the same reference frame</b>.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">auto s1 = state_representation::CartesianState::Random(&quot;a&quot;); // reference frame is world by default</div>
+<div class="line">auto s2 = state_representation::CartesianState::Random(&quot;b&quot;);</div>
+<div class="line"> </div>
+<div class="line">auto sum = s1 + s2;</div>
+<div class="line">auto diff = s1 - s2;</div>
+<div class="line"> </div>
+<div class="line">// if the states are not in the same reference frame, it will raise an exception</div>
+<div class="line">s1 + state_representation::CartesianState::Random(&quot;c&quot;, &quot;other&quot;);</div>
+</div><!-- fragment --><p >For all state variables except orientation, the result of the operation is applied to each state variable element-wise. For example, If <code>s1</code> has position <code>(x1, y1, z1)</code> and <code>s2</code> has position <code>(x1, y1, z1)</code>, then <code>s1 + s2</code> has position <code>(x1 + x2, y1 + y2, z1 + z2)</code>. The same applies for subtraction and is true for all state variables represented as 3D vectors.</p>
+<p >In the case of orientation, the addition and subtraction operations are <b>not commutative</b>.</p>
+<p >Addition of orientation uses the quaternion product; the addition <code>s1 + s2</code> corresponds to the rotation of <code>s1</code> followed by the rotation in <code>s2</code>, while <code>s2 + s1</code> corresponds to the rotation of <code>s2</code> followed by the rotation of <code>s1</code>.</p>
+<p >Subtraction of orientation uses the quaternion inverse (quaternion conjugate); <code>-s1</code> yields the inverse orientation of <code>s1</code>, and <code>s1 - s2</code> is equivalent to the rotation of <code>s1</code> followed by the inverse rotation of <code>s2</code>.</p>
+<h2>Cartesian transforms: changing the reference frame</h2>
+<p >A <code>CartesianState</code> represents the spatial properties of a frame as viewed from a certain reference frame. Observing the same frame from a different reference frame can change the relative values of each state variable.</p>
+<p >If two observers are looking at the same frame from different locations, they will observe the frame with a different relative position and orientation. Similarly, if one observer is moving while the other is stationary, they will observe the frame with different relative velocities.</p>
+<p >If some frame A is observed from reference frame B, and frame B is itself observed from another reference frame C, then it is possible to express frame A relative to reference frame C. Expressing the spatial properties of a frame in different reference frames is known as a <b>transformation</b> and is one of the most useful operations of the <code>CartesianState</code> class.</p>
+<p >A transformation affects all state variables as a combination of the two connected frames. In the simplest case, the relative distance between each frame is combined to yield a new position value. In another example, if frame A is rotated by 45 degrees relative to B and B is rotated 45 degrees relative to C, then A is rotated 90 degrees relative to C.</p>
+<p >When states have non-zero position, orientation, velocity or acceleration offsets, the transformation involves a more complicated combination of the different state variables.</p>
+<p >If there is an orientation difference between the frames, the vectors representing each state variable are rotated into the new reference frame accordingly.</p>
+<p >Transformations including twist will include radially-induced linearly velocity that scales with the distance between frames and their relative angular velocities. Finally, the transformation of accelerating frames will include Coriolis and centrifugal effects.</p>
+<p >Transformation applies only to the relative spatial properties of the frame (pose, twist, and acceleration). The wrench is not transformed in the same way because forces applied to spatial frames do not "add together" like relative positions or velocities. A measured force or torque will therefore not change in magnitude when expressed in different reference frames, and is only rotated to the new reference frame coordinate system.</p>
+<p >The concept of a wrench transform does exist in the context of static forces across rigid bodies. This is described further in the `CartesianWrench` section.</p>
+<h3>The transform operator</h3>
+<p >For clarity in the examples below, the name given to each <code>CartesianState</code> variable will have the reference name as the prefix and the frame name as a suffix. This will highlight the "chain rule" that occurs during frame transformations.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// frame &quot;a&quot; expressed in reference frame &quot;world&quot;</div>
+<div class="line">state_representation::CartesianState wSa(&quot;a&quot;, &quot;world&quot;);</div>
+<div class="line">// frame &quot;b&quot; expressed in reference frame &quot;a&quot;</div>
+<div class="line">state_representation::CartesianState aSb(&quot;b&quot;, &quot;a&quot;);</div>
+</div><!-- fragment --><p >The multiplication operator is used to transform states by chaining together connected frames and reference frames.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// the state of frame &quot;b&quot; expressed in reference frame &quot;world&quot; is found by</div>
+<div class="line">// combining frame &quot;a&quot; in &quot;world&quot; with frame &quot;b&quot; in &quot;a&quot;</div>
+<div class="line">auto wSb = wSa * aSb;</div>
+<div class="line"> </div>
+<div class="line">// the chain rule applies whenever the &quot;inner frames&quot; are compatible</div>
+<div class="line">auto wSd = wSb * bSc * cSd;</div>
+</div><!-- fragment --><p >As can be seen in the above examples, the frame of the left state should match the reference frame of the right state, causing the inner frames to cancel out. This is analogous to the product of two matrices, wherein the inner sizes must be compatible. If the frame names do not match, the states are not compatible and an exception will be raised.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// error: inner frames are not compatible!</div>
+<div class="line">wSa * bSc;</div>
+</div><!-- fragment --><p >In some cases, there may be enough information to perform a transformation, but the inner frames are not compatible.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// inner frames are not compatible, but it should still be possible to find &quot;b&quot; relative to &quot;world&quot;</div>
+<div class="line">wSa * bSa;</div>
+</div><!-- fragment --><p >To resolve this case, inversion can be used.</p>
+<h3>Inversion</h3>
+<p >It is possible to invert a state using the <code>inverse()</code> operator, which essentially reverses the frame and reference frame. Instead of observing a frame "A" from a reference frame "B", the inverse expresses "B" as observed from "A".</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">aSb = bSa.inverse();</div>
+</div><!-- fragment --><p >In the context of the transformation chain rule, this can be used to resolve otherwise incompatible operations. This is analogous to transposing a matrix so that the inner sizes of a product match.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// wSa * bSa is not possible, but wSa * aSb would be</div>
+<div class="line">wSb = wSa * bSa.inverse() = wSa * aSb</div>
+</div><!-- fragment --><p >An inversion sets the new orientation as the quaternion conjugate and effectively negates and rotates all other state variable vectors.</p>
+<p >As with transformation, the wrench is the special case. For a state <code>aSb</code>, the wrench describes the force and torque measured at <code>b</code> as seen from <code>a</code>. For the inverted state <code>bSa</code>, the wrench at <code>a</code> is unknown without further underlying assumptions. For this reason, the inverse operator sets the resulting wrench to zero.</p>
+<h2>Cartesian distances and norms</h2>
 <p >As a <code>CartesianState</code> represents a spatial transformation, distance between states and norms computations have been implemented. The distance functions is represented as the sum of the distance over all the state variables:</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> cs1 = CartesianState::Random(<span class="stringliteral">&quot;test&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> cs2 = CartesianState::Random(<span class="stringliteral">&quot;test&quot;</span>);</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">using namespace state_representation;</div>
+<div class="line">auto cs1 = state_representation::CartesianState::Random(&quot;test&quot;);</div>
+<div class="line">auto cs2 = state_representation::CartesianState::Random(&quot;test&quot;);</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">double</span> d = cs1.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a>(cs2);</div>
-<div class="line"><span class="comment">// alternatively one can use the friend type notation</span></div>
-<div class="line">d = dist(cs1, cs2)</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_state_html_ad92a099fc98096c080dbc574f6b16230"><div class="ttname"><a href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">state_representation::CartesianState::dist</a></div><div class="ttdeci">double dist(const CartesianState &amp;state, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</div><div class="ttdoc">Compute the distance to another state as the sum of distances between each features.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8cpp_source.html#l00472">CartesianState.cpp:472</a></div></div>
-<div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition:</b> <a href="_empty_state_exception_8hpp_source.html#l00006">EmptyStateException.hpp:6</a></div></div>
-</div><!-- fragment --><p >By default, the distance is computed over all the state variables. It is worth noting that it has no physical units, but is still relevant to check how far two states are in all their features. One can specify the state variable to consider using the <code>CartesianStateVariable</code> enumeration:</p>
-<div class="fragment"><div class="line"><span class="comment">// only the distance in position</span></div>
-<div class="line"><span class="keywordtype">double</span> d_pos = cs1.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a>(cs2, CartesianStateVariable::POSITION);</div>
-<div class="line"><span class="comment">// distance over the wrench</span></div>
-<div class="line"><span class="keywordtype">double</span> d_wrench = cs1.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#ad92a099fc98096c080dbc574f6b16230">dist</a>(cs2, CartesianStateVariable::WRENCH);</div>
-</div><!-- fragment --><p >When doing so, the unit of the distance is the one of the corresponding state variable. The norm of a state is using a similar API and returns the norms of each state variable:</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> cs = CartesianState::Random(<span class="stringliteral">&quot;test&quot;</span>);</div>
-<div class="line"><span class="comment">// default is norm over all the state variables, hence vector is of size 8</span></div>
-<div class="line">std::vector&lt;double&gt; norms = cs.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a>();</div>
-<div class="line"><span class="comment">// for only norm over the pose you need to specify it</span></div>
-<div class="line">std::vector&lt;double&gt; pose_norms = cs.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">norms</a>(CartesianStateVariable::POSE);</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_state_html_a4ef6fcae833ef73901d174b4a7e84b76"><div class="ttname"><a href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState::norms</a></div><div class="ttdeci">virtual std::vector&lt; double &gt; norms(const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</div><div class="ttdoc">Compute the norms of the state variable specified by the input type. Default is full state.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8cpp_source.html#l00604">CartesianState.cpp:604</a></div></div>
-</div><!-- fragment --><p ><code>normalize</code>, inplace normalization, and the copy normalization, <code>normalized</code>, are also implemented:</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> cs = CartesianState::Random(<span class="stringliteral">&quot;test&quot;</span>);</div>
-<div class="line"><span class="comment">// inplace, default is normalization over all the state variables</span></div>
-<div class="line">cs.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">normalize</a>()</div>
-<div class="line"><span class="comment">// copied normalized state, with only linear velocity normalized</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> csn = cs.<a class="code hl_function" href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">normalized</a>(CartesianStateVariable::LINEAR_VELOCITY)</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_state_html_a4c066e4fdd6a5eda3579ce5ec8e80a01"><div class="ttname"><a href="classstate__representation_1_1_cartesian_state.html#a4c066e4fdd6a5eda3579ce5ec8e80a01">state_representation::CartesianState::normalize</a></div><div class="ttdeci">void normalize(const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</div><div class="ttdoc">Normalize inplace the state at the state variable given in argument. Default is full state.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8cpp_source.html#l00558">CartesianState.cpp:558</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_state_html_a5bb2f9b6fd726f2c1d36d4a7dfbf0007"><div class="ttname"><a href="classstate__representation_1_1_cartesian_state.html#a5bb2f9b6fd726f2c1d36d4a7dfbf0007">state_representation::CartesianState::normalized</a></div><div class="ttdeci">CartesianState normalized(const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL) const</div><div class="ttdoc">Compute the normalized state at the state variable given in argument. Default is full state.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_state_8cpp_source.html#l00598">CartesianState.cpp:598</a></div></div>
-</div><!-- fragment --><h1>Joint state</h1>
+<div class="line">double d = cs1.dist(cs2);</div>
+<div class="line">// alternatively one can use the friend type notation</div>
+<div class="line">d = state_representation::dist(cs1, cs2)</div>
+</div><!-- fragment --><p >By default, the distance is computed over all the state variables by combining the Euclidean distance between each state vector and adding the angular distance in radians in the case of orientation.</p>
+<p >Because the distance is summed over independent spatial terms, the final value has no physical units but can still be useful when comparing the relative similarity of two states.</p>
+<p >To find a difference in a specific state variable, the <code>CartesianStateVariable</code> enumeration can be used:</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// only the distance in meters</div>
+<div class="line">double distance = cs1.dist(cs2, CartesianStateVariable::POSITION);</div>
+<div class="line">// only the angular distance in radians</div>
+<div class="line">double angle = cs1.dist(cs2, CartesianStateVariable::ORIENTATION);</div>
+<div class="line"> </div>
+<div class="line">// only the angular velocity difference in radians per second</div>
+<div class="line">double angular_rate = cs1.dist(cs2, CartesianStateVariable::ANGULAR_VELOCITY);</div>
+</div><!-- fragment --><p >The Euclidean norm of individual state variables returns the vector magnitude (or angular displacement in the case of orientation). To get the magnitude of all state variables as a vector of norms, use the <code>norms()</code> operator.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">auto state = state_representation::CartesianState::Random(&quot;test&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the default usage returns the magnitude of all state variables in an 8D vector</div>
+<div class="line">std::vector&lt;double&gt; norms = state.norms();</div>
+<div class="line"> </div>
+<div class="line">// to return 2D vectors of norms, filter by the combined state variables</div>
+<div class="line">std::vector&lt;double&gt; distance_and_angle = state.norms(CartesianStateVariable::POSE);</div>
+<div class="line">std::vector&lt;double&gt; speeds = state.norms(CartesianStateVariable::TWIST);</div>
+<div class="line"> </div>
+<div class="line">// other single state variables give a 1D vector</div>
+<div class="line">std::vector&lt;double&gt; distance = state.norms(CartesianStateVariable::POSITION);</div>
+</div><!-- fragment --><p >Finally, state variables can be scaled to a unit vector state using the <code>normalize()</code> / <code>normalized()</code> operations. This does not affect the orientation, which is always expressed as a unit quaternion.</p>
+<p >The former normalizes a state in place, while the latter returns a normalized copy without modifying the original state.</p>
+<p >As with the other operations, the normalization can be selectively applied to specific state variables.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// normalize a state all the state variables</div>
+<div class="line">state.normalize();</div>
+<div class="line"> </div>
+<div class="line">// normalize the position of a state to a unit direction vector</div>
+<div class="line">state.normalize(CartesianStateVariable::POSITION);</div>
+<div class="line"> </div>
+<div class="line">// copied state with only linear velocity normalized</div>
+<div class="line">CartesianState normalized_state = state.normalized(CartesianStateVariable::LINEAR_VELOCITY);</div>
+</div><!-- fragment --><h1>Derived Cartesian classes</h1>
+<p >The <code>CartesianState</code> class contains all spatial and dynamic state variables of a frame. In some cases, it is convenient to operate only with specific state variables. The following derived classes are defined:</p>
+<ul>
+<li><code>CartesianPose</code></li>
+<li><code>CartesianTwist</code></li>
+<li><code>CartesianAcceleration</code></li>
+<li><code>CartesianWrench</code></li>
+</ul>
+<h2>Cartesian pose</h2>
+<p >The <code>CartesianPose</code> class defines only the position and orientation of a frame.</p>
+<p >It provides the following constructors:</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">CartesianPose::Identity(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line">CartesianPose::Random(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the position can be supplied to the constructor as a vector or as individual terms (with null orientation)</div>
+<div class="line">xyz = Eigen::Vector3d(1.0, 2.0, 3.0);</div>
+<div class="line">CartesianPose(&quot;name&quot;, xyz, &quot;reference_frame&quot;);</div>
+<div class="line">CartesianPose(&quot;name&quot;, 1.0, 2.0, 3.0, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the orientation can be supplied to the constructor as a vector or as individual terms (with zero displacement)</div>
+<div class="line">q = Eigen::Quaterniond(0, 1, 0, 0);</div>
+<div class="line">CartesianPose(&quot;name&quot;, q, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the position and orientation can also be supplied together</div>
+<div class="line">CartesianPose(&quot;name&quot;, xyz, q, &quot;reference_frame&quot;);</div>
+</div><!-- fragment --><p >Addition and subtraction is supported between <code>CartesianPose</code> and <code>CartesianState</code>. Recall that these operations are not commutative in orientation; the order of operations matters.</p>
+<p >The return type of each compatible operation is shown below.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line"> </div>
+<div class="line">CartesianPose r1 = pose + other_pose;</div>
+<div class="line">CartesianState r2 = pose + state;</div>
+<div class="line">CartesianState r3 = state + pose;</div>
+<div class="line"> </div>
+<div class="line">CartesianPose r4 = pose - other_pose;</div>
+<div class="line">CartesianState r5 = pose - state;</div>
+<div class="line">CartesianState r6 = state - pose;</div>
+<div class="line"> </div>
+<div class="line">pose += other_pose; // equivalent to pose = pose + other_pose</div>
+<div class="line">pose += state; // equivalent to pose = pose + state</div>
+<div class="line"> </div>
+<div class="line">pose -= other_pose;</div>
+<div class="line">pose -= state;</div>
+</div><!-- fragment --><p >A <code>CartesianPose</code> can be used to transform any other Cartesian class by applying the position and orientation offset. Recall that the frame and reference frames must be compatible according to the chain rule as described in the Cartesian transformation section.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">CartesianPose transformed_pose = pose * other_pose;</div>
+<div class="line">CartesianTwist transformed_twist = pose * twist;</div>
+<div class="line">CartesianAcceleration transformed_acceleration = pose * acceleration;</div>
+<div class="line">CartesianWrench transformed_wrench = pose * wrench;</div>
+<div class="line">CartesianState transformed_state = pose * state</div>
+<div class="line">    </div>
+<div class="line">pose *= other_pose; // equivalent to pose = pose * other_pose</div>
+<div class="line">pose *= state; // equivalent to pose = pose * state</div>
+</div><!-- fragment --><p >The time derivative of a <code>CartesianPose</code> is a <code>CartesianTwist</code>. Because <code>CartesianPose</code> represents a displacement in position and orientation, it can be converted into linear and angular velocity through division by a time period.</p>
+<p >Operations with time use <code>std::chrono::duration</code> types, such as <code>std::chrono::milliseconds</code>, <code>std::chrono::seconds</code>, or definitions with <code>std::literals::chrono_literals</code>.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// take a pose with a displacement of 1 meter in the X axis and 90º (π/2) rotation around the Z axis</div>
+<div class="line">state_representation::CartesianPose pose(&quot;a&quot;, Eigen::Vector3d(1, 0, 0), Eigen::Quaterniond(0.707, 0, 0, 0.707));</div>
+<div class="line"> </div>
+<div class="line">// define a 2 second time duration</div>
+<div class="line">std::chrono::seconds dt(2);</div>
+<div class="line"> </div>
+<div class="line">// dividing pose by time yields a twist with a linear velocity of 0.5 meters per second in the X axis</div>
+<div class="line">// and an angular velocity of π/4 radians per second (45º/s) around the Z axis</div>
+<div class="line">state_representation::CartesianTwist twist = pose / dt;</div>
+<div class="line">twist.get_linear_velocity(); // (0.5, 0, 0)</div>
+<div class="line">twist.get_angular_velocity(); // (0, 0, 0.785)</div>
+</div><!-- fragment --><h2>Cartesian twist</h2>
+<p >The <code>CartesianTwist</code> class defines only the linear and angular velocity of a frame.</p>
+<p >It provides the following constructors:</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">CartesianTwist::Zero(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line">CartesianTwist::Random(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the linear or angular velocities can be supplied to the constructor as vectors</div>
+<div class="line">linear_velocity = Eigen::Vector3d(1.0, 2.0, 3.0);</div>
+<div class="line">CartesianTwist(&quot;name&quot;, linear_velocity, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">angular_velocity = Eigen::Vector3d(4.0, 5.0, 6.0);</div>
+<div class="line">CartesianTwist(&quot;name&quot;, linear_velocity, angular_velocity, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the full 6D twist vector can also be supplied</div>
+<div class="line">twist = Eigen::VectorXd(6);</div>
+<div class="line">twist &lt;&lt; 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;</div>
+<div class="line">CartesianTwist(&quot;name&quot;, twist, &quot;reference_frame&quot;);</div>
+</div><!-- fragment --><p >Addition and subtraction is supported between <code>CartesianTwist</code> and <code>CartesianState</code>.</p>
+<p >The return type of each compatible operation is shown below.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line"> </div>
+<div class="line">CartesianTwist r1 = twist + other_twist;</div>
+<div class="line">CartesianState r2 = twist + state;</div>
+<div class="line">CartesianState r3 = state + twist;</div>
+<div class="line"> </div>
+<div class="line">CartesianTwist r4 = twist - other_twist;</div>
+<div class="line">CartesianState r5 = twist - state;</div>
+<div class="line">CartesianState r6 = state - twist;</div>
+<div class="line"> </div>
+<div class="line">twist += other_twist; // equivalent to twist = twist + other_twist</div>
+<div class="line">twist += state; // equivalent to twist = twist + state</div>
+<div class="line"> </div>
+<div class="line">twist -= other_twist;</div>
+<div class="line">twist -= state;</div>
+</div><!-- fragment --><p >The time derivative of a <code>CartesianTwist</code> is a <code>CartesianAcceleration</code>. Because <code>CartesianTwist</code> represents linear and angular velocity in meters and radians per seconds, it can be converted into linear and angular acceleration in meters and radians per second squared through division by a time period.</p>
+<p >Similarly, the time integral of a <code>CartesianTwist</code> is a <code>CartesianPose</code>. It can be converted into a position and orientation displacement through multiplication by a time period.</p>
+<p >Operations with time use <code>std::chrono::duration</code> types, such as <code>std::chrono::milliseconds</code>, <code>std::chrono::seconds</code>, or definitions with <code>std::literals::chrono_literals</code>.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// take a twist with a linear velocity of 1 meter per second in the X axis</div>
+<div class="line">// and angular velocity of 1 radian per second in the Z axis </div>
+<div class="line">state_representation::CartesianTwist twist(&quot;a&quot;, Eigen::Vector3d(1, 0, 0), Eigen::Vector3d(0, 0, 1));</div>
+<div class="line"> </div>
+<div class="line">// define a 0.5 second time duration</div>
+<div class="line">std::chrono::milliseconds dt(500);</div>
+<div class="line"> </div>
+<div class="line">// dividing twist by time yields an acceleration with a linear term of 2 meters per second squared in the X axis</div>
+<div class="line">// and angular term of 2 radians per second squared around the Z axis</div>
+<div class="line">state_representation::CartesianAcceleration acc = twist / dt;</div>
+<div class="line">acc.get_linear_acceleration(); // (2, 0, 0) </div>
+<div class="line">acc.get_angular_acceleration(); // (0, 0, 2)</div>
+<div class="line"> </div>
+<div class="line">// multiplying twist by time yields a pose with a position of 0.5 meters in the X axis</div>
+<div class="line">// and a rotation of 0.5 radians around the Z axis</div>
+<div class="line">state_representation::CartesianPose pose = twist * dt;</div>
+<div class="line">pose.get_position(); // (0.5, 0, 0)</div>
+<div class="line">pose.get_orientation(); // Eigen::Quaterniond(0.9689124, 0, 0, 0.247404)</div>
+</div><!-- fragment --><p >Note that the result of the integration is a displacement from a null (identity) pose. To offset the integration, simply add an initial pose in the same reference frame as the twist.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// add an initial pose to offset the integration </div>
+<div class="line">pose = initial_pose + twist * dt;</div>
+<div class="line"> </div>
+<div class="line">// a pose can also be updated through a continuous integration of twist</div>
+<div class="line">pose += twist * dt;</div>
+</div><!-- fragment --><h3>Representations of twist</h3>
+<p >A <code>CartesianTwist("B", "A")</code> represents linear and angular velocity of the body frame B with respect to fixed frame A, as viewed from A.</p>
+<p >$$^A\mathcal{V}_B = \begin{bmatrix} ^Av_B \ ^A\omega_B \end{bmatrix}$$</p>
+<p >The <em>body twist</em> $^B\mathcal{V}^b_{AB}$ is a special 6-vector that represents linear and angular velocity of the body frame B with respect to fixed frame A, <em>as viewed from B</em>. The relationship between ${^A}\mathcal{V_B}$ and ${^B}\mathcal{V}{^b}_{AB}$ is given by the rotation matrix $^BR_A = ({^A}R_B)^T$.</p>
+<p >$$^B\mathcal{V}^b_{AB} = \begin{bmatrix} v_b \ \omega_b \end{bmatrix} = \begin{bmatrix} ^BR_A * {^A}v_B \ ^BR_A * {^A}\omega_B \end{bmatrix}$$</p>
+<p >For example, a spinning top (body frame) on a table (spatial reference frame) has angular velocity about its local Z axis. While the top is vertical (aligned with the table), the <code>CartesianTwist</code> and the body twist are equivalent. If the top begins to precess and tips over, then the <code>CartesianTwist</code> (expressed in the table frame) will show an angular velocity with components in X and Y, but the body twist will remain expressed in the local body Z axis. Importantly, the magnitude of the twist is the same in both representations, because they are both measuring the twist of the top with respect to the table.</p>
+<p >There is another type of twist called the <em>spatial twist</em>. Just like <code>CartesianTwist</code>, it represents angular velocity of the body frame B with respect to fixed frame A, as viewed from A. However, the spatial linear velocity $v_s$ represents the velocity of an imaginary point at A as if it were attached to the body B, measured with respect to A, as viewed from A.</p>
+<p >$$^A\mathcal{V}^s_{AB} = \begin{bmatrix} v_s \ \omega_s \end{bmatrix} = \begin{bmatrix} {^A}v_B + {^A}t_B \times {^A}\omega_B \ {^A}\omega_B \end{bmatrix}$$</p>
+<p >The quantity $v_s$ is the body linear velocity plus the radially induced velocity as the cross product of the distance from A to B ${^A}t_B$ with the body angular velocity.</p>
+<p >The internal <code>CartesianTwist</code> representation is arguably the most intuitive out of all three options presented here. Still, depending on the geometric operations involved, both the body and spatial twist vectors can be useful.</p>
+<p >The equations above have shown the derivations of each in terms of the original <code>CartesianTwist</code>. For completeness, it is also worth mentioning the direct transformation between body and spatial representations, using the Adjoint map.</p>
+<p >$$\mathcal{V}_s = [Ad_{T}] \mathcal{V}_b$$</p>
+<p >The Adjoint map is defined for a given transformation matrix $T$ (with rotation matrix $R$ and displacement vector $t$) as the adjoint matrix $[Ad_{T}]$:</p>
+<p >$$[Ad_{T}] = \begin{bmatrix} 0 &amp; R \ R &amp; [t]_{\times}R \end{bmatrix}$$</p>
+<p >The inverse of the adjoint matrix maps from spatial to body frame, and can be found by using the inverse transformation matrix.</p>
+<p >$$^A\mathcal{V}^s_{AB} = [Ad_{^AT_B}] ^B\mathcal{V}^b_{AB}$$</p>
+<p >$$^B\mathcal{V}^b_{AB} = [Ad_{^BT_A}] ^A\mathcal{V}^s_{AB}$$</p>
+<h2>Cartesian acceleration</h2>
+<p >The <code>CartesianAcceleration</code> class defines only the linear and angular acceleration of a frame.</p>
+<p >It provides the following constructors:</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">CartesianAcceleration::Zero(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line">CartesianAcceleration::Random(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the linear or angular accelerations can be supplied to the constructor as vectors</div>
+<div class="line">linear_acceleration = Eigen::Vector3d(1.0, 2.0, 3.0);</div>
+<div class="line">CartesianAcceleration(&quot;name&quot;, linear_acceleration, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">angular_acceleration = Eigen::Vector3d(4.0, 5.0, 6.0);</div>
+<div class="line">CartesianAcceleration(&quot;name&quot;, linear_acceleration, angular_acceleration, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the full 6D acceleration vector can also be supplied</div>
+<div class="line">acceleration = Eigen::VectorXd(6);</div>
+<div class="line">acceleration &lt;&lt; 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;</div>
+<div class="line">CartesianAcceleration(&quot;name&quot;, acceleration, &quot;reference_frame&quot;);</div>
+</div><!-- fragment --><p >Addition and subtraction is supported between <code>CartesianAcceleration</code> and <code>CartesianState</code>.</p>
+<p >The return type of each compatible operation is shown below.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line"> </div>
+<div class="line">CartesianAcceleration r1 = acceleration + other_acceleration;</div>
+<div class="line">CartesianState r2 = acceleration + state;</div>
+<div class="line">CartesianState r3 = state + acceleration;</div>
+<div class="line"> </div>
+<div class="line">CartesianAcceleration r4 = acceleration - other_acceleration;</div>
+<div class="line">CartesianState r5 = acceleration - state;</div>
+<div class="line">CartesianState r6 = state - acceleration;</div>
+<div class="line"> </div>
+<div class="line">acceleration += other_acceleration; // equivalent to acceleration = acceleration + other_acceleration</div>
+<div class="line">acceleration += state; // equivalent to acceleration = acceleration + state</div>
+<div class="line"> </div>
+<div class="line">acceleration -= other_acceleration;</div>
+<div class="line">acceleration -= state;</div>
+</div><!-- fragment --><p >The time integral of a <code>CartesianAcceleration</code> is a <code>CartesianTwist</code>. Because <code>CartesianAcceleration</code> represents linear and angular acceleration in meters and radians per seconds squared, it can be converted into a relative linear and angular velocity in meters and radians per second through multiplication by a time period.</p>
+<p >Operations with time use <code>std::chrono::duration</code> types, such as <code>std::chrono::milliseconds</code>, <code>std::chrono::seconds</code>, or definitions with <code>std::literals::chrono_literals</code>.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// take an acceleration with a linear acceleration of 1 meter per second squared in the X axis</div>
+<div class="line">// and angular acceleration of 1 radian per second squared in the Z axis </div>
+<div class="line">state_representation::CartesianAcceleration acc(&quot;a&quot;, Eigen::Vector3d(1, 0, 0), Eigen::Vector3d(0, 0, 1));</div>
+<div class="line"> </div>
+<div class="line">// define a 0.1 second time duration</div>
+<div class="line">std::chrono::milliseconds dt(100);</div>
+<div class="line"> </div>
+<div class="line">// multiplying acceleration by time yields a twist with a linear term of 0.1 meters per second in the X axis</div>
+<div class="line">// and an angular term of 0.1 radians per second around the Z axis</div>
+<div class="line">state_representation::CartesianPose twist = acceleration * dt;</div>
+<div class="line">pose.get_position(); // (0.1, 0, 0)</div>
+<div class="line">pose.get_orientation(); // (0, 0, 0.1)</div>
+</div><!-- fragment --><p >Note that the result of the integration assumes zero initial velocity. To offset the integration, simply add an initial twist in the same reference frame as the acceleration.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// add an initial twist to offset the integration </div>
+<div class="line">twist = initial_twist + acc * dt;</div>
+<div class="line"> </div>
+<div class="line">// a twist can also be updated through a continuous integration of acceleration</div>
+<div class="line">twist += acc * dt;</div>
+</div><!-- fragment --><h2>Cartesian wrench</h2>
+<p >The <code>CartesianWrench</code> class defines only the force and torque as applied to a frame.</p>
+<p >It provides the following constructors:</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">CartesianWrench::Zero(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line">CartesianWrench::Random(&quot;name&quot;, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the force or torque can be supplied to the constructor as vectors</div>
+<div class="line">force = Eigen::Vector3d(1.0, 2.0, 3.0);</div>
+<div class="line">CartesianWrench(&quot;name&quot;, force, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">torque = Eigen::Vector3d(4.0, 5.0, 6.0);</div>
+<div class="line">CartesianWrench(&quot;name&quot;, force, torque, &quot;reference_frame&quot;);</div>
+<div class="line"> </div>
+<div class="line">// the full 6D wrench vector can also be supplied</div>
+<div class="line">wrench = Eigen::VectorXd(6);</div>
+<div class="line">wrench &lt;&lt; 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;</div>
+<div class="line">CartesianWrench(&quot;name&quot;, wrench, &quot;reference_frame&quot;);</div>
+</div><!-- fragment --><p >Addition and subtraction is supported between <code>CartesianWrench</code> and <code>CartesianState</code>.</p>
+<p >The return type of each compatible operation is shown below.</p>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line"> </div>
+<div class="line">CartesianWrench r1 = wrench + other_wrench;</div>
+<div class="line">CartesianState r2 = wrench + state;</div>
+<div class="line">CartesianState r3 = state + wrench;</div>
+<div class="line"> </div>
+<div class="line">CartesianWrench r4 = wrench - other_wrench;</div>
+<div class="line">CartesianState r5 = wrench - state;</div>
+<div class="line">CartesianState r6 = state - wrench;</div>
+<div class="line"> </div>
+<div class="line">wrench += other_wrench; // equivalent to wrench = wrench + other_wrench</div>
+<div class="line">wrench += state; // equivalent to wrench = wrench + state</div>
+<div class="line"> </div>
+<div class="line">wrench -= other_wrench;</div>
+<div class="line">wrench -= state;</div>
+</div><!-- fragment --><h3>Considerations of wrench</h3>
+<p >The wrench is distinct from the other state variables as it is not a relative spatial property. It is considered as the measurement of a force/torque sensor at the frame, as seen from the reference frame.</p>
+<p >Changing the observer does not change magnitude of the force or wrench measured at the frame. It only changes the apparent direction of the wrench vector, depending on the orientation of the reference frame.</p>
+<p >Because the <code>CartesianWrench</code> is different from other spatial properties, it is handled uniquely in the transform and inverse operations.</p>
+<p >A transformation of states involving a wrench will only preserve the wrench measured at the last frame, rotated to the new reference frame. The wrench of the intermediate (inner) frame is discarded.</p>
+<p >The inverse of a state will set the wrench to zero.</p>
+<h1>Joint state</h1>
 <p ><code>JointState</code> follows the same logic as <code>CartesianState</code> but for representing robot states. Similarly to the <code>CartesianState</code> the class <code>JointState</code>, <code>JointPositions</code>, <code>JointVelocities</code> and <code>JointTorques</code> have been developed. The API follows exactly the same logic with similar operations implemented.</p>
 <p >A <code>JointState</code> is defined by the name of the corresponding robot and the name of each joints.</p>
-<div class="fragment"><div class="line"><span class="comment">// create a state for myrobot with 3 joints</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> js(<span class="stringliteral">&quot;myrobot&quot;</span>, std::vector&lt;string&gt;({<span class="stringliteral">&quot;joint0&quot;</span>, <span class="stringliteral">&quot;joint1&quot;</span>, <span class="stringliteral">&quot;joint2&quot;</span>}));</div>
-<div class="ttc" id="aclassstate__representation_1_1_joint_state_html"><div class="ttname"><a href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a></div><div class="ttdoc">Class to define a state in joint space.</div><div class="ttdef"><b>Definition:</b> <a href="_joint_state_8hpp_source.html#l00035">JointState.hpp:35</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// create a state for myrobot with 3 joints</div>
+<div class="line">state_representation::JointState js(&quot;myrobot&quot;, std::vector&lt;string&gt;({ &quot;joint0&quot;, &quot;joint1&quot;, &quot;joint2&quot; }));</div>
 </div><!-- fragment --><p >Note that if the joints of the robot are named <code>{"joint0", "joint1", ..., "jointN"}</code> as above, you can also use the constructor that takes the number of joints as input which will name them accordingly:</p>
-<div class="fragment"><div class="line"><span class="comment">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> js(<span class="stringliteral">&quot;myrobot&quot;</span>, 3);</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</div>
+<div class="line">state_representation::JointState js(&quot;myrobot&quot;, 3);</div>
 </div><!-- fragment --><p >All the getters and setters for the <code>positions</code>, <code>velocities</code>, <code>accelerations</code> and <code>torques</code> are defined for both <code>Eigen::VectorXd</code> and <code>std::vector&lt;double&gt;</code>:</p>
-<div class="fragment"><div class="line">js.set_positions(Eigen::Vector3d(.5, 1., 0.));</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">js.set_positions(Eigen::Vector3d(.5, 1., 0.));</div>
 <div class="line">js.set_positions(std::vector&lt;double&gt;{.5, 1., 0.});</div>
 </div><!-- fragment --><p >Note that when using those setters, the size of the input vector should correspond to the number of joints of the state:</p>
-<div class="fragment"><div class="line">js.set_positions(Eigen::Vector4d::Random()); <span class="comment">// will throw an IncompatibleSizeException</span></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">js.set_positions(Eigen::Vector4d::Random()); // will throw an IncompatibleSizeException</div>
 </div><!-- fragment --><h2>Joint state operations</h2>
 <p >Basic operations such as addition, subtraction and scaling have been implemented:</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> js1(<span class="stringliteral">&quot;myrobot&quot;</span>, 3);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> js2(<span class="stringliteral">&quot;myrobot&quot;</span>, 3);</div>
-<div class="line"><span class="keywordtype">double</span> lambda = 0.5;</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::JointState js1(&quot;myrobot&quot;, 3);</div>
+<div class="line">state_representation::JointState js2(&quot;myrobot&quot;, 3);</div>
+<div class="line">double lambda = 0.5;</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// for those operation to be valid both js1 and js2</span></div>
-<div class="line"><span class="comment">// should correspond to the same robot and have the</span></div>
-<div class="line"><span class="comment">// same number of joints</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> jssum = js1 + js2;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> jsdiff = js1 - js2;</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> jsscaled = lambda * js1;</div>
+<div class="line">// for those operation to be valid both js1 and js2</div>
+<div class="line">// should correspond to the same robot and have the</div>
+<div class="line">// same number of joints</div>
+<div class="line">state_representation::JointState jssum = js1 + js2;</div>
+<div class="line">state_representation::JointState jsdiff = js1 - js2;</div>
+<div class="line">state_representation::JointState jsscaled = lambda * js1;</div>
 </div><!-- fragment --><p >Multiplication of joint states doesn't have a physical meaning and is, therefore, not implemented.</p>
 <h2>Conversion between joint state variables</h2>
 <p >Similarly to <code>CartesianState</code>, the conversion between <code>JointPositions</code> and <code>JointVelocities</code> happens through operations with <code>std::chrono_literals</code>.</p>
-<div class="fragment"><div class="line"><span class="keyword">using namespace </span>std::chrono_literals;</div>
-<div class="line"><span class="keyword">auto</span> period = 1h;</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">using namespace std::chrono_literals;</div>
+<div class="line">auto period = 1h;</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</span></div>
-<div class="line"><span class="comment">// and provide the position values</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> jp(<span class="stringliteral">&quot;myrobot&quot;</span>, Eigen::Vector3d(1, 0, 0));</div>
+<div class="line">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</div>
+<div class="line">// and provide the position values</div>
+<div class="line">state_representation::JointPositions jp(&quot;myrobot&quot;, Eigen::Vector3d(1, 0, 0));</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// result are velocities of 1 rad/h for joint0 expressed in rad/s</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a> jv = jp / period;</div>
-<div class="ttc" id="aclassstate__representation_1_1_joint_positions_html"><div class="ttname"><a href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a></div><div class="ttdoc">Class to define positions of the joints.</div><div class="ttdef"><b>Definition:</b> <a href="_joint_positions_8hpp_source.html#l00018">JointPositions.hpp:18</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_joint_velocities_html"><div class="ttname"><a href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a></div><div class="ttdoc">Class to define velocities of the joints.</div><div class="ttdef"><b>Definition:</b> <a href="_joint_velocities_8hpp_source.html#l00018">JointVelocities.hpp:18</a></div></div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">using namespace </span>std::chrono_literals;</div>
-<div class="line"><span class="keyword">auto</span> period = 10s;</div>
+<div class="line">// result are velocities of 1 rad/h for joint0 expressed in rad/s</div>
+<div class="line">state_representation::JointVelocities jv = jp / period;</div>
+</div><!-- fragment --><div class="fragment"><div class="line"> {c++}</div>
+<div class="line">using namespace std::chrono_literals;</div>
+<div class="line">auto period = 10s;</div>
 <div class="line"> </div>
-<div class="line"><span class="comment">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</span></div>
-<div class="line"><span class="comment">// and provide the velocities values</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a> wVa(<span class="stringliteral">&quot;a&quot;</span>, Eigen::Vector3d(1, 0, 0));</div>
+<div class="line">// create a state for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}</div>
+<div class="line">// and provide the velocities values</div>
+<div class="line">state_representation::JointVelocities wVa(&quot;a&quot;, Eigen::Vector3d(1, 0, 0));</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> jp = period * jv; <span class="comment">// note that jv * period is also implemented</span></div>
+<div class="line">state_representation::JointPositions jp = period * jv; // note that jv * period is also implemented</div>
 </div><!-- fragment --><h1>The Jacobian matrix</h1>
 <p >The <code>Jacobian</code> matrix of a robot ensures the conversion between both <code>CartesianState</code> and <code>JointState</code>. Similarly to the <code>JointState</code>, a <code>Jacobian</code> is associated to a robot and defined by the robot and the number of joints. As it is a mapping between joint and task spaces, as for the <code>CartesianState</code>, it is also defined by an associated frame name and a reference frame.</p>
-<div class="fragment"><div class="line"><span class="comment">// create a Jacobian for myrobot with 3 joints, associated to frame A and expressed in B</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac(<span class="stringliteral">&quot;myrobot&quot;</span>, std::vector&lt;string&gt;({<span class="stringliteral">&quot;joint0&quot;</span>, <span class="stringliteral">&quot;joint1&quot;</span>, <span class="stringliteral">&quot;joint2&quot;</span>}), <span class="stringliteral">&quot;A&quot;</span>, <span class="stringliteral">&quot;B&quot;</span>);</div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a></div><div class="ttdoc">Class to define a robot Jacobian matrix.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8hpp_source.html#l00021">Jacobian.hpp:21</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// create a Jacobian for myrobot with 3 joints, associated to frame A and expressed in B</div>
+<div class="line">state_representation::Jacobian jac(&quot;myrobot&quot;, std::vector&lt;string&gt;({ &quot;joint0&quot;, &quot;joint1&quot;, &quot;joint2&quot; }), &quot;A&quot;, &quot;B&quot;);</div>
 </div><!-- fragment --><p >The API is the same as the <code>JointState</code>, hence the constructor can also accept the number of joints to initialize the joint names vector.</p>
-<div class="fragment"><div class="line"><span class="comment">// create a Jacobian for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}, associated to frame A and</span></div>
-<div class="line"><span class="comment">// expressed in world (default value of the reference frame when not provided)</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;A&quot;</span>);</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">// create a Jacobian for myrobot with 3 joints named {&quot;joint0&quot;, &quot;joint1&quot;, &quot;joint3&quot;}, associated to frame A and</div>
+<div class="line">// expressed in world (default value of the reference frame when not provided)</div>
+<div class="line">state_representation::Jacobian jac(&quot;myrobot&quot;, 3, &quot;A&quot;);</div>
 </div><!-- fragment --><p >The <code>Jacobian</code> is simply a <code>6 x N</code> matrix where <code>N</code> is the number of joints. Therefore, the data can be set from an <code>Eigen::MatrixXd</code> of correct dimensions.</p>
-<div class="fragment"><div class="line">jac.set_data(Eigen::MatrixXd::Random(6, 3)); <span class="comment">// throw an IncompatibleSizeException if the size is not correct</span></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">jac.set_data(Eigen::MatrixXd::Random(6, 3)); // throw an IncompatibleSizeException if the size is not correct</div>
 </div><!-- fragment --><p >All the functionalities of the <code>Jacobian</code> have been implemented such as <code>transpose</code>, <code>inverse</code> or <code>pseudoinverse</code> functions.</p>
-<div class="fragment"><div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jacT = jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#a409cf1601f4894e695461a1cc353bacf">transpose</a>();</div>
-<div class="line"><span class="comment">// will throw an error as a 6 x 3 matrix is not invertible</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jacInv = jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#a5170360c41424b64129460ccf327f7f7">inverse</a>();</div>
-<div class="line"><span class="comment">// compute the pseudoinverse without the need of being invertible</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jacPinv = jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#a2d05a9d5b84b11e2bc791bfaf1be3204">pseudoinverse</a>();</div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_a2d05a9d5b84b11e2bc791bfaf1be3204"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#a2d05a9d5b84b11e2bc791bfaf1be3204">state_representation::Jacobian::pseudoinverse</a></div><div class="ttdeci">Eigen::MatrixXd pseudoinverse() const</div><div class="ttdoc">Return the pseudoinverse of the Jacobian matrix.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00240">Jacobian.cpp:240</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_a409cf1601f4894e695461a1cc353bacf"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#a409cf1601f4894e695461a1cc353bacf">state_representation::Jacobian::transpose</a></div><div class="ttdeci">Eigen::MatrixXd transpose() const</div><div class="ttdoc">Return the transpose of the Jacobian matrix.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00256">Jacobian.cpp:256</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_a5170360c41424b64129460ccf327f7f7"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#a5170360c41424b64129460ccf327f7f7">state_representation::Jacobian::inverse</a></div><div class="ttdeci">Eigen::MatrixXd inverse() const</div><div class="ttdoc">Return the inverse of the Jacobian matrix.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00167">Jacobian.cpp:167</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">/// returns the 3 x 6 transposed matrix</div>
+<div class="line">state_representation::Jacobian jacT = jac.transpose();</div>
+<div class="line">// will throw an error as a 6 x 3 matrix is not invertible</div>
+<div class="line">state_representation::Jacobian jacInv = jac.inverse();</div>
+<div class="line">// compute the pseudoinverse without the need of being invertible</div>
+<div class="line">state_representation::Jacobian jacPinv = jac.pseudoinverse();</div>
 </div><!-- fragment --><p >Those operations are very useful to convert <code>JointState</code> from <code>CartesianState</code> and vice versa.</p>
 <h2>Conversion between JointVelocities and CartesianTwist</h2>
 <p >The simplest conversion is to transform a <code>JointVelocities</code> into a <code>CartesiantTwist</code> by multiplication with the <code>Jacobian</code></p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;eef_frame&quot;</span>, <span class="stringliteral">&quot;base_frame&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a> jv(<span class="stringliteral">&quot;myrobot&quot;</span>, 3);</div>
-<div class="line"><span class="comment">// compute the twist of eef_frame in base_frame from the joint velocities</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> eef_twist = jac * jv;</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::Jacobian jac(&quot;myrobot&quot;, 3, &quot;eef_frame&quot;, &quot;base_frame&quot;);</div>
+<div class="line">state_representation::JointVelocities jv(&quot;myrobot&quot;, 3);</div>
+<div class="line">// compute the twist of eef_frame in base_frame from the joint velocities</div>
+<div class="line">state_representation::CartesianTwist eef_twist = jac * jv;</div>
 </div><!-- fragment --><p >The opposite transformation, from <code>CartesianTwist</code> to <code>JointVelocities</code> requires the multiplication with the <code>inverse</code> (or <code>pseudoinverse</code>).</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;eef&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> eef_twist(<span class="stringliteral">&quot;eef&quot;</span>)</div>
-<div class="line"><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>::<a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> jv = jac.pseudoinverse() * eef_twist;</div>
-<div class="line"><span class="comment">// in case of non matching frame or reference frame throw an IncompatibleStatesException</span></div>
-<div class="line"><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>::<a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> link2_twist(&quot;link2&quot;, &quot;link0&quot;)</div>
-<div class="line"><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>::<a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> jv = jac.pseudoinverse() * link2_twist;</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::Jacobian jac(&quot;myrobot&quot;, 3, &quot;eef&quot;);</div>
+<div class="line">state_representation::CartesianTwist eef_twist(&quot;eef&quot;)</div>
+<div class="line">state_representation::JointVelocities jv = jac.pseudoinverse() * eef_twist;</div>
+<div class="line">// in case of non matching frame or reference frame throw an IncompatibleStatesException</div>
+<div class="line">state_representation::CartesianTwist link2_twist(&quot;link2&quot;, &quot;link0&quot;)</div>
+<div class="line">state_representation::JointVelocities jv = jac.pseudoinverse() * link2_twist;</div>
 </div><!-- fragment --><p >Note that the <code>inverse</code> or <code>pseudoinverse</code> functions are computationally expensive and the <code>solve</code> function that relies on the solving of the system <code>Ax = b</code> using <code>Eigen</code> has been implemented.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> eef_twist(<span class="stringliteral">&quot;eef&quot;</span>)</div>
-<div class="line"><span class="comment">// faster than doing jac.pseudoinverse() * eef_twist</span></div>
-<div class="line"><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>::<a class="code hl_class" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> jv = jac.solve(eef_twist);</div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::CartesianTwist eef_twist(&quot;eef&quot;)</div>
+<div class="line">// faster than doing jac.pseudoinverse() * eef_twist</div>
+<div class="line">state_representation::JointVelocities jv = jac.solve(eef_twist);</div>
 </div><!-- fragment --><h2>Conversion between JointTorques and CartesianWrench</h2>
 <p >The other conversion that is implemented is the transformation from <code>CartesianWrench</code> to <code>JointTorques</code>, this one using the <code>transpose</code>.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_wrench.html">state_representation::CartesianWrench</a> eef_wrench(<span class="stringliteral">&quot;eef&quot;</span>)</div>
-<div class="line"><span class="comment">// faster than doing jac.pseudoinverse() * eef_twist</span></div>
-<div class="line"><a class="code hl_namespace" href="namespacestate__representation.html">state_representation</a>::<a class="code hl_class" href="classstate__representation_1_1_joint_torques.html">JointTorques</a> jt = jac.transpose() * eef_wrench;</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_wrench_html"><div class="ttname"><a href="classstate__representation_1_1_cartesian_wrench.html">state_representation::CartesianWrench</a></div><div class="ttdoc">Class to define wrench in Cartesian space as 3D force and torque vectors.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_wrench_8hpp_source.html#l00018">CartesianWrench.hpp:18</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_joint_torques_html"><div class="ttname"><a href="classstate__representation_1_1_joint_torques.html">state_representation::JointTorques</a></div><div class="ttdoc">Class to define torques of the joints.</div><div class="ttdef"><b>Definition:</b> <a href="_joint_torques_8hpp_source.html#l00018">JointTorques.hpp:18</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::CartesianWrench eef_wrench(&quot;eef&quot;)</div>
+<div class="line">// faster than doing jac.pseudoinverse() * eef_twist</div>
+<div class="line">state_representation::JointTorques jt = jac.transpose() * eef_wrench;</div>
 </div><!-- fragment --><h2>Matrix multiplication</h2>
 <p >The <code>Jacobian</code> object contains an underlying <code>Eigen::MatrixXd</code> which can be retrieved using the <code>Jacobian::data()</code> method. Direct multiplication of the <code>Jacobian</code> object with another <code>Eigen::MatrixXd</code> has also been implemented and returns the <code>Eigen::MatrixXd</code> product.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;eef&quot;</span>, Eigen::MatrixXd::Random(6, 3));</div>
-<div class="line"><span class="comment">// alternatively can use the Random static constructor</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac = <a class="code hl_function" href="classstate__representation_1_1_jacobian.html#af91b214006a9f88862c39a21dc92dd3d">state_representation::Jacobian::Random</a>(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;eef&quot;</span>);</div>
-<div class="line">Eigen::MatrixXd mat = jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#a1ab87a65ad942bb45154b2d2c0a86f90">data</a>();</div>
-<div class="line">Eigen::MatrixXd res = jac * Eigen::MatrixXd(3, 4); <span class="comment">// equivalent to  jac.data() * Eigen::MatrixXd(3, 4);</span></div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_a1ab87a65ad942bb45154b2d2c0a86f90"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#a1ab87a65ad942bb45154b2d2c0a86f90">state_representation::Jacobian::data</a></div><div class="ttdeci">const Eigen::MatrixXd &amp; data() const</div><div class="ttdoc">Getter of the data attribute.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00113">Jacobian.cpp:113</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_af91b214006a9f88862c39a21dc92dd3d"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#af91b214006a9f88862c39a21dc92dd3d">state_representation::Jacobian::Random</a></div><div class="ttdeci">static Jacobian Random(const std::string &amp;robot_name, unsigned int nb_joints, const std::string &amp;frame, const std::string &amp;reference_frame=&quot;world&quot;)</div><div class="ttdoc">Constructor for a random Jacobian.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00066">Jacobian.cpp:66</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::Jacobian jac(&quot;myrobot&quot;, 3, &quot;eef&quot;, Eigen::MatrixXd::Random(6, 3));</div>
+<div class="line">// alternatively can use the Random static constructor</div>
+<div class="line">state_representation::Jacobian jac = state_representation::Jacobian::Random(&quot;myrobot&quot;, 3, &quot;eef&quot;);</div>
+<div class="line">Eigen::MatrixXd mat = jac.data();</div>
+<div class="line">Eigen::MatrixXd res = jac * Eigen::MatrixXd(3, 4); // equivalent to  jac.data() * Eigen::MatrixXd(3, 4);</div>
 </div><!-- fragment --><h2>Changing the Jacobian reference frame</h2>
 <p >As stated earlier, the <code>Jacobian</code> is expressed in a reference frame and can, therefore, use the operations with <code>CartesianPose</code> to be modified. It relies on the usage of the overloaded <code>operator*</code> or the <code>set_reference_frame</code> function for inplace modifications. It is equivalent to multiply each columns of the <code>Jacobian</code> by the <code>CartesianPose</code> on both the linear and angular part of the matrix. For this operation to be valid, the <code>CartesianPose</code> name has to match the current <code>Jacobian</code> reference frame.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac = <a class="code hl_function" href="classstate__representation_1_1_jacobian.html#af91b214006a9f88862c39a21dc92dd3d">state_representation::Jacobian::Random</a>(<span class="stringliteral">&quot;myrobot&quot;</span>, 3, <span class="stringliteral">&quot;eef&quot;</span>, <span class="stringliteral">&quot;base_frame&quot;</span>);</div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_cartesian_pose.html">state_representation::CartesianPose</a> pose = <a class="code hl_function" href="classstate__representation_1_1_cartesian_pose.html#aeb83b9e4a6e9fba8f8d7651696f1ec24">state_representation::CartesianPose::Random</a>(<span class="stringliteral">&quot;base_frame&quot;</span>, <span class="stringliteral">&quot;world&quot;</span>);</div>
-<div class="line"><span class="comment">// the result is the Jacobian expressed in world</span></div>
-<div class="line"><a class="code hl_class" href="classstate__representation_1_1_jacobian.html">state_representation::Jacobian</a> jac_in_world = pose * jac;</div>
-<div class="line"><span class="comment">// alternatively, one case use the set_reference_frame function for inplace modifications</span></div>
-<div class="line">jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#ac05fb1b604f7afb35eba899f9571d492">set_reference_frame</a>(pose);</div>
-<div class="line"><span class="comment">// in case of non matching operation throw an IncompatibleStatesExceptions</span></div>
-<div class="line">jac.<a class="code hl_function" href="classstate__representation_1_1_jacobian.html#ac05fb1b604f7afb35eba899f9571d492">set_reference_frame</a>(<a class="code hl_function" href="classstate__representation_1_1_cartesian_pose.html#aeb83b9e4a6e9fba8f8d7651696f1ec24">state_representation::CartesianPose::Random</a>(<span class="stringliteral">&quot;link0&quot;</span>, <span class="stringliteral">&quot;world&quot;</span>));</div>
-<div class="ttc" id="aclassstate__representation_1_1_cartesian_pose_html_aeb83b9e4a6e9fba8f8d7651696f1ec24"><div class="ttname"><a href="classstate__representation_1_1_cartesian_pose.html#aeb83b9e4a6e9fba8f8d7651696f1ec24">state_representation::CartesianPose::Random</a></div><div class="ttdeci">static CartesianPose Random(const std::string &amp;name, const std::string &amp;reference=&quot;world&quot;)</div><div class="ttdoc">Constructor for a random pose.</div><div class="ttdef"><b>Definition:</b> <a href="_cartesian_pose_8cpp_source.html#l00062">CartesianPose.cpp:62</a></div></div>
-<div class="ttc" id="aclassstate__representation_1_1_jacobian_html_ac05fb1b604f7afb35eba899f9571d492"><div class="ttname"><a href="classstate__representation_1_1_jacobian.html#ac05fb1b604f7afb35eba899f9571d492">state_representation::Jacobian::set_reference_frame</a></div><div class="ttdeci">void set_reference_frame(const std::string &amp;reference_frame)</div><div class="ttdoc">Setter of the reference frame.</div><div class="ttdef"><b>Definition:</b> <a href="_jacobian_8cpp_source.html#l00140">Jacobian.cpp:140</a></div></div>
+<div class="fragment"><div class="line"> {c++}</div>
+<div class="line">state_representation::Jacobian jac = state_representation::Jacobian::Random(&quot;myrobot&quot;, 3, &quot;eef&quot;, &quot;base_frame&quot;);</div>
+<div class="line">state_representation::CartesianPose pose = state_representation::CartesianPose::Random(&quot;base_frame&quot;, &quot;world&quot;);</div>
+<div class="line">// the result is the Jacobian expressed in world</div>
+<div class="line">state_representation::Jacobian jac_in_world = pose * jac;</div>
+<div class="line">// alternatively, one case use the set_reference_frame function for inplace modifications</div>
+<div class="line">jac.set_reference_frame(pose);</div>
+<div class="line">// in case of non matching operation throw an IncompatibleStatesExceptions</div>
+<div class="line">jac.set_reference_frame(state_representation::CartesianPose::Random(&quot;link0&quot;, &quot;world&quot;));</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
