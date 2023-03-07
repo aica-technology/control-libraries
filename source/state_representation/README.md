@@ -27,12 +27,12 @@ The following sections describe the properties of the main state classes in the 
     * [Cartesian getters and setters](#cartesian-getters-and-setters)
     * [Cartesian addition and subtraction](#cartesian-addition-and-subtraction)
     * [Cartesian transforms: changing the reference frame](#cartesian-transforms--changing-the-reference-frame)
+    * [Cartesian distances and norms](#cartesian-distances-and-norms)
 * [Derived Cartesian classes](#derived-cartesian-classes)
     * [Cartesian pose](#cartesian-pose)
     * [Cartesian twist](#cartesian-twist)
     * [Cartesian acceleration](#cartesian-acceleration)
     * [Cartesian wrench](#cartesian-wrench)
-    * [Cartesian integration and derivation](#cartesian-integration-and-derivation)
 * [Joint state](#joint-state)
     * [Joint state operations](#joint-state-operations)
     * [Conversion between joint state variables](#conversion-between-joint-state-variables)
@@ -260,9 +260,9 @@ Subtraction of orientation uses the quaternion inverse (quaternion conjugate); `
 A `CartesianState` represents the spatial properties of a frame as viewed from a certain reference frame.
 Observing the same frame from a different reference frame can change the relative values of each state variable.
 
-If two observers are looking at the same frame from locations, they will observe the frame with a different relative
-position and orientation. Similarly, if one observer is moving while the other is stationary, they will observe the
-frame with different relative velocities.
+If two observers are looking at the same frame from different locations, they will observe the frame with a different
+relative position and orientation. Similarly, if one observer is moving while the other is stationary, they will observe
+the frame with different relative velocities.
 
 If some frame A is observed from reference frame B, and frame B is itself observed from another reference frame C,
 then it is possible to express frame A relative to reference frame C. Expressing the spatial properties of a frame in
@@ -358,6 +358,74 @@ As with transformation, the wrench is the special case. For a state `aSb`, the w
 measured at `b` as seen from `a`. For the inverted state `bSa`, the wrench at `a` is unknown without further
 underlying assumptions. For this reason, the inverse operator sets the resulting wrench to zero.
 
+### Cartesian distances and norms
+
+As a `CartesianState` represents a spatial transformation, distance between states and norms computations have been
+implemented. The distance functions is represented as the sum of the distance over all the state variables:
+
+```c++
+using namespace state_representation;
+auto cs1 = state_representation::CartesianState::Random("test");
+auto cs2 = state_representation::CartesianState::Random("test");
+
+double d = cs1.dist(cs2);
+// alternatively one can use the friend type notation
+d = state_representation::dist(cs1, cs2)
+```
+
+By default, the distance is computed over all the state variables by combining the Euclidean distance between each 
+state vector and adding the angular distance in radians in the case of orientation.
+
+Because the distance is summed over independent spatial terms, the final value has no physical units but can still
+be useful when comparing the relative similarity of two states.
+
+To find a difference in a specific state variable, the `CartesianStateVariable` enumeration can be used:
+
+```c++
+// only the distance in meters
+double distance = cs1.dist(cs2, CartesianStateVariable::POSITION);
+// only the angular distance in radians
+double angle = cs1.dist(cs2, CartesianStateVariable::ORIENTATION);
+
+// only the angular velocity difference in radians per second
+double angular_rate = cs1.dist(cs2, CartesianStateVariable::ANGULAR_VELOCITY);
+```
+
+The Euclidean norm of individual state variables returns the vector magnitude (or angular displacement in the case of
+orientation). To get the magnitude of all state variables as a vector of norms, use the `norms()` operator.
+
+```c++
+auto state = state_representation::CartesianState::Random("test");
+
+// the default usage returns the magnitude of all state variables in an 8D vector
+std::vector<double> norms = state.norms();
+
+// to return 2D vectors of norms, filter by the combined state variables
+std::vector<double> distance_and_angle = state.norms(CartesianStateVariable::POSE);
+std::vector<double> speeds = state.norms(CartesianStateVariable::TWIST);
+
+// other single state variables give a 1D vector
+std::vector<double> distance = state.norms(CartesianStateVariable::POSITION);
+```
+
+Finally, state variables can be scaled to a unit vector state using the `normalize()` / `normalized()` operations. 
+This does not affect the orientation, which is always expressed as a unit quaternion.
+
+The former normalizes a state in place, while the latter returns a normalized copy without modifying the original state.
+
+As with the other operations, the normalization can be selectively applied to specific state variables.
+
+```c++
+// normalize a state all the state variables
+state.normalize();
+
+// normalize the position of a state to a unit direction vector
+state.normalize(CartesianStateVariable::POSITION);
+
+// copied state with only linear velocity normalized
+CartesianState normalized_state = state.normalized(CartesianStateVariable::LINEAR_VELOCITY);
+```
+
 ## Derived Cartesian classes
 
 The `CartesianState` class contains all spatial and dynamic state variables of a frame. In some cases, it is convenient
@@ -372,11 +440,23 @@ to operate only with specific state variables. The following derived classes are
 
 The `CartesianPose` class defines only the position and orientation of a frame.
 
-It provides the same constructors as `CartesianState`:
+It provides the following constructors:
 
 ```c++
-CartesianPose::Identity("frame", "reference_frame");
-CartesianPose::Random("frame", "reference_frame");
+CartesianPose::Identity("name", "reference_frame");
+CartesianPose::Random("name", "reference_frame");
+
+// the position can be supplied to the constructor as a vector or as individual terms (with null orientation)
+xyz = Eigen::Vector3d(1.0, 2.0, 3.0);
+CartesianPose("name", xyz, "reference_frame");
+CartesianPose("name", 1.0, 2.0, 3.0, "reference_frame");
+
+// the orientation can be supplied to the constructor as a vector or as individual terms (with zero displacement)
+q = Eigen::Quaterniond(0, 1, 0, 0);
+CartesianPose("name", q, "reference_frame");
+
+// the position and orientation can also be supplied together
+CartesianPose("name", xyz, q, "reference_frame");
 ```
 
 Addition and subtraction is supported between `CartesianPose` and `CartesianState`. Recall that these operations are
@@ -416,6 +496,26 @@ pose *= other_pose; // equivalent to pose = pose * other_pose
 pose *= state; // equivalent to pose = pose * state
 ```
 
+The time derivative of a `CartesianPose` is a `CartesianTwist`. Because `CartesianPose` represents a displacement in
+position and orientation, it can be converted into linear and angular velocity through division by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take a pose with a displacement of 1 meter in the X axis and 90º (π/2) rotation around the Z axis
+state_representation::CartesianPose pose("a", Eigen::Vector3d(1, 0, 0), Eigen::Quaterniond(0.707, 0, 0, 0.707));
+
+// define a 2 second time duration
+std::chrono::seconds dt(2);
+
+// dividing pose by time yields a twist with a linear velocity of 0.5 meters per second in the X axis
+// and an angular velocity of π/4 radians per second (45º/s) around the Z axis
+state_representation::CartesianTwist twist = pose / dt;
+twist.get_linear_velocity(); // (0.5, 0, 0)
+twist.get_angular_velocity(); // (0, 0, 0.785)
+```
+
 ### Cartesian twist
 
 The `CartesianTwist` class defines only the linear and angular velocity of a frame.
@@ -423,8 +523,20 @@ The `CartesianTwist` class defines only the linear and angular velocity of a fra
 It provides the following constructors:
 
 ```c++
-CartesianTwist::Zero("frame", "reference_frame");
-CartesianTwist::Random("frame", "reference_frame");
+CartesianTwist::Zero("name", "reference_frame");
+CartesianTwist::Random("name", "reference_frame");
+
+// the linear or angular velocities can be supplied to the constructor as vectors
+linear_velocity = Eigen::Vector3d(1.0, 2.0, 3.0);
+CartesianTwist("name", linear_velocity, "reference_frame");
+
+angular_velocity = Eigen::Vector3d(4.0, 5.0, 6.0);
+CartesianTwist("name", linear_velocity, angular_velocity, "reference_frame");
+
+// the full 6D twist vector can also be supplied
+twist = Eigen::VectorXd(6);
+twist << 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;
+CartesianTwist("name", twist, "reference_frame");
 ```
 
 Addition and subtraction is supported between `CartesianTwist` and `CartesianState`.
@@ -448,6 +560,47 @@ twist -= other_twist;
 twist -= state;
 ```
 
+The time derivative of a `CartesianTwist` is a `CartesianAcceleration`. Because `CartesianTwist` represents linear and
+angular velocity in meters and radians per seconds, it can be converted into linear and angular acceleration in meters
+and radians per second squared through division by a time period.
+
+Similarly, the time integral of a `CartesianTwist` is a `CartesianPose`. It can be converted into a position and
+orientation displacement through multiplication by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take a twist with a linear velocity of 1 meter per second in the X axis
+// and angular velocity of 1 radian per second in the Z axis 
+state_representation::CartesianTwist twist("a", Eigen::Vector3d(1, 0, 0), Eigen::Vector3d(0, 0, 1));
+
+// define a 0.5 second time duration
+std::chrono::milliseconds dt(500);
+
+// dividing twist by time yields an acceleration with a linear term of 2 meters per second squared in the X axis
+// and angular term of 2 radians per second squared around the Z axis
+state_representation::CartesianAcceleration acc = twist / dt;
+acc.get_linear_acceleration(); // (2, 0, 0) 
+acc.get_angular_acceleration(); // (0, 0, 2)
+
+// multiplying twist by time yields a pose with a position of 0.5 meters in the X axis
+// and a rotation of 0.5 radians around the Z axis
+state_representation::CartesianPose pose = twist * dt;
+pose.get_position(); // (0.5, 0, 0)
+pose.get_orientation(); // Eigen::Quaterniond(0.9689124, 0, 0, 0.247404)
+```
+
+Note that the result of the integration is a displacement from a null (identity) pose. To offset the integration,
+simply add an initial pose in the same reference frame as the twist.
+
+```c++
+// add an initial pose to offset the integration 
+pose = initial_pose + twist * dt;
+
+// a pose can also be updated through a continuous integration of twist
+pose += twist * dt;
+```
 
 #### Representations of twist
 
@@ -477,13 +630,13 @@ v_b \\
 \end{bmatrix}$$
 
 For example, a spinning top (body frame) on a table (spatial reference frame) has angular velocity about its local Z
-axis. While the top is vertical (aligned with the table), the CartesianTwist and the body twist are equivalent. If the
-top begins to precess and tips over, then the CartesianTwist (expressed in the table frame) will show an angular
+axis. While the top is vertical (aligned with the table), the `CartesianTwist` and the body twist are equivalent. If the
+top begins to precess and tips over, then the `CartesianTwist` (expressed in the table frame) will show an angular
 velocity with components in X and Y, but the body twist will remain expressed in the local body Z axis. Importantly, the
 magnitude of the twist is the same in both representations, because they are both measuring the twist of the top with
 respect to the table.
 
-There is another type of twist called the *spatial twist*. Just like our `CartesianTwist`, it represents angular
+There is another type of twist called the *spatial twist*. Just like `CartesianTwist`, it represents angular
 velocity of the body frame B with respect to fixed frame A, as viewed from A. However, the spatial linear velocity $v_s$
 represents the velocity of an imaginary point at A as if it were attached to the body B, measured with respect to A, as
 viewed from A.
@@ -501,16 +654,16 @@ v_s \\
 The quantity $v_s$ is the body linear velocity plus the radially induced velocity as the cross product of the distance
 from A to B ${^A}t_B$ with the body angular velocity.
 
-Our internal CartesianTwist representation is arguably the most intuitive out of all three options presented here.
+The internal `CartesianTwist` representation is arguably the most intuitive out of all three options presented here.
 Still, depending on the geometric operations involved, both the body and spatial twist vectors can be useful.
 
-The equations above have shown the derivations of each in terms of the original CartesianTwist. To conclude, I will also
-mention the conversion between the body and spatial representations, which uses the Adjoint map.
+The equations above have shown the derivations of each in terms of the original `CartesianTwist`. For completeness,
+it is also worth mentioning the direct transformation between body and spatial representations, using the Adjoint map.
 
 $$\mathcal{V}_s = [Ad_{T}] \mathcal{V}_b$$
 
-The Adjoint map is defined for a given transformation matrix $T$ (with rotation matrix $R$ and displacement vector $t$)
-as the adjoint matrix:
+The Adjoint map is defined for a given transformation matrix $T$ (with rotation matrix $R$ and displacement
+vector $t$) as the adjoint matrix $[Ad_{T}]$:
 
 $$[Ad_{T}] =
 \begin{bmatrix}
@@ -532,8 +685,20 @@ The `CartesianAcceleration` class defines only the linear and angular accelerati
 It provides the following constructors:
 
 ```c++
-CartesianAcceleration::Zero("frame", "reference_frame");
-CartesianAcceleration::Random("frame", "reference_frame");
+CartesianAcceleration::Zero("name", "reference_frame");
+CartesianAcceleration::Random("name", "reference_frame");
+
+// the linear or angular accelerations can be supplied to the constructor as vectors
+linear_acceleration = Eigen::Vector3d(1.0, 2.0, 3.0);
+CartesianAcceleration("name", linear_acceleration, "reference_frame");
+
+angular_acceleration = Eigen::Vector3d(4.0, 5.0, 6.0);
+CartesianAcceleration("name", linear_acceleration, angular_acceleration, "reference_frame");
+
+// the full 6D acceleration vector can also be supplied
+acceleration = Eigen::VectorXd(6);
+acceleration << 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;
+CartesianAcceleration("name", acceleration, "reference_frame");
 ```
 
 Addition and subtraction is supported between `CartesianAcceleration` and `CartesianState`.
@@ -557,21 +722,60 @@ acceleration -= other_acceleration;
 acceleration -= state;
 ```
 
+The time integral of a `CartesianAcceleration` is a `CartesianTwist`. Because `CartesianAcceleration` represents linear
+and angular acceleration in meters and radians per seconds squared, it can be converted into a relative linear and
+angular velocity in meters and radians per second through multiplication by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take an acceleration with a linear acceleration of 1 meter per second squared in the X axis
+// and angular acceleration of 1 radian per second squared in the Z axis 
+state_representation::CartesianAcceleration acc("a", Eigen::Vector3d(1, 0, 0), Eigen::Vector3d(0, 0, 1));
+
+// define a 0.1 second time duration
+std::chrono::milliseconds dt(100);
+
+// multiplying acceleration by time yields a twist with a linear term of 0.1 meters per second in the X axis
+// and an angular term of 0.1 radians per second around the Z axis
+state_representation::CartesianPose twist = acceleration * dt;
+pose.get_position(); // (0.1, 0, 0)
+pose.get_orientation(); // (0, 0, 0.1)
+```
+
+Note that the result of the integration assumes zero initial velocity. To offset the integration, simply add an initial
+twist in the same reference frame as the acceleration.
+
+```c++
+// add an initial twist to offset the integration 
+twist = initial_twist + acc * dt;
+
+// a twist can also be updated through a continuous integration of acceleration
+twist += acc * dt;
+```
+
 ### Cartesian wrench
 
 The `CartesianWrench` class defines only the force and torque as applied to a frame.
 
-The wrench is distinct from the other state variables as it is not a relative spatial property. It is considered as
-the measurement of a force/torque sensor at the frame, as seen from the reference frame.
-
-Changing the observer does not change magnitude of the force or wrench measured at the frame. It only changes the
-apparent direction of the wrench vector, depending on the orientation of the reference frame.
-
 It provides the following constructors:
 
 ```c++
-CartesianWrench::Zero("frame", "reference_frame");
-CartesianWrench::Random("frame", "reference_frame");
+CartesianWrench::Zero("name", "reference_frame");
+CartesianWrench::Random("name", "reference_frame");
+
+// the force or torque can be supplied to the constructor as vectors
+force = Eigen::Vector3d(1.0, 2.0, 3.0);
+CartesianWrench("name", force, "reference_frame");
+
+torque = Eigen::Vector3d(4.0, 5.0, 6.0);
+CartesianWrench("name", force, torque, "reference_frame");
+
+// the full 6D wrench vector can also be supplied
+wrench = Eigen::VectorXd(6);
+wrench << 1.0, 2.0, 3.0, 4.0, 5.0, 6.0;
+CartesianWrench("name", wrench, "reference_frame");
 ```
 
 Addition and subtraction is supported between `CartesianWrench` and `CartesianState`.
@@ -597,6 +801,12 @@ wrench -= state;
 
 #### Considerations of wrench
 
+The wrench is distinct from the other state variables as it is not a relative spatial property. It is considered as
+the measurement of a force/torque sensor at the frame, as seen from the reference frame.
+
+Changing the observer does not change magnitude of the force or wrench measured at the frame. It only changes the
+apparent direction of the wrench vector, depending on the orientation of the reference frame.
+
 Because the `CartesianWrench` is different from other spatial properties, it is handled uniquely in the transform
 and inverse operations.
 
@@ -605,86 +815,9 @@ the new reference frame. The wrench of the intermediate (inner) frame is discard
 
 The inverse of a state will set the wrench to zero.
 
+<!-- TODO: discuss wrench transform with the transposed adjoint matrix, similar to twist
 #### Representations of wrench
-
-TODO: discuss wrench transform with the transposed adjoint matrix, similar to twist
-
-### Cartesian integration and derivation
-
-TODO: move the contents of this section into the relevant derived class descriptions
-
-The distinction with those specific extra variables allows to define some extra conversion operations.
-Therefore, dividing a `CartesianPose` by a time (`std::chrono_literals`) returns a `CartesianTwist`:
-
-```c++
-using namespace std::chrono_literals;
-auto period = 1h;
-
-state_representation::CartesianPose wPa("a", Eigen::Vector3d(1, 0, 0));
-// the result is a twist of 1m/h in x direction converted in m/s
-state_representation::CartesianTwist wVa = wPa / period;
-```
-
-Conversely, multiplying a `CartesianTwist` (by default expressed internally in `m/s` and `rad/s`) to a `CartesianPose`
-is simply multiplying it by a time period:
-
-```c++
-using namespace std::chrono_literals;
-auto period = 10s;
-
-state_representation::CartesianTwist wVa("a", Eigen::Vector3d(1, 0, 0));
-state_representation::CartesianPose wPa = period * wVa; // note that wVa * period is also implemented
-```
-
-### Cartesian state distance and norms
-
-As a `CartesianState` represents a spatial transformation, distance between states and norms computations have been
-implemented. The distance functions is represented as the sum of the distance over all the state variables:
-
-```c++
-using namespace state_representation;
-CartesianState cs1 = CartesianState::Random("test");
-CartesianState cs2 = CartesianState::Random("test");
-
-double d = cs1.dist(cs2);
-// alternatively one can use the friend type notation
-d = dist(cs1, cs2)
-```
-
-By default, the distance is computed over all the state variables.
-It is worth noting that it has no physical units, but is still relevant to check how far two states are in all their
-features.
-One can specify the state variable to consider using the `CartesianStateVariable` enumeration:
-
-```c++
-// only the distance in position
-double d_pos = cs1.dist(cs2, CartesianStateVariable::POSITION);
-// distance over the wrench
-double d_wrench = cs1.dist(cs2, CartesianStateVariable::WRENCH);
-```
-
-When doing so, the unit of the distance is the one of the corresponding state variable.
-The norm of a state is using a similar API and returns the norms of each state variable:
-
-```c++
-using namespace state_representation;
-CartesianState cs = CartesianState::Random("test");
-// default is norm over all the state variables, hence vector is of size 8
-std::vector<double> norms = cs.norms();
-// for only norm over the pose you need to specify it
-std::vector<double> pose_norms = cs.norms(CartesianStateVariable::POSE);
-```
-
-`normalize`, inplace normalization, and the copy normalization, `normalized`, are also implemented:
-
-```c++
-using namespace state_representation;
-CartesianState cs = CartesianState::Random("test");
-// inplace, default is normalization over all the state variables
-cs.normalize()
-// copied normalized state, with only linear velocity normalized
-CartesianState csn = cs.normalized(CartesianStateVariable::LINEAR_VELOCITY)
-```
+-->
 
 ## Joint state
 
