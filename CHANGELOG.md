@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Update state representation documentation (#107)
 - Consistently reset timestamp if state data has been changed (#108)
 - Update python bindings after Jacobian refactor (#105)
 - Set reference frame of Jacobian with string instead of pose (#103)
