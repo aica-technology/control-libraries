@@ -23,7 +23,7 @@ The following sections describe the properties of the main state classes in the 
     * [Emptiness](#emptiness)
 * [Cartesian state](#cartesian-state)
     * [Reference frame](#reference-frames)
-    * [Construction](#construction)
+    * [Construction](#cartesian-state-construction)
     * [Cartesian getters and setters](#cartesian-getters-and-setters)
     * [Cartesian addition and subtraction](#cartesian-addition-and-subtraction)
     * [Cartesian transforms: changing the reference frame](#cartesian-transforms--changing-the-reference-frame)
@@ -34,8 +34,14 @@ The following sections describe the properties of the main state classes in the 
     * [Cartesian acceleration](#cartesian-acceleration)
     * [Cartesian wrench](#cartesian-wrench)
 * [Joint state](#joint-state)
-    * [Joint state operations](#joint-state-operations)
-    * [Conversion between joint state variables](#conversion-between-joint-state-variables)
+    * [Joint names](#joint-names)
+    * [Construction](#joint-state-construction)
+    * [Joint state addition and subtraction](#joint-state-addition-subtraction-and-scaling)
+* [Derived joint state classes](#derived-joint-state-classes)
+    * [Joint positions](#joint-positions)
+    * [Joint velocities](#joint-velocities)
+    * [Joint accelerations](#joint-accelerations)
+    * [Joint torques](#joint-torques)
 * [The Jacobian matrix](#the-jacobian-matrix)
     * [Conversion between JointVelocities and CartesianTwist](#conversion-between-jointvelocities-and-cartesiantwist)
     * [Conversion between JointTorques and CartesianWrench](#conversion-between-jointtorques-and-cartesianwrench)
@@ -135,7 +141,8 @@ In some contexts, `twist` or `wrench` vectors may be interpreted differently. Fo
 "body twist" and "spatial twist". See the sections on [`CartesianTwist`](#cartesian-twist) and
 [`CartesianWrench`](#cartesian-wrench) for more details.
 
-### Construction
+<!-- an HTML header is here used in place of ### to create a unique reference anchor for the generic header name -->
+<h3 id="cartesian-state-construction">Construction</h3>
 
 `CartesianState` constructors take a name and an optional reference frame; by default, the reference frame is "world".
 
@@ -228,7 +235,7 @@ For example, a simple controller might be driving the linear velocity of a robot
 the desired velocity of the robot would be the velocity of the object _plus_ some additional velocity in the direction
 of the object.
 
-If two `CartesianState` objects can be combined with addition or subtraction, **provided they are expressed in the same
+Two `CartesianState` objects can be combined with addition or subtraction, **provided they are expressed in the same
 reference frame**.
 
 ```c++
@@ -243,7 +250,7 @@ s1 + state_representation::CartesianState::Random("c", "other");
 ```
 
 For all state variables except orientation, the result of the operation is applied to each state variable element-wise.
-For example, If `s1` has position `(x1, y1, z1)` and `s2` has position `(x1, y1, z1)`, then `s1 + s2` has position
+For example, if `s1` has position `(x1, y1, z1)` and `s2` has position `(x1, y1, z1)`, then `s1 + s2` has position
 `(x1 + x2, y1 + y2, z1 + z2)`. The same applies for subtraction and is true for all state variables represented as 3D
 vectors.
 
@@ -465,7 +472,6 @@ not commutative in orientation; the order of operations matters.
 The return type of each compatible operation is shown below.
 
 ```c++
-
 CartesianPose r1 = pose + other_pose;
 CartesianState r2 = pose + state;
 CartesianState r3 = state + pose;
@@ -544,7 +550,6 @@ Addition and subtraction is supported between `CartesianTwist` and `CartesianSta
 The return type of each compatible operation is shown below.
 
 ```c++
-
 CartesianTwist r1 = twist + other_twist;
 CartesianState r2 = twist + state;
 CartesianState r3 = state + twist;
@@ -706,7 +711,6 @@ Addition and subtraction is supported between `CartesianAcceleration` and `Carte
 The return type of each compatible operation is shown below.
 
 ```c++
-
 CartesianAcceleration r1 = acceleration + other_acceleration;
 CartesianState r2 = acceleration + state;
 CartesianState r3 = state + acceleration;
@@ -783,7 +787,6 @@ Addition and subtraction is supported between `CartesianWrench` and `CartesianSt
 The return type of each compatible operation is shown below.
 
 ```c++
-
 CartesianWrench r1 = wrench + other_wrench;
 CartesianState r2 = wrench + state;
 CartesianState r3 = state + wrench;
@@ -821,85 +824,361 @@ The inverse of a state will set the wrench to zero.
 
 ## Joint state
 
-`JointState` follows the same logic as `CartesianState` but for representing robot states.
-Similarly to the `CartesianState` the class `JointState`, `JointPositions`, `JointVelocities` and `JointTorques` have
-been developed.
-The API follows exactly the same logic with similar operations implemented.
+A `JointState` represents the instantaneous properties of a collection of joints, containing the following spatial and
+dynamic properties:
+- `positions`
+- `velocities`
+- `accelerations`
+- `torques`
 
-A `JointState` is defined by the name of the corresponding robot and the name of each joints.
+Each state variable is represented as an N-dimensional vector (`Eigen::VectorXd`), where N is the number of joints.
+
+By design, a `JointState` most appropriately describes a serial linkage of revolute joints as found in typical
+robot arms or manipulators. The values are assumed to be in standard SI units (radians, seconds, Newton-meters).
+
+### Joint names
+
+Each joint in a `JointState` collection has a name. This can make it easier to reference the state variable value of a
+specific joint in the collection.
+
+The names can be set on construction or using the `set_names()` method. As an example, a three-link robot might be
+given joint names `{"shoulder", "elbow", "wrist"}`.
+
+By default, the names are assigned based on their index, starting from 0: `{"joint0", "joint1", ..., "jointX"}`.
+
+<!-- an HTML header is here used in place of ### to create a unique reference anchor for the generic header name -->
+<h3 id="joint-state-construction">Construction</h3>
+
+`JointState` constructors take a name and either a vector of joint names or an integer number of joints. The name
+refers to the whole joint state collection, and so often corresponds to the name of the robot it represents.
 
 ```c++
-// create a state for myrobot with 3 joints
-state_representation::JointState js("myrobot", std::vector<string>({ "joint0", "joint1", "joint2" }));
+// create a joint state for a robot with 3 joints
+std::vector<string> joint_names = { "shoulder", "elbow", "wrist" };
+state_representation::JointState js1("my_robot", joint_names);
+
+state_representation::JointState js2("my_robot", 3); // joint names are defaulted to "joint0", "joint1", "joint2"
 ```
 
-Note that if the joints of the robot are named `{"joint0", "joint1", ..., "jointN"}` as above,
-you can also use the constructor that takes the number of joints as input which will name them accordingly:
-
+Constructing a state without any data results in an empty state. To set initial data, the static constructors `Zero()`
+or `Random()` can be used. The former sets all state variables of each joint values zero. The latter sets all state
+variables to a unit random state within a uniform distribution. As with the regular constructor, a vector of joint names
+or an integer number of joints can be supplied.
 ```c++
-// create a state for myrobot with 3 joints named {"joint0", "joint1", "joint3"}
-state_representation::JointState js("myrobot", 3);
+// initialize the joint state to zero values
+state_representation::JointState::Zero("my_robot", joint_names);
+state_representation::JointState::Zero("my_robot", 3);
+
+// initialize the joint state to random values
+state_representation::JointState::Random("my_robot", joint_names);
+state_representation::JointState::Random("my_robot", 3);
 ```
 
-All the getters and setters for the `positions`, `velocities`, `accelerations` and `torques` are defined for both
-`Eigen::VectorXd` and `std::vector<double>`:
+### Joint getters and setters
+
+Each state variable has a corresponding getter and setter to access or modify the data after construction.
+
+The following groups of variables can be accessed or set as a vector ordered by the joint indexes / names:
+
+- `get_positions()`, `set_positions({...})` in radians
+- `get_velocities()`, `set_velocities({...})` in radians per second
+- `get_accelerations()`, `set_accelerations({...})` in radians per second squared
+- `get_torques()`, `set_torques({...})` in Newton-meters
+
+The vector setters are defined for both `Eigen::VectorXd` and `std::vector<double>`:
 
 ```c++
+state_representation::JointState js("my_robot", 3);
 js.set_positions(Eigen::Vector3d(.5, 1., 0.));
 js.set_positions(std::vector<double>{.5, 1., 0.});
 ```
 
-Note that when using those setters, the size of the input vector should correspond to the number of joints of the state:
+When setting a vector of state variables, the size of the input vector must match the number of joints.
 
 ```c++
 js.set_positions(Eigen::Vector4d::Random()); // will throw an IncompatibleSizeException
 ```
 
-### Joint state operations
+The state variable values of each individual joint can also be accessed as scalars, using either the integer joint
+index or the string joint name as the identifier:
 
-Basic operations such as addition, subtraction and scaling have been implemented:
+- `get_position(id)`, `set_position(x, id)` in radians
+- `get_velocity(id)`, `set_velocity(x, id)` in radians per second
+- `get_acceleration(id)`, `set_acceleration(x, id)` in radians per second squared
+- `get_torque(id)`, `set_torques(x, id)` in Newton-meters
+
+```c++
+auto js = state_representation::JointState::Random("my_robot", { "hip", "knee" });
+
+js.get_position(0); // get the position of the hip joint
+js.get_velocity("hip"); // get the velocity of the hip joint
+js.set_acceleration(0.5, 1); // set the acceleration of the knee joint to 5 rad/s^2
+js.set_torque(2.0, "knee"); // set the torque of the knee joint to 2 Nm
+```
+
+### Joint state addition, subtraction and scaling
+
+Two `JointState` objects can be combined with addition or subtraction, provided they have the same name and joint names.
 
 ```c++
 state_representation::JointState js1("myrobot", 3);
 state_representation::JointState js2("myrobot", 3);
-double lambda = 0.5;
 
-// for those operation to be valid both js1 and js2
-// should correspond to the same robot and have the
-// same number of joints
+// for those operation to be valid both js1 and js2 must have the same name and matching joint names
 state_representation::JointState jssum = js1 + js2;
 state_representation::JointState jsdiff = js1 - js2;
-state_representation::JointState jsscaled = lambda * js1;
 ```
 
-Multiplication of joint states doesn't have a physical meaning and is, therefore, not implemented.
+For all state variables, the result of the operation is applied to each state variable element-wise. For example, if 
+`js1` has joint positions `(x1, x2, x3)` and `js2` has joint positions `(y1, y2, y3)`, then `js1` + `js2` has joint
+positions `(x1 + y1, x2 + y2, x3 + y3)`. The same applies for subtraction and is true for all state variable vectors.
 
-### Conversion between joint state variables
-
-Similarly to `CartesianState`, the conversion between `JointPositions` and `JointVelocities`
-happens through operations with `std::chrono_literals`.
-
+A `JointState` can also be multiplied or divided by a scalar to scale each state variable element-wise.
 ```c++
-using namespace std::chrono_literals;
-auto period = 1h;
-
-// create a state for myrobot with 3 joints named {"joint0", "joint1", "joint3"}
-// and provide the position values
-state_representation::JointPositions jp("myrobot", Eigen::Vector3d(1, 0, 0));
-
-// result are velocities of 1 rad/h for joint0 expressed in rad/s
-state_representation::JointVelocities jv = jp / period;
+state_representation::JointState double_state = 2.0 * js1;
+state_representation::JointState half_state = js1 / 2.0;
 ```
 
+## Derived joint state classes
+
+The `JointState` class contains all spatial and dynamic state variables of a joint collection. In some cases, it is
+convenient to operate only with specific state variables. The following derived classes are defined:
+
+- `JointPositions`
+- `JointVelocities`
+- `JointAccelerations`
+- `JointTorques`
+
+### Joint positions
+
+The `JointPositions` class defines only the positions of joints.
+
+In addition to the constructors inherited from `JointState`, it can be constructed with a vector of initial positions.
+
 ```c++
-using namespace std::chrono_literals;
-auto period = 10s;
+Eigen::VectorXd initial_positions(3);
+initial_positions << 1.0, 2.0, 3.0;
 
-// create a state for myrobot with 3 joints named {"joint0", "joint1", "joint3"}
-// and provide the velocities values
-state_representation::JointVelocities wVa("a", Eigen::Vector3d(1, 0, 0));
+// create a 3-joint robot with initial positions and default joint names
+state_representation::JointPositions("my_robot", initial_positions);
 
-state_representation::JointPositions jp = period * jv; // note that jv * period is also implemented
+// assign joint names alongside the initial positions
+state_representation::JointPositions("my_robot", { "shoulder", "elbow", "wrist" }, initial_positions);
+```
+
+Addition and subtraction is supported between `JointPositions` and `JointState`, provided that they are compatible.
+
+The return type of each compatible operation is shown below.
+
+```c++
+JointPositions r1 = joint_positions + other_joint_positions;
+JointState r2 = joint_positions + joint_state;
+JointState r3 = joint_state + joint_positions;
+
+JointPositions r4 = joint_positions - other_joint_positions;
+JointState r5 = joint_positions - joint_state;
+JointState r6 = joint_state - joint_positions;
+
+joint_positions += other_joint_positions; // equivalent to joint_positions = joint_positions + other_joint_positions
+joint_positions += joint_state; // equivalent to joint_positions = joint_positions + joint_state
+
+joint_positions -= other_joint_positions;
+joint_positions -= joint_state;
+```
+
+The time derivative of `JointPositions` are `JointVelocities`. The angular displacement of the joints can be converted
+into angular velocity through division by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take a robot with a displacement of 1 radian around the first joint
+state_representation::JointPositions positions("my_robot", Eigen::Vector3d(1, 0, 0));
+
+// define a 2 second time duration
+std::chrono::seconds dt(2);
+
+// dividing position by time yields an angular velocity 0.5 radians per second around the first joint
+state_representation::JointVelocities velocities = positions / dt;
+velocities.get_velocities(); // (0.5, 0, 0)
+```
+
+### Joint velocities
+
+The `JointVelocities` class defines only the velocities of joints.
+
+In addition to the constructors inherited from `JointState`, it can be constructed with a vector of initial velocities:
+
+```c++
+Eigen::VectorXd initial_velocities(3);
+initial_velocities << 1.0, 2.0, 3.0;
+
+// create a 3-joint robot with initial velocities and default joint names
+state_representation::JointVelocities("my_robot", initial_velocities);
+
+// assign joint names alongside the initial velocities
+state_representation::JointVelocities("my_robot", { "shoulder", "elbow", "wrist" }, initial_velocities);
+```
+
+Addition and subtraction is supported between `JointVelocities` and `JointState`, provided that they are compatible.
+
+The return type of each compatible operation is shown below.
+
+```c++
+JointVelocities r1 = joint_velocities + other_joint_velocities;
+JointState r2 = joint_velocities + joint_state;
+JointState r3 = joint_state + joint_velocities;
+
+JointVelocities r4 = joint_velocities - other_joint_velocities;
+JointState r5 = joint_velocities - joint_state;
+JointState r6 = joint_state - joint_velocities;
+
+joint_velocities += other_joint_velocities; // equivalent to joint_velocities = joint_velocities + other_joint_velocities
+joint_velocities += joint_state; // equivalent to joint_velocities = joint_velocities + joint_state
+
+joint_velocities -= other_joint_velocities;
+joint_velocities -= joint_state;
+```
+
+The time derivative of `JointVelocities` are `JointAccelerations`. The angular velocity of the joints can be converted
+into angular acceleration through division by a time period.
+
+Similarly, the time integral of `JointVelocities` are `JointPositions`. The angular velocity of the joints can be
+converted into an angular displacement through multiplication by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take a robot with an angular velocity of 1 radian per second around the first joint
+state_representation::JointVelocities velocities("my_robot", Eigen::Vector3d(1, 0, 0));
+
+// define a 0.5 second time duration
+std::chrono::milliseconds dt(500);
+
+// dividing velocity by time yields an angular acceleration 2 radians per second squared around the first joint
+state_representation::JointAccelerations accelerations = velocities / dt;
+accelerations.get_accelerations(); // (2, 0, 0)
+
+// multiplying velocity by time yields joint positions with a displacement of 0.5 radians around the first joint
+state_representation::JointPositions positions = velocities * dt;
+positions.get_positions(); // (0.5, 0, 0)
+```
+
+Note that the result of the integration is the displacement from an initial (zero) position. To offset the integration,
+simply add initial joint positions with the same name and joint names.
+
+```c++
+// add initial positions to offset the integration 
+positions = initial_positions + velocities * dt;
+
+// joint positions can also be updated through a continuous integration of joint velocities
+positions += velocities * dt;
+```
+
+### Joint accelerations
+
+The `JointAccelerations` class defines only the accelerations of joints.
+
+In addition to the constructors inherited from `JointState`, it can be constructed with a vector of initial
+accelerations:
+
+```c++
+Eigen::VectorXd initial_accelerations(3);
+initial_accelerations << 1.0, 2.0, 3.0;
+
+// create a 3-joint robot with initial accelerations and default joint names
+state_representation::JointAccelerations("my_robot", initial_accelerations);
+
+// assign joint names alongside the initial accelerations
+state_representation::JointAccelerations("my_robot", { "shoulder", "elbow", "wrist" }, initial_accelerations);
+```
+
+Addition and subtraction is supported between `JointAccelerations` and `JointState`, provided that they are compatible.
+
+The return type of each compatible operation is shown below.
+
+```c++
+JointAccelerations r1 = joint_accelerations + other_joint_accelerations;
+JointState r2 = joint_accelerations + joint_state;
+JointState r3 = joint_state + joint_accelerations;
+
+JointAccelerations r4 = joint_accelerations - other_joint_accelerations;
+JointState r5 = joint_accelerations - joint_state;
+JointState r6 = joint_state - joint_accelerations;
+
+joint_accelerations += other_joint_accelerations; // equivalent to joint_accelerations = joint_accelerations + other_joint_accelerations
+joint_accelerations += joint_state; // equivalent to joint_accelerations = joint_accelerations + joint_state
+
+joint_accelerations -= other_joint_accelerations;
+joint_accelerations -= joint_state;
+```
+
+The time integral of `JointAccelerations` are `JointVelocities`. The angular acceleration of the joints can be converted
+into an angular velocities through multiplication by a time period.
+
+Operations with time use `std::chrono::duration` types, such as `std::chrono::milliseconds`, `std::chrono::seconds`, or
+definitions with `std::literals::chrono_literals`.
+
+```c++
+// take a robot with an angular acceleration of 1 radian per second squared around the first joint
+state_representation::JointAccelerations accelerations("my_robot", Eigen::Vector3d(1, 0, 0));
+
+// define a 0.5 second time duration
+std::chrono::milliseconds dt(500);
+
+// multiplying acceleration by time yields an angular velocity of 0.5 radians around the first joint
+state_representation::JointVelocities velocities = accelerations * dt;
+velocities.get_velocities(); // (0.5, 0, 0)
+```
+
+Note that the result of the integration assumes zero initial joint velocities. To offset the integration, simply add
+initial joint velocities with the same name and joint names.
+
+```c++
+// add initial velocities to offset the integration 
+velocities = initial_velocities + accelerations * dt;
+
+// joint velocities can also be updated through a continuous integration of joint accelerations
+velocities += accelerations * dt;
+```
+
+### Joint torques
+
+The `JointTorques` class defines only the torques of joints.
+
+In addition to the constructors inherited from `JointState`, it can be constructed with a vector of initial torques.
+
+```c++
+Eigen::VectorXd initial_torques(3);
+initial_torques << 1.0, 2.0, 3.0;
+
+// create a 3-joint robot with initial torques and default joint names
+state_representation::JointTorques("my_robot", initial_torques);
+
+// assign joint names alongside the initial torques
+state_representation::JointTorques("my_robot", { "shoulder", "elbow", "wrist" }, initial_torques);
+```
+
+Addition and subtraction is supported between `JointTorques` and `JointState`, provided that they are compatible.
+
+The return type of each compatible operation is shown below.
+
+```c++
+JointTorques r1 = joint_torques + other_joint_torques;
+JointState r2 = joint_torques + joint_state;
+JointState r3 = joint_state + joint_torques;
+
+JointTorques r4 = joint_torques - other_joint_torques;
+JointState r5 = joint_torques - joint_state;
+JointState r6 = joint_state - joint_torques;
+
+joint_torques += other_joint_torques; // equivalent to joint_torques = joint_torques + other_joint_torques
+joint_torques += joint_state; // equivalent to joint_torques = joint_torques + joint_state
+
+joint_torques -= other_joint_torques;
+joint_torques -= joint_state;
 ```
 
 ## The Jacobian matrix
