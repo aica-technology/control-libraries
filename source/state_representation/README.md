@@ -26,7 +26,7 @@ The following sections describe the properties of the main state classes in the 
     * [Construction](#cartesian-state-construction)
     * [Cartesian getters and setters](#cartesian-getters-and-setters)
     * [Cartesian addition and subtraction](#cartesian-addition-and-subtraction)
-    * [Cartesian transforms: changing the reference frame](#cartesian-transforms--changing-the-reference-frame)
+    * [Cartesian transforms and changing the reference frame](#cartesian-transforms-changing-the-reference-frame)
     * [Cartesian distances and norms](#cartesian-distances-and-norms)
 * [Derived Cartesian classes](#derived-cartesian-classes)
     * [Cartesian pose](#cartesian-pose)
@@ -492,7 +492,7 @@ pose -= state;
 
 A `CartesianPose` can be used to transform any other Cartesian class by applying the position and orientation offset.
 Recall that the frame and reference frames must be compatible according to the chain rule as described in the
-[Cartesian transformation](#cartesian-transforms--changing-the-reference-frame) section.
+[Cartesian transformation](#cartesian-transforms-changing-the-reference-frame) section.
 
 ```c++
 CartesianPose transformed_pose = pose * other_pose;
@@ -1410,7 +1410,7 @@ jacobian.pseudoinverse(twist_in_world); // error! IncompatibleStatesException
 
 If the transformation between the robot base frame and world is known and expressed as a `CartesianPose`, it could be
 used to transform the `CartesianTwist` relative to the robot base frame (see the section describing
-[Cartesian transforms](#cartesian-transforms--changing-the-reference-frame) for more information).
+[Cartesian transforms](#cartesian-transforms-changing-the-reference-frame) for more information).
 
 ```c++
 auto pose = state_representation::CartesianPose::Random("base_frame", "world");
