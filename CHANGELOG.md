@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Update documentation for contribution and demos (#112)
 - Implement frame name setter for Jacobian (#111)
 - Update state representation documentation (#107, #110)
 - Consistently reset timestamp if state data has been changed (#108)
