@@ -1210,7 +1210,6 @@ both `JointState` and `CartesianState`; the accessor methods are listed below:
 - `get_reference_frame()` returns the reference frame of the corresponding `CartesianState`
 
 Each property is initialized on construction and has a corresponding setter for post-construction modifications.
-<!-- TODO(#109): set_frame is not currently implemented -->
 
 <!-- an HTML header is here used in place of ### to create a unique reference anchor for the generic header name -->
 <h3 id="jacobian-construction">Construction</h3>
