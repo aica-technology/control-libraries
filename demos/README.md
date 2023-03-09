@@ -1,13 +1,17 @@
-# `control_loop_examples` demonstration scripts
+# Demos
+
+This directory contains examples and demonstration code in both C++ and Python that showcase the functionalities
+introduced in the different libraries of `control-libraries`.
 
 ## Table of contents:
-* [Running a demo script](#running-demonstration-scripts)
-* [Task Space control loop example](#task_space_control_loop)
-* [Robot kinematics control loop example](#robot_kinematics_control_loop)
+* [Running a demo script](#running-a-demo-script)
+  * [Task Space control loop example](#task_space_control_loop)
+  * [Robot kinematics control loop example](#robot_kinematics_control_loop)
+* [Other demos](#other-demos)
+  * [ROS](#ros)
 
-## Running demonstration scripts
-This package contains a set of demonstration scripts in both C++ and Python that showcase the functionalities introduced
-in the different libraries of `control-libraries`.
+## Running a demo script
+
 The easiest way to run them is to use the `run-demo.sh` file.
 Without arguments, this script creates a container and opens in interactive mode, allowing you to browse the different
 demo scripts and run the one of your choice:
@@ -92,3 +96,15 @@ position: (0.500192, 1.07333e-05, 0.750183)
 orientation: (-1.9014e-05, 4.77102e-05, 1, -7.96025e-05) <=> theta: 3.14155, axis: (-4.77102e-05, -1, 7.96025e-05)
 
 ```
+
+## Other demos
+
+This section contains links to other demos and examples in the community. If you have an example to share, post it on
+[Control Libraries Discussions](https://github.com/aica-technology/control-libraries/discussions/categories/show-and-tell) 
+and we will link it here.
+
+### ROS
+
+The following examples by [domire8](https://github.com/domire8) show how control libraries can be integrated with
+the Robot Operating System (ROS)
+- https://github.com/domire8/control-libraries-ros-demos
