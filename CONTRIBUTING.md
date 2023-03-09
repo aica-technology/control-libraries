@@ -3,14 +3,17 @@
 This repository is owned and maintained by AICA SA. We welcome user engagement to find bugs, resolve issues
 and suggest useful features.
 
-Before contributing to this repository, please first discuss the change you wish to make
-by using the repository [Discussions](https://github.com/aica-technology/control-libraries/discussions),
-opening an [issue](https://github.com/aica-technology/control-libraries/issues),
-or by contacting the maintainers of this repository directly.
+Before contributing to this repository, please first discuss the change you wish to make by using the repository
+[Discussions](https://github.com/aica-technology/control-libraries/discussions) or opening an
+[issue](https://github.com/aica-technology/control-libraries/issues).
 
-Any contributors who are not employed by AICA must first read and sign
-the [Contributor License Agreement (CLA)](./licenses/CLA.md),
-which grants AICA the rights to use, modify and distribute open source contributions.
+When you are ready to contribute,
+[fork the repository and open a Pull Request (PR) from your feature branch](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
+Refer to the [PR process](#pull-request-process) section for more information.
+
+Before the PR can be accepted, contributors who are not employed by AICA must first read and agree to the
+[Contributor License Agreement (CLA)](./licenses/CLA.md), which grants AICA the rights to use, modify and distribute
+open source contributions.
 
 ## Development Environment
 
@@ -50,10 +53,9 @@ to build, run and debug library and test targets entirely with the remote toolch
 
 ## Style guide
 
-This project primarily follows the [LASA C++ Style Guide](https://wiki.epfl.ch/lasa/cpp-style-guide),
-except for the use of `snake_case` instead of `lowerCamelCase` for function and variable naming.
+This project follows the [AICA C++ Style Guide](https://github.com/aica-technology/.github/blob/main/guidelines/CPP_STYLE_GUIDE.md).
 
-Doxygen headers are also required for the public API.
+Doxygen headers are required for the public API.
 
 ## Unit Testing
 
