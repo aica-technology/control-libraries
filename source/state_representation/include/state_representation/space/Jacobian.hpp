@@ -174,6 +174,11 @@ public:
   void set_joint_names(const std::vector<std::string>& joint_names);
 
   /**
+   * @brief Setter of the frame
+   */
+  void set_frame(const std::string& frame);
+
+  /**
    * @brief Setter of the reference frame
    */
   void set_reference_frame(const std::string& reference_frame);

@@ -7,6 +7,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Implement frame name setter for Jacobian (#111)
 - Update state representation documentation (#107, #110)
 - Consistently reset timestamp if state data has been changed (#108)
 - Update python bindings after Jacobian refactor (#105)
