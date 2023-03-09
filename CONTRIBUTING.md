@@ -8,7 +8,8 @@ Before contributing to this repository, please first discuss the change you wish
 [issue](https://github.com/aica-technology/control-libraries/issues).
 
 When you are ready to contribute,
-[fork the repository and open a Pull Request (PR) from your feature branch](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
+[fork the repository and open a Pull Request (PR) from your feature branch](https://docs.github.com/en/get-started/quickstart/contributing-to-projects),
+making sure to **target the `develop` branch of the `aica-technology/control-libraries` repository**.
 Refer to the [PR process](#pull-request-process) section for more information.
 
 Before the PR can be accepted, contributors who are not employed by AICA must first read and agree to the
