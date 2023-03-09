@@ -137,6 +137,11 @@ void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
   this->reset_timestamp();
 }
 
+void Jacobian::set_frame(const std::string& frame) {
+  this->frame_ = frame;
+  this->reset_timestamp();
+}
+
 void Jacobian::set_reference_frame(const std::string& reference_frame) {
   this->reference_frame_ = reference_frame;
   this->reset_timestamp();

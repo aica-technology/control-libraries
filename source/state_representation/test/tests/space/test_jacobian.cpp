@@ -144,6 +144,16 @@ TEST(JacobianTest, TestCartesianToJoint) {
   EXPECT_GT(jvel2.data().norm(), 0);
 }
 
+TEST(JacobianTest, TestChangeFrameNames) {
+  auto jac = Jacobian("robot", 7, "test", "test_ref");
+  EXPECT_STREQ(jac.get_frame().c_str(), "test");
+  EXPECT_STREQ(jac.get_reference_frame().c_str(), "test_ref");
+  jac.set_frame("test_2");
+  jac.set_reference_frame("test_ref_2");
+  EXPECT_STREQ(jac.get_frame().c_str(), "test_2");
+  EXPECT_STREQ(jac.get_reference_frame().c_str(), "test_ref_2");
+}
+
 TEST(JacobianTest, TestChangeReferenceFrame) {
   Jacobian jac_in_test_ref = Jacobian::Random("robot", 7, "test", "test_ref");
   CartesianPose wTtest_ref = CartesianPose::Random("test_ref", "world");
