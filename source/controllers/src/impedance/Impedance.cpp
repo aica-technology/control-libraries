@@ -26,6 +26,9 @@ CartesianState Impedance<CartesianState>::compute_command(
       + this->inertia_->get_value().topLeftCorner<3, 3>() * command_state.get_linear_acceleration();
 
   // compute torque (orientation requires special care)
+  if (state_error.get_orientation().w() < 0) {
+    state_error.set_orientation(state_error.get_orientation().conjugate());
+  }
   Eigen::Vector3d orientation_control =
       this->stiffness_->get_value().bottomRightCorner<3, 3>() * state_error.get_orientation().vec()
           + this->damping_->get_value().bottomRightCorner<3, 3>() * state_error.get_angular_velocity()

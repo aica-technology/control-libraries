@@ -7,7 +7,8 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- Update documentation for contribution and demos (#112)
+- Fix angular stiffness calculation in impedance controller (#117)
+- Update documentation for contribution and demos (#113)
 - Implement frame name setter for Jacobian (#111)
 - Update state representation documentation (#107, #110)
 - Consistently reset timestamp if state data has been changed (#108)
