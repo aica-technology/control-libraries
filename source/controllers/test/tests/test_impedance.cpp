@@ -4,6 +4,7 @@
 #include <eigen3/Eigen/Dense>
 
 #include "controllers/ControllerFactory.hpp"
+#include "state_representation/MathTools.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
@@ -26,6 +27,28 @@ TEST(ImpedanceControllerTest, TestCartesianImpedance) {
   CartesianWrench command = controller->compute_command(desired_state, feedback_state);
   // expect some non null data
   EXPECT_TRUE(command.data().norm() > 0.);
+}
+
+
+TEST(ImpedanceControllerTest, CartesianImpedanceAngularStiffness) {
+  auto controller = CartesianControllerFactory::create_controller(CONTROLLER_TYPE::IMPEDANCE);
+
+  auto command = CartesianState::Identity("command");
+  auto state = CartesianState::Identity("state");
+
+  for (int iteration = 0; iteration < 10; ++iteration) {
+    command.set_orientation(Eigen::Quaterniond::UnitRandom());
+    state.set_orientation(Eigen::Quaterniond::UnitRandom());
+    auto wrench = controller->compute_command(command, state);
+
+    auto torque_direction = wrench.get_torque().normalized();
+
+    // ensure that the torque vector from the angular displacement is parallel to the vector of the quaternion log
+    // (i.e. parallel to the quaternion derivative)
+    auto diff = command - state;
+    auto log = math_tools::log(diff.get_orientation());
+    EXPECT_FLOAT_EQ(torque_direction.dot(log.vec().normalized()), 1.0);
+  }
 }
 
 TEST(ImpedanceControllerTest, TestCartesianImpedanceLimits) {

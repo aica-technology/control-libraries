@@ -1,4 +1,4 @@
-#include "robot_model_bindings.h"
+#include "robot_model_bindings.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -12,5 +12,7 @@ PYBIND11_MODULE(robot_model, m) {
   m.attr("__version__") = "dev";
   #endif
 
+  auto m_sub = m.def_submodule("exceptions", "Submodule for custom robot model exceptions");
+  bind_exceptions(m_sub);
   bind_model(m);
 }

@@ -5,12 +5,13 @@
 
 #include <dynamical_systems/IDynamicalSystem.hpp>
 
-#include "parameter_container.h"
+#include "parameter_container.hpp"
 
 namespace py = pybind11;
 using namespace pybind11::literals;
 using namespace dynamical_systems;
 
+void bind_exceptions(py::module_& m);
 void bind_ds_type(py::module_& m);
 void bind_cartesian_ds(py::module_& m);
 void bind_joint_ds(py::module_& m);

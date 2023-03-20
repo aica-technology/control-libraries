@@ -58,7 +58,7 @@ TEST_F(RobotModelTest, TestNumberOfJoints) {
 
 
 TEST_F(RobotModelTest, TestJacobianJointNames) {
-  state_representation::JointState dummy = state_representation::JointState(robot_name, 7);
+  state_representation::JointState dummy = state_representation::JointState::Zero(robot_name, 7);
   state_representation::Jacobian jac = franka->compute_jacobian(dummy);
   for (int i = 0; i < 7; ++i) {
     std::string jname = "panda_joint" + std::to_string(i + 1);
@@ -67,7 +67,7 @@ TEST_F(RobotModelTest, TestJacobianJointNames) {
 }
 
 TEST_F(RobotModelTest, TestJacobianFrameNames) {
-  state_representation::JointState dummy = state_representation::JointState(robot_name, 7);
+  state_representation::JointState dummy = state_representation::JointState::Zero(robot_name, 7);
   state_representation::Jacobian jac = franka->compute_jacobian(dummy);
   EXPECT_EQ(jac.get_reference_frame(), "panda_link0");
   EXPECT_EQ(jac.get_frame(), "panda_link8");
@@ -86,11 +86,13 @@ TEST_F(RobotModelTest, TestJacobianInvalidJointStateSize) {
 }
 
 TEST_F(RobotModelTest, TestJacobianNbRows) {
+  joint_state.set_zero();
   state_representation::Jacobian jac = franka->compute_jacobian(joint_state, "panda_joint2");
   EXPECT_EQ(jac.rows(), 6);
 }
 
 TEST_F(RobotModelTest, TestJacobianNbCols) {
+  joint_state.set_zero();
   state_representation::Jacobian jac = franka->compute_jacobian(joint_state, "panda_joint2");
   EXPECT_EQ(jac.cols(), joint_state.get_size());
 }

@@ -53,7 +53,7 @@ public:
   /**
    * @brief Initialize trajectory
    */
-  void initialize();
+  void reset();
 
   /**
    * @brief Add new point and corresponding time to trajectory
@@ -118,15 +118,17 @@ public:
 
 template<class StateT>
 Trajectory<StateT>::Trajectory():
-    State(StateType::TRAJECTORY) {
-  this->initialize();
+    State() {
+  this->set_type(StateType::TRAJECTORY);
+  this->reset();
 }
 
 template<class StateT>
 Trajectory<StateT>::Trajectory(const std::string& name):
-    State(StateType::TRAJECTORY, name),
+    State(name),
     reference_frame_("") {
-  this->initialize();
+  this->set_type(StateType::TRAJECTORY);
+  this->reset();
 }
 
 template<class StateT>
@@ -158,8 +160,8 @@ inline void Trajectory<StateT>::set_joint_names(const std::vector<std::string>& 
 }
 
 template<class StateT>
-void Trajectory<StateT>::initialize() {
-  this->State::initialize();
+void Trajectory<StateT>::reset() {
+  this->State::reset();
   this->points_.clear();
   this->times_.clear();
 }
@@ -167,7 +169,7 @@ void Trajectory<StateT>::initialize() {
 template<class StateT>
 template<typename DurationT>
 void Trajectory<StateT>::add_point(const StateT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time) {
-  this->set_filled();
+  this->set_empty(false);
   this->points_.push_back(new_point);
 
   if (!this->times_.empty()) {
@@ -183,7 +185,7 @@ template<typename DurationT>
 void Trajectory<StateT>::insert_point(const StateT& new_point,
                                       const std::chrono::duration<int64_t, DurationT>& new_time,
                                       int pos) {
-  this->set_filled();
+  this->set_empty(false);
 
   auto it_points = this->points_.begin();
   auto it_times = this->times_.begin();
@@ -202,7 +204,7 @@ void Trajectory<StateT>::insert_point(const StateT& new_point,
 
 template<class StateT>
 void Trajectory<StateT>::delete_point() {
-  this->set_filled();
+  this->set_empty(false);
   if (!this->points_.empty()) {
     this->points_.pop_back();
   }
@@ -249,7 +251,7 @@ const std::pair<StateT, std::chrono::nanoseconds> Trajectory<StateT>::operator[]
 
 template<class StateT>
 std::pair<StateT, std::chrono::nanoseconds> Trajectory<StateT>::operator[](unsigned int idx) {
-  this->set_filled();
+  this->set_empty(false);
   return std::make_pair(this->points_[idx], this->times_[idx]);
 }
 }

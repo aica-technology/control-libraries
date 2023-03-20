@@ -9,10 +9,21 @@
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/parameters/Parameter.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 #include "state_representation/state_message.pb.h"
 
 namespace clproto {
+
+/**
+ * @brief Encoding helper method for the Parameter type.
+ * @tparam ParamT The type contained within the Parameter object
+ * @param message The protocol Parameter message to fill
+ * @param parameter The control libraries Parameter object
+ * @return The encoded protocol Parameter message object
+ */
+template<typename ParamT>
+state_representation::proto::Parameter
+encoder(state_representation::proto::Parameter& message, const state_representation::Parameter<ParamT>& parameter);
 
 /**
  * @brief Encoding helper method for the Parameter type.
@@ -44,7 +55,6 @@ google::protobuf::RepeatedField<double> matrix_encoder(const Eigen::MatrixXd& ma
 /*
  * Declarations for encoding helpers
  */
-state_representation::proto::StateType encoder(const state_representation::StateType& type);
 state_representation::proto::State encoder(const state_representation::State& state);
 state_representation::proto::SpatialState encoder(const state_representation::SpatialState& spatial_state);
 state_representation::proto::Vector3d encoder(const Eigen::Vector3d& vector);
@@ -59,5 +69,12 @@ state_representation::proto::JointState encoder(const state_representation::Join
 template<typename FieldT>
 google::protobuf::RepeatedField<FieldT> encoder(const std::vector<FieldT>& data) {
   return google::protobuf::RepeatedField<FieldT>({data.begin(), data.end()});
+}
+
+template<typename ParamT>
+inline state_representation::proto::Parameter encoder(const state_representation::Parameter<ParamT>& parameter) {
+  state_representation::proto::Parameter message;
+  *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
+  return encoder<ParamT>(message, parameter);
 }
 }

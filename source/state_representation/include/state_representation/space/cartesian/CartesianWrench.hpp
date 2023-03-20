@@ -3,18 +3,19 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 
 namespace state_representation {
+
 class CartesianPose;
 class CartesianTwist;
+class CartesianAcceleration;
+
 /**
  * @class CartesianWrench
- * @brief Class to define wrench in cartesian space as 3D force and torque vectors
+ * @brief Class to define wrench in Cartesian space as 3D force and torque vectors
  */
 class CartesianWrench : public CartesianState {
-private:
-  using CartesianState::clamp_state_variable;
-
 public:
   // delete inaccessible getter and setters
   const Eigen::Vector3d& get_linear_velocity() const = delete;
@@ -54,9 +55,22 @@ public:
   void set_angular_acceleration(const double& x, const double& y, const double& z) = delete;
   void set_acceleration(const Eigen::Matrix<double, 6, 1>& acceleration) = delete;
   void set_acceleration(const std::vector<double>& acceleration) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianWrench& wrench) = delete;
+  CartesianState inverse() const = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianTwist& twist) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianTwist& twist) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState& operator-=(const CartesianPose& pose) = delete;
+  CartesianState& operator-=(const CartesianTwist& twist) = delete;
+  CartesianState& operator-=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState operator-(const CartesianPose& pose) const = delete;
+  CartesianState operator-(const CartesianTwist& twist) const = delete;
+  CartesianState operator-(const CartesianAcceleration& acceleration) const = delete;
 
   /**
    * @brief Empty constructor
@@ -65,8 +79,8 @@ public:
 
   /**
     * @brief Constructor with name and reference frame provided
-    * @param name the name of the state
-    * @param reference the name of the reference frame
+    * @param name The name of the state
+    * @param reference The name of the reference frame (default is "world")
     */
   explicit CartesianWrench(const std::string& name, const std::string& reference = "world");
 
@@ -76,19 +90,19 @@ public:
   CartesianWrench(const CartesianWrench& wrench);
 
   /**
-   * @brief Copy constructor from a CartesianState
+   * @brief Copy constructor from a Cartesian state
    */
   CartesianWrench(const CartesianState& state);
 
   /**
-   * @brief Construct a CartesianWrench from a force given as a vector.
+   * @brief Construct a Cartesian wrench from a force given as a vector
    */
   explicit CartesianWrench(
       const std::string& name, const Eigen::Vector3d& force, const std::string& reference = "world"
   );
 
   /**
-   * @brief Construct a CartesianWrench from a force and torque given as vectors.
+   * @brief Construct a Cartesian wrench from a force and torque given as vectors
    */
   explicit CartesianWrench(
       const std::string& name, const Eigen::Vector3d& force, const Eigen::Vector3d& torque,
@@ -96,7 +110,7 @@ public:
   );
 
   /**
-   * @brief Construct a CartesianWrench from a single 6d wrench vector
+   * @brief Construct a Cartesian wrench from a single 6d wrench vector
    */
   explicit CartesianWrench(
       const std::string& name, const Eigen::Matrix<double, 6, 1>& wrench, const std::string& reference = "world"
@@ -104,181 +118,209 @@ public:
 
   /**
    * @brief Constructor for the zero wrench
-   * @param name the name of the state
-   * @param reference the name of the reference frame
-   * @return CartesianWrench with zero values
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world)
+   * @return The zero Cartesian wrench
    */
   static CartesianWrench Zero(const std::string& name, const std::string& reference = "world");
 
   /**
    * @brief Constructor for a random wrench
-   * @param name the name of the state
-   * @param reference the name of the reference frame
-   * @return CartesianWrench random wrench
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world)
+   * @return The random Cartesian wrench
    */
   static CartesianWrench Random(const std::string& name, const std::string& reference = "world");
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator
-   * @param wrench the wrench with value to assign
-   * @return reference to the current wrench with new values
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param wrench The wrench with value to assign
+   * @return Reference to the current wrench with new values
    */
   CartesianWrench& operator=(const CartesianWrench& wrench) = default;
 
   /**
-   * @brief Overload the += operator
-   * @param wrench CartesianWrench to add
-   * @return the current CartesianWrench added the CartesianWrench given in argument
+   * @brief Returns the wrench data as an Eigen vector
    */
-  CartesianWrench& operator+=(const CartesianWrench& wrench);
+  Eigen::VectorXd data() const override;
 
   /**
-   * @brief Overload the + operator
-   * @param wrench CartesianWrench to add
-   * @return the current CartesianWrench added the CartesianWrench given in argument
+   * @brief Set the wrench data from an Eigen vector
    */
-  CartesianWrench operator+(const CartesianWrench& wrench) const;
+  void set_data(const Eigen::VectorXd& data) override;
 
   /**
-   * @brief Overload the -= operator
-   * @param wrench CartesianWrench to subtract
-   * @return the current CartesianWrench minus the CartesianWrench given in argument
+   * @brief Set the wrench data from a std vector
    */
-  CartesianWrench& operator-=(const CartesianWrench& wrench);
-
-  /**
-   * @brief Overload the - operator
-   * @param wrench CartesianWrench to subtract
-   * @return the current CartesianWrench minus the CartesianWrench given in argument
-   */
-  CartesianWrench operator-(const CartesianWrench& wrench) const;
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianWrench multiplied by lambda
-   */
-  CartesianWrench& operator*=(double lambda);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianWrench multiplied by lambda
-   */
-  CartesianWrench operator*(double lambda) const;
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianWrench divided by lambda
-   */
-  CartesianWrench& operator/=(double lambda);
-
-  /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianWrench divided by lambda
-   */
-  CartesianWrench operator/(double lambda) const;
+  void set_data(const std::vector<double>& data) override;
 
   /**
    * @brief Clamp inplace the magnitude of the wrench to the values in argument
-   * @param max_force the maximum magnitude of the force
-   * @param max_torque the maximum magnitude of the torque
-   * @param force_noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param max_force The maximum magnitude of the force
+   * @param max_torque The maximum magnitude of the torque
+   * @param force_noise_ratio If provided, this value will be used to apply a deadzone under which
    * the force will be set to 0
-   * @param torque_noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param torque_noise_ratio If provided, this value will be used to apply a deadzone under which
    * the torque will be set to 0
    */
   void clamp(double max_force, double max_torque, double force_noise_ratio = 0, double torque_noise_ratio = 0);
 
   /**
    * @brief Return the clamped wrench
-   * @param max_force the maximum magnitude of the force
-   * @param max_torque the maximum magnitude of the torque
-   * @param force_noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param max_force The maximum magnitude of the force
+   * @param max_torque The maximum magnitude of the torque
+   * @param force_noise_ratio If provided, this value will be used to apply a deadzone under which
    * the force will be set to 0
-   * @param torque_noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param torque_noise_ratio If provided, this value will be used to apply a deadzone under which
    * the torque will be set to 0
-   * @return the clamped wrench
+   * @return The clamped wrench
    */
   CartesianWrench clamped(
       double max_force, double max_torque, double force_noise_ratio = 0, double torque_noise_ratio = 0
   ) const;
 
   /**
-   * @brief Return a copy of the CartesianWrench
-   * @return the copy
+   * @brief Return a copy of the Cartesian wrench
    */
   CartesianWrench copy() const;
 
   /**
-   * @brief Returns the wrench data as an Eigen vector
-   * @return the wrench data vector
+   * @brief Compute the normalized wrench at the state variable given in argument (default is full wrench)
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The normalized wrench
    */
-  Eigen::VectorXd data() const override;
-
-  /**
-   * @brief Set the wrench data from an Eigen vector
-   * @param the wrench data vector
-   */
-  void set_data(const Eigen::VectorXd& data) override;
-
-  /**
-   * @brief Set the wrench data from a std vector
-   * @param the wrench data vector
-   */
-  void set_data(const std::vector<double>& data) override;
-
-  /**
- * @brief Compute the inverse of the current CartesianWrench
- * @return the inverse corresponding to b_S_f (assuming this is f_S_b)
- */
-  CartesianWrench inverse() const;
+  CartesianWrench normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const;
 
   /**
    * @brief Compute the norms of the state variable specified by the input type (default is full wrench)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the norms of the state variables as a vector
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The norms of the state variables as a vector
    */
   std::vector<double>
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const override;
 
   /**
-   * @brief Compute the normalized wrench at the state variable given in argument (default is full wrench)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the normalized wrench
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian wrench
    */
-  CartesianWrench normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::WRENCH) const;
+  CartesianWrench& operator*=(double lambda);
+
+  /**
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian wrench
+   */
+  CartesianWrench operator*(double lambda) const;
+
+  /**
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param wrench The Cartesian wrench to be scaled
+   * @return The scaled Cartesian wrench
+   */
+  friend CartesianWrench operator*(double lambda, const CartesianWrench& wrench);
+
+  /**
+   * @brief Scale a Cartesian wrench in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param wrench The Cartesian wrench to be scaled
+   * @return The scaled Cartesian wrench
+   */
+  friend CartesianWrench
+  operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench);
+
+  /**
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian wrench
+   */
+  CartesianWrench& operator/=(double lambda);
+
+  /**
+   * @brief Scale a Cartesian wrench by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian wrench
+   */
+  CartesianWrench operator/(double lambda) const;
+
+  /**
+   * @brief Add inplace another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The reference to the combined Cartesian wrench
+   */
+  CartesianWrench& operator+=(const CartesianWrench& wrench);
+
+  /**
+   * @brief Add inplace another wrench from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian wrench
+   */
+  CartesianWrench& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The combined Cartesian wrench
+   */
+  CartesianWrench operator+(const CartesianWrench& wrench) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
+
+  /**
+   * @brief Negate a Cartesian wrench
+   * @return The negative value of the Cartesian wrench
+   */
+  CartesianWrench operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The reference to the difference in wrench
+   */
+  CartesianWrench& operator-=(const CartesianWrench& wrench);
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the difference in wrench
+   */
+  CartesianWrench& operator-=(const CartesianState& state);
+
+  /**
+   * @brief Compute the difference with another Cartesian wrench
+   * @param wrench A Cartesian wrench in the same reference frame
+   * @return The difference in wrench
+   */
+  CartesianWrench operator-(const CartesianWrench& wrench) const;
+
+  /**
+   * @brief Compute the difference with a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The difference in all the state variables
+   */
+  CartesianState operator-(const CartesianState& state) const;
 
   /**
    * @brief Overload the ostream operator for printing
-   * @param os the ostream to append the string representing the CartesianWrench to
-   * @param CartesianWrench the CartesianWrench to print
-   * @return the appended ostream
+   * @param os The ostream to append the string representing the Cartesian wrench to
+   * @param CartesianWrench The Cartesian wrench to print
+   * @return The appended ostream
    */
   friend std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench);
 
-  /**
-   * @brief Overload the * operator with a CartesianState
-   * @param state the state to multiply with
-   * @return the CartesianWrench provided multiplied by the state
-   */
-  friend CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wrench);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianWrench provided multiplied by lambda
-   */
-  friend CartesianWrench operator*(double lambda, const CartesianWrench& wrench);
+private:
+  using CartesianState::clamp_state_variable;
 };
 
-inline std::vector<double> CartesianWrench::norms(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::norms(state_variable_type);
-}
-
-inline CartesianWrench CartesianWrench::normalized(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::normalized(state_variable_type);
-}
 }// namespace state_representation

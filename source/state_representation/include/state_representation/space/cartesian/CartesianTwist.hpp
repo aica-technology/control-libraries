@@ -3,19 +3,19 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
+
 class CartesianPose;
 class CartesianAcceleration;
+class CartesianWrench;
 
 /**
  * @class CartesianTwist
- * @brief Class to define twist in cartesian space as 3D linear and angular velocity vectors
+ * @brief Class to define twist in Cartesian space as 3D linear and angular velocity vectors
  */
 class CartesianTwist : public CartesianState {
-private:
-  using CartesianState::clamp_state_variable;
-
 public:
   // delete inaccessible getter and setters
   const Eigen::Vector3d& get_position() const = delete;
@@ -55,9 +55,21 @@ public:
   void set_torque(const double& x, const double& y, const double& z) = delete;
   void set_wrench(const Eigen::Matrix<double, 6, 1>& wrench) = delete;
   void set_wrench(const std::vector<double>& wrench) = delete;
-  CartesianState operator*=(const CartesianState& state) = delete;
-  CartesianState operator*(const CartesianState& state) = delete;
-  friend CartesianState operator*=(const CartesianState& state, const CartesianTwist& twist) = delete;
+  CartesianState& operator*=(const CartesianState& state) = delete;
+  CartesianState operator*(const CartesianState& state) const = delete;
+  Eigen::Vector3d operator*(const Eigen::Vector3d& vector) const = delete;
+  CartesianState& operator+=(const CartesianPose& pose) = delete;
+  CartesianState& operator+=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator+=(const CartesianWrench& wrench) = delete;
+  CartesianState operator+(const CartesianPose& pose) const = delete;
+  CartesianState operator+(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator+(const CartesianWrench& wrench) const = delete;
+  CartesianState& operator-=(const CartesianPose& pose) = delete;
+  CartesianState& operator-=(const CartesianAcceleration& acceleration) = delete;
+  CartesianState& operator-=(const CartesianWrench& wrench) = delete;
+  CartesianState operator-(const CartesianPose& pose) const = delete;
+  CartesianState operator-(const CartesianAcceleration& acceleration) const = delete;
+  CartesianState operator-(const CartesianWrench& wrench) const = delete;
 
   /**
    * @brief Empty constructor
@@ -66,8 +78,8 @@ public:
 
   /**
    * @brief Constructor with name and reference frame provided
-   * @param name the name of the state
-   * @param reference the name of the reference frame
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianTwist(const std::string& name, const std::string& reference = "world");
 
@@ -77,29 +89,31 @@ public:
   CartesianTwist(const CartesianTwist& twist);
 
   /**
-   * @brief Copy constructor from a CartesianState
+   * @brief Copy constructor from a Cartesian state
    */
   CartesianTwist(const CartesianState& state);
 
   /**
-   * @brief Copy constructor from a CartesianPose by considering that it is equivalent to dividing the pose by 1 second
+   * @brief Copy constructor from a Cartesian pose by considering that
+   * it is equivalent to dividing the pose by 1 second
    */
   CartesianTwist(const CartesianPose& pose);
 
   /**
-   * @brief Copy constructor from a CartesianAcceleration by considering that it is a twist over 1 second
+   * @brief Copy constructor from a Cartesian acceleration by considering
+   * that it is a twist over 1 second
    */
   CartesianTwist(const CartesianAcceleration& acceleration);
 
   /**
-   * @brief Construct a CartesianTwist from a linear velocity given as a vector.
+   * @brief Construct a Cartesian twist from a linear velocity given as a vector
    */
   explicit CartesianTwist(
       const std::string& name, const Eigen::Vector3d& linear_velocity, const std::string& reference = "world"
   );
 
   /**
-   * @brief Construct a CartesianTwist from a linear velocity and angular velocity given as vectors.
+   * @brief Construct a Cartesian twist from a linear velocity and angular velocity given as vectors.
    */
   explicit CartesianTwist(
       const std::string& name, const Eigen::Vector3d& linear_velocity, const Eigen::Vector3d& angular_velocity,
@@ -107,7 +121,7 @@ public:
   );
 
   /**
-   * @brief Construct a CartesianTwist from a single 6d twist vector
+   * @brief Construct a Cartesian twist from a single 6d twist vector
    */
   explicit CartesianTwist(
       const std::string& name, const Eigen::Matrix<double, 6, 1>& twist, const std::string& reference = "world"
@@ -115,216 +129,235 @@ public:
 
   /**
    * @brief Constructor for the zero twist
-   * @param name the name of the state
-   * @param reference the name of the reference frame
-   * @return CartesianTwist with zero values
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
+   * @return The zero Cartesian twist
    */
   static CartesianTwist Zero(const std::string& name, const std::string& reference = "world");
 
   /**
    * @brief Constructor for a random twist
-   * @param name the name of the state
-   * @param reference the name of the reference frame
-   * @return CartesianTwist random twist
+   * @param name The name of the state
+   * @param reference The name of the reference frame (default is "world")
+   * @return The random Cartesian twist
    */
   static CartesianTwist Random(const std::string& name, const std::string& reference = "world");
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator
-   * @param twist the twist with value to assign
-   * @return reference to the current twist with new values
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param twist The twist with value to assign
+   * @return Reference to the current twist with new values
    */
   CartesianTwist& operator=(const CartesianTwist& twist) = default;
 
   /**
-   * @brief Overload the += operator
-   * @param twist CartesianTwist to add to
-   * @return the current CartesianTwist added the CartesianTwist given in argument
-   */
-  CartesianTwist& operator+=(const CartesianTwist& twist);
+ * @brief Returns the twist data as an Eigen vector
+ */
+  Eigen::VectorXd data() const override;
 
   /**
-   * @brief Overload the + operator with a twist
-   * @param twist CartesianTwist to add to
-   * @return the current CartesianTwist added the CartesianTwist given in argument
+   * @brief Set the twist data from an Eigen vector
    */
-  CartesianTwist operator+(const CartesianTwist& twist) const;
+  void set_data(const Eigen::VectorXd& data) override;
 
   /**
-   * @brief Overload the -= operator
-   * @param twist CartesianTwist to subtract
-   * @return the current CartesianTwist minus the CartesianTwist given in argument
+   * @brief Set the twist data from a std vector
    */
-  CartesianTwist& operator-=(const CartesianTwist& twist);
+  void set_data(const std::vector<double>& data) override;
 
   /**
-   * @brief Overload the - operator with a twist
-   * @param twist CartesianTwist to subtract
-   * @return the current CartesianTwist minus the CartesianTwist given in argument
-   */
-  CartesianTwist operator-(const CartesianTwist& twist) const;
-
-  /**
-   * @brief Overload the *= operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianTwist multiplied by lambda
-   */
-  CartesianTwist& operator*=(double lambda);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianTwist multiplied by lambda
-   */
-  CartesianTwist operator*(double lambda) const;
-
-  /**
-   * @brief Overload the /= operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianTwist divided by lambda
-   */
-  CartesianTwist& operator/=(double lambda);
-
-  /**
-   * @brief Overload the / operator with a scalar
-   * @param lambda the scalar to divide with
-   * @return the CartesianTwist divided by lambda
-   */
-  CartesianTwist operator/(double lambda) const;
-
-  /**
-   * @brief Overload the *= operator with a gain matrix
-   * @param lambda the matrix to multiply with
-   * @return the CartesianTwist multiplied by lambda
-   */
-  CartesianTwist& operator*=(const Eigen::Matrix<double, 6, 6>& lambda);
-
-  /**
-   * @brief Overload the * operator with a time period
-   * @param dt the time period to multiply with
-   * @return the CartesianPose corresponding to the displacement over the time period
-   */
-  CartesianPose operator*(const std::chrono::nanoseconds& dt) const;
-
-  /**
-   * @brief Overload the / operator with a time period
-   * @param dt the time period to divide by
-   * @return the corresponding CartesianAcceleration
-   */
-  CartesianAcceleration operator/(const std::chrono::nanoseconds& dt) const;
-
-  /**
-   * @brief Clamp inplace the magnitude of the twist to the values in argument
-   * @param max_linear the maximum magnitude of the linear velocity
-   * @param max_angular the maximum magnitude of the angular velocity
-   * @param linear_noise_ratio if provided, this value will be used to apply a deadzone under which
-   * the linear velocity will be set to 0
-   * @param angular_noise_ratio if provided, this value will be used to apply a deadzone under which
-   * the angular velocity will be set to 0
-   */
+ * @brief Clamp inplace the magnitude of the twist to the values in argument
+ * @param max_linear The maximum magnitude of the linear velocity
+ * @param max_angular The maximum magnitude of the angular velocity
+ * @param linear_noise_ratio If provided, this value will be used to apply a deadzone under which
+ * the linear velocity will be set to 0
+ * @param angular_noise_ratio If provided, this value will be used to apply a deadzone under which
+ * the angular velocity will be set to 0
+ */
   void clamp(double max_linear, double max_angular, double linear_noise_ratio = 0, double angular_noise_ratio = 0);
 
   /**
    * @brief Return the clamped twist
-   * @param max_linear the maximum magnitude of the linear velocity
-   * @param max_angular the maximum magnitude of the angular velocity
-   * @param noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param max_linear The maximum magnitude of the linear velocity
+   * @param max_angular The maximum magnitude of the angular velocity
+   * @param noise_ratio If provided, this value will be used to apply a deadzone under which
    * the linear velocity will be set to 0
-   * @param angular_noise_ratio if provided, this value will be used to apply a deadzone under which
+   * @param angular_noise_ratio If provided, this value will be used to apply a deadzone under which
    * the angular velocity will be set to 0
-   * @return the clamped twist
+   * @return The clamped twist
    */
   CartesianTwist clamped(
       double max_linear, double max_angular, double noise_ratio = 0, double angular_noise_ratio = 0
   ) const;
 
   /**
-   * @brief Return a copy of the CartesianTwist
-   * @return the copy
+   * @brief Return a copy of the Cartesian twist
    */
   CartesianTwist copy() const;
 
   /**
-   * @brief Returns the twist data as an Eigen vector
-   * @return the twist data vector
-   */
-  Eigen::VectorXd data() const override;
-
-  /**
-   * @brief Set the twist data from an Eigen vector
-   * @param the twist data vector
-   */
-  void set_data(const Eigen::VectorXd& data) override;
-
-  /**
-   * @brief Set the twist data from a std vector
-   * @param the twist data vector
-   */
-  void set_data(const std::vector<double>& data) override;
-
-  /**
-   * @brief Compute the inverse of the current CartesianTwist
-   * @return the inverse corresponding to b_S_f (assuming this is f_S_b)
+   * @brief Compute the inverse of the current Cartesian twist
    */
   CartesianTwist inverse() const;
 
   /**
+   * @brief Compute the normalized twist at the state variable given in argument (default is full twist)
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The normalized twist
+   */
+  CartesianTwist normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::TWIST) const;
+
+  /**
    * @brief Compute the norms of the state variable specified by the input type (default is full twist)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the norms of the state variables as a vector
+   * @param state_variable_type The type of state variable to compute the norms on
+   * @return The norms of the state variables as a vector
    */
   std::vector<double>
   norms(const CartesianStateVariable& state_variable_type = CartesianStateVariable::TWIST) const override;
 
   /**
-   * @brief Compute the normalized twist at the state variable given in argument (default is full twist)
-   * @param state_variable_type the type of state variable to compute the norms on
-   * @return the normalized twist
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian twist
    */
-  CartesianTwist normalized(const CartesianStateVariable& state_variable_type = CartesianStateVariable::TWIST) const;
+  CartesianTwist& operator*=(double lambda);
 
   /**
-   * @brief Overload the ostream operator for printing
-   * @param os the ostream to append the string representing the CartesianTwist to
-   * @param CartesianTwist the CartesianTwist to print
-   * @return the appended ostream
+   * @brief Scale a Cartesian twist by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian twist
    */
-  friend std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist);
+  CartesianTwist operator*(double lambda) const;
 
   /**
-   * @brief Overload the * operator with a CartesianState
-   * @param state the state to multiply with
-   * @return the CartesianTwist provided multiplied by the state
-   */
-  friend CartesianTwist operator*(const CartesianState& state, const CartesianTwist& twist);
-
-  /**
-   * @brief Overload the * operator with a scalar
-   * @param lambda the scalar to multiply with
-   * @return the CartesianTwist provided multiplied by lambda
+   * @brief Scale a Cartesian twist by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @param twist The Cartesian twist to be scaled
+   * @return The scaled Cartesian twist
    */
   friend CartesianTwist operator*(double lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Overload the * operator with a gain matrix
-   * @param lambda the matrix to multiply with
-   * @return the CartesianTwist provided multiplied by lambda
+   * @brief Scale a Cartesian twist in all dimensions by a matrix
+   * @param lambda The scaling factors in all the dimensions
+   * @param twist The Cartesian twist to be scaled
+   * @return The scaled Cartesian twist
    */
   friend CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianTwist& twist);
 
   /**
-   * @brief Overload the * operator with a time period
-   * @param dt the time period to multiply with
-   * @return the CartesianPose corresponding to the displacement over the time period
+   * @brief Integrate a Cartesian twist over a time period
+   * @param dt The time period used for integration
+   * @return The resulting Cartesian pose after integration
+   */
+  CartesianPose operator*(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Integrate a Cartesian twist over a time period
+   * @param dt The time period used for integration
+   * @param twist The Cartesian twist to be integrated
+   * @return The resulting Cartesian pose after integration
    */
   friend CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist);
+
+  /**
+   * @brief Scale inplace by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The reference to the scaled Cartesian twist
+   */
+  CartesianTwist& operator/=(double lambda);
+
+  /**
+   * @brief Scale a Cartesian twist by a scalar
+   * @copydetails CartesianState::operator*=(double)
+   * @param lambda The scaling factor
+   * @return The scaled Cartesian twist
+   */
+  CartesianTwist operator/(double lambda) const;
+
+  /**
+   * @brief Differentiate a Cartesian twist over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting Cartesian acceleration after derivation
+   */
+  CartesianAcceleration operator/(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Add inplace another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The reference to the combined Cartesian twist
+   */
+  CartesianTwist& operator+=(const CartesianTwist& twist);
+
+  /**
+   * @brief Add inplace another twist from a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the combined Cartesian twist
+   */
+  CartesianTwist& operator+=(const CartesianState& state);
+
+  /**
+   * @brief Add another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The combined Cartesian twist
+   */
+  CartesianTwist operator+(const CartesianTwist& twist) const;
+
+  /**
+   * @brief Add another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The combined Cartesian state
+   */
+  CartesianState operator+(const CartesianState& state) const;
+
+  /**
+   * @brief Negate a Cartesian twist
+   * @return The negative value of the Cartesian twist
+   */
+  CartesianTwist operator-() const;
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The reference to the difference in twist
+   */
+  CartesianTwist& operator-=(const CartesianTwist& twist);
+
+  /**
+   * @brief Compute inplace the difference with another Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The reference to the difference in twist
+   */
+  CartesianTwist& operator-=(const CartesianState& state);
+
+  /**
+   * @brief Compute the difference with another Cartesian twist
+   * @param twist A Cartesian twist in the same reference frame
+   * @return The difference in twist
+   */
+  CartesianTwist operator-(const CartesianTwist& twist) const;
+
+  /**
+   * @brief Compute the difference with a Cartesian state
+   * @param state A Cartesian state in the same reference frame
+   * @return The difference in all the state variables
+   */
+  CartesianState operator-(const CartesianState& state) const;
+
+  /**
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the Cartesian twist to
+   * @param CartesianTwist The Cartesian twist to print
+   * @return The appended ostream
+   */
+  friend std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist);
+
+private:
+  using CartesianState::clamp_state_variable;
 };
 
-inline std::vector<double> CartesianTwist::norms(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::norms(state_variable_type);
-}
-
-inline CartesianTwist CartesianTwist::normalized(const CartesianStateVariable& state_variable_type) const {
-  return CartesianState::normalized(state_variable_type);
-}
 }// namespace state_representation

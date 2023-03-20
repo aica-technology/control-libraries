@@ -13,7 +13,7 @@ Additionally, the installation of the bindings requires the following prerequisi
 
 The installation itself is then quite straightforward:
 ```shell
-git clone https://github.com/epfl-lasa/control-libraries
+git clone https://github.com/aica-technology/control-libraries
 
 ## install control-libraries (skip this stage if already done)
 sudo control-libraries/source/install.sh
@@ -105,7 +105,7 @@ A Dockerfile and run script are provided to test the installation of the binding
 
 The docker image installs the core control libraries and subsequently installs the python bindings.
 
-The [`run.sh`](./run.sh) script will build the docker image and launch an interactive container
+The [`build-test.sh`](./build-test.sh) script will build the docker image and launch an interactive container
 with the test files in the [`test`](./test) directory copied to the local path.
 
 The run script tries to the clone the current local git branch when installing the control libraries

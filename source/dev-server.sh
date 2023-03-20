@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BASE_TAG="latest"
-CONTAINER_NAME=control-libraries-development-dependencies-ssh
+CONTAINER_NAME=aica-technology-control-libraries-development-dependencies-ssh
 
 SSH_PORT=2222
 SSH_KEY_FILE="${HOME}/.ssh/id_rsa.pub"
@@ -45,7 +45,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-IMAGE_NAME=ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}"
+IMAGE_NAME=ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}"
 
 PUBLIC_KEY=$(cat "${SSH_KEY_FILE}")
 

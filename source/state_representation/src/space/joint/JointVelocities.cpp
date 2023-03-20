@@ -1,9 +1,10 @@
 #include "state_representation/space/joint/JointVelocities.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 JointVelocities::JointVelocities() {
   this->set_type(StateType::JOINT_VELOCITIES);
 }
@@ -32,11 +33,11 @@ JointVelocities::JointVelocities(
 }
 
 JointVelocities::JointVelocities(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except velocities
   this->set_type(StateType::JOINT_VELOCITIES);
-  this->set_zero();
-  this->set_velocities(state.get_velocities());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_velocities(state.get_velocities());
+  }
 }
 
 JointVelocities::JointVelocities(const JointVelocities& velocities) :
@@ -64,93 +65,6 @@ JointVelocities JointVelocities::Random(const std::string& robot_name, const std
   return JointVelocities(robot_name, joint_names, Eigen::VectorXd::Random(joint_names.size()));
 }
 
-JointVelocities& JointVelocities::operator+=(const JointVelocities& velocities) {
-  this->JointState::operator+=(velocities);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator+(const JointVelocities& velocities) const {
-  return this->JointState::operator+(velocities);
-}
-
-JointVelocities& JointVelocities::operator-=(const JointVelocities& velocities) {
-  this->JointState::operator-=(velocities);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator-(const JointVelocities& velocities) const {
-  return this->JointState::operator-(velocities);
-}
-
-JointVelocities& JointVelocities::operator*=(double lambda) {
-  this->JointState::operator*=(lambda);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(double lambda) const {
-  return this->JointState::operator*(lambda);
-}
-
-JointVelocities& JointVelocities::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(const Eigen::ArrayXd& lambda) const {
-  JointVelocities result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities& JointVelocities::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator*(const Eigen::MatrixXd& lambda) const {
-  JointVelocities result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointVelocities& JointVelocities::operator/=(double lambda) {
-  this->JointState::operator/=(lambda);
-  return (*this);
-}
-
-JointVelocities JointVelocities::operator/(double lambda) const {
-  return this->JointState::operator/(lambda);
-}
-
-JointAccelerations JointVelocities::operator/(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  // operations
-  JointAccelerations accelerations(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // divide the positions by this period value and assign it as velocities
-  accelerations.set_accelerations(this->get_velocities() / period);
-  return accelerations;
-}
-
-JointPositions JointVelocities::operator*(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  // operations
-  JointPositions displacement(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // multiply the velocities by this period value and assign it as position
-  displacement.set_positions(period * this->get_velocities());
-  return displacement;
-}
-
-JointVelocities JointVelocities::copy() const {
-  JointVelocities result(*this);
-  return result;
-}
-
 Eigen::VectorXd JointVelocities::data() const {
   return this->get_velocities();
 }
@@ -167,14 +81,14 @@ void JointVelocities::clamp(double max_absolute_value, double noise_ratio) {
   this->clamp_state_variable(max_absolute_value, JointStateVariable::VELOCITIES, noise_ratio);
 }
 
+void JointVelocities::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
+  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::VELOCITIES, noise_ratio_array);
+}
+
 JointVelocities JointVelocities::clamped(double max_absolute_value, double noise_ratio) const {
   JointVelocities result(*this);
   result.clamp(max_absolute_value, noise_ratio);
   return result;
-}
-
-void JointVelocities::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
-  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::VELOCITIES, noise_ratio_array);
 }
 
 JointVelocities JointVelocities::clamped(
@@ -185,19 +99,18 @@ JointVelocities JointVelocities::clamped(
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
-  if (velocities.is_empty()) {
-    os << "Empty JointVelocities";
-  } else {
-    os << velocities.get_name() << " JointVelocities" << std::endl;
-    os << "names: [";
-    for (auto& n: velocities.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "velocities: [";
-    for (unsigned int i = 0; i < velocities.get_size(); ++i) { os << velocities.get_velocities()(i) << ", "; }
-    os << "]";
-  }
-  return os;
+JointVelocities JointVelocities::copy() const {
+  JointVelocities result(*this);
+  return result;
+}
+
+JointVelocities& JointVelocities::operator*=(double lambda) {
+  this->JointState::operator*=(lambda);
+  return (*this);
+}
+
+JointVelocities JointVelocities::operator*(double lambda) const {
+  return this->JointState::operator*(lambda);
 }
 
 JointVelocities operator*(double lambda, const JointVelocities& velocities) {
@@ -206,19 +119,89 @@ JointVelocities operator*(double lambda, const JointVelocities& velocities) {
   return result;
 }
 
-JointVelocities operator*(const Eigen::ArrayXd& lambda, const JointVelocities& velocities) {
+JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities) {
   JointVelocities result(velocities);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::VELOCITIES);
   return result;
 }
 
-JointVelocities operator*(const Eigen::MatrixXd& lambda, const JointVelocities& velocities) {
-  JointVelocities result(velocities);
-  result *= lambda;
-  return result;
+JointPositions JointVelocities::operator*(const std::chrono::nanoseconds& dt) const {
+  // operations
+  JointPositions displacement(this->get_name(), this->get_names());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // multiply the velocities by this period value and assign it as position
+  displacement.set_positions(period * this->get_velocities());
+  return displacement;
 }
 
 JointPositions operator*(const std::chrono::nanoseconds& dt, const JointVelocities& velocities) {
   return velocities * dt;
+}
+
+JointVelocities& JointVelocities::operator/=(double lambda) {
+  this->JointState::operator/=(lambda);
+  return (*this);
+}
+
+JointVelocities JointVelocities::operator/(double lambda) const {
+  return this->JointState::operator/(lambda);
+}
+
+JointAccelerations JointVelocities::operator/(const std::chrono::nanoseconds& dt) const {
+  // operations
+  JointAccelerations accelerations(this->get_name(), this->get_names());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // divide the positions by this period value and assign it as velocities
+  accelerations.set_accelerations(this->get_velocities() / period);
+  return accelerations;
+}
+
+JointVelocities& JointVelocities::operator+=(const JointVelocities& velocities) {
+  this->JointState::operator+=(velocities);
+  return (*this);
+}
+
+JointVelocities& JointVelocities::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
+JointVelocities JointVelocities::operator+(const JointVelocities& velocities) const {
+  return this->JointState::operator+(velocities);
+}
+
+JointState JointVelocities::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
+}
+
+JointVelocities JointVelocities::operator-() const {
+  return this->JointState::operator-();
+}
+
+JointVelocities& JointVelocities::operator-=(const JointVelocities& velocities) {
+  this->JointState::operator-=(velocities);
+  return (*this);
+}
+
+JointVelocities& JointVelocities::operator-=(const JointState& state) {
+  this->JointState::operator-=(state);
+  return (*this);
+}
+
+JointVelocities JointVelocities::operator-(const JointVelocities& velocities) const {
+  return this->JointState::operator-(velocities);
+}
+
+JointState JointVelocities::operator-(const JointState& state) const {
+  return this->JointState::operator-(state);
+}
+
+std::ostream& operator<<(std::ostream& os, const JointVelocities& velocities) {
+  os << velocities.to_string();
+  return os;
 }
 }// namespace state_representation

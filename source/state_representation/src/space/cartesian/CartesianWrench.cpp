@@ -1,8 +1,10 @@
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
-
-using namespace state_representation::exceptions;
+#include "state_representation/exceptions/EmptyStateException.hpp"
 
 namespace state_representation {
+
+using namespace exceptions;
+
 CartesianWrench::CartesianWrench() {
   this->set_type(StateType::CARTESIAN_WRENCH);
 }
@@ -34,11 +36,11 @@ CartesianWrench::CartesianWrench(
 }
 
 CartesianWrench::CartesianWrench(const CartesianState& state) : CartesianState(state) {
-  // set all the state variables to 0 except force and torque
   this->set_type(StateType::CARTESIAN_WRENCH);
-  this->set_zero();
-  this->set_wrench(state.get_wrench());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_wrench(state.get_wrench());
+  }
 }
 
 CartesianWrench::CartesianWrench(const CartesianWrench& wrench) :
@@ -54,40 +56,20 @@ CartesianWrench CartesianWrench::Random(const std::string& name, const std::stri
   return CartesianWrench(name, random, reference);
 }
 
-CartesianWrench& CartesianWrench::operator+=(const CartesianWrench& wrench) {
-  this->CartesianState::operator+=(wrench);
-  return (*this);
+Eigen::VectorXd CartesianWrench::data() const {
+  return this->get_wrench();
 }
 
-CartesianWrench CartesianWrench::operator+(const CartesianWrench& wrench) const {
-  return this->CartesianState::operator+(wrench);
+void CartesianWrench::set_data(const Eigen::VectorXd& data) {
+  if (data.size() != 6) {
+    throw IncompatibleSizeException(
+        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
+  }
+  this->set_wrench(data);
 }
 
-CartesianWrench& CartesianWrench::operator-=(const CartesianWrench& wrench) {
-  this->CartesianState::operator-=(wrench);
-  return (*this);
-}
-
-CartesianWrench CartesianWrench::operator-(const CartesianWrench& wrench) const {
-  return this->CartesianState::operator-(wrench);
-}
-
-CartesianWrench& CartesianWrench::operator*=(double lambda) {
-  this->CartesianState::operator*=(lambda);
-  return (*this);
-}
-
-CartesianWrench CartesianWrench::operator*(double lambda) const {
-  return this->CartesianState::operator*(lambda);
-}
-
-CartesianWrench& CartesianWrench::operator/=(double lambda) {
-  this->CartesianState::operator/=(lambda);
-  return (*this);
-}
-
-CartesianWrench CartesianWrench::operator/(double lambda) const {
-  return this->CartesianState::operator/(lambda);
+void CartesianWrench::set_data(const std::vector<double>& data) {
+  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
 void CartesianWrench::clamp(double max_force, double max_torque, double force_noise_ratio, double torque_noise_ratio) {
@@ -110,47 +92,85 @@ CartesianWrench CartesianWrench::copy() const {
   return result;
 }
 
-Eigen::VectorXd CartesianWrench::data() const {
-  return this->get_wrench();
+CartesianWrench CartesianWrench::normalized(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::normalized(state_variable_type);
 }
 
-void CartesianWrench::set_data(const Eigen::VectorXd& data) {
-  if (data.size() != 6) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
-  }
-  this->set_wrench(data);
+std::vector<double> CartesianWrench::norms(const CartesianStateVariable& state_variable_type) const {
+  return CartesianState::norms(state_variable_type);
 }
 
-void CartesianWrench::set_data(const std::vector<double>& data) {
-  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
-}
-
-CartesianWrench CartesianWrench::inverse() const {
-  return this->CartesianState::inverse();
-}
-
-std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench) {
-  if (wrench.is_empty()) {
-    os << "Empty CartesianWrench";
-  } else {
-    os << wrench.get_name() << " CartesianWrench expressed in " << wrench.get_reference_frame() << " frame"
-       << std::endl;
-    os << "force: (" << wrench.get_force()(0) << ", ";
-    os << wrench.get_force()(1) << ", ";
-    os << wrench.get_force()(2) << ")" << std::endl;
-    os << "torque: (" << wrench.get_torque()(0) << ", ";
-    os << wrench.get_torque()(1) << ", ";
-    os << wrench.get_torque()(2) << ")";
-  }
-  return os;
-}
-
-CartesianWrench operator*(const CartesianState& state, const CartesianWrench& wrench) {
-  return state.operator*(wrench);
+CartesianWrench& CartesianWrench::operator*=(double lambda) {
+  this->CartesianState::operator*=(lambda);
+  return (*this);
 }
 
 CartesianWrench operator*(double lambda, const CartesianWrench& wrench) {
   return wrench * lambda;
 }
+
+CartesianWrench CartesianWrench::operator*(double lambda) const {
+  return this->CartesianState::operator*(lambda);
+}
+
+CartesianWrench operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench) {
+  CartesianWrench result(wrench);
+  result.set_wrench(lambda * result.get_wrench());
+  return result;
+}
+
+CartesianWrench& CartesianWrench::operator/=(double lambda) {
+  this->CartesianState::operator/=(lambda);
+  return (*this);
+}
+
+CartesianWrench CartesianWrench::operator/(double lambda) const {
+  return this->CartesianState::operator/(lambda);
+}
+
+CartesianWrench& CartesianWrench::operator+=(const CartesianWrench& wrench) {
+  this->CartesianState::operator+=(wrench);
+  return (*this);
+}
+
+CartesianWrench& CartesianWrench::operator+=(const CartesianState& state) {
+  this->CartesianState::operator+=(state);
+  return (*this);
+}
+
+CartesianWrench CartesianWrench::operator+(const CartesianWrench& wrench) const {
+  return this->CartesianState::operator+(wrench);
+}
+
+CartesianState CartesianWrench::operator+(const CartesianState& state) const {
+  return this->CartesianState::operator+(state);
+}
+
+CartesianWrench CartesianWrench::operator-() const {
+  return this->CartesianState::operator-();
+}
+
+CartesianWrench& CartesianWrench::operator-=(const CartesianWrench& wrench) {
+  this->CartesianState::operator-=(wrench);
+  return (*this);
+}
+
+CartesianWrench& CartesianWrench::operator-=(const CartesianState& state) {
+  this->CartesianState::operator-=(state);
+  return (*this);
+}
+
+CartesianWrench CartesianWrench::operator-(const CartesianWrench& wrench) const {
+  return this->CartesianState::operator-(wrench);
+}
+
+CartesianState CartesianWrench::operator-(const CartesianState& state) const {
+  return this->CartesianState::operator-(state);
+}
+
+std::ostream& operator<<(std::ostream& os, const CartesianWrench& wrench) {
+  os << wrench.to_string();
+  return os;
+}
+
 }// namespace state_representation

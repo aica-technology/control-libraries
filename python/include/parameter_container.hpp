@@ -1,6 +1,6 @@
 #pragma once
 
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <state_representation/State.hpp>
 #include <state_representation/geometry/Ellipsoid.hpp>
@@ -33,9 +33,11 @@ public:
   );
   ParameterContainer(const ParameterContainer& parameter);
 
-  void set_value(const py::object& value);
+  void set_value(py::object value);
 
-  py::object get_value();
+  py::object get_value() const;
+
+  void reset();
 
   ParameterValues values;
 };
@@ -43,6 +45,15 @@ public:
 ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInterface>& parameter);
 
 std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterContainer& parameter);
+
+template<typename T>
+inline Parameter<T> container_to_parameter(const ParameterContainer& container) {
+  if (container.is_empty()) {
+    return Parameter<T>(container.get_name());
+  } else {
+    return *container_to_interface_ptr(container)->get_parameter<T>();
+  }
+}
 
 std::map<std::string, ParameterContainer>
 interface_ptr_to_container_map(const std::map<std::string, std::shared_ptr<ParameterInterface>>& parameters);

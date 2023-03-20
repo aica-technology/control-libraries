@@ -31,7 +31,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-IMAGE_NAME=epfl-lasa/control-libraries/source/testing:"${BASE_TAG}"
+IMAGE_NAME=aica-technology/control-libraries/source/testing:"${BASE_TAG}"
 
 BUILD_FLAGS+=(--build-arg "BASE_TAG=${BASE_TAG}")
 BUILD_FLAGS+=(--build-arg "BUILD_CONTROLLERS=${BUILD_CONTROLLERS}")
@@ -39,5 +39,5 @@ BUILD_FLAGS+=(--build-arg "BUILD_DYNAMICAL_SYSTEMS=${BUILD_DYNAMICAL_SYSTEMS}")
 BUILD_FLAGS+=(--build-arg "BUILD_ROBOT_MODEL=${BUILD_ROBOT_MODEL}")
 BUILD_FLAGS+=(-t "${IMAGE_NAME}")
 
-docker pull ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
+docker pull ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
 DOCKER_BUILDKIT=1 docker build . --file ./Dockerfile.source "${BUILD_FLAGS[@]}"

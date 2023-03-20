@@ -1,24 +1,59 @@
 #include "state_representation/space/SpatialState.hpp"
 
+#include "state_representation/exceptions/InvalidCastException.hpp"
+
 namespace state_representation {
 
-SpatialState::SpatialState() :
-    State(StateType::SPATIAL_STATE), reference_frame_("world") {}
+SpatialState::SpatialState() : State(), reference_frame_("world") {
+  this->set_type(StateType::SPATIAL_STATE);
+}
 
-SpatialState::SpatialState(const StateType& type) :
-    State(type), reference_frame_("world") {}
+SpatialState::SpatialState(const std::string& name, const std::string& reference_frame) :
+    State(name), reference_frame_(reference_frame) {
+  this->set_type(StateType::SPATIAL_STATE);
+}
 
-SpatialState::SpatialState(const StateType& type,
-                           const std::string& name,
-                           const std::string& reference_frame,
-                           const bool& empty) :
-    State(type, name, empty), reference_frame_(reference_frame) {}
+SpatialState::SpatialState(const SpatialState& state) : State(state), reference_frame_(state.reference_frame_) {
+  this->set_type(StateType::SPATIAL_STATE);
+}
+
+SpatialState& SpatialState::operator=(const SpatialState& state) {
+  SpatialState tmp(state);
+  swap(*this, tmp);
+  return *this;
+}
+
+const std::string& SpatialState::get_reference_frame() const {
+  return this->reference_frame_;
+}
+
+void SpatialState::set_reference_frame(const std::string& reference_frame) {
+  this->reference_frame_ = reference_frame;
+  this->reset_timestamp();
+}
+
+bool SpatialState::is_incompatible(const State& state) const {
+  try {
+    auto other = dynamic_cast<const SpatialState&>(state);
+    // the three conditions for compatibility are:
+    // 1) this name matches other reference frame (this is parent transform of other)
+    // 2) this reference frame matches other name (this is child transform of other)
+    // 3) this reference frame matches other reference frame (this is sibling transform of other)
+    return (this->get_name() != other.reference_frame_) && (this->reference_frame_ != other.get_name())
+        && (this->get_reference_frame() != other.reference_frame_);
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(
+        std::string("Could not cast the given object to a SpatialState: ") + ex.what());
+  }
+}
+
+std::string SpatialState::to_string() const {
+  auto state = this->State::to_string();
+  return state + " expressed in frame '" + this->get_reference_frame() + "'";
+}
 
 std::ostream& operator<<(std::ostream& os, const SpatialState& state) {
-  if (state.is_empty()) {
-    os << "Empty ";
-  }
-  os << " State: " << state.get_name() << " expressed in " << state.get_reference_frame() << " frame";
+  os << state.to_string();
   return os;
 }
-}
+}// namespace state_representation

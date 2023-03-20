@@ -2,257 +2,161 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions/InvalidCastException.hpp"
 
 namespace state_representation {
-Jacobian::Jacobian() : State(StateType::JACOBIAN) {
-  this->State::initialize();
+
+using namespace exceptions;
+
+static void assert_matrix_size(const Eigen::MatrixXd& matrix, unsigned int expected_rows, unsigned int expected_cols) {
+  if (expected_rows != matrix.rows() || expected_cols != matrix.cols()) {
+    throw exceptions::IncompatibleSizeException(
+        "Matrix is of incorrect size, expected " + std::to_string(expected_rows) + "x" + std::to_string(expected_cols)
+            + " got " + std::to_string(matrix.rows()) + "x" + std::to_string(matrix.cols()));
+  }
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   unsigned int nb_joints,
-                   const std::string& frame,
-                   const std::string& reference_frame) :
-    State(StateType::JACOBIAN, robot_name),
+Jacobian::Jacobian() : State() {
+  this->set_type(StateType::JACOBIAN);
+}
+
+Jacobian::Jacobian(
+    const std::string& robot_name, unsigned int nb_joints, const std::string& frame, const std::string& reference_frame
+) :
+    State(robot_name),
     joint_names_(nb_joints),
     frame_(frame),
     reference_frame_(reference_frame),
-    rows_(6),
-    cols_(nb_joints) {
+    data_(Eigen::MatrixXd::Zero(6, nb_joints)) {
+  this->set_type(StateType::JACOBIAN);
   this->set_joint_names(nb_joints);
-  this->initialize();
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::vector<std::string>& joint_names,
-                   const std::string& frame,
-                   const std::string& reference_frame) :
-    State(StateType::JACOBIAN, robot_name),
-    joint_names_(joint_names),
-    frame_(frame),
-    reference_frame_(reference_frame),
-    rows_(6),
-    cols_(joint_names.size()) {
-  this->initialize();
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const std::string& reference_frame
+) : Jacobian(robot_name, joint_names.size(), frame, reference_frame) {
+  this->set_joint_names(joint_names);
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::string& frame,
-                   const Eigen::MatrixXd& data,
-                   const std::string& reference_frame) :
-    Jacobian(robot_name, data.cols(), frame, reference_frame) {
-  this->set_data(data);
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::string& frame, const Eigen::MatrixXd& data,
+    const std::string& reference_frame
+) : Jacobian(robot_name, data.cols(), frame, reference_frame) {
+  assert_matrix_size(data, 6, data.cols());
+  this->data_ = data;
+  this->set_empty(false);
 }
 
-Jacobian::Jacobian(const std::string& robot_name,
-                   const std::vector<std::string>& joint_names,
-                   const std::string& frame,
-                   const Eigen::MatrixXd& data,
-                   const std::string& reference_frame) :
-    Jacobian(robot_name, joint_names, frame, reference_frame) {
-  this->set_data(data);
+Jacobian::Jacobian(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const Eigen::MatrixXd& data, const std::string& reference_frame
+) : Jacobian(robot_name, frame, data, reference_frame) {
+  this->set_joint_names(joint_names);
 }
 
 Jacobian::Jacobian(const Jacobian& jacobian) :
-    State(jacobian),
-    joint_names_(jacobian.joint_names_),
-    frame_(jacobian.frame_),
-    reference_frame_(jacobian.reference_frame_),
-    rows_(jacobian.rows_),
-    cols_(jacobian.cols()),
-    data_(jacobian.data_) {}
-
-void Jacobian::initialize() {
-  this->State::initialize();
-  this->data_.resize(this->rows_, this->cols());
-  this->data_.setZero();
-}
-
-Jacobian Jacobian::Random(const std::string& robot_name,
-                          unsigned int nb_joints,
-                          const std::string& frame,
-                          const std::string& reference_frame) {
-  Jacobian random(robot_name, nb_joints, frame, reference_frame);
-  random.set_data(Eigen::MatrixXd::Random(random.rows_, random.cols_));
-  return random;
-}
-
-Jacobian Jacobian::Random(const std::string& robot_name,
-                          const std::vector<std::string>& joint_names,
-                          const std::string& frame,
-                          const std::string& reference_frame) {
-  Jacobian random(robot_name, joint_names, frame, reference_frame);
-  random.set_data(Eigen::MatrixXd::Random(random.rows_, random.cols_));
-  return random;
-}
-
-bool Jacobian::is_compatible(const State& state) const {
-  bool compatible = false;
-  switch (state.get_type()) {
-    case StateType::JACOBIAN:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const Jacobian&>(state).get_joint_names().size());
-      if (compatible) {
-        for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const Jacobian&>(state).get_joint_names()[i]);
-        }
-        // compatibility is assured through the reference frame and the name of the frame
-        compatible = (compatible && ((this->reference_frame_ == dynamic_cast<const Jacobian&>(state).get_reference_frame())
-            && (this->frame_ == dynamic_cast<const Jacobian&>(state).get_frame())));
-      }
-      break;
-    case StateType::JOINT_STATE:
-    case StateType::JOINT_POSITIONS:
-    case StateType::JOINT_VELOCITIES:
-    case StateType::JOINT_ACCELERATIONS:
-    case StateType::JOINT_TORQUES:
-      // compatibility is assured through the vector of joint names
-      compatible = (this->get_name() == state.get_name())
-          && (this->cols_ == dynamic_cast<const JointState&>(state).get_size());
-      if (compatible) {
-        for (unsigned int i = 0; i < this->cols_; ++i) {
-          compatible = (compatible && this->joint_names_[i] == dynamic_cast<const JointState&>(state).get_names()[i]);
-        }
-      }
-      break;
-    case StateType::CARTESIAN_STATE:
-    case StateType::CARTESIAN_POSE:
-    case StateType::CARTESIAN_TWIST:
-    case StateType::CARTESIAN_ACCELERATION:
-    case StateType::CARTESIAN_WRENCH:
-      // compatibility is assured through the reference frame and the name of the frame
-      compatible = (this->reference_frame_ == dynamic_cast<const CartesianState&>(state).get_reference_frame())
-          && (this->frame_ == dynamic_cast<const CartesianState&>(state).get_name());
-      break;
-    default:
-      break;
+    Jacobian(jacobian.get_name(), jacobian.joint_names_, jacobian.frame_, jacobian.reference_frame_) {
+  if (jacobian) {
+    this->data_ = jacobian.data_;
+    this->set_empty(false);
   }
-  return compatible;
 }
 
-void Jacobian::set_reference_frame(const CartesianPose& reference_frame) {
-  *this = reference_frame * (*this);
+Jacobian Jacobian::Random(
+    const std::string& robot_name, unsigned int nb_joints, const std::string& frame, const std::string& reference_frame
+) {
+  return {robot_name, frame, Eigen::MatrixXd::Random(6, nb_joints), reference_frame};
 }
 
-Jacobian Jacobian::transpose() const {
-  Jacobian result(*this);
-  result.cols_ = this->rows_;
-  result.rows_ = this->cols_;
-  result.set_data(result.data().transpose());
-  return result;
+Jacobian Jacobian::Random(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const std::string& frame,
+    const std::string& reference_frame
+) {
+  return {robot_name, joint_names, frame, Eigen::MatrixXd::Random(6, joint_names.size()), reference_frame};
 }
 
-Jacobian Jacobian::inverse() const {
-  if (this->rows_ != this->cols_) {
+Jacobian& Jacobian::operator=(const Jacobian& jacobian) {
+  Jacobian tmp(jacobian);
+  swap(*this, tmp);
+  return *this;
+}
+
+unsigned int Jacobian::rows() const {
+  return 6;
+}
+
+Eigen::VectorXd Jacobian::row(unsigned int index) const {
+  return this->data().row(index);
+}
+
+unsigned int Jacobian::cols() const {
+  return this->joint_names_.size();
+}
+
+Eigen::VectorXd Jacobian::col(unsigned int index) const {
+  return this->data().col(index);
+}
+
+const std::vector<std::string>& Jacobian::get_joint_names() const {
+  return this->joint_names_;
+}
+
+const std::string& Jacobian::get_frame() const {
+  return this->frame_;
+}
+
+const std::string& Jacobian::get_reference_frame() const {
+  return this->reference_frame_;
+}
+
+const Eigen::MatrixXd& Jacobian::data() const {
+  this->assert_not_empty();
+  return this->data_;
+}
+
+void Jacobian::set_joint_names(unsigned int nb_joints) {
+  if (this->joint_names_.size() != nb_joints) {
     throw exceptions::IncompatibleSizeException(
-        "The Jacobian matrix is not invertible, use the pseudoinverse function instead");
+        "Input number of joints is of incorrect size, expected " + std::to_string(this->joint_names_.size()) + " got "
+            + std::to_string(nb_joints));
   }
-  Jacobian result(*this);
-  result.cols_ = this->cols_;
-  result.rows_ = this->rows_;
-  result.set_data(result.data().inverse());
-  return result;
+  for (unsigned int i = 0; i < nb_joints; ++i) {
+    this->joint_names_[i] = "joint" + std::to_string(i);
+  }
+  this->reset_timestamp();
 }
 
-Jacobian Jacobian::pseudoinverse() const {
-  Jacobian result(*this);
-  Eigen::MatrixXd pinv = this->data().completeOrthogonalDecomposition().pseudoInverse();
-  result.cols_ = pinv.cols();
-  result.rows_ = pinv.rows();
-  result.set_data(pinv);
-  return result;
+void Jacobian::set_joint_names(const std::vector<std::string>& joint_names) {
+  if (this->joint_names_.size() != joint_names.size()) {
+    throw exceptions::IncompatibleSizeException(
+        "Input vector of joint names is of incorrect size, expected " + std::to_string(this->joint_names_.size())
+            + " got " + std::to_string(joint_names.size()));
+  }
+  this->joint_names_ = joint_names;
+  this->reset_timestamp();
 }
 
-Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (matrix.rows() != this->cols_) {
-    throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                        + std::to_string(this->cols_) + " rows, got " + std::to_string(matrix.rows()));
-  }
-  return this->data() * matrix;
+void Jacobian::set_frame(const std::string& frame) {
+  this->frame_ = frame;
+  this->reset_timestamp();
 }
 
-Eigen::MatrixXd Jacobian::operator*(const Jacobian& jacobian) const {
-  if (!this->is_compatible(jacobian)) {
-    throw IncompatibleStatesException("The two Jacobian matrices are not compatible");
-  }
-  // multiply with the data of the second Jacobian
-  return (*this) * jacobian.data();
+void Jacobian::set_reference_frame(const std::string& reference_frame) {
+  this->reference_frame_ = reference_frame;
+  this->reset_timestamp();
 }
 
-CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (dq.is_empty()) {
-    throw EmptyStateException(dq.get_name() + " state is empty");
-  }
-  if (!this->is_compatible(dq)) {
-    throw IncompatibleStatesException("The Jacobian and the input JointVelocities are incompatible");
-  }
-  Eigen::Matrix<double, 6, 1> twist = (*this) * dq.data();
-  CartesianTwist result(this->frame_, twist, this->reference_frame_);
-  return result;
+void Jacobian::set_data(const Eigen::MatrixXd& data) {
+  assert_matrix_size(data, this->rows(), this->cols());
+  this->set_empty(false);
+  this->data_ = data;
 }
 
-JointVelocities Jacobian::operator*(const CartesianTwist& twist) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (twist.is_empty()) {
-    throw EmptyStateException(twist.get_name() + " state is empty");
-  }
-  if (!this->is_compatible(twist)) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
-  }
-  Eigen::VectorXd joint_velocities = (*this) * twist.data();
-  JointVelocities result(this->get_name(), this->get_joint_names(), joint_velocities);
-  return result;
-}
-
-JointTorques Jacobian::operator*(const CartesianWrench& wrench) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (wrench.is_empty()) {
-    throw EmptyStateException(wrench.get_name() + " state is empty");
-  }
-  if (!this->is_compatible(wrench)) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianWrench are incompatible");
-  }
-  Eigen::VectorXd joint_torques = (*this) * wrench.data();
-  JointTorques result(this->get_name(), this->get_joint_names(), joint_torques);
-  return result;
-}
-
-Eigen::MatrixXd Jacobian::solve(const Eigen::MatrixXd& matrix) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (this->rows_ != matrix.rows()) {
-    throw IncompatibleSizeException("Input matrix is of incorrect size, expected "
-                                        + std::to_string(this->rows_) + " rows, got " + std::to_string(matrix.rows()));
-  }
-  return this->data().colPivHouseholderQr().solve(matrix);
-}
-
-JointVelocities Jacobian::solve(const CartesianTwist& twist) const {
-  if (this->is_empty()) {
-    throw EmptyStateException(this->get_name() + " state is empty");
-  }
-  if (twist.is_empty()) {
-    throw EmptyStateException(twist.get_name() + " state is empty");
-  }
-  if (!this->is_compatible(twist)) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianTwist are incompatible");
-  }
-  // this uses the solve operation instead of using the inverse or pseudo-inverse of the Jacobian
-  Eigen::VectorXd joint_velocities = this->solve(twist.data());
-  // return a JointVelocities state
-  JointVelocities result(this->get_name(), this->get_joint_names(), joint_velocities);
-  return result;
+void Jacobian::set_zero() {
+  this->data_.resize(this->rows(), this->cols());
+  this->data_.setZero();
+  this->set_empty(false);
 }
 
 Jacobian Jacobian::copy() const {
@@ -260,69 +164,195 @@ Jacobian Jacobian::copy() const {
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian) {
-  if (jacobian.is_empty()) {
-    os << "Empty Jacobian";
-  } else {
-    os << jacobian.get_name() << " Jacobian associated to " << jacobian.frame_;
-    os << ", expressed in " << jacobian.reference_frame_ << std::endl;
-    os << "joint names: [";
-    for (auto& n : jacobian.get_joint_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "number of rows: " << jacobian.rows_ << std::endl;
-    os << "number of columns: " << jacobian.cols_ << std::endl;
-    for (unsigned int i = 0; i < jacobian.rows_; ++i) {
-      os << "| " << jacobian(i, 0);
-      for (unsigned int j = 1; j < jacobian.cols_; ++j) {
-        os << ", " << jacobian(i, j);
-      }
-      os << " |";
-      if (i != jacobian.rows_ - 1) {
-        os << std::endl;
-      }
-    }
+void Jacobian::reset() {
+  this->set_zero();
+  this->State::reset();
+}
+
+Eigen::MatrixXd Jacobian::inverse() const {
+  if (this->rows() != this->cols()) {
+    throw exceptions::IncompatibleSizeException(
+        "The Jacobian matrix is not invertible, use the pseudoinverse function instead");
   }
-  return os;
+  return this->data().inverse();
+}
+
+Eigen::MatrixXd Jacobian::inverse(const Eigen::MatrixXd& matrix) const {
+  assert_matrix_size(matrix, this->rows(), matrix.cols());
+  return this->data().colPivHouseholderQr().solve(matrix);
+}
+
+JointVelocities Jacobian::inverse(const CartesianTwist& twist) const {
+  if (this->is_incompatible(twist)) {
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian twist are incompatible");
+  }
+  return JointVelocities(this->get_name(), this->get_joint_names(), this->inverse(twist.data()));
+}
+
+bool Jacobian::is_incompatible(const State& state) const {
+  try {
+    switch (state.get_type()) {
+      case StateType::JACOBIAN: {
+        auto other = dynamic_cast<const Jacobian&>(state);
+        if (this->cols() != other.joint_names_.size()) {
+          return true;
+        }
+        if (this->reference_frame_ != other.reference_frame_) {
+          return true;
+        }
+        for (unsigned int i = 0; i < this->cols(); ++i) {
+          if (this->joint_names_[i] != other.joint_names_[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+      case StateType::JOINT_STATE:
+      case StateType::JOINT_POSITIONS:
+      case StateType::JOINT_VELOCITIES:
+      case StateType::JOINT_ACCELERATIONS:
+      case StateType::JOINT_TORQUES: {
+        auto other = dynamic_cast<const JointState&>(state);
+        if (this->cols() != other.get_names().size()) {
+          return true;
+        }
+        for (unsigned int i = 0; i < this->cols(); ++i) {
+          if (this->joint_names_[i] != other.get_names()[i]) {
+            return true;
+          }
+        }
+        return false;
+      }
+      case StateType::CARTESIAN_STATE:
+      case StateType::CARTESIAN_POSE:
+      case StateType::CARTESIAN_TWIST:
+      case StateType::CARTESIAN_ACCELERATION:
+      case StateType::CARTESIAN_WRENCH: {
+        auto other = dynamic_cast<const CartesianState&>(state);
+        if (this->reference_frame_ != other.get_reference_frame()) {
+          return true;
+        }
+        return false;
+      }
+      default:
+        return true;
+    }
+  } catch (const std::bad_cast& ex) {
+    throw exceptions::InvalidCastException(std::string("Could not cast the given object: ") + ex.what());
+  }
+}
+
+Eigen::MatrixXd Jacobian::pseudoinverse() const {
+  return this->data().completeOrthogonalDecomposition().pseudoInverse();
+}
+
+Eigen::MatrixXd Jacobian::pseudoinverse(const Eigen::MatrixXd& matrix) const {
+  assert_matrix_size(matrix, this->rows(), matrix.cols());
+  return this->pseudoinverse() * matrix;
+}
+
+JointVelocities Jacobian::pseudoinverse(const CartesianTwist& twist) const {
+  if (this->is_incompatible(twist)) {
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian twist are incompatible");
+  }
+  return JointVelocities(this->get_name(), this->get_joint_names(), this->pseudoinverse(twist.data()));
+}
+
+Eigen::MatrixXd Jacobian::transpose() const {
+  return this->data().transpose();
+}
+
+JointTorques Jacobian::transpose(const CartesianWrench& wrench) const {
+  if (this->is_incompatible(wrench)) {
+    throw IncompatibleStatesException("The Jacobian and the given Cartesian wrench are incompatible");
+  }
+  return JointTorques(this->get_name(), this->get_joint_names(), this->transpose() * wrench.data());
+}
+
+Eigen::MatrixXd Jacobian::operator*(const Eigen::MatrixXd& matrix) const {
+  assert_matrix_size(matrix, this->cols(), matrix.cols());
+  return this->data() * matrix;
+}
+
+Jacobian operator*(const Eigen::Matrix<double, 6, 6>& matrix, const Jacobian& jacobian) {
+  Jacobian result(jacobian);
+  result.set_data(matrix * jacobian.data());
+  return result;
+}
+
+CartesianTwist Jacobian::operator*(const JointVelocities& dq) const {
+  if (this->is_incompatible(dq)) {
+    throw IncompatibleStatesException("The Jacobian and the input JointVelocities are incompatible");
+  }
+  Eigen::Vector<double, 6> twist = (*this) * dq.data();
+  return CartesianTwist(this->get_frame(), twist, this->get_reference_frame());
 }
 
 Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
-  // check compatibility
-  if (jacobian.is_empty()) {
-    throw EmptyStateException(jacobian.get_name() + " state is empty");
-  }
-  if (pose.is_empty()) {
-    throw EmptyStateException(pose.get_name() + " state is empty");
-  }
   if (pose.get_name() != jacobian.get_reference_frame()) {
-    throw IncompatibleStatesException("The Jacobian and the input CartesianPose are incompatible, expected pose of "
-                                          + jacobian.get_reference_frame() + " got " + pose.get_name());
-  }
-  // number of rows of the jacobian should be 6 (incorrect if it has been transposed before)
-  if (jacobian.rows_ != 6) {
     throw IncompatibleStatesException(
-        "The Jacobian and the input CartesianPose are incompatible, the Jacobian has probably been transposed before");
+        "The CartesianPose and the Jacobian are incompatible, expected pose of '" + jacobian.get_reference_frame()
+            + "', got '" + pose.get_name() + "'.");
   }
   Jacobian result(jacobian);
   // change the reference frame of all the columns
-  for (unsigned int i = 0; i < jacobian.cols_; ++i) {
+  for (unsigned int i = 0; i < jacobian.cols(); ++i) {
     // update position part
-    result.data_.col(i).head(3) = pose.get_orientation() * jacobian.data_.col(i).head(3);
+    result.data_.col(i).head(3) = pose.get_orientation() * jacobian.col(i).head(3);
     // update orientation part
-    result.data_.col(i).tail(3) = pose.get_orientation() * jacobian.data_.col(i).tail(3);
+    result.data_.col(i).tail(3) = pose.get_orientation() * jacobian.col(i).tail(3);
   }
   // change the reference frame
   result.reference_frame_ = pose.get_reference_frame();
   return result;
 }
 
-Eigen::MatrixXd operator*(const Eigen::MatrixXd& matrix, const Jacobian& jacobian) {
-  // check compatibility
+double& Jacobian::operator()(unsigned int row, unsigned int col) {
+  this->assert_not_empty();
+  if (row > this->rows()) {
+    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
+  }
+  if (col > this->cols()) {
+    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
+  }
+  this->reset_timestamp();
+  return this->data_(row, col);
+}
+
+const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
+  this->assert_not_empty();
+  if (row > this->rows()) {
+    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
+  }
+  if (col > this->cols()) {
+    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
+  }
+  return this->data_(row, col);
+}
+
+std::ostream& operator<<(std::ostream& os, const Jacobian& jacobian) {
+  os << jacobian.to_string();
+  os << " associated to '" << jacobian.get_frame();
+  os << "', expressed in frame '" << jacobian.get_reference_frame() << "'" << std::endl;
+  os << "joint names: [";
+  for (auto& n : jacobian.get_joint_names()) { os << n << ", "; }
+  os << "]";
   if (jacobian.is_empty()) {
-    throw EmptyStateException(jacobian.get_name() + " state is empty");
+    return os;
   }
-  if (matrix.cols() != jacobian.rows()) {
-    throw IncompatibleStatesException("The matrix and the Jacobian have incompatible sizes");
+  os << std::endl;
+  os << "number of rows: " << jacobian.rows() << std::endl;
+  os << "number of columns: " << jacobian.cols() << std::endl;
+  for (unsigned int i = 0; i < jacobian.rows(); ++i) {
+    os << "| " << jacobian(i, 0);
+    for (unsigned int j = 1; j < jacobian.cols(); ++j) {
+      os << ", " << jacobian(i, j);
+    }
+    os << " |";
+    if (i != jacobian.rows() - 1) {
+      os << std::endl;
+    }
   }
-  return matrix * jacobian.data();
+  return os;
 }
 }// namespace state_representation

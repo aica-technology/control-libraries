@@ -19,6 +19,7 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 using namespace state_representation;
 
+void bind_exceptions(py::module_& m);
 void bind_state(py::module_& m);
 void bind_cartesian_space(py::module_& m);
 void bind_joint_space(py::module_& m);

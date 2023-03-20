@@ -40,7 +40,7 @@ class TestState(unittest.TestCase):
             self.assertIn(expected, methods)
 
     def test_sampling(self):
-        ellipse = Ellipsoid("test")
+        ellipse = Ellipsoid().Unit("test")
         points = ellipse.sample_from_parameterization(100)
         for point in points:
             x = point.get_position()[0]

@@ -17,12 +17,12 @@ JACOBIAN_METHOD_EXPECTS = [
     'set_joint_names',
     'set_reference_frame',
     'set_data',
-    'is_compatible',
-    'initialize',
+    'set_zero',
+    'is_incompatible',
+    'reset',
     'transpose',
     'inverse',
     'pseudoinverse',
-    'solve',
     'copy',
 ]
 
@@ -72,15 +72,15 @@ class TestJacobian(unittest.TestCase):
         self.assert_np_array_equal(jac.row(1), data[1, :])
 
         jac = jac.transpose()
-        self.assertEqual(jac.rows(), 3)
+        self.assertEqual(jac.shape[0], 3)
 
-    def test_solve(self):
+    def test_inverse(self):
         jac = Jacobian.Random("jac", 7, "ee", "robot")
         twist = CartesianTwist.Random("ee", "robot")
-        jac.solve(twist)
+        jac.inverse(twist)
 
         data = np.random.rand(6, 7)
-        jac.solve(data)
+        jac.inverse(data)
 
     def test_operators(self):
         jac = Jacobian.Random("test", 3, "ee", "robot")
@@ -89,18 +89,28 @@ class TestJacobian(unittest.TestCase):
 
         matrix = np.random.rand(3, 6)
         result = jac * matrix
+        matrix = np.random.rand(6, 6)
         result = matrix * jac
 
         joint_velocities = JointVelocities.Random("test", 3)
         twist = jac * joint_velocities
         self.assert_np_array_almost_equal(joint_velocities.get_velocities(),
-                                          (jac.pseudoinverse() * twist).get_velocities())
+                                          jac.pseudoinverse(twist).get_velocities())
 
         wrench = CartesianWrench.Random("ee", "robot")
-        torques = jac.transpose() * wrench
+        torques = jac.transpose(wrench)
 
         pose = CartesianPose.Random("robot", "world")
         jac_in_world = pose * jac
+
+    def test_truthiness(self):
+        empty = Jacobian("test", 3, "ee")
+        self.assertTrue(empty.is_empty())
+        self.assertFalse(empty)
+
+        empty.set_data(Jacobian().Random("test", 3, "ee").data())
+        self.assertFalse(empty.is_empty())
+        self.assertTrue(empty)
 
 
 if __name__ == '__main__':

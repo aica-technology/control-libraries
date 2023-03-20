@@ -4,7 +4,7 @@
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/Jacobian.hpp>
 
-#include "clproto.h"
+#include "clproto.hpp"
 
 using namespace state_representation;
 
@@ -19,8 +19,8 @@ TEST(JsonProtoTest, JsonToFromBinary) {
   auto msg2 = clproto::from_json(json);
 
   CartesianState recv_state;
-  EXPECT_NO_THROW(clproto::decode<CartesianState>(msg));
-  EXPECT_TRUE(clproto::decode(msg, recv_state));
+  EXPECT_NO_THROW(clproto::decode<CartesianState>(msg2));
+  EXPECT_TRUE(clproto::decode(msg2, recv_state));
 
   EXPECT_STREQ(send_state.get_name().c_str(), recv_state.get_name().c_str());
   EXPECT_STREQ(send_state.get_reference_frame().c_str(), recv_state.get_reference_frame().c_str());
@@ -54,20 +54,18 @@ TEST(JsonProtoTest, JsonToFromInvalid) {
 
 TEST(JsonProtoTest, JsonStringComparison) {
   auto json = clproto::to_json(CartesianPose("A", 1.0, 0.5, 3.0, "B"));
-  json.erase(json.find(",\"timestamp"), int(json.find("},\"referenceFrame")) - int(json.find(",\"timestamp")));
-  EXPECT_EQ(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\",\"type\":\"CARTESIAN_POSE\"},"
+  EXPECT_EQ(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\"},"
                   "\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,\"z\":3},\"orientation\":{\"w\":1,\"vec\":{}}}}");
 
   auto joint_state = JointState("robot", 3);
   joint_state.set_velocities(Eigen::Vector3d(0.3, 0.1, 0.6));
   json = clproto::to_json(joint_state);
-  json.erase(json.find(",\"timestamp"), int(json.find("},\"jointNames")) - int(json.find(",\"timestamp")));
-  EXPECT_EQ(json, "{\"jointState\":{\"state\":{\"name\":\"robot\",\"type\":\"JOINT_STATE\"},\"jointNames\":[\"joint0\","
+  EXPECT_EQ(json, "{\"jointState\":{\"state\":{\"name\":\"robot\"},\"jointNames\":[\"joint0\","
                   "\"joint1\",\"joint2\"],\"positions\":[0,0,0],\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":[0,0,0]}}");
 
   json = clproto::to_json(Jacobian("robot", 3, "test"));
-  json.erase(json.find(",\"timestamp"), json.size() - 3 - int(json.find(",\"timestamp")));
-  EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"type\":\"JACOBIAN\",\"empty\":true}}}");
+  EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"empty\":true},"
+                  "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\",\"referenceFrame\":\"world\",\"rows\":6,\"cols\":3}}");
 }
 
 /* If a to_json template is invoked that is not implemented in clproto,

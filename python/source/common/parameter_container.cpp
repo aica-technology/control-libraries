@@ -1,5 +1,7 @@
-#include "parameter_container.h"
+#include "parameter_container.hpp"
 
+#include <state_representation/exceptions/InvalidCastException.hpp>
+#include <state_representation/exceptions/InvalidParameterException.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
 #include <state_representation/space/joint/JointState.hpp>
@@ -29,8 +31,8 @@ ParameterContainer::ParameterContainer(
         values.state_pointer = std::make_shared<Ellipsoid>();
         break;
       default:
-        throw std::invalid_argument("The desired StateType for parameter " + this->get_name() + " is not supported.");
-        break;
+        throw exceptions::InvalidParameterException(
+            "The desired StateType for parameter '" + this->get_name() + "' is not supported");
     }
   }
 }
@@ -42,89 +44,97 @@ ParameterContainer::ParameterContainer(
 }
 
 ParameterContainer::ParameterContainer(const ParameterContainer& parameter) :
-    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()),
-    values(parameter.values) {}
-
-void ParameterContainer::set_value(const py::object& value) {
-  switch (this->get_parameter_type()) {
-    case ParameterType::INT:
-      values.int_value = value.cast<int>();
-      break;
-    case ParameterType::INT_ARRAY:
-      values.int_array_value = value.cast<std::vector<int>>();
-      break;
-    case ParameterType::DOUBLE:
-      values.double_value = value.cast<double>();
-      break;
-    case ParameterType::DOUBLE_ARRAY:
-      values.double_array_value = value.cast<std::vector<double>>();
-      break;
-    case ParameterType::BOOL:
-      values.bool_value = value.cast<bool>();
-      break;
-    case ParameterType::BOOL_ARRAY:
-      values.bool_array_value = value.cast<std::vector<bool>>();
-      break;
-    case ParameterType::STRING:
-      values.string_value = value.cast<std::string>();
-      break;
-    case ParameterType::STRING_ARRAY:
-      values.string_array_value = value.cast<std::vector<std::string>>();
-      break;
-    case ParameterType::STATE:
-      switch (this->get_parameter_state_type()) {
-        case StateType::CARTESIAN_STATE:
-          values.state_pointer = std::make_shared<CartesianState>(value.cast<CartesianState>());
-          break;
-        case StateType::CARTESIAN_POSE:
-          values.state_pointer = std::make_shared<CartesianPose>(value.cast<CartesianPose>());
-          break;
-        case StateType::JOINT_STATE:
-          values.state_pointer = std::make_shared<JointState>(value.cast<JointState>());
-          break;
-        case StateType::JOINT_POSITIONS:
-          values.state_pointer = std::make_shared<JointPositions>(value.cast<JointPositions>());
-          break;
-        case StateType::GEOMETRY_ELLIPSOID:
-          values.state_pointer = std::make_shared<Ellipsoid>(value.cast<Ellipsoid>());
-          break;
-        default:
-          throw std::invalid_argument("The StateType contained by parameter " + this->get_name() + " is unsupported.");
-          break;
-      }
-      break;
-    case ParameterType::MATRIX:
-      values.matrix_value = value.cast<Eigen::MatrixXd>();
-      break;
-    case ParameterType::VECTOR:
-      values.vector_value = value.cast<Eigen::VectorXd>();
-      break;
-    default:
-      throw std::invalid_argument("The ParameterType of parameter " + this->get_name() + " is invalid.");
+    ParameterInterface(parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type()) {
+  if (parameter) {
+    set_value(parameter.get_value());
   }
-  this->set_filled();
 }
 
-py::object ParameterContainer::get_value() {
-  switch (this->get_parameter_type()) {
-    case ParameterType::INT:
-      return py::cast(values.int_value);
-    case ParameterType::INT_ARRAY:
-      return py::cast(values.int_array_value);
-    case ParameterType::DOUBLE:
-      return py::cast(values.double_value);
-    case ParameterType::DOUBLE_ARRAY:
-      return py::cast(values.double_array_value);
-    case ParameterType::BOOL:
-      return py::cast(values.bool_value);
-    case ParameterType::BOOL_ARRAY:
-      return py::cast(values.bool_array_value);
-    case ParameterType::STRING:
-      return py::cast(values.string_value);
-    case ParameterType::STRING_ARRAY:
-      return py::cast(values.string_array_value);
-    case ParameterType::STATE:
-      try {
+void ParameterContainer::set_value(py::object value) {
+  try {
+    switch (this->get_parameter_type()) {
+      case ParameterType::INT:
+        values.int_value = value.cast<int>();
+        break;
+      case ParameterType::INT_ARRAY:
+        values.int_array_value = value.cast < std::vector < int >> ();
+        break;
+      case ParameterType::DOUBLE:
+        values.double_value = value.cast<double>();
+        break;
+      case ParameterType::DOUBLE_ARRAY:
+        values.double_array_value = value.cast < std::vector < double >> ();
+        break;
+      case ParameterType::BOOL:
+        values.bool_value = value.cast<bool>();
+        break;
+      case ParameterType::BOOL_ARRAY:
+        values.bool_array_value = value.cast < std::vector < bool >> ();
+        break;
+      case ParameterType::STRING:
+        values.string_value = value.cast<std::string>();
+        break;
+      case ParameterType::STRING_ARRAY:
+        values.string_array_value = value.cast < std::vector < std::string >> ();
+        break;
+      case ParameterType::STATE:
+        switch (this->get_parameter_state_type()) {
+          case StateType::CARTESIAN_STATE:
+            values.state_pointer = std::make_shared<CartesianState>(value.cast<CartesianState>());
+            break;
+          case StateType::CARTESIAN_POSE:
+            values.state_pointer = std::make_shared<CartesianPose>(value.cast<CartesianPose>());
+            break;
+          case StateType::JOINT_STATE:
+            values.state_pointer = std::make_shared<JointState>(value.cast<JointState>());
+            break;
+          case StateType::JOINT_POSITIONS:
+            values.state_pointer = std::make_shared<JointPositions>(value.cast<JointPositions>());
+            break;
+          case StateType::GEOMETRY_ELLIPSOID:
+            values.state_pointer = std::make_shared<Ellipsoid>(value.cast<Ellipsoid>());
+            break;
+          default:
+            throw exceptions::InvalidParameterException(
+                "The StateType of parameter '" + this->get_name() + "' is not supported");
+        }
+        break;
+      case ParameterType::MATRIX:
+        values.matrix_value = value.cast<Eigen::MatrixXd>();
+        break;
+      case ParameterType::VECTOR:
+        values.vector_value = value.cast<Eigen::VectorXd>();
+        break;
+      default:
+        throw exceptions::InvalidParameterException("The ParameterType of parameter " + this->get_name() + " is invalid.");
+    }
+  } catch (const pybind11::cast_error& ex) {
+    throw exceptions::InvalidCastException(
+        std::string("Could not cast the given object to the required parameter type: ") + ex.what());
+  }
+  this->set_empty(false);
+}
+
+py::object ParameterContainer::get_value() const {
+  try {
+    switch (this->get_parameter_type()) {
+      case ParameterType::INT:
+        return py::cast(values.int_value);
+      case ParameterType::INT_ARRAY:
+        return py::cast(values.int_array_value);
+      case ParameterType::DOUBLE:
+        return py::cast(values.double_value);
+      case ParameterType::DOUBLE_ARRAY:
+        return py::cast(values.double_array_value);
+      case ParameterType::BOOL:
+        return py::cast(values.bool_value);
+      case ParameterType::BOOL_ARRAY:
+        return py::cast(values.bool_array_value);
+      case ParameterType::STRING:
+        return py::cast(values.string_value);
+      case ParameterType::STRING_ARRAY:
+        return py::cast(values.string_array_value);
+      case ParameterType::STATE:
         switch (this->get_parameter_state_type()) {
           case StateType::CARTESIAN_STATE:
             return py::cast(*std::dynamic_pointer_cast<CartesianState>(values.state_pointer));
@@ -137,55 +147,58 @@ py::object ParameterContainer::get_value() {
           case StateType::GEOMETRY_ELLIPSOID:
             return py::cast(*std::dynamic_pointer_cast<Ellipsoid>(values.state_pointer));
           default:
-            throw std::invalid_argument(
-                "The StateType contained by parameter " + this->get_name() + " is unsupported.");
+            throw exceptions::InvalidParameterException(
+                "The StateType of parameter '" + this->get_name() + "' is not supported");
         }
-      } catch (const std::exception&) {
-        throw std::runtime_error("The ParameterType of parameter " + this->get_name() + " is invalid.");
-      }
-      break;
-    case ParameterType::MATRIX:
-      return py::cast(values.matrix_value);
-    case ParameterType::VECTOR:
-      return py::cast(values.vector_value);
-    default:
-      break;
+      case ParameterType::MATRIX:
+        return py::cast(values.matrix_value);
+      case ParameterType::VECTOR:
+        return py::cast(values.vector_value);
+      default:
+        throw exceptions::InvalidParameterException("The ParameterType of parameter " + this->get_name() + " is invalid.");
+    }
+  } catch (const pybind11::cast_error& ex) {
+    throw exceptions::InvalidCastException(std::string("Could not cast the value to a Python object: ") + ex.what());
   }
-  throw std::invalid_argument("Could not get the value of parameter " + this->get_name());
+}
+
+void ParameterContainer::reset() {
+  this->State::reset();
+  values = ParameterValues();
 }
 
 ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInterface>& parameter) {
-  switch (parameter->get_parameter_type()) {
-    case ParameterType::INT:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<int>()), ParameterType::INT);
-    case ParameterType::INT_ARRAY:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<int>>()),
-          ParameterType::INT_ARRAY);
-    case ParameterType::DOUBLE:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<double>()), ParameterType::DOUBLE);
-    case ParameterType::DOUBLE_ARRAY:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<double>>()),
-          ParameterType::DOUBLE_ARRAY);
-    case ParameterType::BOOL:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<bool>()), ParameterType::BOOL);
-    case ParameterType::BOOL_ARRAY:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<bool>>()),
-          ParameterType::BOOL_ARRAY);
-    case ParameterType::STRING:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<std::string>()), ParameterType::STRING);
-    case ParameterType::STRING_ARRAY:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<std::string>>()),
-          ParameterType::STRING_ARRAY);
-    case ParameterType::STATE:
-      try {
+  if (parameter->is_empty()) {
+    return ParameterContainer(
+        parameter->get_name(), parameter->get_parameter_type(), parameter->get_parameter_state_type());
+  }
+  try {
+    switch (parameter->get_parameter_type()) {
+      case ParameterType::INT:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<int>()), ParameterType::INT);
+      case ParameterType::INT_ARRAY:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<int>>()), ParameterType::INT_ARRAY);
+      case ParameterType::DOUBLE:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<double>()), ParameterType::DOUBLE);
+      case ParameterType::DOUBLE_ARRAY:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value < std::vector<double>>()), ParameterType::DOUBLE_ARRAY);
+      case ParameterType::BOOL:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<bool>()), ParameterType::BOOL);
+      case ParameterType::BOOL_ARRAY:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<bool>>()), ParameterType::BOOL_ARRAY);
+      case ParameterType::STRING:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<std::string>()), ParameterType::STRING);
+      case ParameterType::STRING_ARRAY:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<std::vector<std::string>>()), ParameterType::STRING_ARRAY);
+      case ParameterType::STATE:
         switch (parameter->get_parameter_state_type()) {
           case StateType::CARTESIAN_STATE:
             return ParameterContainer(
@@ -208,26 +221,28 @@ ParameterContainer interface_ptr_to_container(const std::shared_ptr<ParameterInt
                 parameter->get_name(), py::cast(parameter->get_parameter_value<Ellipsoid>()), ParameterType::STATE,
                 StateType::GEOMETRY_ELLIPSOID);
           default:
-            throw std::invalid_argument(
-                "The StateType contained by parameter " + parameter->get_name() + " is unsupported.");
+            throw exceptions::InvalidParameterException(
+                "The StateType of parameter '" + parameter->get_name() + "' is not supported");
         }
-      } catch (const std::exception&) {
-        throw std::runtime_error("The ParameterType of parameter " + parameter->get_name() + " is invalid.");
-      }
-      break;
-    case ParameterType::MATRIX:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<Eigen::MatrixXd>()), ParameterType::MATRIX);
-    case ParameterType::VECTOR:
-      return ParameterContainer(
-          parameter->get_name(), py::cast(parameter->get_parameter_value<Eigen::VectorXd>()), ParameterType::VECTOR);
-    default:
-      break;
+      case ParameterType::MATRIX:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<Eigen::MatrixXd>()), ParameterType::MATRIX);
+      case ParameterType::VECTOR:
+        return ParameterContainer(
+            parameter->get_name(), py::cast(parameter->get_parameter_value<Eigen::VectorXd>()), ParameterType::VECTOR);
+      default:
+        throw exceptions::InvalidParameterException("The ParameterType of parameter " + parameter->get_name() + " is invalid.");
+    }
+  } catch (const pybind11::cast_error& ex) {
+    throw exceptions::InvalidCastException(std::string("Could not cast the value to a Python object: ") + ex.what());
   }
-  throw std::invalid_argument("The conversion from this Parameter to a ParameterContainer is not supported.");
 }
 
 std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterContainer& parameter) {
+  if (parameter.is_empty()) {
+    return make_shared_parameter_interface(
+        parameter.get_name(), parameter.get_parameter_type(), parameter.get_parameter_state_type());
+  }
   switch (parameter.get_parameter_type()) {
     case ParameterType::INT:
       return make_shared_parameter(parameter.get_name(), parameter.values.int_value);
@@ -246,39 +261,33 @@ std::shared_ptr<ParameterInterface> container_to_interface_ptr(const ParameterCo
     case ParameterType::STRING_ARRAY:
       return make_shared_parameter(parameter.get_name(), parameter.values.string_array_value);
     case ParameterType::STATE:
-      try {
-        switch (parameter.get_parameter_state_type()) {
-          case StateType::CARTESIAN_STATE:
-            return make_shared_parameter(
-                parameter.get_name(), *std::dynamic_pointer_cast<CartesianState>(parameter.values.state_pointer));
-          case StateType::CARTESIAN_POSE:
-            return make_shared_parameter(
-                parameter.get_name(), *std::dynamic_pointer_cast<CartesianPose>(parameter.values.state_pointer));
-          case StateType::JOINT_STATE:
-            return make_shared_parameter(
-                parameter.get_name(), *std::dynamic_pointer_cast<JointState>(parameter.values.state_pointer));
-          case StateType::JOINT_POSITIONS:
-            return make_shared_parameter(
-                parameter.get_name(), *std::dynamic_pointer_cast<JointPositions>(parameter.values.state_pointer));
-          case StateType::GEOMETRY_ELLIPSOID:
-            return make_shared_parameter(
-                parameter.get_name(), *std::dynamic_pointer_cast<Ellipsoid>(parameter.values.state_pointer));
-          default:
-            throw std::invalid_argument(
-                "The StateType contained by parameter " + parameter.get_name() + " is unsupported.");
-        }
-      } catch (const std::exception&) {
-        throw std::runtime_error("The ParameterType of parameter " + parameter.get_name() + " is invalid.");
+      switch (parameter.get_parameter_state_type()) {
+        case StateType::CARTESIAN_STATE:
+          return make_shared_parameter(
+              parameter.get_name(), *std::dynamic_pointer_cast<CartesianState>(parameter.values.state_pointer));
+        case StateType::CARTESIAN_POSE:
+          return make_shared_parameter(
+              parameter.get_name(), *std::dynamic_pointer_cast<CartesianPose>(parameter.values.state_pointer));
+        case StateType::JOINT_STATE:
+          return make_shared_parameter(
+              parameter.get_name(), *std::dynamic_pointer_cast<JointState>(parameter.values.state_pointer));
+        case StateType::JOINT_POSITIONS:
+          return make_shared_parameter(
+              parameter.get_name(), *std::dynamic_pointer_cast<JointPositions>(parameter.values.state_pointer));
+        case StateType::GEOMETRY_ELLIPSOID:
+          return make_shared_parameter(
+              parameter.get_name(), *std::dynamic_pointer_cast<Ellipsoid>(parameter.values.state_pointer));
+        default:
+          throw exceptions::InvalidParameterException(
+              "The StateType of parameter '" + parameter.get_name() + "' is not supported");
       }
-      break;
     case ParameterType::MATRIX:
       return make_shared_parameter(parameter.get_name(), parameter.values.matrix_value);
     case ParameterType::VECTOR:
       return make_shared_parameter(parameter.get_name(), parameter.values.vector_value);
     default:
-      break;
+      throw exceptions::InvalidParameterException("The ParameterType of parameter " + parameter.get_name() + " is invalid.");
   }
-  throw std::invalid_argument("The conversion from this ParameterContainer to a Parameter is not supported.");
 }
 
 std::map<std::string, ParameterContainer>

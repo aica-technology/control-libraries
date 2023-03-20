@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(clproto VERSION 6.3.1)
+project(clproto VERSION 7.0.0)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -18,6 +18,11 @@ endif()
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(FindPkgConfig)
+
+if(NOT ${PKG_CONFIG_FOUND})
+  message(WARNING "Could not find pkg-config executable, skipping generation of pkg-config files.")
+endif()
 
 include(FindProtobuf)
 find_package(Protobuf 3.17 REQUIRED)
@@ -57,7 +62,7 @@ target_include_directories(${PROJECT_NAME}
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/clproto.h)
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/clproto.hpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC ${PROTOBUF_LIBRARY} state_representation PRIVATE ${PROJECT_NAME}_bindings)
 
 # install the target and create export-set
@@ -84,6 +89,7 @@ install(EXPORT ${PROJECT_NAME}_targets
 if (BUILD_TESTING)
   file(GLOB_RECURSE TEST_SOURCES test/ test_*.cpp)
   add_executable(test_${PROJECT_NAME} ${TEST_SOURCES})
+  include_directories(test/tests/include)
   target_link_libraries(test_${PROJECT_NAME}
     protobuf
     ${PROJECT_NAME}
@@ -101,7 +107,7 @@ write_basic_package_version_file(
 )
 
 # create config file
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/clprotoConfig.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
@@ -112,3 +118,14 @@ install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
+
+if(${PKG_CONFIG_FOUND})
+  set(PKG_NAME ${CMAKE_PROJECT_NAME})
+  set(PKG_DESC "This library provides a simple interface for encoding and decoding control library type objects to and from a serialized binary string representation (the wire format).")
+  set(PKG_EXTERNAL_DEPS "state_representation >= ${CMAKE_PROJECT_VERSION}")
+  set(PKG_CFLAGS "-lprotobuf")
+  set(pkg_conf_file "clproto.pc")
+  configure_file("${CMAKE_SOURCE_DIR}/${pkg_conf_file}.in" "${CMAKE_BINARY_DIR}/${pkg_conf_file}" @ONLY)
+  install(FILES "${CMAKE_BINARY_DIR}/${pkg_conf_file}"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
+endif()

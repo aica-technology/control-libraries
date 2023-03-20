@@ -4,6 +4,7 @@ import state_representation as sr
 import unittest
 from datetime import timedelta
 from dynamical_systems import create_cartesian_ds, DYNAMICAL_SYSTEM_TYPE
+from dynamical_systems.exceptions import EmptyAttractorError, EmptyBaseFrameError
 
 
 class TestRing(unittest.TestCase):
@@ -41,19 +42,19 @@ class TestRing(unittest.TestCase):
         ds = create_cartesian_ds(DYNAMICAL_SYSTEM_TYPE.RING)
         center = sr.CartesianPose.Identity("CAttractor", "A")
         state1 = sr.CartesianState.Identity("B", "A")
-        state2 = sr.CartesianState.Identity("D", "C")
-        state3 = sr.CartesianState.Identity("C", "A")
-        state4 = sr.CartesianState.Identity("C", "B")
+        state2 = sr.CartesianState("D", "C")
+        state3 = sr.CartesianState("C", "A")
+        state4 = sr.CartesianState("C", "B")
 
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyBaseFrameError):
             ds.evaluate(state1)
 
         ds.set_base_frame(state1)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(sr.exceptions.IncompatibleReferenceFramesError):
             ds.evaluate(state2)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(sr.exceptions.EmptyStateError):
             ds.evaluate(state3)
-        with self.assertRaises(RuntimeError):
+        with self.assertRaises(EmptyAttractorError):
             ds.evaluate(state4)
 
         ds.set_parameter(sr.Parameter("center", center, sr.ParameterType.STATE, sr.StateType.CARTESIAN_POSE))

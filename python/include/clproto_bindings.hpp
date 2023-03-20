@@ -13,10 +13,14 @@
 
 #include <eigen3/Eigen/Core>
 
-#include <robot_model/Model.hpp>
+#include <clproto.hpp>
 
 namespace py = pybind11;
 using namespace pybind11::literals;
-using namespace robot_model;
 
-void bind_model(py::module_& m);
+class EncodingException : public std::runtime_error {
+public:
+  explicit EncodingException(const std::string& msg) : std::runtime_error(msg) {}
+};
+
+void bind_clproto(py::module_& m);

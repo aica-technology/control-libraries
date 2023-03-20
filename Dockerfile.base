@@ -83,7 +83,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # install python requirements
-RUN pip3 install numpy setuptools pybind11
+RUN pip3 install pytest numpy setuptools pybind11
 
 # install google dependencies
 COPY --from=google-dependencies /usr/include/gtest /usr/include/gtest
@@ -91,23 +91,23 @@ COPY --from=google-dependencies /usr/local/lib/libgtest* /usr/local/lib/
 
 
 FROM development-dependencies as proto-dependencies-20.04
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:20.04 /usr/local/include/google /usr/local/include/google
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:20.04 /usr/local/lib/libproto* /usr/local/lib/
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:20.04 /usr/local/bin/protoc /usr/local/bin
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:20.04 /usr/local/include/google /usr/local/include/google
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:20.04 /usr/local/lib/libproto* /usr/local/lib/
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:20.04 /usr/local/bin/protoc /usr/local/bin
 RUN ldconfig
 
 
 FROM development-dependencies as proto-dependencies-22.04
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/include/google /usr/local/include/google
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/lib/libproto* /usr/local/lib/
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/bin/protoc /usr/local/bin
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:22.04 /usr/local/include/google /usr/local/include/google
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:22.04 /usr/local/lib/libproto* /usr/local/lib/
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:22.04 /usr/local/bin/protoc /usr/local/bin
 RUN ldconfig
 
 
 FROM development-dependencies as proto-dependencies-latest
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:latest /usr/local/include/google /usr/local/include/google
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:latest /usr/local/lib/libproto* /usr/local/lib/
-COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:latest /usr/local/bin/protoc /usr/local/bin
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:latest /usr/local/include/google /usr/local/include/google
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:latest /usr/local/lib/libproto* /usr/local/lib/
+COPY --from=ghcr.io/aica-technology/control-libraries/proto-dependencies:latest /usr/local/bin/protoc /usr/local/bin
 RUN ldconfig
 
 

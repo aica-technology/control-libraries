@@ -70,8 +70,7 @@ void CompliantTwist::set_angular_gains(double angular_stiffness, double angular_
 CartesianState CompliantTwist::compute_command(
     const CartesianState& desired_state, const CartesianState& feedback_state
 ) {
-  CartesianState
-      command = dissipative_ctrl_.compute_command(CartesianTwist(desired_state), CartesianTwist(feedback_state));
+  CartesianState command = dissipative_ctrl_.compute_command(desired_state, feedback_state);
   command += velocity_impedance_ctrl_.compute_command(desired_state, feedback_state);
   return command;
 }

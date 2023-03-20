@@ -1,4 +1,4 @@
-#include "controllers_bindings.h"
+#include "controllers_bindings.hpp"
 
 #include <controllers/ControllerFactory.hpp>
 #include <controllers/IController.hpp>
@@ -8,7 +8,7 @@
 #include <state_representation/space/joint/JointPositions.hpp>
 #include <state_representation/space/joint/JointState.hpp>
 
-#include "py_controller.h"
+#include "py_controller.hpp"
 
 using namespace state_representation;
 using namespace py_parameter;

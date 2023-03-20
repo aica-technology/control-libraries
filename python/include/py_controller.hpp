@@ -2,7 +2,7 @@
 
 #include <controllers/IController.hpp>
 
-#include "py_parameter_map.h"
+#include "py_parameter_map.hpp"
 
 template<class S>
 class PyController

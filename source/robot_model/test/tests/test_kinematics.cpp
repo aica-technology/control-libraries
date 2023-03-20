@@ -147,6 +147,7 @@ TEST_F(RobotModelKinematicsTest, TestForwardKinematicsJointStateSize) {
 }
 
 TEST_F(RobotModelKinematicsTest, TestForwardKinematicsEE) {
+  joint_state.set_zero();
   EXPECT_EQ(franka->forward_kinematics(joint_state).get_position(),
             franka->forward_kinematics(joint_state, "panda_link8").get_position());
 }
@@ -205,7 +206,6 @@ TEST_F(RobotModelKinematicsTest, TestInverseVelocityConstraints) {
                                                       Eigen::Vector3d::Identity(),
                                                       Eigen::Vector3d::Identity(),
                                                       franka->get_base_frame());
-    std::cout << des_ee_twist << std::endl;
 
     state_representation::JointVelocities joint_velocities = franka->inverse_velocity(des_ee_twist, config, parameters);
 

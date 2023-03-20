@@ -165,29 +165,8 @@ TEST(JointAccelerationsTest, MatrixMultiplication) {
   JointAccelerations jscaled = gains * ja;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_ACCELERATIONS);
   EXPECT_EQ(jscaled.data(), gains * ja.data());
-  EXPECT_EQ((ja * gains).data(), jscaled.data());
-  ja *= gains;
-  EXPECT_EQ(ja.get_type(), StateType::JOINT_ACCELERATIONS);
-  EXPECT_EQ(jscaled.data(), ja.data());
-  JointAccelerations jscaled2 = ja * gains;
 
   gains = Eigen::VectorXd::Random(2 * ja.get_size()).asDiagonal();
-  EXPECT_THROW(gains * ja, exceptions::IncompatibleSizeException);
-}
-
-TEST(JointAccelerationsTest, ArrayMultiplication) {
-  JointAccelerations ja = JointAccelerations::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(ja.get_size());
-
-  JointAccelerations jscaled = gains * ja;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_ACCELERATIONS);
-  EXPECT_EQ(jscaled.data(), (gains * ja.array()).matrix());
-  EXPECT_EQ((ja * gains).data(), jscaled.data());
-  ja *= gains;
-  EXPECT_EQ(ja.get_type(), StateType::JOINT_ACCELERATIONS);
-  EXPECT_EQ(jscaled.data(), ja.data());
-
-  gains = Eigen::ArrayXd::Random(2 * ja.get_size());
   EXPECT_THROW(gains * ja, exceptions::IncompatibleSizeException);
 }
 

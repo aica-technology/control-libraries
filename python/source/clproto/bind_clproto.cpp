@@ -1,5 +1,5 @@
-#include "clproto_bindings.h"
-#include "parameter_container.h"
+#include "clproto_bindings.hpp"
+#include "parameter_container.hpp"
 
 #include <string>
 
@@ -30,73 +30,73 @@ inline py::bytes encode_bytes(const T& object) {
 py::bytes encode_parameter_container(const ParameterContainer& container) {
   switch (container.get_parameter_type()) {
     case ParameterType::INT:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.int_value)));
+      return encode_bytes(container_to_parameter<int>(container));
     case ParameterType::INT_ARRAY:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.int_array_value)));
+      return encode_bytes(container_to_parameter<std::vector<int>>(container));
     case ParameterType::DOUBLE:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.double_value)));
+      return encode_bytes(container_to_parameter<double>(container));
     case ParameterType::DOUBLE_ARRAY:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.double_array_value)));
+      return encode_bytes(container_to_parameter<std::vector<double>>(container));
     case ParameterType::BOOL:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.bool_value)));
+      return encode_bytes(container_to_parameter<bool>(container));
     case ParameterType::BOOL_ARRAY:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.bool_array_value)));
+      return encode_bytes(container_to_parameter<std::vector<bool>>(container));
     case ParameterType::STRING:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.string_value)));
+      return encode_bytes(container_to_parameter<std::string>(container));
     case ParameterType::STRING_ARRAY:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.string_array_value)));
+      return encode_bytes(container_to_parameter<std::vector<std::string>>(container));
     case ParameterType::MATRIX:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.matrix_value)));
+      return encode_bytes(container_to_parameter<Eigen::MatrixXd>(container));
     case ParameterType::VECTOR:
-      return py::bytes(encode(Parameter(container.get_name(), container.values.vector_value)));
+      return encode_bytes(container_to_parameter<Eigen::VectorXd>(container));
     default:
       throw std::invalid_argument("This StateType is not a valid Parameter.");
       break;
   }
 }
 
-py::object decode_parameter(const std::string& msg) {
+template<typename T>
+inline py::object message_to_parameter(const std::string& msg) {
   py::object PyParameter = py::module_::import("state_representation").attr("Parameter");
+  auto param = decode<Parameter<T>>(msg);
+  if (param.is_empty()) {
+    return PyParameter(param.get_name(), param.get_parameter_type());
+  } else {
+    return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+  }
+}
+
+py::object decode_parameter(const std::string& msg) {
   switch (check_parameter_message_type(msg)) {
     case ParameterMessageType::INT: {
-      auto param = decode<Parameter<int>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<int>(msg);
     }
     case ParameterMessageType::INT_ARRAY: {
-      auto param = decode<Parameter<std::vector<int>>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<std::vector<int>>(msg);
     }
     case ParameterMessageType::DOUBLE: {
-      auto param = decode<Parameter<double>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<double>(msg);
     }
     case ParameterMessageType::DOUBLE_ARRAY: {
-      auto param = decode<Parameter<std::vector<double>>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<std::vector<double>>(msg);
     }
     case ParameterMessageType::BOOL: {
-      auto param = decode<Parameter<bool>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<bool>(msg);
     }
     case ParameterMessageType::BOOL_ARRAY: {
-      auto param = decode<Parameter<std::vector<bool>>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<std::vector<bool>>(msg);
     }
     case ParameterMessageType::STRING: {
-      auto param = decode<Parameter<std::string>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<std::string>(msg);
     }
     case ParameterMessageType::STRING_ARRAY: {
-      auto param = decode<Parameter<std::vector<std::string>>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<std::vector<std::string>>(msg);
     }
     case ParameterMessageType::VECTOR: {
-      auto param = decode<Parameter<Eigen::VectorXd>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<Eigen::VectorXd>(msg);
     }
     case ParameterMessageType::MATRIX: {
-      auto param = decode<Parameter<Eigen::MatrixXd>>(msg);
-      return PyParameter(param.get_name(), py::cast(param.get_value()), param.get_parameter_type());
+      return message_to_parameter<Eigen::MatrixXd>(msg);
     }
     default:
       throw std::invalid_argument("The message is not a valid encoded Parameter.");
@@ -165,69 +165,80 @@ void methods(py::module_& m) {
   }, "Unpack a data array into an ordered vector of encoded field messages.", "data"_a);
 
   m.def("encode", [](const py::object& object, const MessageType& type) -> py::bytes {
-    switch (type) {
-      case MessageType::STATE_MESSAGE:
-        return encode_bytes<State>(object.cast<State>());
-      case MessageType::SPATIAL_STATE_MESSAGE:
-        return encode_bytes<SpatialState>(object.cast<SpatialState>());
-      case MessageType::CARTESIAN_STATE_MESSAGE:
-        return encode_bytes<CartesianState>(object.cast<CartesianState>());
-      case MessageType::CARTESIAN_POSE_MESSAGE:
-        return encode_bytes<CartesianPose>(object.cast<CartesianPose>());
-      case MessageType::CARTESIAN_TWIST_MESSAGE:
-        return encode_bytes<CartesianTwist>(object.cast<CartesianTwist>());
-      case MessageType::CARTESIAN_WRENCH_MESSAGE:
-        return encode_bytes<CartesianWrench>(object.cast<CartesianWrench>());
-      case MessageType::JACOBIAN_MESSAGE:
-        return encode_bytes<Jacobian>(object.cast<Jacobian>());
-      case MessageType::JOINT_STATE_MESSAGE:
-        return encode_bytes<JointState>(object.cast<JointState>());
-      case MessageType::JOINT_POSITIONS_MESSAGE:
-        return encode_bytes<JointPositions>(object.cast<JointPositions>());
-      case MessageType::JOINT_VELOCITIES_MESSAGE:
-        return encode_bytes<JointVelocities>(object.cast<JointVelocities>());
-      case MessageType::JOINT_ACCELERATIONS_MESSAGE:
-        return encode_bytes<JointAccelerations>(object.cast<JointAccelerations>());
-      case MessageType::JOINT_TORQUES_MESSAGE:
-        return encode_bytes<JointTorques>(object.cast<JointTorques>());
-      case MessageType::PARAMETER_MESSAGE:
-        return encode_parameter_container(object.cast<ParameterContainer>());
-      default:
-        throw std::invalid_argument("The message is not a valid encoded StateMessage.");
-        break;
+    try {
+      switch (type) {
+        case MessageType::STATE_MESSAGE:
+          return encode_bytes<State>(object.cast<State>());
+        case MessageType::SPATIAL_STATE_MESSAGE:
+          return encode_bytes<SpatialState>(object.cast<SpatialState>());
+        case MessageType::CARTESIAN_STATE_MESSAGE:
+          return encode_bytes<CartesianState>(object.cast<CartesianState>());
+        case MessageType::CARTESIAN_POSE_MESSAGE:
+          return encode_bytes<CartesianPose>(object.cast<CartesianPose>());
+        case MessageType::CARTESIAN_TWIST_MESSAGE:
+          return encode_bytes<CartesianTwist>(object.cast<CartesianTwist>());
+        case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+          return encode_bytes<CartesianAcceleration>(object.cast<CartesianAcceleration>());
+        case MessageType::CARTESIAN_WRENCH_MESSAGE:
+          return encode_bytes<CartesianWrench>(object.cast<CartesianWrench>());
+        case MessageType::JACOBIAN_MESSAGE:
+          return encode_bytes<Jacobian>(object.cast<Jacobian>());
+        case MessageType::JOINT_STATE_MESSAGE:
+          return encode_bytes<JointState>(object.cast<JointState>());
+        case MessageType::JOINT_POSITIONS_MESSAGE:
+          return encode_bytes<JointPositions>(object.cast<JointPositions>());
+        case MessageType::JOINT_VELOCITIES_MESSAGE:
+          return encode_bytes<JointVelocities>(object.cast<JointVelocities>());
+        case MessageType::JOINT_ACCELERATIONS_MESSAGE:
+          return encode_bytes<JointAccelerations>(object.cast<JointAccelerations>());
+        case MessageType::JOINT_TORQUES_MESSAGE:
+          return encode_bytes<JointTorques>(object.cast<JointTorques>());
+        case MessageType::PARAMETER_MESSAGE:
+          return encode_parameter_container(object.cast<ParameterContainer>());
+        default:
+          throw std::invalid_argument("The message is not a valid encoded StateMessage.");
+      }
+    } catch (const std::exception& ex) {
+      throw EncodingException(ex.what());
     }
   }, "Encode a control libraries object into a serialized binary string representation (wire format).", py::arg("object"), py::arg("type"));
 
   m.def("decode", [](const std::string& msg) -> py::object {
-    switch (check_message_type(msg)) {
-      case MessageType::STATE_MESSAGE:
-        return py::cast(decode<State>(msg));
-      case MessageType::SPATIAL_STATE_MESSAGE:
-        return py::cast(decode<SpatialState>(msg));
-      case MessageType::CARTESIAN_STATE_MESSAGE:
-        return py::cast<CartesianState>(decode<CartesianState>(msg));
-      case MessageType::CARTESIAN_POSE_MESSAGE:
-        return py::cast(decode<CartesianPose>(msg));
-      case MessageType::CARTESIAN_TWIST_MESSAGE:
-        return py::cast(decode<CartesianTwist>(msg));
-      case MessageType::CARTESIAN_WRENCH_MESSAGE:
-        return py::cast(decode<CartesianWrench>(msg));
-      case MessageType::JACOBIAN_MESSAGE:
-        return py::cast(decode<Jacobian>(msg));
-      case MessageType::JOINT_STATE_MESSAGE:
-        return py::cast(decode<JointState>(msg));
-      case MessageType::JOINT_POSITIONS_MESSAGE:
-        return py::cast(decode<JointPositions>(msg));
-      case MessageType::JOINT_VELOCITIES_MESSAGE:
-        return py::cast(decode<JointVelocities>(msg));
-      case MessageType::JOINT_ACCELERATIONS_MESSAGE:
-        return py::cast(decode<JointAccelerations>(msg));
-      case MessageType::JOINT_TORQUES_MESSAGE:
-        return py::cast(decode<JointTorques>(msg));
-      case MessageType::PARAMETER_MESSAGE:
-        return decode_parameter(msg);
-      default:
-        return py::none();
+    try{
+      switch (check_message_type(msg)) {
+        case MessageType::STATE_MESSAGE:
+          return py::cast(decode<State>(msg));
+        case MessageType::SPATIAL_STATE_MESSAGE:
+          return py::cast(decode<SpatialState>(msg));
+        case MessageType::CARTESIAN_STATE_MESSAGE:
+          return py::cast<CartesianState>(decode<CartesianState>(msg));
+        case MessageType::CARTESIAN_POSE_MESSAGE:
+          return py::cast(decode<CartesianPose>(msg));
+        case MessageType::CARTESIAN_TWIST_MESSAGE:
+          return py::cast(decode<CartesianTwist>(msg));
+        case MessageType::CARTESIAN_ACCELERATION_MESSAGE:
+          return py::cast(decode<CartesianAcceleration>(msg));
+        case MessageType::CARTESIAN_WRENCH_MESSAGE:
+          return py::cast(decode<CartesianWrench>(msg));
+        case MessageType::JACOBIAN_MESSAGE:
+          return py::cast(decode<Jacobian>(msg));
+        case MessageType::JOINT_STATE_MESSAGE:
+          return py::cast(decode<JointState>(msg));
+        case MessageType::JOINT_POSITIONS_MESSAGE:
+          return py::cast(decode<JointPositions>(msg));
+        case MessageType::JOINT_VELOCITIES_MESSAGE:
+          return py::cast(decode<JointVelocities>(msg));
+        case MessageType::JOINT_ACCELERATIONS_MESSAGE:
+          return py::cast(decode<JointAccelerations>(msg));
+        case MessageType::JOINT_TORQUES_MESSAGE:
+          return py::cast(decode<JointTorques>(msg));
+        case MessageType::PARAMETER_MESSAGE:
+          return decode_parameter(msg);
+        default:
+          throw std::invalid_argument("Decoding not possible: Unknown or unsupported message type");
+      }
+    } catch (const std::exception& ex) {
+      throw clproto::DecodingException(ex.what());
     }
   }, "Decode a serialized binary string from wire format into a control libraries object instance.", "msg"_a);
 
@@ -236,6 +247,9 @@ void methods(py::module_& m) {
 }
 
 void bind_clproto(py::module_& m) {
+  py::register_exception<clproto::JsonParsingException>(m, "JsonParsingError", PyExc_RuntimeError);
+  py::register_exception<clproto::DecodingException>(m, "DecodingError", PyExc_RuntimeError);
+  py::register_exception<EncodingException>(m, "EncodingError", PyExc_RuntimeError);
   message_type(m);
   parameter_message_type(m);
   methods(m);

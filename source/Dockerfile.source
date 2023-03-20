@@ -1,5 +1,5 @@
 ARG BASE_TAG=latest
-FROM ghcr.io/epfl-lasa/control-libraries/development-dependencies:${BASE_TAG} as build
+FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as build
 ARG BUILD_CONTROLLERS=ON
 ARG BUILD_DYNAMICAL_SYSTEMS=ON
 ARG BUILD_ROBOT_MODEL=ON
@@ -12,7 +12,7 @@ RUN cmake -DBUILD_CONTROLLERS="${BUILD_CONTROLLERS}" \
     -DBUILD_DYNAMICAL_SYSTEMS="${BUILD_DYNAMICAL_SYSTEMS}" \
     -DBUILD_ROBOT_MODEL="${BUILD_ROBOT_MODEL}" \
     -DBUILD_TESTING=ON .. \
-  && make -j all
+  && make -j all && make install
 
 
 FROM build as testing

@@ -17,20 +17,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
       - name: Check contributions
         if: ${{ github.event.pull_request.base.sha }}
         run: |
-          git fetch origin main ${{ github.event.pull_request.base.sha }}
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git fetch origin main ${{ github.event.pull_request.base.sha }} ${{ github.head_ref }}
+          git checkout ${{ github.head_ref }}
           VER_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./VERSION)
           if ! [ "${VER_DIFF}" ]; then
-            echo "::warning title=Contribution check failed::VERSION must be updated!"
-            exit 1
+            bash update_version.sh --commit && git push
           fi
           CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./CHANGELOG.md)
           if ! [ "${CL_DIFF}" ]; then
-            echo "::warning title=Contribution check failed::CHANGELOG.md must be updated!"
-            exit 1
+            SEARCH_STRING="## Upcoming changes (in development)"
+            NEW_TITLE="${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
+            sed -z "s/${SEARCH_STRING}\n/${SEARCH_STRING}\n\n- ${NEW_TITLE}/" -i CHANGELOG.md
+            git add CHANGELOG.md && git commit -m "Update CHANGELOG" && git push
           fi
         shell: bash
 
@@ -57,7 +62,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test action
       - name: Build and Test
         uses: ./.github/actions/build-test
@@ -72,7 +77,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test action
       - name: Build and Test
         uses: ./.github/actions/build-test
@@ -89,7 +94,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test-python action
       - name: Build and Test Python
         uses: ./.github/actions/build-test-python
@@ -104,7 +109,7 @@ jobs:
     steps:
       # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Load the repository build-test-python action
       - name: Build and Test Protocol
         uses: ./.github/actions/build-test-protocol

@@ -2,9 +2,10 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 JointPositions::JointPositions() {
   this->set_type(StateType::JOINT_POSITIONS);
 }
@@ -33,11 +34,11 @@ JointPositions::JointPositions(
 }
 
 JointPositions::JointPositions(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except positions
   this->set_type(StateType::JOINT_POSITIONS);
-  this->set_zero();
-  this->set_positions(state.get_positions());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_positions(state.get_positions());
+  }
 }
 
 JointPositions::JointPositions(const JointPositions& positions) :
@@ -62,81 +63,6 @@ JointPositions JointPositions::Random(const std::string& robot_name, const std::
   return JointPositions(robot_name, joint_names, Eigen::VectorXd::Random(joint_names.size()));
 }
 
-JointPositions& JointPositions::operator+=(const JointPositions& positions) {
-  this->JointState::operator+=(positions);
-  return (*this);
-}
-
-JointPositions JointPositions::operator+(const JointPositions& positions) const {
-  return this->JointState::operator+(positions);
-}
-
-JointPositions& JointPositions::operator-=(const JointPositions& positions) {
-  this->JointState::operator-=(positions);
-  return (*this);
-}
-
-JointPositions JointPositions::operator-(const JointPositions& positions) const {
-  return this->JointState::operator-(positions);
-}
-
-JointPositions& JointPositions::operator*=(double lambda) {
-  this->JointState::operator*=(lambda);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(double lambda) const {
-  return this->JointState::operator*(lambda);
-}
-
-JointPositions& JointPositions::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(const Eigen::ArrayXd& lambda) const {
-  JointPositions result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointPositions& JointPositions::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::POSITIONS);
-  return (*this);
-}
-
-JointPositions JointPositions::operator*(const Eigen::MatrixXd& lambda) const {
-  JointPositions result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointPositions& JointPositions::operator/=(double lambda) {
-  this->JointState::operator/=(lambda);
-  return (*this);
-}
-
-JointPositions JointPositions::operator/(double lambda) const {
-  return this->JointState::operator/(lambda);
-}
-
-JointVelocities JointPositions::operator/(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  // operations
-  JointVelocities velocities(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // divide the positions by this period value and assign it as velocities
-  velocities.set_velocities(this->get_positions() / period);
-  return velocities;
-}
-
-JointPositions JointPositions::copy() const {
-  JointPositions result(*this);
-  return result;
-}
-
 Eigen::VectorXd JointPositions::data() const {
   return this->get_positions();
 }
@@ -153,14 +79,14 @@ void JointPositions::clamp(double max_absolute_value, double noise_ratio) {
   this->clamp_state_variable(max_absolute_value, JointStateVariable::POSITIONS, noise_ratio);
 }
 
+void JointPositions::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
+  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::POSITIONS, noise_ratio_array);
+}
+
 JointPositions JointPositions::clamped(double max_absolute_value, double noise_ratio) const {
   JointPositions result(*this);
   result.clamp(max_absolute_value, noise_ratio);
   return result;
-}
-
-void JointPositions::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
-  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::POSITIONS, noise_ratio_array);
 }
 
 JointPositions JointPositions::clamped(
@@ -171,19 +97,18 @@ JointPositions JointPositions::clamped(
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
-  if (positions.is_empty()) {
-    os << "Empty JointPositions";
-  } else {
-    os << positions.get_name() << " JointPositions" << std::endl;
-    os << "names: [";
-    for (auto& n: positions.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "positions: [";
-    for (unsigned int i = 0; i < positions.get_size(); ++i) { os << positions.get_positions()(i) << ", "; }
-    os << "]";
-  }
-  return os;
+JointPositions JointPositions::copy() const {
+  JointPositions result(*this);
+  return result;
+}
+
+JointPositions& JointPositions::operator*=(double lambda) {
+  this->JointState::operator*=(lambda);
+  return (*this);
+}
+
+JointPositions JointPositions::operator*(double lambda) const {
+  return this->JointState::operator*(lambda);
 }
 
 JointPositions operator*(double lambda, const JointPositions& positions) {
@@ -192,15 +117,74 @@ JointPositions operator*(double lambda, const JointPositions& positions) {
   return result;
 }
 
-JointPositions operator*(const Eigen::ArrayXd& lambda, const JointPositions& positions) {
+JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions) {
   JointPositions result(positions);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::POSITIONS);
   return result;
 }
 
-JointPositions operator*(const Eigen::MatrixXd& lambda, const JointPositions& positions) {
-  JointPositions result(positions);
-  result *= lambda;
-  return result;
+JointPositions& JointPositions::operator/=(double lambda) {
+  this->JointState::operator/=(lambda);
+  return (*this);
+}
+
+JointPositions JointPositions::operator/(double lambda) const {
+  return this->JointState::operator/(lambda);
+}
+
+JointVelocities JointPositions::operator/(const std::chrono::nanoseconds& dt) const {
+  // operations
+  JointVelocities velocities(this->get_name(), this->get_names());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // divide the positions by this period value and assign it as velocities
+  velocities.set_velocities(this->get_positions() / period);
+  return velocities;
+}
+
+JointPositions& JointPositions::operator+=(const JointPositions& positions) {
+  this->JointState::operator+=(positions);
+  return (*this);
+}
+
+JointPositions& JointPositions::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
+JointPositions JointPositions::operator+(const JointPositions& positions) const {
+  return this->JointState::operator+(positions);
+}
+
+JointState JointPositions::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
+}
+
+JointPositions JointPositions::operator-() const {
+  return this->JointState::operator-();
+}
+
+JointPositions& JointPositions::operator-=(const JointPositions& positions) {
+  this->JointState::operator-=(positions);
+  return (*this);
+}
+
+JointPositions& JointPositions::operator-=(const JointState& state) {
+  this->JointState::operator-=(state);
+  return (*this);
+}
+
+JointPositions JointPositions::operator-(const JointPositions& positions) const {
+  return this->JointState::operator-(positions);
+}
+
+JointState JointPositions::operator-(const JointState& state) const {
+  return this->JointState::operator-(state);
+}
+
+std::ostream& operator<<(std::ostream& os, const JointPositions& positions) {
+  os << positions.to_string();
+  return os;
 }
 }// namespace state_representation

@@ -2,7 +2,7 @@
 
 BASE_TAG="latest"
 
-CONTAINER_NAME=epfl-lasa-control-libraries-protocol-development-ssh
+CONTAINER_NAME=aica-technology-control-libraries-protocol-development-ssh
 BRANCH=$(git branch --show-current)
 
 SSH_PORT=2244
@@ -66,14 +66,14 @@ if [[ "${OSTYPE}" != "darwin"* ]]; then
   COMMAND_FLAGS+=(--gid "${GROUP_ID}")
 fi
 
-IMAGE_NAME=epfl-lasa/control-libraries/protocol/development:"${BASE_TAG}"
+IMAGE_NAME=aica-technology/control-libraries/protocol/development:"${BASE_TAG}"
 BUILD_FLAGS+=(--build-arg BASE_TAG="${BASE_TAG}")
 BUILD_FLAGS+=(-t "${IMAGE_NAME}")
 
 echo "Using control libraries branch ${BRANCH}"
 BUILD_FLAGS+=(--build-arg BRANCH="${BRANCH}")
 BUILD_FLAGS+=(--target source)
-docker pull ghcr.io/epfl-lasa/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
+docker pull ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}" || exit 1
 DOCKER_BUILDKIT=1 docker build . --file ./Dockerfile.protocol "${BUILD_FLAGS[@]}" || exit 1
 
 docker container stop "${CONTAINER_NAME}" >/dev/null 2>&1

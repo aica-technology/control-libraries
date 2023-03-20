@@ -6,7 +6,6 @@
 #include "dynamical_systems/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
@@ -114,7 +113,7 @@ void PointAttractor<JointState>::set_attractor(const JointState& attractor) {
     throw state_representation::exceptions::EmptyStateException(attractor.get_name() + " state is empty");
   }
   this->attractor_->set_value(attractor);
-  if (this->gain_->get_value().size() == 0) {
+  if (this->gain_->is_empty()) {
     this->gain_->set_value(Eigen::MatrixXd::Identity(attractor.get_size(), attractor.get_size()));
   }
 }
@@ -183,14 +182,14 @@ CartesianState PointAttractor<CartesianState>::compute_dynamics(const CartesianS
     throw exceptions::EmptyAttractorException("The attractor of the dynamical system is empty.");
   }
   CartesianTwist twist = CartesianPose(this->attractor_->get_value()) - CartesianPose(state);
-  twist *= this->gain_->get_value();
+  twist = this->gain_->get_value() * twist;
   return CartesianTwist(state.get_name(), twist.get_twist(), this->attractor_->get_value().get_reference_frame());
 }
 
 template<>
 JointState PointAttractor<JointState>::compute_dynamics(const JointState& state) const {
   JointVelocities velocities = JointPositions(this->attractor_->get_value()) - JointPositions(state);
-  velocities *= this->gain_->get_value();
+  velocities = this->gain_->get_value() * velocities;
   return JointVelocities(state.get_name(), this->attractor_->get_value().get_names(), velocities.get_velocities());
 }
 }// namespace dynamical_systems

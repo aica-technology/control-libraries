@@ -1,6 +1,10 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"
@@ -14,7 +18,7 @@ TEST(JointStateTest, Constructors) {
   EXPECT_EQ(empty.get_name(), "");
   EXPECT_TRUE(empty.is_empty());
   EXPECT_EQ(empty.get_size(), 0);
-  EXPECT_EQ(empty.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 
   JointState js1("test", 3);
   EXPECT_EQ(js1.get_type(), StateType::JOINT_STATE);
@@ -24,7 +28,7 @@ TEST(JointStateTest, Constructors) {
   for (std::size_t i = 0; i < 3; ++i) {
     EXPECT_EQ(js1.get_names().at(i), "joint" + std::to_string(i));
   }
-  EXPECT_EQ(js1.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 
   std::vector<std::string> joint_names{"joint_10", "joint_20"};
   JointState js2("test", joint_names);
@@ -35,7 +39,7 @@ TEST(JointStateTest, Constructors) {
   for (std::size_t i = 0; i < joint_names.size(); ++i) {
     EXPECT_EQ(js2.get_names().at(i), joint_names.at(i));
   }
-  EXPECT_EQ(js2.data().norm(), 0);
+  EXPECT_THROW(empty.data(), exceptions::EmptyStateException);
 }
 
 TEST(JointStateTest, ZeroInitialization) {
@@ -167,8 +171,8 @@ TEST(JointStateTest, GetSetFields) {
   EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(js.data().norm(), 0);
   EXPECT_EQ(js.is_empty(), false);
-  js.set_empty();
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
+  js.reset();
+  EXPECT_THROW(js.data(), exceptions::EmptyStateException);
   EXPECT_EQ(js.is_empty(), true);
 }
 
@@ -215,15 +219,15 @@ TEST(JointStateTest, Compatibility) {
   JointState js3("test", 4);
   JointState js4("robot", 3);
 
-  EXPECT_FALSE(js1.is_compatible(js2));
-  EXPECT_FALSE(js1.is_compatible(js3));
-  EXPECT_FALSE(js1.is_compatible(js4));
+  EXPECT_TRUE(js1.is_incompatible(js2));
+  EXPECT_TRUE(js1.is_incompatible(js3));
+  EXPECT_FALSE(js1.is_incompatible(js4));
 }
 
 TEST(JointStateTest, SetZero) {
   JointState random1 = JointState::Random("test", 3);
-  random1.initialize();
-  EXPECT_EQ(random1.data().norm(), 0);
+  random1.reset();
+  EXPECT_THROW(random1.data(), exceptions::EmptyStateException);
 
   JointState random2 = JointState::Random("test", 3);
   random2.set_zero();
@@ -311,7 +315,7 @@ TEST(JointStateTest, GetIndexByName) {
 }
 
 TEST(JointStateTest, Distance) {
-  JointState js;
+  JointState js("test", 3);
   JointState js1 = JointState::Random("test", 3);
   JointState js2 = JointState::Random("test", 2);
   EXPECT_THROW(js.dist(js1), exceptions::EmptyStateException);
@@ -396,29 +400,203 @@ TEST(JointStateTest, MatrixMultiplication) {
   JointState jscaled = gains * js;
   EXPECT_EQ(jscaled.get_type(), StateType::JOINT_STATE);
   EXPECT_EQ(jscaled.data(), gains * js.data());
-  EXPECT_EQ((js * gains).data(), jscaled.data());
-  js *= gains;
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), js.data());
-  JointState jscaled2 = js * gains;
 
   gains = Eigen::VectorXd::Random(js.get_size()).asDiagonal();
   EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
 }
 
-TEST(JointStateTest, ArrayMultiplication) {
-  JointState js = JointState::Random("test", 3);
-  Eigen::ArrayXd gains = Eigen::ArrayXd::Random(4 * js.get_size());
+TEST(JointStateTest, Truthiness) {
+  JointState empty("test", 1);
+  EXPECT_TRUE(empty.is_empty());
+  EXPECT_FALSE(empty);
 
-  JointState jscaled = gains * js;
-  EXPECT_EQ(jscaled.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), (gains * js.array()).matrix());
-  EXPECT_EQ((js * gains).data(), jscaled.data());
-  js *= gains;
-  EXPECT_EQ(js.get_type(), StateType::JOINT_STATE);
-  EXPECT_EQ(jscaled.data(), js.data());
-
-  gains = Eigen::ArrayXd::Random(js.get_size());
-  EXPECT_THROW(gains * js, exceptions::IncompatibleSizeException);
+  empty.set_data(Eigen::VectorXd::Random(4));
+  EXPECT_FALSE(empty.is_empty());
+  EXPECT_TRUE(empty);
 }
 
+TEST(JointStateTest, TestAdditionOperators) {
+  JointState state = JointState::Random("test", 3);
+  JointPositions positions = JointPositions::Random("test", 3);
+  JointVelocities velocities = JointVelocities::Random("test", 3);
+  JointAccelerations accelerations = JointAccelerations::Random("test", 3);
+  JointTorques torques = JointTorques::Random("test", 3);
+
+  auto r1 = positions + positions;
+  EXPECT_EQ(r1.get_type(), StateType::JOINT_POSITIONS);
+  auto r2 = state + positions;
+  EXPECT_EQ(r2.get_type(), StateType::JOINT_STATE);
+  auto r3 = positions + state;
+  EXPECT_EQ(r3.get_type(), StateType::JOINT_STATE);
+
+  auto r4 = velocities + velocities;
+  EXPECT_EQ(r4.get_type(), StateType::JOINT_VELOCITIES);
+  auto r5 = state + velocities;
+  EXPECT_EQ(r5.get_type(), StateType::JOINT_STATE);
+  auto r6 = velocities + state;
+  EXPECT_EQ(r6.get_type(), StateType::JOINT_STATE);
+
+  auto r7 = accelerations + accelerations;
+  EXPECT_EQ(r7.get_type(), StateType::JOINT_ACCELERATIONS);
+  auto r8 = state + accelerations;
+  EXPECT_EQ(r8.get_type(), StateType::JOINT_STATE);
+  auto r9 = accelerations + state;
+  EXPECT_EQ(r9.get_type(), StateType::JOINT_STATE);
+
+  auto r10 = torques + torques;
+  EXPECT_EQ(r10.get_type(), StateType::JOINT_TORQUES);
+  auto r11 = state + torques;
+  EXPECT_EQ(r11.get_type(), StateType::JOINT_STATE);
+  auto r12 = torques + state;
+  EXPECT_EQ(r12.get_type(), StateType::JOINT_STATE);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  //auto r = positions + velocities;
+  //auto r = positions + accelerations;
+  //auto r = positions + torques;
+
+  //auto r = velocities + positions;
+  //auto r = velocities + accelerations;
+  //auto r = velocities + torques;
+
+  //auto r = accelerations + positions;
+  //auto r = accelerations + velocities;
+  //auto r = accelerations + torques;
+
+  state += state;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += positions;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += velocities;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += accelerations;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state += torques;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+
+  positions += state;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  positions += positions;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  //positions += velocities;
+  //positions += accelerations;
+  //positions += torques;
+
+  velocities += state;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  velocities += velocities;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  //velocities += positions;
+  //velocities += accelerations;
+  //velocities += torques;
+
+  accelerations += state;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  accelerations += accelerations;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  //accelerations += positions;
+  //accelerations += velocities;
+  //accelerations += torques;
+
+  torques += state;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  torques += torques;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  //torques += positions;
+  //torques += velocities;
+  //torques += accelerations;
+}
+
+TEST(JointStateTest, TestSubtractionOperators) {
+  JointState state = JointState::Random("test", 3);
+  JointPositions positions = JointPositions::Random("test", 3);
+  JointVelocities velocities = JointVelocities::Random("test", 3);
+  JointAccelerations accelerations = JointAccelerations::Random("test", 3);
+  JointTorques torques = JointTorques::Random("test", 3);
+
+  auto r1 = positions - positions;
+  EXPECT_EQ(r1.get_type(), StateType::JOINT_POSITIONS);
+  auto r2 = state - positions;
+  EXPECT_EQ(r2.get_type(), StateType::JOINT_STATE);
+  auto r3 = positions - state;
+  EXPECT_EQ(r3.get_type(), StateType::JOINT_STATE);
+
+  auto r4 = velocities - velocities;
+  EXPECT_EQ(r4.get_type(), StateType::JOINT_VELOCITIES);
+  auto r5 = state - velocities;
+  EXPECT_EQ(r5.get_type(), StateType::JOINT_STATE);
+  auto r6 = velocities - state;
+  EXPECT_EQ(r6.get_type(), StateType::JOINT_STATE);
+
+  auto r7 = accelerations - accelerations;
+  EXPECT_EQ(r7.get_type(), StateType::JOINT_ACCELERATIONS);
+  auto r8 = state - accelerations;
+  EXPECT_EQ(r8.get_type(), StateType::JOINT_STATE);
+  auto r9 = accelerations - state;
+  EXPECT_EQ(r9.get_type(), StateType::JOINT_STATE);
+
+  auto r10 = torques - torques;
+  EXPECT_EQ(r10.get_type(), StateType::JOINT_TORQUES);
+  auto r11 = state - torques;
+  EXPECT_EQ(r11.get_type(), StateType::JOINT_STATE);
+  auto r12 = torques - state;
+  EXPECT_EQ(r12.get_type(), StateType::JOINT_STATE);
+
+  // COMMENTED TEST BELOW EXPECTED TO BE NOT COMPILABLE
+
+  //auto r = positions - velocities;
+  //auto r = positions - accelerations;
+  //auto r = positions - torques;
+
+  //auto r = velocities - positions;
+  //auto r = velocities - accelerations;
+  //auto r = velocities - torques;
+
+  //auto r = accelerations - positions;
+  //auto r = accelerations - velocities;
+  //auto r = accelerations - torques;
+
+  state -= state;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state -= positions;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state -= velocities;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state -= accelerations;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+  state -= torques;
+  EXPECT_EQ(state.get_type(), StateType::JOINT_STATE);
+
+  positions -= state;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  positions -= positions;
+  EXPECT_EQ(positions.get_type(), StateType::JOINT_POSITIONS);
+  //positions -= velocities;
+  //positions -= accelerations;
+  //positions -= torques;
+
+  velocities -= state;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  velocities -= velocities;
+  EXPECT_EQ(velocities.get_type(), StateType::JOINT_VELOCITIES);
+  //velocities -= positions;
+  //velocities -= accelerations;
+  //velocities -= torques;
+
+  accelerations -= state;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  accelerations -= accelerations;
+  EXPECT_EQ(accelerations.get_type(), StateType::JOINT_ACCELERATIONS);
+  //accelerations -= positions;
+  //accelerations -= velocities;
+  //accelerations -= torques;
+
+  torques -= state;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  torques -= torques;
+  EXPECT_EQ(torques.get_type(), StateType::JOINT_TORQUES);
+  //torques -= positions;
+  //torques -= velocities;
+  //torques -= accelerations;
+}

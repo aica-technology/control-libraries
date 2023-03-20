@@ -3,6 +3,7 @@ import unittest
 
 import state_representation as sr
 from controllers import ICartesianController, create_cartesian_controller, create_joint_controller, CONTROLLER_TYPE
+from controllers.exceptions import InvalidControllerError, NoRobotModelError
 from robot_model import Model
 
 CONTROLLER_METHOD_EXPECTS = [
@@ -77,7 +78,7 @@ class TestControllers(unittest.TestCase):
                                "angular_damping"]
         [self.assertTrue(key in parameters.keys()) for key in expected_parameters]
         ctrl.compute_command(command_state, feedback_state)
-        self.assertRaises(RuntimeError, ctrl.compute_command, command_state, feedback_state,
+        self.assertRaises(NoRobotModelError, ctrl.compute_command, command_state, feedback_state,
                           sr.JointPositions().Zero("robot", 3))
 
     def test_joint_controller(self):
@@ -103,10 +104,10 @@ class TestControllers(unittest.TestCase):
         self.assertFalse(ctrl is None)
         self.expected_parameters_test(ctrl, ["damping"], dim)
 
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_LINEAR)
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_ANGULAR)
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_DECOUPLED)
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.COMPLIANT_TWIST)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_LINEAR)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_ANGULAR)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.DISSIPATIVE_DECOUPLED)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.COMPLIANT_TWIST)
 
     def test_controller_with_params(self):
         param_list = [sr.Parameter("damping", 0.0, sr.ParameterType.DOUBLE),
@@ -133,8 +134,8 @@ class TestControllers(unittest.TestCase):
         feedback_state = sr.CartesianState().Identity(robot.get_frames()[-1], robot.get_base_frame())
         joint_state = sr.JointPositions().Zero(robot_name, robot.get_number_of_joints())
 
-        self.assertRaises(RuntimeError, create_cartesian_controller, CONTROLLER_TYPE.NONE, robot)
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.NONE, robot)
+        self.assertRaises(InvalidControllerError, create_cartesian_controller, CONTROLLER_TYPE.NONE, robot)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.NONE, robot)
 
         cart_ctrl = create_cartesian_controller(CONTROLLER_TYPE.IMPEDANCE, robot)
         self.assertNotEqual(cart_ctrl, None)
@@ -153,7 +154,7 @@ class TestControllers(unittest.TestCase):
         parameters = [sr.Parameter("damping", 5.0, sr.ParameterType.DOUBLE)]
         robot = Model("robot", os.path.join(os.path.dirname(os.path.realpath(__file__)), "panda_arm.urdf"))
 
-        self.assertRaises(RuntimeError, create_joint_controller, CONTROLLER_TYPE.NONE, parameters, robot)
+        self.assertRaises(InvalidControllerError, create_joint_controller, CONTROLLER_TYPE.NONE, parameters, robot)
 
         ctrl = create_joint_controller(CONTROLLER_TYPE.IMPEDANCE, parameters, robot)
         self.assertNotEqual(ctrl, None)

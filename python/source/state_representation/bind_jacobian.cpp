@@ -1,4 +1,4 @@
-#include "state_representation_bindings.h"
+#include "state_representation_bindings.hpp"
 
 #include <tuple>
 #include <state_representation/State.hpp>
@@ -6,8 +6,6 @@
 
 void bind_jacobian(py::module_& m) {
   py::class_<Jacobian, std::shared_ptr<Jacobian>, State> c(m, "Jacobian");
-
-  c.def_property_readonly_static("__array_priority__", [](py::object) { return 10000; });
 
   c.def(py::init(), "Empty constructor for a Jacobian");
   c.def(py::init<const std::string&, unsigned int, const std::string&, const std::string&>(),
@@ -40,21 +38,38 @@ void bind_jacobian(py::module_& m) {
   c.def("get_reference_frame", &Jacobian::get_reference_frame, "Getter of the reference_frame attribute");
   c.def("data", &Jacobian::data, "Getter of the data attribute");
 
-  c.def("set_joint_names", py::overload_cast<unsigned int>(&Jacobian::set_joint_names), "Setter of the joint_names attribute from the number of joints", "nb_joints"_a);
-  c.def("set_joint_names", py::overload_cast<const std::vector<std::string>&>(&Jacobian::set_joint_names), "Setter of the joint_names attribute from a vector of joint names", "joint_names"_a);
-  c.def("set_reference_frame", py::overload_cast<const CartesianPose&>(&Jacobian::set_reference_frame), "Setter of the reference_frame attribute from a CartesianPose", "reference_frame"_a);
-  c.def("set_data", py::overload_cast<const Eigen::MatrixXd&>(&Jacobian::set_data), "Setter of the data attribute", "data"_a);
-
-  c.def("transpose", &Jacobian::transpose, "Return the transpose of the Jacobian matrix");
-  c.def("inverse", &Jacobian::inverse, "Return the inverse of the Jacobian matrix");
-  c.def("pseudoinverse", &Jacobian::pseudoinverse, "Return the pseudoinverse of the Jacobian matrix");
+  c.def("set_joint_names", py::overload_cast<unsigned int>(&Jacobian::set_joint_names), "Setter of the joint names attribute from the number of joints", "nb_joints"_a);
+  c.def("set_joint_names", py::overload_cast<const std::vector<std::string>&>(&Jacobian::set_joint_names), "Setter of the joint names attribute from a vector of joint names", "joint_names"_a);
+  c.def("set_reference_frame", &Jacobian::set_reference_frame, "Setter of the reference frame", "reference_frame"_a);
+  c.def("set_data", &Jacobian::set_data, "Setter of the data attribute", "data"_a);
+  c.def("set_zero", &Jacobian::set_zero, "Set the Jacobian matrix to a zero value");
   c.def("copy", &Jacobian::copy, "Return a copy of the Jacobian");
-  c.def("solve", [](const Jacobian& jacobian, const Eigen::MatrixXd& matrix) {
-    return jacobian.solve(matrix);
-  }, "Solve the system X = inv(J)*M to obtain X which is more efficient than multiplying with the pseudo-inverse");
-  c.def("solve", [](const Jacobian& jacobian, const CartesianTwist& twist) {
-    return jacobian.solve(twist);
-  }, "Solve the system dX = J*dq to obtain dq which is more efficient than multiplying with the pseudo-inverse");
+
+  c.def("inverse", [](const Jacobian& jacobian) {
+    return jacobian.inverse();
+  }, "Return the inverse of the Jacobian matrix");
+  c.def("inverse", [](const Jacobian& jacobian, const Eigen::MatrixXd& matrix) {
+    return jacobian.inverse(matrix);
+  }, "Solve the system X = inv(J) * M to obtain X");
+  c.def("inverse", [](const Jacobian& jacobian, const CartesianTwist& twist) {
+    return jacobian.inverse(twist);
+  }, "Transform the given Cartesian twist to joint space");
+  c.def("is_incompatible", &Jacobian::is_incompatible, "Check if the Jacobian is incompatible for operations with the state given as argument", "state_a");
+  c.def("pseudoinverse", [](const Jacobian& jacobian) {
+    return jacobian.pseudoinverse();
+  }, "Return the pseudoinverse of the Jacobian matrix");
+  c.def("pseudoinverse", [](const Jacobian& jacobian, const Eigen::MatrixXd& matrix) {
+    return jacobian.pseudoinverse(matrix);
+  }, "Multiply the given matrix by the pseudoinverse of the Jacobian matrix");
+  c.def("pseudoinverse", [](const Jacobian& jacobian, const CartesianTwist& twist) {
+    return jacobian.pseudoinverse(twist);
+  }, "Transform a Cartesian twist to joint space by pre-multiplying the Jacobian pseudoinverse");
+  c.def("transpose", [](const Jacobian& jacobian) {
+    return jacobian.transpose();
+  }, "Return the transpose of the Jacobian matrix");
+  c.def("transpose", [](const Jacobian& jacobian, const CartesianWrench& wrench) {
+    return jacobian.transpose(wrench);
+  }, "Transform a Cartesian wrench to joint space by pre-multiplying the Jacobian transpose");
 
   c.def("__getitem__", [](const Jacobian& jacobian, std::tuple<int, int> coefficients) {
     return jacobian(std::get<0>(coefficients), std::get<1>(coefficients));
@@ -65,12 +80,9 @@ void bind_jacobian(py::module_& m) {
   }, "Overload the [] operator to modify the value at given (row, col)");
 
   c.def(py::self * Eigen::MatrixXd());
-  c.def(py::self * py::self);
+  c.def(Eigen::Matrix<double, 6, 6>() * py::self);
   c.def(py::self * JointVelocities());
-  c.def(py::self * CartesianTwist());
-  c.def(py::self * CartesianWrench());
   c.def(CartesianPose() * py::self);
-  c.def(Eigen::MatrixXd() * py::self);
 
   c.def("__copy__", [](const Jacobian &jacobian) {
     return Jacobian(jacobian);

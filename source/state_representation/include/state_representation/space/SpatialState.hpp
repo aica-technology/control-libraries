@@ -3,78 +3,72 @@
 #include "state_representation/State.hpp"
 
 namespace state_representation {
-class SpatialState : public State {
-private:
-  std::string reference_frame_; ///< name of the reference frame
 
+class SpatialState : public State {
 public:
   /**
-   * @brief Empty constructor.
+   * @brief Empty constructor
    */
   SpatialState();
 
   /**
-   * @brief Empty constructor with a specific state type.
-   * @param type The type of the State
-   */
-  explicit SpatialState(const StateType& type);
-
-  /**
-   * @brief Constructor with name and reference frame specification.
-   * @param type The type of the State
-   * @param name The name of the State
+   * @brief Constructor with name and reference frame specification
+   * @param name The name of the state
    * @param reference_frame The reference frame in which the state is expressed, by default world
-   * @param empty Specify if the state is initialized as empty, default true
    */
-  explicit SpatialState(
-      const StateType& type, const std::string& name, const std::string& reference_frame = "world",
-      const bool& empty = true
-  );
+  explicit SpatialState(const std::string& name, const std::string& reference_frame = "world");
 
   /**
-   * @brief Copy constructor from another SpatialState.
+   * @brief Copy constructor from another spatial state
    */
-  SpatialState(const SpatialState& state) = default;
+  SpatialState(const SpatialState& state);
 
   /**
-   * @brief Swap the values of the two SpatialState.
-   * @param state1 SpatialState to be swapped with 2
-   * @param state2 SpatialState to be swapped with 1
+   * @brief Swap the values of the two SpatialState
+   * @param state1 Spatial state to be swapped with 2
+   * @param state2 Spatial state to be swapped with 1
    */
   friend void swap(SpatialState& state1, SpatialState& state2);
 
   /**
-   * @brief Copy assignment operator that have to be defined to the custom assignment operator.
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
    * @param state The state with value to assign
    * @return Reference to the current state with new values
    */
   SpatialState& operator=(const SpatialState& state);
 
   /**
-   * @brief Getter of the reference frame as const reference.
-   * @return The name of the reference frame
+   * @brief Getter of the reference frame as const reference
    */
   const std::string& get_reference_frame() const;
 
   /**
-   * @brief Setter of the reference frame.
-   * @param reference_frame The reference frame
+   * @brief Setter of the reference frame
    */
   virtual void set_reference_frame(const std::string& reference_frame);
 
   /**
-   * @brief Check if the state is compatible for operations with the state given as argument.
+   * @brief Check if the spatial state is incompatible for operations with the state given as argument
    * @param state The state to check compatibility with
    */
-  virtual bool is_compatible(const State& state) const override;
+  bool is_incompatible(const State& state) const override;
 
   /**
-   * @brief Overload the ostream operator for printing.
-   * @param os The ostream to append the string representing the SpatialState to
-   * @param state The SpatialState to print
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the state to
+   * @param state The spatial state to print
    * @return The appended ostream
    */
   friend std::ostream& operator<<(std::ostream& os, const SpatialState& state);
+
+protected:
+  /**
+   * @copydoc State::to_string
+   */
+  std::string to_string() const override;
+
+private:
+  std::string reference_frame_; ///< name of the reference frame
 };
 
 inline void swap(SpatialState& state1, SpatialState& state2) {
@@ -82,23 +76,4 @@ inline void swap(SpatialState& state1, SpatialState& state2) {
   std::swap(state1.reference_frame_, state2.reference_frame_);
 }
 
-inline SpatialState& SpatialState::operator=(const SpatialState& state) {
-  SpatialState tmp(state);
-  swap(*this, tmp);
-  return *this;
-}
-
-inline const std::string& SpatialState::get_reference_frame() const {
-  return this->reference_frame_;
-}
-
-inline void SpatialState::set_reference_frame(const std::string& reference_frame) {
-  this->reference_frame_ = reference_frame;
-}
-
-inline bool SpatialState::is_compatible(const State& state) const {
-  bool compatible = (this->get_name() == state.get_name())
-      && (this->reference_frame_ == dynamic_cast<const SpatialState&>(state).reference_frame_);
-  return compatible;
-}
-}
+}// namespace state_representation

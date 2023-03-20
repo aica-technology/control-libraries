@@ -8,16 +8,14 @@ from state_representation import State, StateType
 STATE_METHOD_EXPECTS = [
     'get_type',
     'is_empty',
-    'set_empty',
-    'set_filled',
+    'get_age',
     'get_timestamp',
-    'set_timestamp',
     'reset_timestamp',
     'get_name',
     'set_name',
     'is_deprecated',
-    'is_compatible',
-    'initialize'
+    'is_incompatible',
+    'reset'
 ]
 
 
@@ -34,23 +32,14 @@ class TestState(unittest.TestCase):
         self.assertEqual(empty1.get_name(), "")
         self.assertTrue(empty1.is_empty())
 
-        empty2 = State(StateType.JOINT_STATE)
-        self.assertEqual(empty2.get_type(), StateType.JOINT_STATE)
-        self.assertEqual(empty2.get_name(), "")
+        empty2 = State("test")
+        self.assertEqual(empty2.get_type(), StateType.STATE)
+        self.assertEqual(empty2.get_name(), "test")
         self.assertTrue(empty2.is_empty())
 
-        empty3 = State(StateType.CARTESIAN_STATE, "test", True)
-        self.assertEqual(empty3.get_type(), StateType.CARTESIAN_STATE)
-        self.assertEqual(empty3.get_name(), "test")
-        self.assertTrue(empty3.is_empty())
-        empty3.set_filled()
-        self.assertFalse(empty3.is_empty())
-
-        state = State(empty3)
-        self.assertEqual(state.get_type(), StateType.CARTESIAN_STATE)
+        state = State(empty2)
+        self.assertEqual(state.get_type(), StateType.STATE)
         self.assertEqual(state.get_name(), "test")
-        self.assertFalse(state.is_empty())
-        state.set_empty()
         self.assertTrue(state.is_empty())
 
     def test_compatibility(self):
@@ -58,27 +47,32 @@ class TestState(unittest.TestCase):
         state1.set_name("test")
         self.assertEqual(state1.get_name(), "test")
 
-        state2 = State(StateType.STATE, "test", False)
-        self.assertTrue(state1.is_compatible(state2))
-        state2.set_name("world")
-        self.assertFalse(state1.is_compatible(state2))
+        state2 = State("test")
+        self.assertFalse(state1.is_incompatible(state2))
 
-        state2.initialize()
+        state2.reset()
         self.assertTrue(state2.is_empty())
 
     def test_timestamp(self):
-        state = State(StateType.STATE, "test", False)
+        state = State("test")
         time.sleep(0.2)
+        self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertTrue(state.is_deprecated(0.1))
         state.reset_timestamp()
+        self.assertFalse(state.is_deprecated(datetime.timedelta(milliseconds=100)))
+        self.assertFalse(state.is_deprecated(0.1))
+        self.assertTrue(state.get_age() < 0.1)
+        time.sleep(0.2)
+        self.assertTrue(state.is_deprecated(datetime.timedelta(milliseconds=100)))
+        self.assertTrue(state.is_deprecated(0.1))
+        state.reset_timestamp()
+        self.assertFalse(state.is_deprecated(datetime.timedelta(milliseconds=100)))
         self.assertFalse(state.is_deprecated(0.1))
         time.sleep(0.2)
-        self.assertTrue(state.is_deprecated(0.1))
-        state.set_timestamp(datetime.datetime.now().timestamp())
-        self.assertFalse(state.is_deprecated(0.1))
+        self.assertTrue(state.get_age() > 0.2)
 
     def test_copy(self):
-        state = State(StateType.STATE, "test", False)
+        state = State("test")
         state2 = copy.copy(state)
         state3 = copy.deepcopy(state)
 
@@ -86,10 +80,6 @@ class TestState(unittest.TestCase):
         state = State()
         self.assertTrue(state.is_empty())
         self.assertFalse(state)
-
-        state.set_filled()
-        self.assertFalse(state.is_empty())
-        self.assertTrue(state)
 
 if __name__ == '__main__':
     unittest.main()

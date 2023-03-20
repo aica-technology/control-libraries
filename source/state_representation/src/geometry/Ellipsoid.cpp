@@ -1,85 +1,93 @@
 #include "state_representation/geometry/Ellipsoid.hpp"
-#include "state_representation/exceptions/NoSolutionToFitException.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+
+#include <eigen3/Eigen/Sparse>
+#include <random>
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/exceptions/NoSolutionToFitException.hpp"
 
 namespace state_representation {
-Ellipsoid::Ellipsoid() : Shape(StateType::GEOMETRY_ELLIPSOID), axis_lengths_({1., 1.}), rotation_angle_(0) {}
+
+Ellipsoid::Ellipsoid() : Shape(), axis_lengths_({1., 1.}), rotation_angle_(0) {
+  this->set_type(StateType::GEOMETRY_ELLIPSOID);
+}
 
 Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :
-    Shape(StateType::GEOMETRY_ELLIPSOID, name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
-  this->set_filled();
+    Shape(name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
+  this->set_type(StateType::GEOMETRY_ELLIPSOID);
 }
 
-Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) :
-    Shape(ellipsoid), axis_lengths_(ellipsoid.axis_lengths_), rotation_angle_(0) {}
-
-const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned int nb_samples) const {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
+Ellipsoid::Ellipsoid(const Ellipsoid& ellipsoid) : Ellipsoid(ellipsoid.get_name()) {
+  if (ellipsoid) {
+    this->set_center_state(ellipsoid.get_center_state());
+    this->set_axis_lengths(ellipsoid.get_axis_lengths());
+    this->set_rotation_angle(ellipsoid.get_rotation_angle());
   }
-  // use a linspace to have a full rotation angle between [0, 2pi]
-  std::vector<double> alpha = math_tools::linspace(0, 2 * M_PI, nb_samples);
-
-  std::list<CartesianPose> samples;
-  for (unsigned int i = 0; i < nb_samples; ++i) {
-    CartesianPose point(this->get_name() + "_point" + std::to_string(i), this->get_rotation().get_name());
-    double a = alpha.at(i);
-    Eigen::Vector3d position;
-    position(0) = this->get_axis_length(0) * cos(a);
-    position(1) = this->get_axis_length(1) * sin(a);
-    position(2) = 0;
-    point.set_position(position);
-    samples.push_back(this->get_center_pose() * this->get_rotation() * point);
-  }
-  return samples;
 }
 
-const Ellipsoid Ellipsoid::from_algebraic_equation(
-    const std::string& name, const std::vector<double>& coefficients, const std::string& reference_frame
-) {
-  // extract all the components from the coefficients vector
-  double b2 = coefficients[1] * coefficients[1];
-  double delta = b2 - 4 * coefficients[0] * coefficients[2];
+Ellipsoid Ellipsoid::Unit(const std::string& name, const std::string& reference_frame) {
+  Ellipsoid unit = Ellipsoid(name, reference_frame);
+  unit.set_empty(false);
+  return unit;
+}
 
-  // store intermediate calculations
-  double tmp1 = coefficients[0] * coefficients[4] * coefficients[4] // AE2
-      + coefficients[2] * coefficients[3] * coefficients[3] // CD2
-      - coefficients[1] * coefficients[3] * coefficients[4] // BDE
-      + delta * coefficients[5]; // deltaF
-  double tmp2 = coefficients[2] - coefficients[0]; // C-A
-  double tmp3 = sqrt(tmp2 * tmp2 + b2);
+Ellipsoid& Ellipsoid::operator=(const Ellipsoid& state) {
+  Ellipsoid tmp(state);
+  swap(*this, tmp);
+  return *this;
+}
 
-  // create the ellipsoid in the plan and set its center and axis
-  Ellipsoid result(name, reference_frame);
-  std::vector<double> axis_lengths(2);
+const std::vector<double>& Ellipsoid::get_axis_lengths() const {
+  this->assert_not_empty();
+  return this->axis_lengths_;
+}
 
-  // set axis lengths
-  double r1 = -sqrt(2 * tmp1 * (coefficients[0] + coefficients[2] + tmp3)) / delta;
-  double r2 = -sqrt(2 * tmp1 * (coefficients[0] + coefficients[2] - tmp3)) / delta;
-  axis_lengths[0] = (r1 >= r2) ? r1 : r2;
-  axis_lengths[1] = (r1 >= r2) ? r2 : r1;
-  result.set_axis_lengths(axis_lengths);
+double Ellipsoid::get_axis_length(unsigned int index) const {
+  this->assert_not_empty();
+  return this->axis_lengths_[index];
+}
 
-  // set center position
-  double cx = (2 * coefficients[2] * coefficients[3] - coefficients[1] * coefficients[4]) / delta;
-  double cy = (2 * coefficients[0] * coefficients[4] - coefficients[1] * coefficients[3]) / delta;
-  result.set_center_position(Eigen::Vector3d(cx, cy, 0));
+double Ellipsoid::get_rotation_angle() const {
+  this->assert_not_empty();
+  return this->rotation_angle_;
+}
 
-  // set center orientation
-  double phi;
-  if (abs(coefficients[1]) > 1e-4) {
-    phi = atan2(tmp2 - tmp3, coefficients[1]);
-  } else if (coefficients[0] < coefficients[2]) {
-    phi = 0.;
-  } else {
-    phi = M_PI_2;
+const CartesianPose Ellipsoid::get_rotation() const {
+  this->assert_not_empty();
+  Eigen::Quaterniond rotation(Eigen::AngleAxisd(this->rotation_angle_, Eigen::Vector3d::UnitZ()));
+  return CartesianPose(
+      this->get_center_pose().get_name() + "_rotated", Eigen::Vector3d::Zero(), rotation,
+      this->get_center_pose().get_name());
+}
+
+void Ellipsoid::set_axis_lengths(const std::vector<double>& axis_lengths) {
+  this->axis_lengths_ = axis_lengths;
+  this->set_empty(false);
+}
+
+void Ellipsoid::set_axis_lengths(unsigned int index, double axis_length) {
+  this->axis_lengths_[index] = axis_length;
+  this->set_empty(false);
+}
+
+void Ellipsoid::set_rotation_angle(double rotation_angle) {
+  this->rotation_angle_ = rotation_angle;
+  this->set_empty(false);
+}
+
+void Ellipsoid::set_data(const Eigen::VectorXd& data) {
+  if (data.size() != 6) {
+    throw exceptions::IncompatibleSizeException(
+        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
   }
-  if (r1 < r2) { phi += M_PI_2; }
-  result.set_rotation_angle(phi);
+  this->set_center_position(data.head(3));
+  this->set_rotation_angle(data(3));
+  this->set_axis_lengths({data(4), data(5)});
+}
 
-  return result;
+void Ellipsoid::set_data(const std::vector<double>& data) {
+  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
 }
 
 const Ellipsoid Ellipsoid::fit(
@@ -165,33 +173,95 @@ const Ellipsoid Ellipsoid::fit(
   return from_algebraic_equation(name, coefficients, reference_frame);
 }
 
-void Ellipsoid::set_data(const Eigen::VectorXd& data) {
-  if (this->get_center_state().is_empty()) {
-    throw exceptions::EmptyStateException("The center state of the Ellipsoid is not set yet.");
+const Ellipsoid Ellipsoid::from_algebraic_equation(
+    const std::string& name, const std::vector<double>& coefficients, const std::string& reference_frame
+) {
+  // extract all the components from the coefficients vector
+  double b2 = coefficients[1] * coefficients[1];
+  double delta = b2 - 4 * coefficients[0] * coefficients[2];
+
+  // store intermediate calculations
+  double tmp1 = coefficients[0] * coefficients[4] * coefficients[4] // AE2
+      + coefficients[2] * coefficients[3] * coefficients[3] // CD2
+      - coefficients[1] * coefficients[3] * coefficients[4] // BDE
+      + delta * coefficients[5]; // deltaF
+  double tmp2 = coefficients[2] - coefficients[0]; // C-A
+  double tmp3 = sqrt(tmp2 * tmp2 + b2);
+
+  // create the ellipsoid in the plan and set its center and axis
+  Ellipsoid result(name, reference_frame);
+  std::vector<double> axis_lengths(2);
+
+  // set axis lengths
+  double r1 = -sqrt(2 * tmp1 * (coefficients[0] + coefficients[2] + tmp3)) / delta;
+  double r2 = -sqrt(2 * tmp1 * (coefficients[0] + coefficients[2] - tmp3)) / delta;
+  axis_lengths[0] = (r1 >= r2) ? r1 : r2;
+  axis_lengths[1] = (r1 >= r2) ? r2 : r1;
+  result.set_axis_lengths(axis_lengths);
+
+  // set center position
+  double cx = (2 * coefficients[2] * coefficients[3] - coefficients[1] * coefficients[4]) / delta;
+  double cy = (2 * coefficients[0] * coefficients[4] - coefficients[1] * coefficients[3]) / delta;
+  result.set_center_position(Eigen::Vector3d(cx, cy, 0));
+
+  // set center orientation
+  double phi;
+  if (abs(coefficients[1]) > 1e-4) {
+    phi = atan2(tmp2 - tmp3, coefficients[1]);
+  } else if (coefficients[0] < coefficients[2]) {
+    phi = 0.;
+  } else {
+    phi = M_PI_2;
   }
-  if (data.size() != 6) {
-    throw exceptions::IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
-  }
-  this->set_center_position(data.head(3));
-  this->set_rotation_angle(data(3));
-  this->set_axis_lengths({data(4), data(5)});
+  if (r1 < r2) { phi += M_PI_2; }
+  result.set_rotation_angle(phi);
+
+  return result;
 }
 
-void Ellipsoid::set_data(const std::vector<double>& data) {
-  this->set_data(Eigen::VectorXd::Map(data.data(), data.size()));
+const std::list<CartesianPose> Ellipsoid::sample_from_parameterization(unsigned int nb_samples) const {
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException(this->get_name() + " state is empty");
+  }
+  // use a linspace to have a full rotation angle between [0, 2pi]
+  std::vector<double> alpha = math_tools::linspace(0, 2 * M_PI, nb_samples);
+
+  std::list<CartesianPose> samples;
+  for (unsigned int i = 0; i < nb_samples; ++i) {
+    CartesianPose point(this->get_name() + "_point" + std::to_string(i), this->get_rotation().get_name());
+    double a = alpha.at(i);
+    Eigen::Vector3d position;
+    position(0) = this->get_axis_length(0) * cos(a);
+    position(1) = this->get_axis_length(1) * sin(a);
+    position(2) = 0;
+    point.set_position(position);
+    samples.push_back(this->get_center_pose() * this->get_rotation() * point);
+  }
+  return samples;
+}
+
+const std::vector<double> Ellipsoid::to_std_vector() const {
+  this->assert_not_empty();
+  std::vector<double> representation(6);
+  // position
+  representation[0] = this->get_center_position()(0);
+  representation[1] = this->get_center_position()(1);
+  representation[2] = this->get_center_position()(2);
+  // rotation angle
+  representation[3] = this->get_rotation_angle();
+  // axis lengths
+  representation[4] = this->get_axis_length(0);
+  representation[5] = this->get_axis_length(1);
+  return representation;
 }
 
 std::ostream& operator<<(std::ostream& os, const Ellipsoid& ellipsoid) {
+  os << ellipsoid.to_string();
   if (ellipsoid.is_empty()) {
-    os << "Empty Ellipsoid";
-  } else {
-    os << "Ellipsoid " << ellipsoid.get_name() << " of dimensions [";
-    os << ellipsoid.get_axis_length(0) << ", ";
-    os << ellipsoid.get_axis_length(1) << "]";
-    os << " with state:" << std::endl;
-    os << ellipsoid.get_center_state();
+    return os;
   }
+  os << std::endl;
+  os << "axis lengths: [" << ellipsoid.get_axis_length(0) << ", " << ellipsoid.get_axis_length(1) << "]";
   return os;
 }
-}
+}// namespace state_representation

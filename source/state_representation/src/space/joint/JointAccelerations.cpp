@@ -1,9 +1,11 @@
 #include "state_representation/space/joint/JointAccelerations.hpp"
+
 #include "state_representation/exceptions/EmptyStateException.hpp"
 
-using namespace state_representation::exceptions;
-
 namespace state_representation {
+
+using namespace exceptions;
+
 JointAccelerations::JointAccelerations() {
   this->set_type(StateType::JOINT_ACCELERATIONS);
 }
@@ -31,11 +33,11 @@ JointAccelerations::JointAccelerations(const std::string& robot_name,
 }
 
 JointAccelerations::JointAccelerations(const JointState& state) : JointState(state) {
-  // set all the state variables to 0 except accelerations
   this->set_type(StateType::JOINT_ACCELERATIONS);
-  this->set_zero();
-  this->set_accelerations(state.get_accelerations());
-  this->set_empty(state.is_empty());
+  if (state) {
+    this->set_zero();
+    this->set_accelerations(state.get_accelerations());
+  }
 }
 
 JointAccelerations::JointAccelerations(const JointAccelerations& accelerations) :
@@ -62,81 +64,6 @@ JointAccelerations::Random(const std::string& robot_name, const std::vector<std:
   return JointAccelerations(robot_name, joint_names, Eigen::VectorXd::Random(joint_names.size()));
 }
 
-JointAccelerations& JointAccelerations::operator+=(const JointAccelerations& accelerations) {
-  this->JointState::operator+=(accelerations);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator+(const JointAccelerations& accelerations) const {
-  return this->JointState::operator+(accelerations);
-}
-
-JointAccelerations& JointAccelerations::operator-=(const JointAccelerations& accelerations) {
-  this->JointState::operator-=(accelerations);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator-(const JointAccelerations& accelerations) const {
-  return this->JointState::operator-(accelerations);
-}
-
-JointAccelerations& JointAccelerations::operator*=(double lambda) {
-  this->JointState::operator*=(lambda);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator*(double lambda) const {
-  return this->JointState::operator*(lambda);
-}
-
-JointAccelerations& JointAccelerations::operator*=(const Eigen::ArrayXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator*(const Eigen::ArrayXd& lambda) const {
-  JointAccelerations result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointAccelerations& JointAccelerations::operator*=(const Eigen::MatrixXd& lambda) {
-  this->multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator*(const Eigen::MatrixXd& lambda) const {
-  JointAccelerations result(*this);
-  result *= lambda;
-  return result;
-}
-
-JointAccelerations& JointAccelerations::operator/=(double lambda) {
-  this->JointState::operator/=(lambda);
-  return (*this);
-}
-
-JointAccelerations JointAccelerations::operator/(double lambda) const {
-  return this->JointState::operator/(lambda);
-}
-
-JointVelocities JointAccelerations::operator*(const std::chrono::nanoseconds& dt) const {
-  if (this->is_empty()) { throw EmptyStateException(this->get_name() + " state is empty"); }
-  // operations
-  JointVelocities velocities(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // multiply the velocities by this period value and assign it as position
-  velocities.set_velocities(period * this->get_accelerations());
-  return velocities;
-}
-
-JointAccelerations JointAccelerations::copy() const {
-  JointAccelerations result(*this);
-  return result;
-}
-
 Eigen::VectorXd JointAccelerations::data() const {
   return this->get_accelerations();
 }
@@ -153,15 +80,15 @@ void JointAccelerations::clamp(double max_absolute_value, double noise_ratio) {
   this->clamp_state_variable(max_absolute_value, JointStateVariable::ACCELERATIONS, noise_ratio);
 }
 
+void
+JointAccelerations::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
+  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::ACCELERATIONS, noise_ratio_array);
+}
+
 JointAccelerations JointAccelerations::clamped(double max_absolute_value, double noise_ratio) const {
   JointAccelerations result(*this);
   result.clamp(max_absolute_value, noise_ratio);
   return result;
-}
-
-void
-JointAccelerations::clamp(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) {
-  this->clamp_state_variable(max_absolute_value_array, JointStateVariable::ACCELERATIONS, noise_ratio_array);
 }
 
 JointAccelerations JointAccelerations::clamped(const Eigen::ArrayXd& max_absolute_value_array,
@@ -171,19 +98,18 @@ JointAccelerations JointAccelerations::clamped(const Eigen::ArrayXd& max_absolut
   return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations) {
-  if (accelerations.is_empty()) {
-    os << "Empty JointAccelerations";
-  } else {
-    os << accelerations.get_name() << " JointAccelerations" << std::endl;
-    os << "names: [";
-    for (auto& n : accelerations.get_names()) { os << n << ", "; }
-    os << "]" << std::endl;
-    os << "accelerations: [";
-    for (unsigned int i = 0; i < accelerations.get_size(); ++i) { os << accelerations.get_accelerations()(i) << ", "; }
-    os << "]";
-  }
-  return os;
+JointAccelerations JointAccelerations::copy() const {
+  JointAccelerations result(*this);
+  return result;
+}
+
+JointAccelerations& JointAccelerations::operator*=(double lambda) {
+  this->JointState::operator*=(lambda);
+  return (*this);
+}
+
+JointAccelerations JointAccelerations::operator*(double lambda) const {
+  return this->JointState::operator*(lambda);
 }
 
 JointAccelerations operator*(double lambda, const JointAccelerations& accelerations) {
@@ -192,19 +118,78 @@ JointAccelerations operator*(double lambda, const JointAccelerations& accelerati
   return result;
 }
 
-JointAccelerations operator*(const Eigen::ArrayXd& lambda, const JointAccelerations& accelerations) {
+JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations) {
   JointAccelerations result(accelerations);
-  result *= lambda;
+  result.multiply_state_variable(lambda, JointStateVariable::ACCELERATIONS);
   return result;
 }
 
-JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerations& accelerations) {
-  JointAccelerations result(accelerations);
-  result *= lambda;
-  return result;
+JointVelocities JointAccelerations::operator*(const std::chrono::nanoseconds& dt) const {
+  // operations
+  JointVelocities velocities(this->get_name(), this->get_names());
+  // convert the period to a double with the second as reference
+  double period = dt.count();
+  period /= 1e9;
+  // multiply the velocities by this period value and assign it as position
+  velocities.set_velocities(period * this->get_accelerations());
+  return velocities;
 }
 
 JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations) {
   return accelerations * dt;
+}
+
+JointAccelerations& JointAccelerations::operator/=(double lambda) {
+  this->JointState::operator/=(lambda);
+  return (*this);
+}
+
+JointAccelerations JointAccelerations::operator/(double lambda) const {
+  return this->JointState::operator/(lambda);
+}
+
+JointAccelerations& JointAccelerations::operator+=(const JointAccelerations& accelerations) {
+  this->JointState::operator+=(accelerations);
+  return (*this);
+}
+
+JointAccelerations& JointAccelerations::operator+=(const JointState& state) {
+  this->JointState::operator+=(state);
+  return (*this);
+}
+
+JointAccelerations JointAccelerations::operator+(const JointAccelerations& accelerations) const {
+  return this->JointState::operator+(accelerations);
+}
+
+JointState JointAccelerations::operator+(const JointState& state) const {
+  return this->JointState::operator+(state);
+}
+
+JointAccelerations JointAccelerations::operator-() const {
+  return this->JointState::operator-();
+}
+
+JointAccelerations& JointAccelerations::operator-=(const JointAccelerations& accelerations) {
+  this->JointState::operator-=(accelerations);
+  return (*this);
+}
+
+JointAccelerations& JointAccelerations::operator-=(const JointState& state) {
+  this->JointState::operator-=(state);
+  return (*this);
+}
+
+JointAccelerations JointAccelerations::operator-(const JointAccelerations& accelerations) const {
+  return this->JointState::operator-(accelerations);
+}
+
+JointState JointAccelerations::operator-(const JointState& state) const {
+  return this->JointState::operator-(state);
+}
+
+std::ostream& operator<<(std::ostream& os, const JointAccelerations& accelerations) {
+  os << accelerations.to_string();
+  return os;
 }
 }// namespace state_representation

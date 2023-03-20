@@ -13,10 +13,11 @@
 
 #include <eigen3/Eigen/Core>
 
-#include <clproto.h>
+#include <robot_model/Model.hpp>
 
 namespace py = pybind11;
 using namespace pybind11::literals;
+using namespace robot_model;
 
-void bind_clproto(py::module_& m);
-void bind_clproto_parameters(py::module_& m);
+void bind_exceptions(py::module_& m);
+void bind_model(py::module_& m);
