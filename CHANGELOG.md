@@ -1,13 +1,93 @@
 # CHANGELOG
 
 Release Versions:
+- [7.0.0](#700)
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes (in development)
+## 7.0.0
 
-- Update documentation for contribution and demos (#112)
+Version 7.0.0 is a major update to the `state_representation` module to make `State` types more internally consistent
+and safe to use.
+
+### Breaking changes
+
+**state_representation**
+
+The `State` class has been reworked, with the following breaking changes to the API:
+- `State::initialize` has been reworked as `State::reset`.
+- `State::is_compatible` has been removed in favor of the new `State::is_incompatible`.
+- `State::set_empty` and `State::set_filled` have been removed from the public API.
+
+In addition, the `StateType` of a state can no longer be changed during or after construction, and is determined
+uniquely by the class implementation.
+
+The `CartesianState` class and derived classes have revised operators for addition, subtraction and product operators
+to promote consistency and safety. Invalid operations are now explicitly prohibited to prevent undesirable implicit type
+casting, and the return type of these operations now follows a standard pattern.
+
+The `JointState` class and derived classes had similar changes.
+
+The `Jacobian` class is safer to use; `Jacobian::transpose`, `Jacobian::inverse` and `Jacobian::pseudoinverse` now
+return a matrix in the default case instead of a modified `Jacobian` object and have overloaded variants for direct
+calculations with other types. This means a `Jacobian` instance always represents the normal, non-transposed or
+non-inverted case. `Jacobian::set_reference_frame` now takes a string instead of a `CartesianPose`.
+
+**General**
+
+All header files now use the `.hpp` extension.
+
+### Features and improvements
+
+**state_representation**
+
+The timestamp of a `State` object is now consistently reset by every non-const method, so that it always indicates the 
+time of last modification. The method `State::get_age()` can be used to get the time since last modification in seconds.
+
+The emptiness of a state is handled more consistently, and accessing data on an empty state will now throw an exception.
+
+Quaternion manipulation, conjugation and differentiation is handled in a more internally consistent way in regard to
+the positive or negative vector representation. The random orientation of a `CartesianPose` now correctly samples a
+uniform distribution of the orientation quaternion space instead of a unit 4-vector space.
+
+Manipulation of `CartesianState` wrench is now more consistent and explicit, in particular for transform and inverse.
+
+**controllers**
+
+The controllers now have a `forward_force` parameters that can toggle whether the `CartesianWrench` or `JointTorque`
+of a feedback state is passed through to the command as a feed-forward force or not.
+
+**Python**
+
+The Python bindings now include the exceptions for each module. For example:
+- `from state_representation.exceptions import EmptyStateError`
+
+The bindings have also been updated to include the breaking changes in `state_representation`.
+
+**clproto**
+
+The message protocol has been simplified and no longer encodes the timestamp or state type, since both of these
+properties are set on construction. The data of an empty state is also ignored when it is encoded or decoded, allowing
+for more efficient and consistent serialized messages.
+
+### Documentation
+
+The `state_representation` module
+[documentation](https://github.com/aica-technology/control-libraries/tree/main/source/state_representation)
+has been rewritten for more clarity and completeness. Additionally, the main repository README, demo folder and
+contribution guidelines have been updated.
+
+### Behind the scenes
+
+The build system has been improved and uses pkg-config files to resolve dependencies during installation.
+
+A contributor license agreement and signature workflow have been added to protect and encourage open source development.
+
+### Full changelog:
+
+- Fix angular stiffness calculation in impedance controller (#117)
+- Update documentation for contribution and demos (#113)
 - Implement frame name setter for Jacobian (#111)
 - Update state representation documentation (#107, #110)
 - Consistently reset timestamp if state data has been changed (#108)
@@ -19,7 +99,7 @@ Release Versions:
 - Raise exception in getters if state is empty (#97)
 - Bind error objects of all library modules with Pybind (#98)
 - Move inlined functions of geometry classes to source files (#95)
-- Setting state to zero results in non empty state (#93)
+- Setting state to zero results in non-empty state (#93)
 - Clean up geometry classes to define emptiness (#91)
 - Fix wrench product and inverse (#53)
 - Require CLA signatures with PR workflow (#89)
@@ -38,11 +118,11 @@ Release Versions:
 - Allow Parameter construction with empty name (#67)
 - Add initialize method to Parameter class (#68)
 - Bind operators of joint states (#65)
-- Refactor operators in JointState (multiplication & division #62, addition #63, subtraction #64)
+- Refactor operators in JointState for multiplication & division (#62), addition (#63) and subtraction (#64)
 - Bind operators of Cartesian states (#60)
 - Fix quaternion differentiation (#58)
-- Refactor operators in CartesianState (addition #23, subtraction #33 and #40,
-  transformation #28 and #45, division #41, multiplication #43)
+- Refactor operators in CartesianState for addition (#23), subtraction (#33, #40), transformation (#28, #45),
+division (#41) and multiplication (#43)
 - Add a Contributor License Agreement (#61)
 - Uniformly sample orientation with UnitRandom (#56)
 - Refactor get/set variable helpers in Cartesian and joint state (#39, #57)
