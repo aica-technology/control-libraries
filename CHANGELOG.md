@@ -6,6 +6,10 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+
+- Construct zero matrices in compliant twist controller (#120)
+
 ## 7.0.0
 
 Version 7.0.0 is a major update to the `state_representation` module to make `State` types more internally consistent
