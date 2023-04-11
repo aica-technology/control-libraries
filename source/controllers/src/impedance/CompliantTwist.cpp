@@ -60,7 +60,8 @@ void CompliantTwist::set_angular_gains(double angular_stiffness, double angular_
   angular_stiffness_->set_value(angular_stiffness);
   angular_damping_->set_value(angular_damping);
 
-  Eigen::MatrixXd k(6, 6), d(6, 6);
+  Eigen::MatrixXd k = Eigen::MatrixXd::Zero(6, 6);
+  Eigen::MatrixXd d = Eigen::MatrixXd::Zero(6, 6);
   k.diagonal() << 0, 0, 0, angular_stiffness, angular_stiffness, angular_stiffness;
   d.diagonal() << 0, 0, 0, angular_damping, angular_damping, angular_damping;
   velocity_impedance_ctrl_.set_parameter_value("stiffness", k);
