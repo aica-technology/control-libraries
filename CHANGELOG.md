@@ -8,6 +8,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Catch out of range exception in `ParameterMap::assert_parameter_valid` (#122)
 - Construct zero matrices in compliant twist controller (#120)
 
 ## 7.0.0
