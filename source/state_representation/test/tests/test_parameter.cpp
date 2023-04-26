@@ -275,6 +275,9 @@ TYPED_TEST_P(ParameterTest, MakeShared) {
     EXPECT_EQ(param->get_parameter_type(), std::get<1>(test_case));
     EXPECT_EQ(param->get_parameter_state_type(), std::get<2>(test_case));
     expect_values_equal(param->get_value(), std::get<0>(test_case));
+    auto empty_param = make_shared_parameter<TypeParam>("test");
+    EXPECT_TRUE(empty_param->is_empty());
+    EXPECT_FALSE(*empty_param);
   }
 }
 
