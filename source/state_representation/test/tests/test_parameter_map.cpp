@@ -33,6 +33,7 @@ TEST(ParameterMapTest, ParameterMap) {
 TEST(ParameterMapTest, DerivedParameterMap) {
   ParameterInterfaceList params;
   params.push_back(std::make_shared<Parameter<std::string>>("string", "test"));
+  params.push_back(std::make_shared<Parameter<JointState>>("joint", JointState::Zero("robot", 1)));
 
   auto map = TestParameterMap(params);
   // Parameter that doesn't exist cannot be set
@@ -41,4 +42,6 @@ TEST(ParameterMapTest, DerivedParameterMap) {
   EXPECT_NO_THROW(map.set_parameter_value<std::string>("string", "new"));
   // Parameter cannot be set with incorrect type
   EXPECT_THROW(map.set_parameter_value("string", 1), exceptions::InvalidParameterException);
+  // Parameter cannot be set with incorrect state type
+  EXPECT_THROW(map.set_parameter_value("joint", CartesianState::Random("test")), exceptions::InvalidParameterException);
 }

@@ -51,6 +51,11 @@ void ParameterMap::assert_parameter_valid(const std::shared_ptr<ParameterInterfa
       throw exceptions::InvalidParameterException(
           "Parameter '" + parameter->get_name() + "' exists, but has unexpected type.");
     }
+    if (parameter->get_parameter_type() == ParameterType::STATE && parameter->get_parameter_state_type()
+        != this->parameters_.at(parameter->get_name())->get_parameter_state_type()) {
+      throw exceptions::InvalidParameterException(
+          "Parameter '" + parameter->get_name() + "' exists, but has unexpected state type.");
+    }
   } catch (const std::out_of_range&) {
     throw exceptions::InvalidParameterException("Parameter '" + parameter->get_name() + "' doesn't exist.");
   }
