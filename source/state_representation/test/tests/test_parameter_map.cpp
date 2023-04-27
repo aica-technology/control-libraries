@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/parameters/ParameterMap.hpp"
 #include "state_representation/exceptions/InvalidParameterException.hpp"
 
@@ -9,15 +10,20 @@ class TestParameterMap : public ParameterMap {
 public:
   explicit TestParameterMap(const ParameterInterfaceList& parameters) : ParameterMap(parameters) {}
 
+  using ParameterMap::assert_parameter_valid;
+
+  bool validate_called = false;
+
 private:
   void validate_and_set_parameter(const std::shared_ptr<ParameterInterface>& parameter) override {
-    assert_parameter_valid(parameter);
-    this->parameters_.insert_or_assign(parameter->get_name(), parameter);
+    validate_called = true;
+    ParameterMap::validate_and_set_parameter(parameter);
   }
 };
 
-TEST(ParameterMapTest, ParameterMap) {
-  auto map = ParameterMap();
+TEST(ParameterMapTest, ValidateSetParameter) {
+  // The TestParameterMap overrides `validate_and_set_parameter`, setting parameters should update the flag
+  auto map = TestParameterMap(ParameterInterfaceList());
   map.set_parameter(make_shared_parameter("int", 1));
   int value;
   EXPECT_NO_THROW(value = map.get_parameter_value<int>("int"));
@@ -30,18 +36,17 @@ TEST(ParameterMapTest, ParameterMap) {
   EXPECT_THROW(value = map.get_parameter_value<int>("int"), exceptions::InvalidParameterException);
 }
 
-TEST(ParameterMapTest, DerivedParameterMap) {
+TEST(ParameterMapTest, AssertParameterValid) {
   ParameterInterfaceList params;
   params.push_back(std::make_shared<Parameter<std::string>>("string", "test"));
   params.push_back(std::make_shared<Parameter<JointState>>("joint", JointState::Zero("robot", 1)));
 
   auto map = TestParameterMap(params);
-  // Parameter that doesn't exist cannot be set
-  EXPECT_THROW(map.set_parameter_value("int", 1), exceptions::InvalidParameterException);
-
-  EXPECT_NO_THROW(map.set_parameter_value<std::string>("string", "new"));
-  // Parameter cannot be set with incorrect type
-  EXPECT_THROW(map.set_parameter_value("string", 1), exceptions::InvalidParameterException);
-  // Parameter cannot be set with incorrect state type
-  EXPECT_THROW(map.set_parameter_value("joint", CartesianState::Random("test")), exceptions::InvalidParameterException);
+  // Parameter doesn't exist
+  EXPECT_THROW(map.assert_parameter_valid(make_shared_parameter("int", 1)), exceptions::InvalidParameterException);
+  // Parameter has incorrect parameter type
+  EXPECT_THROW(map.assert_parameter_valid(make_shared_parameter("string", 1)), exceptions::InvalidParameterException);
+  // Parameter has incorrect parameter state type
+  EXPECT_THROW(map.assert_parameter_valid(make_shared_parameter("joint", CartesianState::Random("test"))),
+               exceptions::InvalidParameterException);
 }
