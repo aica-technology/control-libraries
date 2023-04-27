@@ -47,7 +47,7 @@ void ParameterMap::set_parameters(const ParameterInterfaceMap& parameters) {
 
 void ParameterMap::assert_parameter_valid(const std::shared_ptr<ParameterInterface>& parameter) {
   try {
-    if (this->parameters_.at(parameter->get_name())->get_type() != parameter->get_type()) {
+    if (this->parameters_.at(parameter->get_name())->get_parameter_type() != parameter->get_parameter_type()) {
       throw exceptions::InvalidParameterException(
           "Parameter '" + parameter->get_name() + "' exists, but has unexpected type.");
     }
