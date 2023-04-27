@@ -24,11 +24,15 @@ private:
 TEST(ParameterMapTest, ValidateSetParameter) {
   // The TestParameterMap overrides `validate_and_set_parameter`, setting parameters should update the flag
   auto map = TestParameterMap(ParameterInterfaceList());
+  EXPECT_FALSE(map.validate_called);
   map.set_parameter(make_shared_parameter("int", 1));
+  EXPECT_TRUE(map.validate_called);
   int value;
   EXPECT_NO_THROW(value = map.get_parameter_value<int>("int"));
   EXPECT_EQ(1, value);
+  map.validate_called = false;
   map.set_parameter_value<int>("int", 2);
+  EXPECT_TRUE(map.validate_called);
   EXPECT_NO_THROW(value = map.get_parameter("int")->get_parameter_value<int>());
   EXPECT_EQ(2, value);
   map.remove_parameter("int");
