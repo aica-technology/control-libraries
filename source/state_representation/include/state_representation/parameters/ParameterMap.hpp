@@ -109,8 +109,9 @@ protected:
   virtual void validate_and_set_parameter(const std::shared_ptr<ParameterInterface>& parameter);
 
   /**
-   * @brief Check if a parameter has the expected type, throw an exception otherwise.
+   * @brief Check if a parameter exists and has the expected type, throw an exception otherwise.
    * @param parameter The parameter to be validated
+   * @throws InvalidParameterException if the parameter doesn't exist or has unexpected type
    */
   void assert_parameter_valid(const std::shared_ptr<ParameterInterface>& parameter);
 
