@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.0.2</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.0.3</span>
    </div>
   </td>
  </tr>
@@ -236,8 +236,8 @@ $(function() {
 <div class="line"> </div>
 <div class="line">// initialize parameters</div>
 <div class="line">MyCartesianController::MyCartesianController() :</div>
-<div class="line">    foo_(make_shared_parameter&lt;int&gt;(1)),</div>
-<div class="line">    bar_(make_shared_parameter&lt;double&gt;(2.0)) {</div>
+<div class="line">    foo_(make_shared_parameter&lt;int&gt;(&quot;int&quot;, 1)),</div>
+<div class="line">    bar_(make_shared_parameter&lt;double&gt;(&quot;double&quot;, 2.0)) {</div>
 <div class="line">  // &quot;declare&quot; parameters by inserting them into the parameter list with an associated name</div>
 <div class="line">  this-&gt;parameters_.insert(std::make_pair(&quot;foo&quot;, foo_));</div>
 <div class="line">  this-&gt;parameters_.insert(std::make_pair(&quot;bar&quot;, bar_));</div>
