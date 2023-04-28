@@ -160,8 +160,8 @@ namespace dynamical_systems {
 
 // initialize parameters
 MyCartesianDS::MyCartesianDS() :
-    foo_(make_shared_parameter<int>(1)),
-    bar_(make_shared_parameter<double>(2.0)) {
+    foo_(make_shared_parameter<int>("int", 1)),
+    bar_(make_shared_parameter<double>("double", 2.0)) {
   // "declare" parameters by inserting them into the parameter list with an associated name
   this->parameters_.insert(std::make_pair("foo", foo_));
   this->parameters_.insert(std::make_pair("bar", bar_));
