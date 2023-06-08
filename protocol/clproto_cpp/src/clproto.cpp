@@ -22,6 +22,7 @@
 #include <state_representation/space/joint/JointTorques.hpp>
 
 #include "state_representation/state_message.pb.h"
+#include "state_representation/joint_command_message.pb.h"
 
 using namespace state_representation;
 
@@ -1358,4 +1359,64 @@ bool decode(const std::string& msg, Parameter<ParamT>& obj) {
 }
 */
 
+std::string encode_joint_command(const JointState& joint_state, const JointStateVariable& control_type) {
+  proto::JointCommandMessage message;
+  *message.mutable_joint_state() = encoder(joint_state);
+  switch (control_type) {
+    case JointStateVariable::POSITIONS:
+      message.set_control_type(proto::JointStateVariable::POSITIONS);
+      break;
+    case JointStateVariable::VELOCITIES:
+      message.set_control_type(proto::JointStateVariable::VELOCITIES);
+      break;
+    case JointStateVariable::ACCELERATIONS:
+      message.set_control_type(proto::JointStateVariable::ACCELERATIONS);
+      break;
+    case JointStateVariable::TORQUES:
+      message.set_control_type(proto::JointStateVariable::TORQUES);
+      break;
+    case JointStateVariable::ALL:
+      message.set_control_type(proto::JointStateVariable::ALL);
+      break;
+  }
+  return message.SerializeAsString();
+}
+
+bool decode_joint_command(const std::string& msg, JointState& joint_state, JointStateVariable& control_type) {
+  try {
+    proto::JointCommandMessage message;
+    if (!message.ParseFromString(msg)) {
+      return false;
+    }
+
+    auto joint_state_msg = message.joint_state();
+    joint_state = JointState(joint_state_msg.state().name(), decoder(joint_state_msg.joint_names()));
+    if (!joint_state_msg.state().empty()) {
+      joint_state.set_positions(decoder(joint_state_msg.positions()));
+      joint_state.set_velocities(decoder(joint_state_msg.velocities()));
+      joint_state.set_accelerations(decoder(joint_state_msg.accelerations()));
+      joint_state.set_torques(decoder(joint_state_msg.torques()));
+    };
+    switch (message.control_type()) {
+      case proto::JointStateVariable::POSITIONS:
+        control_type = JointStateVariable::POSITIONS;
+        break;
+      case proto::JointStateVariable::VELOCITIES:
+        control_type = JointStateVariable::VELOCITIES;
+        break;
+      case proto::JointStateVariable::ACCELERATIONS:
+        control_type = JointStateVariable::ACCELERATIONS;
+        break;
+      case proto::JointStateVariable::TORQUES:
+        control_type = JointStateVariable::TORQUES;
+        break;
+      default:
+        control_type = JointStateVariable::ALL;
+        break;
+    }
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
 }

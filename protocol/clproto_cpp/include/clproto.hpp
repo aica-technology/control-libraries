@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <state_representation/space/joint/JointState.hpp>
+
 #define CLPROTO_PACKING_MAX_FIELD_LENGTH (4096)
 #define CLPROTO_PACKING_MAX_FIELDS (64)
 
@@ -225,4 +227,13 @@ template<typename T>
 T from_json(const std::string& json) {
   return decode<T>(from_json(json));
 }
+
+std::string encode_joint_command(
+    const state_representation::JointState& joint_state, const state_representation::JointStateVariable& control_type
+);
+
+bool decode_joint_command(
+    const std::string& msg, state_representation::JointState& joint_state,
+    state_representation::JointStateVariable& control_type
+);
 }
