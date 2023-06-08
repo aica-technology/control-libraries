@@ -244,6 +244,20 @@ void methods(py::module_& m) {
 
   m.def("to_json", [](const std::string& msg) { return to_json(msg); }, "Convert a serialized binary string from wire format into a JSON formatted state message description", "msg"_a);
   m.def("from_json", [](const std::string& json) -> py::bytes { return from_json(json); }, "Convert a JSON formatted state message description into a serialized binary string representation (wire format).", "msg"_a);
+
+  m.def(
+      "encode_joint_command", [](const JointState& joint_state, const JointStateVariable& control_type) -> py::bytes {
+        return py::bytes(encode_joint_command(joint_state, control_type));
+      }, "Encode a joint state and a joint state variable enum into a serialized binary string representation of a joint command message (wire format).", "joint_state"_a, "control_type"_a);
+  m.def(
+      "decode_joint_command", [](const std::string& msg) -> py::tuple {
+        JointState joint_state;
+        JointStateVariable control_type;
+        if (!decode_joint_command(msg, joint_state, control_type)) {
+          throw clproto::DecodingException("Could not decode JointCommandMessage");
+        }
+        return py::make_tuple(joint_state, control_type);
+      }, "Decode a serialized binary string from wire format of a joint command message into joint state and joint state variable instances.", "msg"_a);
 }
 
 void bind_clproto(py::module_& m) {

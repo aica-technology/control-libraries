@@ -144,3 +144,11 @@ def test_decode_invalid_string():
 
     with pytest.raises(clproto.JsonParsingError):
         clproto.from_json("")
+
+def test_encode_decode_joint_command(helpers):
+    send_js = sr.JointState().Random("test", 3)
+    send_ct = sr.JointStateVariable.TORQUES
+    msg = clproto.encode_joint_command(send_js, send_ct)
+    recv_js, recv_ct = clproto.decode_joint_command(msg)
+    assert send_ct == recv_ct
+    helpers.assert_joint_equal(send_js, recv_js)

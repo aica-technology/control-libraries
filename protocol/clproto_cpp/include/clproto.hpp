@@ -241,7 +241,7 @@ std::string encode_joint_command(
 
 /**
  * @brief Exception safe decoding of a serialized binary string
- * wire format of a joint command message into  joint state and joint state variable instances.
+ * wire format of a joint command message into joint state and joint state variable instances.
  * @details It modifies the object by reference if the decoding is
  * successful, and leaves it unmodified otherwise.
  * @param[in] msg The serialized binary string to decode
