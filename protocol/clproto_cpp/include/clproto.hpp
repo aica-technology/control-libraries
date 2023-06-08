@@ -228,10 +228,27 @@ T from_json(const std::string& json) {
   return decode<T>(from_json(json));
 }
 
+/**
+ * @brief Encode a joint state and a joint state variable enum into
+ * a serialized binary string representation of a joint command message (wire format).
+ * @param joint_state The joint state
+ * @param control_type The control type
+ * @return The serialized binary string encoding
+ */
 std::string encode_joint_command(
     const state_representation::JointState& joint_state, const state_representation::JointStateVariable& control_type
 );
 
+/**
+ * @brief Exception safe decoding of a serialized binary string
+ * wire format of a joint command message into  joint state and joint state variable instances.
+ * @details It modifies the object by reference if the decoding is
+ * successful, and leaves it unmodified otherwise.
+ * @param[in] msg The serialized binary string to decode
+ * @param[out] joint_state A reference to a joint state object
+ * @param[out] control_type A reference to a joint state variable object
+ * @return A success status boolean
+ */
 bool decode_joint_command(
     const std::string& msg, state_representation::JointState& joint_state,
     state_representation::JointStateVariable& control_type

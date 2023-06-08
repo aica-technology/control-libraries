@@ -1390,12 +1390,12 @@ bool decode_joint_command(const std::string& msg, JointState& joint_state, Joint
     }
 
     auto joint_state_msg = message.joint_state();
-    joint_state = JointState(joint_state_msg.state().name(), decoder(joint_state_msg.joint_names()));
+    auto state = JointState(joint_state_msg.state().name(), decoder(joint_state_msg.joint_names()));
     if (!joint_state_msg.state().empty()) {
-      joint_state.set_positions(decoder(joint_state_msg.positions()));
-      joint_state.set_velocities(decoder(joint_state_msg.velocities()));
-      joint_state.set_accelerations(decoder(joint_state_msg.accelerations()));
-      joint_state.set_torques(decoder(joint_state_msg.torques()));
+      state.set_positions(decoder(joint_state_msg.positions()));
+      state.set_velocities(decoder(joint_state_msg.velocities()));
+      state.set_accelerations(decoder(joint_state_msg.accelerations()));
+      state.set_torques(decoder(joint_state_msg.torques()));
     };
     switch (message.control_type()) {
       case proto::JointStateVariable::POSITIONS:
@@ -1414,6 +1414,7 @@ bool decode_joint_command(const std::string& msg, JointState& joint_state, Joint
         control_type = JointStateVariable::ALL;
         break;
     }
+    joint_state = state;
     return true;
   } catch (...) {
     return false;
