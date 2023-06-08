@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package state_representation.proto;
+
+import "state_representation/space/joint/joint_state.proto";
+
+enum JointStateVariable {
+  POSITIONS = 0;
+  VELOCITIES = 1;
+  ACCELERATIONS = 2;
+  TORQUES = 3;
+  ALL = 4;
+}
+
+message JointCommandMessage {
+  JointState joint_state = 1;
+  JointStateVariable control_type = 2;
+}
