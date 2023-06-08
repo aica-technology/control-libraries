@@ -58,6 +58,18 @@ TEST(MessageProtoTest, DecodeParallelTypes) {
   EXPECT_THROW(clproto::decode<CartesianPose>(encoded_state), clproto::DecodingException);
 }
 
+TEST(MessageProtoTest, EncodeDecodeJointCommand) {
+  auto send_js = JointState::Random("test", 3);
+  auto send_ct = JointStateVariable::TORQUES;
+  auto msg = clproto::encode_joint_command(send_js, send_ct);
+  JointState recv_js;
+  JointStateVariable recv_ct;
+  ASSERT_TRUE(clproto::decode_joint_command(msg, recv_js, recv_ct));
+  EXPECT_EQ(send_ct, recv_ct);
+  EXPECT_STREQ(send_js.get_name().c_str(), recv_js.get_name().c_str());
+  EXPECT_TRUE(send_js.data().isApprox(recv_js.data()));
+}
+
 /* If an encode / decode template is invoked that is not implemented in clproto,
  * there will be a linker error "undefined reference" at compile time.
  * Of course, it's not really possible to test this at run-time.
