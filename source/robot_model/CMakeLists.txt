@@ -64,7 +64,7 @@ if(${PKG_CONFIG_FOUND})
   set(pkg_conf_file "robot_model.pc")
   set(PKG_EXTERNAL_DEPS "state_representation >= ${CMAKE_PROJECT_VERSION}, pinocchio >= ${PINOCCHIO_VERSION}")
   set(PKG_CFLAGS "-lOsqpEigen")
-  configure_file("${CMAKE_SOURCE_DIR}/library_template.pc.in" "${CMAKE_BINARY_DIR}/${pkg_conf_file}" @ONLY)
-  install(FILES "${CMAKE_BINARY_DIR}/${pkg_conf_file}"
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../library_template.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
 endif()

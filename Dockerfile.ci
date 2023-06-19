@@ -1,0 +1,119 @@
+FROM ghcr.io/aica-technology/ros2-ws:humble as base
+
+# TODO: would be so much easier if we had 3.24+
+ARG CMAKE_VERSION=3.24.1
+ARG TARGETPLATFORM
+
+RUN true \
+  && PLATFORM=${TARGETPLATFORM} \
+  && if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then PLATFORM=x86_64; fi \
+  && if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then PLATFORM=aarch64; fi \
+  && wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-${PLATFORM}.sh -q -O /tmp/cmake-install.sh \
+  && chmod u+x /tmp/cmake-install.sh \
+  && sudo mkdir /opt/cmake-${CMAKE_VERSION} \
+  && sudo /tmp/cmake-install.sh --skip-license --prefix=/opt/cmake-${CMAKE_VERSION} \
+  && rm /tmp/cmake-install.sh \
+  && sudo ln -s /opt/cmake-${CMAKE_VERSION}/bin/* /usr/local/bin
+
+FROM base as apt-dependencies
+COPY apt-packages.tx[t] /
+
+RUN <<HEREDOC
+if [ ! -s /apt-packages.txt ]; then
+  set +e # FIXME: without this, the script fails because of an issue with `clear_console`
+  exit 0
+fi
+
+mkdir -p /tmp/apt
+
+sudo apt-get update
+# We then do a dry-run and parse the output of apt to gather the list of packages to be installed
+# Example output:
+# ```
+# #########
+# NOTE: This is only a simulation!
+#       apt-get needs root privileges for real execution.
+#       Keep also in mind that locking is deactivated,
+#       so don't depend on the relevance to the real current situation!
+# Reading package lists...
+# Building dependency tree...
+# Reading state information...
+# The following additional packages will be installed:
+#   libavutil56 libblosc1
+# The following NEW packages will be installed:
+#   libavutil56 libblosc1
+# 0 upgraded, 5 newly installed, 0 to remove and 28 not upgraded.
+# Inst libavutil56 (7:4.4.2-0ubuntu0.22.04.1 Ubuntu:22.04/jammy-updates, Ubuntu:22.04/jammy-security [arm64])
+# Inst libblosc1 (1.21.1+ds2-2 Ubuntu:22.04/jammy [arm64])
+# Conf libavutil56 (7:4.4.2-0ubuntu0.22.04.1 Ubuntu:22.04/jammy-updates, Ubuntu:22.04/jammy-security [arm64])
+# Conf libblosc1 (1.21.1+ds2-2 Ubuntu:22.04/jammy [arm64])
+# ```
+# Transformed into:
+# ```
+# libavutil56
+# libblosc1
+# ```
+xargs -a /apt-packages.txt apt-get install --dry-run \
+  | grep -e '^Inst ' \
+  | sed -E 's/^Inst (\S+) .*$/\1/' > /tmp/new-packages.txt
+# Then we install apt packages like normal
+xargs -a /apt-packages.txt sudo apt-get install -y
+# Finally we use dpkg to get all files installed by those packages and copy them to a new root
+#  - get list of files installed by all the packages
+#  - remove empty lines
+#  - sort
+#  - remove duplicates
+#  - copy files while keeping file hierarchy and preserving links as-is
+#  - remove "omitting directory" messages (we don't do recursive copy as we only want specific files) for cleaner output
+xargs -a /tmp/new-packages.txt dpkg-query -L \
+  | sed '/^$/d' | sort | uniq \
+  | xargs -d "\n" cp --parents -dp -t /tmp/apt  2>&1 \
+  | grep -v 'omitting directory'
+# this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
+HEREDOC
+
+FROM base as dependencies
+COPY --from=apt-dependencies /tmp/apt /
+COPY dependencies/CMakeLists.txt .
+RUN \
+  --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake --build build --target all install
+
+FROM base as code
+WORKDIR /src
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=dependencies /tmp/deps /usr/local
+COPY --chown=${USER} . /src
+
+FROM code as build
+RUN pkg-config pinocchio --cflags --libs
+RUN \
+  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release \
+  && cmake --build build
+
+FROM build as test
+RUN \
+  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DBUILD_TESTING=ON \
+  && CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target all test
+
+FROM build as install
+RUN \
+  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DCMAKE_INSTALL_PREFIX=/tmp/cl \
+  && cmake --build build --target all install
+
+FROM base as python
+COPY --chown=${USER} ./python /python
+COPY --from=install /tmp/cl /usr/local
+RUN \
+  --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM},uid=1000 \
+  python3 -m pip install --prefix=/tmp/python /python
+
+FROM scratch
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=install /tmp/cl /usr/local
+COPY --from=python /tmp/python/local/lib/python3.10/dist-packages/ /home/ros2/.local/lib/python3.10/site-packages/
+COPY ./licenses /usr/share/doc/control-libraries/licenses

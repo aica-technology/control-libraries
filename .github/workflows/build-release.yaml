@@ -1,0 +1,62 @@
+name: Build and Push Multi-Arch Images
+
+on:
+  push:
+    # TODO: fix before merge
+    # branches:
+    #   - develop
+    #   - main
+    # tags:
+    #   - "v*.*.*"
+
+jobs:
+  get-tag:
+    runs-on: ubuntu-latest
+    name: Get tag
+    outputs:
+      tag: ${{ steps.parse-tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aica-technology/.github/.github/actions/docker-tag-from-git@v0.6.1
+        id: parse-tag
+
+  build:
+    needs: [get-tag]
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+        include:
+          - image: ubuntu-latest
+          - image: buildjet-2vcpu-ubuntu-2204-arm
+            arch: arm64
+
+    runs-on: ${{ matrix.image }}
+    name: Build and publish (${{ matrix.arch }})
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: aica-technology/.github/.github/actions/list-add-suffixes@v0.6.1
+        id: merge-tags
+        with:
+          list: ${{ needs.get-tag.outputs.tag }}
+          suffixes: ${{ matrix.arch }}
+          glue_separator: "-"
+
+      - uses: aica-technology/.github/.github/actions/ghcr-build@v0.6.1
+        with:
+          image_name: aica-technology/control-libraries
+          image_tags: ${{ steps.merge-tags.outputs.list }}
+          dockerfile_path: Dockerfile.ci
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  multi-arch:
+    runs-on: ubuntu-latest
+    name: Merge into a multi-arch image
+    needs: [get-tag, build]
+    steps:
+      - uses: aica-technology/.github/.github/actions/ghcr-manifest-merge@v0.6.1
+        with:
+          image_name: aica-technology/control-libraries
+          image_tags: ${{ needs.get-tag.outputs.tag }}
+          archs: amd64,arm64
+          token: ${{ secrets.GITHUB_TOKEN }}

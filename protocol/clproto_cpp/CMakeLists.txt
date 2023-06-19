@@ -26,7 +26,11 @@ endif()
 
 include(FindProtobuf)
 find_package(Protobuf 3.17 REQUIRED)
-find_package(control_libraries ${PROJECT_VERSION} REQUIRED COMPONENTS state_representation)
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  # if we are the top-level project, we need to find state_representation
+  # otherwise, it's being built as a subproject and we can assume it's already been found
+  find_package(control_libraries ${PROJECT_VERSION} REQUIRED COMPONENTS state_representation)
+endif()
 
 if(BUILD_TESTING)
   enable_testing()
@@ -46,7 +50,17 @@ add_custom_target(generate_proto_bindings COMMAND make cpp_bindings
   WORKING_DIRECTORY ${PROTOBUF_DIR}
 )
 
-file(GLOB_RECURSE GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/*.pb.cc" "${PROTOBUF_BINDINGS_DIR}/*.pb.h")
+# if we are the top-level project, we generate the protobuf bindings using the provided Makefile
+# otherwise, we built them ourselves in this project
+if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  file(GLOB_RECURSE GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/*.pb.cc" "${PROTOBUF_BINDINGS_DIR}/*.pb.h")
+else()
+  # build the protobuf bindings in `protobuf/proto`
+  file(GLOB_RECURSE PROTO_FILES "${PROTOBUF_DIR}/proto/*.proto")
+  protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
+  protobuf_generate_python(PROTO_PY ${PROTO_FILES})
+  set(GENERATED_PROTO_BINDINGS ${PROTO_SRCS} ${PROTO_HDRS})
+endif()
 
 add_library(${PROJECT_NAME}_bindings STATIC ${GENERATED_PROTO_BINDINGS})
 target_include_directories(${PROJECT_NAME}_bindings PUBLIC ${PROTOBUF_BINDINGS_DIR})
@@ -63,7 +77,7 @@ target_include_directories(${PROJECT_NAME}
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/include/clproto.hpp)
-target_link_libraries(${PROJECT_NAME} PUBLIC ${PROTOBUF_LIBRARY} state_representation PRIVATE ${PROJECT_NAME}_bindings)
+target_link_libraries(${PROJECT_NAME} PUBLIC protobuf::libprotobuf state_representation PRIVATE ${PROJECT_NAME}_bindings)
 
 # install the target and create export-set
 install(TARGETS ${PROJECT_NAME}
@@ -125,7 +139,7 @@ if(${PKG_CONFIG_FOUND})
   set(PKG_EXTERNAL_DEPS "state_representation >= ${CMAKE_PROJECT_VERSION}")
   set(PKG_CFLAGS "-lprotobuf")
   set(pkg_conf_file "clproto.pc")
-  configure_file("${CMAKE_SOURCE_DIR}/${pkg_conf_file}.in" "${CMAKE_BINARY_DIR}/${pkg_conf_file}" @ONLY)
-  install(FILES "${CMAKE_BINARY_DIR}/${pkg_conf_file}"
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${pkg_conf_file}.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
 endif()

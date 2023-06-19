@@ -119,7 +119,7 @@ if(${PKG_CONFIG_FOUND})
   set(PKG_DESC "control_libraries")
   set(PKG_EXTERNAL_DEPS "${PKGCONFIG_LIBRARIES}")
   set(pkg_conf_file "control_libraries.pc")
-  configure_file("${CMAKE_SOURCE_DIR}/library_template.pc.in" "${CMAKE_BINARY_DIR}/${pkg_conf_file}" @ONLY)
-  install(FILES "${CMAKE_BINARY_DIR}/${pkg_conf_file}"
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/library_template.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
 endif()
