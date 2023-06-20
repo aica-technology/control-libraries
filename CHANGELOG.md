@@ -8,6 +8,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat(ci): add prebuilt control-libraries image akin to network-interfaces (#125)
 - Add overloaded `make_shared_parameter` with no parameter  (#123)
 - Catch out of range exception in `ParameterMap::assert_parameter_valid` (#122)
 - Construct zero matrices in compliant twist controller (#120)
