@@ -1,20 +1,4 @@
 FROM ghcr.io/aica-technology/ros2-ws:humble as base
-
-# TODO: would be so much easier if we had 3.24+
-ARG CMAKE_VERSION=3.24.1
-ARG TARGETPLATFORM
-
-RUN true \
-  && PLATFORM=${TARGETPLATFORM} \
-  && if [ "${TARGETPLATFORM}" = "linux/amd64" ]; then PLATFORM=x86_64; fi \
-  && if [ "${TARGETPLATFORM}" = "linux/arm64" ]; then PLATFORM=aarch64; fi \
-  && wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-${PLATFORM}.sh -q -O /tmp/cmake-install.sh \
-  && chmod u+x /tmp/cmake-install.sh \
-  && sudo mkdir /opt/cmake-${CMAKE_VERSION} \
-  && sudo /tmp/cmake-install.sh --skip-license --prefix=/opt/cmake-${CMAKE_VERSION} \
-  && rm /tmp/cmake-install.sh \
-  && sudo ln -s /opt/cmake-${CMAKE_VERSION}/bin/* /usr/local/bin
-
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
 
@@ -97,13 +81,15 @@ RUN \
   && cmake --install build --prefix /tmp/deps
 
 FROM base as dependencies
-COPY --from=dep-osqp --chown=${USER}:${USER} /tmp/deps /tmp/deps
+# Needed to build `osqp-eigen`
+COPY --from=dep-osqp /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN \
   --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release \
   && cmake --build build \
   && cmake --install build --prefix /tmp/deps
+COPY --from=dep-osqp /tmp/deps /tmp/deps
 COPY --from=dep-pinocchio /tmp/deps /tmp/deps
 
 FROM base as code

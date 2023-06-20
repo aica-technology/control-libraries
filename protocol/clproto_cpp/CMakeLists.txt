@@ -26,9 +26,9 @@ endif()
 
 include(FindProtobuf)
 find_package(Protobuf 3.17 REQUIRED)
-if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-  # if we are the top-level project, we need to find state_representation
-  # otherwise, it's being built as a subproject and we can assume it's already been found
+if (NOT TARGET state_representation)
+  # if we can't find the state_representation target, we are the top-level project and need to find it,
+  # otherwise, we are a subproject and the state_representation target is already available
   find_package(control_libraries ${PROJECT_VERSION} REQUIRED COMPONENTS state_representation)
 endif()
 
@@ -50,7 +50,7 @@ add_custom_target(generate_proto_bindings COMMAND make cpp_bindings
   WORKING_DIRECTORY ${PROTOBUF_DIR}
 )
 
-# if we are the top-level project, we generate the protobuf bindings using the provided Makefile outside of this project
+# if we are the top-level project, we assume the protobuf bindings are already built manually by the Makefile,
 # otherwise, we built them ourselves in this project
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   file(GLOB_RECURSE GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/*.pb.cc" "${PROTOBUF_BINDINGS_DIR}/*.pb.h")
@@ -59,24 +59,26 @@ else()
   set(IMPORT_PATH ${PROTOBUF_DIR}/proto)
   file(GLOB_RECURSE PROTO_FILES "${IMPORT_PATH}/*.proto")
   set(PROTOBUF_BINDINGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/bindings)
+
   set(GENERATED_PROTO_BINDINGS)
-  set(PROTO_FILES_INFO)
+  set(PROTO_FILES_TEXT)
   foreach(PROTO_FILE ${PROTO_FILES})
     string(REPLACE "${IMPORT_PATH}/" "" PROTO_FILE_REL "${PROTO_FILE}")
     get_filename_component(PROTO_FILE_PATH ${PROTO_FILE_REL} DIRECTORY)
     get_filename_component(PROTO_FILE_NAME ${PROTO_FILE_REL} NAME_WE)
     list(APPEND GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/${PROTO_FILE_PATH}/${PROTO_FILE_NAME}.pb.cc")
     list(APPEND GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/${PROTO_FILE_PATH}/${PROTO_FILE_NAME}.pb.h")
-    list(APPEND PROTO_FILES_INFO ${PROTO_FILE_REL})
+    list(APPEND PROTO_FILES_TEXT ${PROTO_FILE_REL})
   endforeach()
-  string(REPLACE ";" ", " PROTO_FILES_INFO "${PROTO_FILES_INFO}")
+  string(REPLACE ";" ", " PROTO_FILES_TEXT "${PROTO_FILES_TEXT}")
+
   make_directory(${PROTOBUF_BINDINGS_DIR})
   add_custom_command(
     OUTPUT ${GENERATED_PROTO_BINDINGS}
     COMMAND  protobuf::protoc
     ARGS --cpp_out ${PROTOBUF_BINDINGS_DIR} -I${IMPORT_PATH} ${PROTO_FILES}
     DEPENDS ${PROTOBUF_BINDINGS_DIR} ${PROTO_FILES} protobuf::protoc
-    COMMENT "Running C++ protocol buffer compiler on ${PROTO_FILES_INFO}"
+    COMMENT "Running C++ protocol buffer compiler on ${PROTO_FILES_TEXT}"
     VERBATIM
   )
 endif()
