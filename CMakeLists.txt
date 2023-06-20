@@ -27,3 +27,9 @@ if(BUILD_TESTING)
   # reexport the test target defined in the subdirectories
   enable_testing()
 endif()
+
+# add licenses
+install(
+  FOLDER "${CMAKE_CURRENT_SOURCE_DIR}/licenses"
+  DESTINATION "share/doc/control-libraries/licenses"
+)

@@ -76,7 +76,7 @@ FROM base as dependencies
 COPY --from=apt-dependencies /tmp/apt /
 COPY dependencies/CMakeLists.txt .
 RUN \
-  --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake9-deps-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/deps \
   && cmake --build build --target all install
 
@@ -89,19 +89,19 @@ COPY --chown=${USER} . /src
 FROM code as build
 RUN pkg-config pinocchio --cflags --libs
 RUN \
-  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release \
   && cmake --build build
 
 FROM build as test
 RUN \
-  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DBUILD_TESTING=ON \
   && CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target all test
 
 FROM build as install
 RUN \
-  --mount=type=cache,target=./build,id=cmake7-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DCMAKE_INSTALL_PREFIX=/tmp/cl \
   && cmake --build build --target all install
 
@@ -114,6 +114,6 @@ RUN \
 
 FROM scratch
 COPY --from=apt-dependencies /tmp/apt /
-COPY --from=install /tmp/cl /usr/local
+COPY --from=dependencies /tmp/deps /usr
+COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python/local/lib/python3.10/dist-packages/ /home/ros2/.local/lib/python3.10/site-packages/
-COPY ./licenses /usr/share/doc/control-libraries/licenses
