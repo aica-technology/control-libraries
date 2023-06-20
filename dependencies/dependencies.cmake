@@ -9,7 +9,6 @@ FetchContent_Declare(
   OsqpEigen
   GIT_REPOSITORY https://github.com/robotology/osqp-eigen.git
   GIT_TAG        v0.6.4
-  OVERRIDE_FIND_PACKAGE
 )
 
 FetchContent_Declare(
@@ -17,7 +16,6 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
   GIT_TAG        v3.17.0
   SOURCE_SUBDIR  cmake
-  OVERRIDE_FIND_PACKAGE
 )
 
 FetchContent_MakeAvailable(OsqpEigen protobuf)

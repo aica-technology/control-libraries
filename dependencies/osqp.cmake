@@ -9,7 +9,6 @@ FetchContent_Declare(
   osqp
   GIT_REPOSITORY https://github.com/oxfordcontrol/osqp
   GIT_TAG        v0.6.2
-  OVERRIDE_FIND_PACKAGE
 )
 
 FetchContent_MakeAvailable(osqp)
