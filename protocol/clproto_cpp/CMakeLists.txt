@@ -50,16 +50,35 @@ add_custom_target(generate_proto_bindings COMMAND make cpp_bindings
   WORKING_DIRECTORY ${PROTOBUF_DIR}
 )
 
-# if we are the top-level project, we generate the protobuf bindings using the provided Makefile
+# if we are the top-level project, we generate the protobuf bindings using the provided Makefile outside of this project
 # otherwise, we built them ourselves in this project
 if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   file(GLOB_RECURSE GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/*.pb.cc" "${PROTOBUF_BINDINGS_DIR}/*.pb.h")
 else()
-  # build the protobuf bindings in `protobuf/proto`
-  file(GLOB_RECURSE PROTO_FILES "${PROTOBUF_DIR}/proto/*.proto")
-  protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
-  protobuf_generate_python(PROTO_PY ${PROTO_FILES})
-  set(GENERATED_PROTO_BINDINGS ${PROTO_SRCS} ${PROTO_HDRS})
+  # FIXME: unfortunately, protobuf_generate_* is a bit broken, so we do it by hand
+  set(IMPORT_PATH ${PROTOBUF_DIR}/proto)
+  file(GLOB_RECURSE PROTO_FILES "${IMPORT_PATH}/*.proto")
+  set(PROTOBUF_BINDINGS_DIR ${CMAKE_CURRENT_BINARY_DIR}/bindings)
+  set(GENERATED_PROTO_BINDINGS)
+  set(PROTO_FILES_INFO)
+  foreach(PROTO_FILE ${PROTO_FILES})
+    string(REPLACE "${IMPORT_PATH}/" "" PROTO_FILE_REL "${PROTO_FILE}")
+    get_filename_component(PROTO_FILE_PATH ${PROTO_FILE_REL} DIRECTORY)
+    get_filename_component(PROTO_FILE_NAME ${PROTO_FILE_REL} NAME_WE)
+    list(APPEND GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/${PROTO_FILE_PATH}/${PROTO_FILE_NAME}.pb.cc")
+    list(APPEND GENERATED_PROTO_BINDINGS "${PROTOBUF_BINDINGS_DIR}/${PROTO_FILE_PATH}/${PROTO_FILE_NAME}.pb.h")
+    list(APPEND PROTO_FILES_INFO ${PROTO_FILE_REL})
+  endforeach()
+  string(REPLACE ";" ", " PROTO_FILES_INFO "${PROTO_FILES_INFO}")
+  make_directory(${PROTOBUF_BINDINGS_DIR})
+  add_custom_command(
+    OUTPUT ${GENERATED_PROTO_BINDINGS}
+    COMMAND  protobuf::protoc
+    ARGS --cpp_out ${PROTOBUF_BINDINGS_DIR} -I${IMPORT_PATH} ${PROTO_FILES}
+    DEPENDS ${PROTOBUF_BINDINGS_DIR} ${PROTO_FILES} protobuf::protoc
+    COMMENT "Running C++ protocol buffer compiler on ${PROTO_FILES_INFO}"
+    VERBATIM
+  )
 endif()
 
 add_library(${PROJECT_NAME}_bindings STATIC ${GENERATED_PROTO_BINDINGS})
@@ -136,7 +155,7 @@ install(FILES
 if(${PKG_CONFIG_FOUND})
   set(PKG_NAME ${CMAKE_PROJECT_NAME})
   set(PKG_DESC "This library provides a simple interface for encoding and decoding control library type objects to and from a serialized binary string representation (the wire format).")
-  set(PKG_EXTERNAL_DEPS "state_representation >= ${CMAKE_PROJECT_VERSION}")
+  set(PKG_EXTERNAL_DEPS "state_representation >= ${PROJECT_VERSION}")
   set(PKG_CFLAGS "-lprotobuf")
   set(pkg_conf_file "clproto.pc")
   configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${pkg_conf_file}.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)

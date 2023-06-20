@@ -72,42 +72,66 @@ xargs -a /tmp/new-packages.txt dpkg-query -L \
 # this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
 HEREDOC
 
-FROM base as dependencies
+FROM base as dep-pinocchio
 COPY --from=apt-dependencies /tmp/apt /
-COPY dependencies/CMakeLists.txt .
+ARG PINOCCHIO_TAG=v2.6.9
+# FIXME: it would be nicer to have it all in the root CMakelists.txt but:
+#  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
+#  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
+# FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
 RUN \
-  --mount=type=cache,target=./build,id=cmake9-deps-${TARGETPLATFORM},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake-pinocchio-${TARGETPLATFORM},uid=1000 \
+  if [ ! -d pinocchio ]; then git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio; fi \
+  && cmake -B build -S pinocchio -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
   && cmake --build build --target all install
+# FIXME: pinocchio produces non-portable paths
+RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
+
+FROM base as dep-osqp
+COPY dependencies/osqp.cmake CMakeLists.txt
+RUN \
+  --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release \
+  && cmake --build build \
+  && cmake --install build --prefix /tmp/deps
+
+FROM base as dependencies
+COPY --from=dep-osqp --chown=${USER}:${USER} /tmp/deps /tmp/deps
+COPY dependencies/dependencies.cmake CMakeLists.txt
+RUN \
+  --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release \
+  && cmake --build build \
+  && cmake --install build --prefix /tmp/deps
+COPY --from=dep-pinocchio /tmp/deps /tmp/deps
 
 FROM base as code
 WORKDIR /src
 COPY --from=apt-dependencies /tmp/apt /
-COPY --from=dependencies /tmp/deps /usr/local
+COPY --from=dependencies /tmp/deps /usr
 COPY --chown=${USER} . /src
 
 FROM code as build
-RUN pkg-config pinocchio --cflags --libs
 RUN \
-  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release \
   && cmake --build build
 
 FROM build as test
 RUN \
-  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
   cmake -B build -DBUILD_TESTING=ON \
-  && CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target all test
+  && CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target test
 
 FROM build as install
 RUN \
-  --mount=type=cache,target=./build,id=cmake9-${TARGETPLATFORM},uid=1000 \
-  cmake -B build -DCMAKE_INSTALL_PREFIX=/tmp/cl \
-  && cmake --build build --target all install
+  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
+  cmake --install build --prefix /tmp/cl
 
 FROM base as python
 COPY --chown=${USER} ./python /python
-COPY --from=install /tmp/cl /usr/local
+COPY --from=install /tmp/cl /usr
 RUN \
   --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python

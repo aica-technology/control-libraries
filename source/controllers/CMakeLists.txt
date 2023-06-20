@@ -58,7 +58,7 @@ if(${PKG_CONFIG_FOUND})
   set(PKG_NAME ${LIBRARY_NAME})
   set(PKG_DESC "This library introduces a set of controllers to be used in robotic control-loop schemes.")
   set(pkg_conf_file "controllers.pc")
-  set(PKG_EXTERNAL_DEPS "robot_model >= ${CMAKE_PROJECT_VERSION}")
+  set(PKG_EXTERNAL_DEPS "robot_model >= ${PROJECT_VERSION}")
   configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../library_template.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
