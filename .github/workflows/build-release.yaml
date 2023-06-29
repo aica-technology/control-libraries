@@ -2,12 +2,11 @@ name: Build and Push Multi-Arch Images
 
 on:
   push:
-    # TODO: fix before merge
-    # branches:
-    #   - develop
-    #   - main
-    # tags:
-    #   - "v*.*.*"
+    branches:
+      - develop
+      - main
+    tags:
+      - "v*.*.*"
 
 jobs:
   get-tag:
