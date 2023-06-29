@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(control_libraries VERSION 7.0.3)
+project(control_libraries VERSION 7.0.4)
 
 # Build options
 option(BUILD_TESTING "Build all tests." OFF)
@@ -60,7 +60,7 @@ get_target_property(TARGET_INTERFACE_LINK_LIBRARIES state_representation INTERFA
 if(TARGET_INTERFACE_LINK_LIBRARIES)
   list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
 endif()
-add_pkgconfig_library(state_representation ${CMAKE_PROJECT_VERSION})
+add_pkgconfig_library(state_representation ${PROJECT_VERSION})
 
 if(BUILD_DYNAMICAL_SYSTEMS)
   add_subdirectory(dynamical_systems)
@@ -69,7 +69,7 @@ if(BUILD_DYNAMICAL_SYSTEMS)
   if(TARGET_INTERFACE_LINK_LIBRARIES)
     list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
   endif()
-  add_pkgconfig_library(dynamical_systems ${CMAKE_PROJECT_VERSION})
+  add_pkgconfig_library(dynamical_systems ${PROJECT_VERSION})
 endif()
 
 if(BUILD_ROBOT_MODEL OR BUILD_CONTROLLERS)
@@ -79,7 +79,7 @@ if(BUILD_ROBOT_MODEL OR BUILD_CONTROLLERS)
   if(TARGET_INTERFACE_LINK_LIBRARIES)
     list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
   endif()
-  add_pkgconfig_library(robot_model ${CMAKE_PROJECT_VERSION})
+  add_pkgconfig_library(robot_model ${PROJECT_VERSION})
 endif()
 
 if(BUILD_CONTROLLERS)
@@ -89,7 +89,7 @@ if(BUILD_CONTROLLERS)
   if(TARGET_INTERFACE_LINK_LIBRARIES)
     list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
   endif()
-  add_pkgconfig_library(controllers ${CMAKE_PROJECT_VERSION})
+  add_pkgconfig_library(controllers ${PROJECT_VERSION})
 endif()
 
 list(REMOVE_DUPLICATES INSTALL_INTERFACE_LINK_LIBRARIES)
@@ -119,7 +119,7 @@ if(${PKG_CONFIG_FOUND})
   set(PKG_DESC "control_libraries")
   set(PKG_EXTERNAL_DEPS "${PKGCONFIG_LIBRARIES}")
   set(pkg_conf_file "control_libraries.pc")
-  configure_file("${CMAKE_SOURCE_DIR}/library_template.pc.in" "${CMAKE_BINARY_DIR}/${pkg_conf_file}" @ONLY)
-  install(FILES "${CMAKE_BINARY_DIR}/${pkg_conf_file}"
+  configure_file("${CMAKE_CURRENT_SOURCE_DIR}/library_template.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/ COMPONENT pkgconfig)
 endif()
