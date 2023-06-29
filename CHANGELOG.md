@@ -8,6 +8,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- Update push hooks in build-release.yaml (#127)
 - feat(ci): add prebuilt control-libraries image akin to network-interfaces (#125)
 - Add overloaded `make_shared_parameter` with no parameter  (#123)
 - Catch out of range exception in `ParameterMap::assert_parameter_valid` (#122)
