@@ -1,7 +1,6 @@
 #include "state_representation/geometry/Ellipsoid.hpp"
 #include "state_representation/parameters/Event.hpp"
 #include "state_representation/parameters/Parameter.hpp"
-#include "state_representation/parameters/ParameterMap.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
 
@@ -276,6 +275,9 @@ TYPED_TEST_P(ParameterTest, MakeShared) {
     EXPECT_EQ(param->get_parameter_type(), std::get<1>(test_case));
     EXPECT_EQ(param->get_parameter_state_type(), std::get<2>(test_case));
     expect_values_equal(param->get_value(), std::get<0>(test_case));
+    auto empty_param = make_shared_parameter<TypeParam>("test");
+    EXPECT_TRUE(empty_param->is_empty());
+    EXPECT_FALSE(*empty_param);
   }
 }
 
@@ -365,20 +367,6 @@ TYPED_TEST_P(ParameterTest, ParameterInterfaceWrongTypeCast) {
                    exceptions::InvalidParameterCastException);
     }
   }
-}
-
-TEST(ParameterTest, ParameterMap) {
-  auto map = ParameterMap();
-  map.set_parameter(make_shared_parameter("int", 1));
-  int value;
-  EXPECT_NO_THROW(value = map.get_parameter_value<int>("int"));
-  EXPECT_EQ(1, value);
-  map.set_parameter_value<int>("int", 2);
-  EXPECT_NO_THROW(value = map.get_parameter("int")->get_parameter_value<int>());
-  EXPECT_EQ(2, value);
-  map.remove_parameter("int");
-  EXPECT_THROW(map.remove_parameter("int"), exceptions::InvalidParameterException);
-  EXPECT_THROW(value = map.get_parameter_value<int>("int"), exceptions::InvalidParameterException);
 }
 
 REGISTER_TYPED_TEST_SUITE_P(ParameterTest, Construction, MakeShared, ParameterThroughInterface,

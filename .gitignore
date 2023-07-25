@@ -46,3 +46,4 @@ source/build
 
 # protobuf generated bindings
 protocol/protobuf/bindings/
+.DS_Store

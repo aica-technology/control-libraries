@@ -140,6 +140,17 @@ inline void Parameter<T>::reset() {
 }
 
 /**
+ * @brief Create an empty Parameter object that is owned by a shared_ptr
+ * @tparam T The type of the value stored in the parameter
+ * @param name The name of the parameter
+ * @return A shared_ptr that owns the newly created Parameter object
+ */
+template<typename T>
+static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& name) {
+  return std::make_shared<Parameter<T>>(name);
+}
+
+/**
  * @brief Create a Parameter object that is owned by a shared_ptr
  * @tparam T The type of the value stored in the parameter
  * @param name The name of the parameter

@@ -23,7 +23,7 @@ ParameterInterfaceMap ParameterMap::get_parameters() const {
 
 ParameterInterfaceList ParameterMap::get_parameter_list() const {
   ParameterInterfaceList param_list;
-  for (const auto& param_it: this->parameters_) {
+  for (const auto& param_it : this->parameters_) {
     param_list.template emplace_back(param_it.second);
   }
   return param_list;
@@ -34,22 +34,30 @@ void ParameterMap::set_parameter(const std::shared_ptr<ParameterInterface>& para
 }
 
 void ParameterMap::set_parameters(const ParameterInterfaceList& parameters) {
-  for (const auto& param: parameters) {
+  for (const auto& param : parameters) {
     this->set_parameter(param);
   }
 }
 
 void ParameterMap::set_parameters(const ParameterInterfaceMap& parameters) {
-  for (const auto& param_it: parameters) {
+  for (const auto& param_it : parameters) {
     this->set_parameter(param_it.second);
   }
 }
 
 void ParameterMap::assert_parameter_valid(const std::shared_ptr<ParameterInterface>& parameter) {
-  if (this->parameters_.at(parameter->get_name())->get_type() != parameter->get_type()) {
-    throw exceptions::InvalidParameterException(
-        "Parameter '" + parameter->get_name() + "' exists, but has unexpected type."
-    );
+  try {
+    if (this->parameters_.at(parameter->get_name())->get_parameter_type() != parameter->get_parameter_type()) {
+      throw exceptions::InvalidParameterException(
+          "Parameter '" + parameter->get_name() + "' exists, but has unexpected type.");
+    }
+    if (parameter->get_parameter_type() == ParameterType::STATE && parameter->get_parameter_state_type()
+        != this->parameters_.at(parameter->get_name())->get_parameter_state_type()) {
+      throw exceptions::InvalidParameterException(
+          "Parameter '" + parameter->get_name() + "' exists, but has unexpected state type.");
+    }
+  } catch (const std::out_of_range&) {
+    throw exceptions::InvalidParameterException("Parameter '" + parameter->get_name() + "' doesn't exist.");
   }
 }
 
