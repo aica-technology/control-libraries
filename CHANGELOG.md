@@ -1,12 +1,18 @@
 # CHANGELOG
 
 Release Versions:
+- [7.1.0](#710)
 - [7.0.0](#700)
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes (in development)
+## 7.1.0
+
+Version 7.1.0 contains behind-the-scenes structural improvements to the build system and the CI as well as a few
+minor improvements and fixes to state_representation.
+
+### Full changelog:
 
 - Update push hooks in build-release.yaml (#127)
 - feat(ci): add prebuilt control-libraries image akin to network-interfaces (#125)
