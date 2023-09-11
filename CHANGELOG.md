@@ -1,11 +1,16 @@
 # CHANGELOG
 
 Release Versions:
+- [7.1.1](#711)
 - [7.1.0](#710)
 - [7.0.0](#700)
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 7.1.1
+
+Version 7.1.1 contains one commit to fix permissions of the home folder in the generated Docker images.
 
 ## 7.1.0
 
