@@ -1,4 +1,6 @@
 FROM ghcr.io/aica-technology/ros2-ws:humble as base
+USER ${USER}
+
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
 
@@ -96,7 +98,7 @@ FROM base as code
 WORKDIR /src
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
-COPY --chown=${USER} . /src
+COPY --chown=${USER}:${USER} . /src
 
 FROM code as build
 RUN \
@@ -116,14 +118,16 @@ RUN \
   cmake --install build --prefix /tmp/cl
 
 FROM base as python
-COPY --chown=${USER} ./python /python
+COPY --chown=${USER}:${USER} ./python /python
 COPY --from=install /tmp/cl /usr
 RUN \
   --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
+RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
+  && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
 
 FROM scratch
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python/local/lib/python3.10/dist-packages/ /home/ros2/.local/lib/python3.10/site-packages/
+COPY --from=python /tmp/python-home /home
