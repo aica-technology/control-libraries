@@ -8,6 +8,10 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+
+- fix: build all python modules (#134)
+
 ## 7.1.1
 
 Version 7.1.1 contains one commit to fix permissions of the home folder in the generated Docker images.
