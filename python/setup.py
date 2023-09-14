@@ -48,7 +48,7 @@ try:
                 raise Exception(msg)
 
     if __install_robot_model_module__:
-        osqp_path = os.environ[osqp_path_var] if osqp_path_var in os.environ.keys() else '/usr/local/include/osqp'
+        osqp_path = os.environ[osqp_path_var] if osqp_path_var in os.environ.keys() else '/usr/include/osqp'
         __include_dirs__.append(osqp_path)
 
     if __install_controllers_module__ and not __install_robot_model_module__:
