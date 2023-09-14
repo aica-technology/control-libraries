@@ -153,6 +153,8 @@ for PKG in state_representation dynamical_systems robot_model controllers; do
 from distutils.core import setup
 
 import $PKG
+
+
 setup(
     name="$PKG-stubs",
     author="Dominic Reber",
