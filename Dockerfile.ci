@@ -118,15 +118,17 @@ RUN \
   cmake --install build --prefix /tmp/cl
 
 FROM base as python
-COPY --chown=${USER}:${USER} ./python /python
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
+COPY --chown=${USER}:${USER} ./python /python
 RUN \
   --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
 RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
   && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
 
-FROM scratch
+FROM scratch as production
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
