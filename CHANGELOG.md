@@ -10,8 +10,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- fix(build): use correct username for devcontainer (#138)
-- feat(build): add configuration files for VS Code devcontainer (#137)
+- feat(build): add configuration files for VS Code devcontainer (#137, #138)
 - feat(python): auto-generate stubs for python modules in Dockerfile (#135)
 - fix: build all python modules (#134)
 
