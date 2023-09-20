@@ -1,5 +1,5 @@
-ARG BASE_TAG=22.04
-FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as base
+ARG ROS2_VERSION=humble
+FROM ghcr.io/aica-technology/ros2-ws:${ROS2_VERSION} as base
 USER ${USER}
 
 FROM base as apt-dependencies
@@ -64,7 +64,7 @@ COPY --from=apt-dependencies /tmp/apt /
 ARG TARGETPLATFORM
 ARG CACHEID
 ARG PINOCCHIO_TAG=v2.6.9
-ARG PINOCCHIO_TESTS=OFF
+ARG PINOCCHIO_TESTS=ON
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
