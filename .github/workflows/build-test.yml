@@ -51,7 +51,7 @@ jobs:
         with:
           cancel_others: 'true'
           do_not_skip: '["workflow_dispatch"]'
-          paths_ignore: '["**.md"]'
+          paths_ignore: '["**.md", ".**/**", "**.gitignore"]'
           skip_after_successful_duplicate: 'true'
 
   build-test-debug:
