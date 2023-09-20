@@ -6,7 +6,7 @@
         "context": "..",
         "target": "development",
         "args": {
-            "ROS2_VERSION": "humble",
+            "BASE_TAG": "22.04",
             "PINOCCHIO_TESTS": "OFF"
         }
     },
