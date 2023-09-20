@@ -393,7 +393,8 @@ void Model::check_inverse_velocity_arguments(const std::vector<state_representat
 state_representation::JointVelocities
 Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
                         const state_representation::JointPositions& joint_positions,
-                        const std::vector<std::string>& frames) {
+                        const std::vector<std::string>& frames,
+                        const float dls_lambda) {
   // sanity check
   this->check_inverse_velocity_arguments(cartesian_twists, joint_positions, frames);
 
@@ -411,6 +412,17 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   dX.tail(6) = cartesian_twists.back().data();
   jacobian.bottomRows(6) = this->compute_jacobian(joint_positions, frames.back()).data();
 
+  // add damped least square term
+  if (jacobian.cols() < jacobian.rows()){
+    jacobian = (jacobian * jacobian.transpose() + 
+                dls_lambda * Eigen::MatrixXd::Identity(nb_joints, nb_joints)) *
+                jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse();
+  } else {
+    jacobian = jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse() * 
+                (jacobian.transpose() * jacobian + 
+                dls_lambda * Eigen::MatrixXd::Identity(nb_joints, nb_joints));
+  }
+
   // solve a linear system
   return state_representation::JointVelocities(joint_positions.get_name(),
                                                joint_positions.get_names(),
@@ -419,11 +431,13 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
 
 state_representation::JointVelocities Model::inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
                                                               const state_representation::JointPositions& joint_positions,
-                                                              const std::string& frame) {
+                                                              const std::string& frame,
+                                                              const float dls_lambda) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   return this->inverse_velocity(std::vector<state_representation::CartesianTwist>({cartesian_twist}),
                                 joint_positions,
-                                std::vector<std::string>({actual_frame}));
+                                std::vector<std::string>({actual_frame}),
+                                dls_lambda);
 }
 
 state_representation::JointVelocities
