@@ -1,6 +1,6 @@
 {
     "name": "control libraries",
-    "remoteUser": "ros2",
+    "remoteUser": "developer",
     "build": {
         "dockerfile": "../Dockerfile.ci",
         "context": "..",
