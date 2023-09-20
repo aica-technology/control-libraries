@@ -1,0 +1,23 @@
+{
+    "name": "control libraries",
+    "remoteUser": "ros2",
+    "build": {
+        "dockerfile": "../Dockerfile.ci",
+        "context": "..",
+        "target": "development",
+        "args": {
+            "BASE_TAG": "22.04",
+            "PINOCCHIO_TESTS": "OFF"
+        }
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/src,type=bind,consistency=cached",
+    "workspaceFolder": "/src",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "eamodio.gitlens"
+            ]
+        }
+    }
+}
