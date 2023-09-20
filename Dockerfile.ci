@@ -145,12 +145,12 @@ COPY --from=python /tmp/python-home /home
 RUN sudo pip install pybind11-stubgen
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
-for PKG in state_representation dynamical_systems robot_model controllers; do
+for PKG in state_representation dynamical_systems robot_model controllers clproto; do
   python3 -c "import ${PKG}"
   if [ $? -eq 0 ]; then
     pybind11-stubgen $PKG -o ./stubs
-    mv ./stubs/$PKG ./stubs/$PKG-stubs
-    cat << EoF > ./stubs/setup.py
+    mkdir -p ./stubs-package/$PKG-stubs && find ./stubs -type f -name "*.pyi" -exec mv {} ./stubs-package/$PKG-stubs \;
+    cat << EoF > ./stubs-package/setup.py
 from distutils.core import setup
 
 import $PKG
@@ -165,8 +165,8 @@ setup(
     packages=["$PKG-stubs"]
 )
 EoF
-    python3 -m pip install --prefix=/tmp/python ./stubs || exit 1
-    rm -r ./stubs
+    python3 -m pip install --prefix=/tmp/python ./stubs-package || exit 1
+    rm -r ./stubs*
   fi
 done
 HEREDOC
