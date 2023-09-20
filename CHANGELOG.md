@@ -10,9 +10,8 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- feat: also build clproto stubs package (#139)
 - feat(build): add configuration files for VS Code devcontainer (#137, #138)
-- feat(python): auto-generate stubs for python modules in Dockerfile (#135)
+- feat(python): auto-generate stubs for python modules in Dockerfile (#135, #139)
 - fix: build all python modules (#134)
 
 ## 7.1.1
