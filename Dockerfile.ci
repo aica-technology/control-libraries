@@ -1,4 +1,5 @@
-FROM ghcr.io/aica-technology/ros2-ws:humble as base
+ARG ROS2_VERSION=humble
+FROM ghcr.io/aica-technology/ros2-ws:${ROS2_VERSION} as base
 USER ${USER}
 
 FROM base as apt-dependencies
@@ -60,34 +61,36 @@ HEREDOC
 
 FROM base as dep-pinocchio
 COPY --from=apt-dependencies /tmp/apt /
+ARG TARGETPLATFORM
+ARG CACHEID
 ARG PINOCCHIO_TAG=v2.6.9
+ARG PINOCCHIO_TESTS=ON
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
-RUN \
-  --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM},uid=1000 \
-  --mount=type=cache,target=./build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM},uid=1000 \
+RUN --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   if [ ! -f pinocchio/CMakeLists.txt ]; then rm -rf pinocchio/* && git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio; fi \
-  && cmake -B build -S pinocchio -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake -B build -S pinocchio -DBUILD_TESTING=${PINOCCHIO_TESTS} -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
   && cmake --build build --target all install
 # FIXME: pinocchio produces non-portable paths
 RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
 
 FROM base as dep-osqp
+ARG TARGETPLATFORM
+ARG CACHEID
 COPY dependencies/osqp.cmake CMakeLists.txt
-RUN \
-  --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release \
-  && cmake --build build \
-  && cmake --install build --prefix /tmp/deps
+RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base as dependencies
+ARG TARGETPLATFORM
+ARG CACHEID
 # Needed to build `osqp-eigen`
 COPY --from=dep-osqp /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
-RUN \
-  --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM},uid=1000 \
+RUN --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release \
   && cmake --build build \
   && cmake --install build --prefix /tmp/deps
@@ -100,34 +103,79 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --chown=${USER}:${USER} . /src
 
+FROM code as development
+
 FROM code as build
-RUN \
-  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release \
-  && cmake --build build
+ARG TARGETPLATFORM
+ARG CACHEID
+RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
 
 FROM build as test
-RUN \
-  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
-  cmake -B build -DBUILD_TESTING=ON \
-  && CTEST_OUTPUT_ON_FAILURE=1 cmake --build build --target test
+ARG TARGETPLATFORM
+ARG CACHEID
+RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DBUILD_TESTING=ON && cd build && make && CTEST_OUTPUT_ON_FAILURE=1 make test
 
 FROM build as install
-RUN \
-  --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM},uid=1000 \
+ARG TARGETPLATFORM
+ARG CACHEID
+RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake --install build --prefix /tmp/cl
 
 FROM base as python
-COPY --chown=${USER}:${USER} ./python /python
+ARG TARGETPLATFORM
+ARG CACHEID
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-RUN \
-  --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM},uid=1000 \
+COPY --chown=${USER}:${USER} ./python /python
+RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
 RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
   && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
 
-FROM scratch
+FROM base as python-stubs
+ARG TARGETPLATFORM
+ARG CACHEID
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-home /home
+RUN sudo pip install pybind11-stubgen
+RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+<<HEREDOC
+for PKG in state_representation dynamical_systems robot_model controllers clproto; do
+  python3 -c "import ${PKG}"
+  if [ $? -eq 0 ]; then
+    pybind11-stubgen $PKG -o ./stubs
+    mkdir -p ./stubs-package/$PKG-stubs && find ./stubs -type f -name "*.pyi" -exec mv {} ./stubs-package/$PKG-stubs \;
+    cat << EoF > ./stubs-package/setup.py
+from distutils.core import setup
+
+import $PKG
+
+
+setup(
+    name="$PKG-stubs",
+    author="Dominic Reber",
+    author_email="dominic@aica.tech",
+    version=$PKG.__version__,
+    package_data={"$PKG-stubs": ["*.pyi"]},
+    packages=["$PKG-stubs"]
+)
+EoF
+    python3 -m pip install --prefix=/tmp/python ./stubs-package || exit 1
+    rm -r ./stubs*
+  fi
+done
+HEREDOC
+RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
+  && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
+
+FROM scratch as production
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=dependencies /tmp/deps /usr
+COPY --from=install /tmp/cl /usr
+COPY --from=python /tmp/python-home /home
+COPY --from=python-stubs /tmp/python-home /home

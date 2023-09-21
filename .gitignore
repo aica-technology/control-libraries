@@ -1,6 +1,7 @@
 # IDE generated directories
 .idea
 cmake-build-*
+build/
 
 # Prerequisites
 *.d
