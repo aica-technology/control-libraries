@@ -1,12 +1,12 @@
 {
     "name": "control libraries",
-    "remoteUser": "developer",
+    "remoteUser": "ros2",
     "build": {
         "dockerfile": "../Dockerfile.ci",
         "context": "..",
         "target": "development",
         "args": {
-            "BASE_TAG": "22.04",
+            "ROS2_VERSION": "humble",
             "PINOCCHIO_TESTS": "OFF"
         }
     },

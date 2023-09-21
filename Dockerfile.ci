@@ -1,5 +1,5 @@
-ARG BASE_TAG=22.04
-FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as base
+ARG ROS2_VERSION=humble
+FROM ghcr.io/aica-technology/ros2-ws:${ROS2_VERSION} as base
 USER ${USER}
 
 FROM base as apt-dependencies
@@ -64,7 +64,7 @@ COPY --from=apt-dependencies /tmp/apt /
 ARG TARGETPLATFORM
 ARG CACHEID
 ARG PINOCCHIO_TAG=v2.6.9
-ARG PINOCCHIO_TESTS=OFF
+ARG PINOCCHIO_TESTS=ON
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
@@ -145,12 +145,12 @@ COPY --from=python /tmp/python-home /home
 RUN sudo pip install pybind11-stubgen
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
-for PKG in state_representation dynamical_systems robot_model controllers; do
+for PKG in state_representation dynamical_systems robot_model controllers clproto; do
   python3 -c "import ${PKG}"
   if [ $? -eq 0 ]; then
     pybind11-stubgen $PKG -o ./stubs
-    mv ./stubs/$PKG ./stubs/$PKG-stubs
-    cat << EoF > ./stubs/setup.py
+    mkdir -p ./stubs-package/$PKG-stubs && find ./stubs -type f -name "*.pyi" -exec mv {} ./stubs-package/$PKG-stubs \;
+    cat << EoF > ./stubs-package/setup.py
 from distutils.core import setup
 
 import $PKG
@@ -165,8 +165,8 @@ setup(
     packages=["$PKG-stubs"]
 )
 EoF
-    python3 -m pip install --prefix=/tmp/python ./stubs || exit 1
-    rm -r ./stubs
+    python3 -m pip install --prefix=/tmp/python ./stubs-package || exit 1
+    rm -r ./stubs*
   fi
 done
 HEREDOC
