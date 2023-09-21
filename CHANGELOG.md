@@ -1,6 +1,7 @@
 # CHANGELOG
 
 Release Versions:
+- [7.2.0](#720)
 - [7.1.1](#711)
 - [7.1.0](#710)
 - [7.0.0](#700)
@@ -8,7 +9,21 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes (in development)
+## 7.2.0
+
+Version 7.2.0 contains improvements for the Python bindings of control libraries.
+
+### Features
+
+To enable a good development experience with IDEs that cannot introspect pybind modules, so-called stubs are now
+generated for each Python module and shipped alongside the actual modules.
+
+### Fixes
+
+Since version 7.1.0, some of the Python modules have not been built in the Docker image due to missing or wrong
+dependencies. This has been fixed in #134.
+
+### Full changelog:
 
 - feat(build): add configuration files for VS Code devcontainer (#137, #138)
 - feat(python): auto-generate stubs for python modules in Dockerfile (#135, #139)
