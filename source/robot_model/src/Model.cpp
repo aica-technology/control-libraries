@@ -413,14 +413,14 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   jacobian.bottomRows(6) = this->compute_jacobian(joint_positions, frames.back()).data();
 
   // add damped least square term
-  if (jacobian.cols() <= jacobian.rows()){
-    jacobian = (jacobian * jacobian.transpose() + 
-                dls_lambda * Eigen::MatrixXd::Identity(nb_joints, nb_joints)) *
-                jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse();
-  } else {
+  if (jacobian.rows() > jacobian.cols()){
     jacobian = jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse() * 
                 (jacobian.transpose() * jacobian + 
-                dls_lambda * Eigen::MatrixXd::Identity(nb_joints, nb_joints));
+                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols()));
+  } else {
+    jacobian = (jacobian * jacobian.transpose() + 
+                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows())) *
+                jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse();
   }
 
   // solve a linear system
