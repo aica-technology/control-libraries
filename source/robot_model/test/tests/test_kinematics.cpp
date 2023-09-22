@@ -34,110 +34,115 @@ protected:
   std::vector<state_representation::CartesianPose> test_fk_ee_expects;
   std::vector<state_representation::CartesianPose> test_fk_link4_expects;
   std::vector<state_representation::CartesianTwist> test_velocity_fk_expects;
+  std::vector<Eigen::MatrixXd> test_damped_jacobian_ee_expects;
   Eigen::Matrix<double, 6, 1> twist;
+  Eigen::Matrix<double, 7, 1> joint_vel_damped;
+  std::vector<double> test_dls_lambdas;
+  std::vector<state_representation::CartesianTwist> test_ee_velocities;
+  std::vector<state_representation::JointVelocities> test_velocity_damped_ik_expects;
 
   void set_test_configurations() {
     // Random test configuration 1:
     state_representation::JointState config1(franka->get_robot_name(), franka->get_joint_frames());
     config1.set_positions(std::vector<double>{-1.957518, 1.037530, -1.093933, -1.485144, -1.937432, 2.251972, -1.373487});
     config1.set_velocities(std::vector<double>{0.308158, 0.378429, 0.496303, -0.098917, -0.832357, -0.542046, 0.826675});
+    state_representation::CartesianTwist test_ee_velocity1("franka");
+    test_ee_velocity1.set_data(std::vector<double>{-0.695244, 0.651634, 0.076685, 0.992269, -0.843649, -0.114643});
+    test_ee_velocities.push_back(test_ee_velocity1);
+    test_dls_lambdas.push_back(0.782253);
     test_configs.push_back(config1);
 
     // Expected results for configuration 1:
     Eigen::MatrixXd jac1(6, 7);
-    jac1 << 0.275154, -0.005914, 0.127368, -0.041238, 0.003824, 0.018324, 0.000000,
-        -0.693174, -0.014523, -0.347282, -0.422943, 0.026691, -0.034385, 0.000000,
-        -0.000000, -0.516268, -0.463478, 0.313197, -0.006376, -0.132947, 0.000000,
-        -0.000000, 0.926150, -0.324787, -0.254761, -0.935275, -0.138023, -0.842118,
-        0.000000, -0.377155, -0.797555, 0.591396, 0.050315, -0.963323, 0.236446,
-        1.000000, 0.000000, 0.508349, 0.765080, -0.350326, 0.230127, 0.484697;
+    jac1 << 0.275154, -0.005914, 0.127368, -0.041238, 0.003824, 0.018324, 0.000000, 
+      -0.693174, -0.014523, -0.347282, -0.422943, 0.026691, -0.034385, 0.000000, 
+      0.000000, -0.516268, -0.463478, 0.313197, -0.006376, -0.132947, 0.000000, 
+      -0.000000, 0.926150, -0.324787, -0.254761, -0.935275, -0.138023, -0.842118, 
+      0.000000, -0.377155, -0.797555, 0.591396, 0.050315, -0.963323, 0.236446, 
+      1.000000, 0.000000, 0.508349, 0.765080, -0.350326, 0.230127, 0.484697; 
     test_jacobian_ee_expects.emplace_back(jac1);
-    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee",
-                                                                        Eigen::Vector3d(-0.693174, -0.275154, 0.348681),
-                                                                        Eigen::Quaterniond(0.548764,
-                                                                                           -0.464146,
-                                                                                           -0.205476,
-                                                                                           0.664234),
-                                                                        franka->get_base_frame()));
-    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4",
-                                                                           Eigen::Vector3d(-0.177776,
-                                                                                           -0.242212,
-                                                                                           0.461029),
-                                                                           Eigen::Quaterniond(0.717822,
-                                                                                              -0.327979,
-                                                                                              0.099446,
-                                                                                              0.606030),
-                                                                           franka->get_base_frame()));
+    Eigen::MatrixXd damped_jac1(6, 7);
+    damped_jac1 << 0.073282, 1.051866, -0.474914, -0.275385, -1.242166, -0.136709, -1.025737, 
+      0.076931, -0.165092, -0.876497, 0.575450, 0.124499, -1.552733, 0.519153, 
+      1.040991, 0.029770, 0.398260, 0.728653, -1.003872, 0.443840, 1.261732, 
+      2.411882, -0.970370, -0.552445, -2.931917, -0.541233, -0.650209, 0.790919, 
+      -0.610238, -0.252439, -0.910281, -1.612924, -1.031767, 0.099631, 1.469060, 
+      0.185370, -1.374154, -0.966386, 0.377927, -0.338962, 0.517386, -0.506325; 
+    test_damped_jacobian_ee_expects.emplace_back(damped_jac1);
+    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee", Eigen::Vector3d(-0.693174, -0.275154, 0.348681), Eigen::Quaterniond(0.548764, -0.464146, -0.205476, 0.664234), franka->get_base_frame()));
+    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4", Eigen::Vector3d(-0.177776, -0.242212, 0.461029), Eigen::Quaterniond(0.717822, -0.327979, 0.099446, 0.606030), franka->get_base_frame()));
     twist << 0.136730, -0.353202, -0.379006, 0.371630, 0.078694, 1.052318;
     test_velocity_fk_expects.emplace_back(state_representation::CartesianTwist("ee", twist, franka->get_base_frame()));
+    joint_vel_damped << -0.358055, 0.179448, 0.000000, -0.159069, -0.490891, 0.335809, -0.216515;
+    test_velocity_damped_ik_expects.emplace_back(state_representation::JointVelocities("franka", joint_vel_damped));
 
     // Random test configuration 2:
     state_representation::JointState config2(franka->get_robot_name(), franka->get_joint_frames());
-    config2.set_positions(std::vector<double>{-2.014330, 1.148700, 0.222179, -0.081404, -2.444304, 1.651397, -2.279290});
-    config2.set_velocities(std::vector<double>{0.923796, -0.990732, 0.549821, 0.634606, 0.737389, -0.831128, -0.200435});
+    config2.set_positions(std::vector<double>{2.676515, -1.746462, 1.592996, -0.618256, 2.136438, 0.300823, -0.580719});
+    config2.set_velocities(std::vector<double>{-0.480259, 0.600137, -0.137172, 0.821295, -0.636306, -0.472394, -0.708922});
+    state_representation::CartesianTwist test_ee_velocity2("franka");
+    test_ee_velocity2.set_data(std::vector<double>{-0.727863, 0.738584, 0.159409, 0.099720, -0.710090, 0.706062});
+    test_ee_velocities.push_back(test_ee_velocity2);
+    test_dls_lambdas.push_back(0.238751);
     test_configs.push_back(config2);
 
     // Expected results for configuration 2:
     Eigen::MatrixXd jac2(6, 7);
-    jac2 << 0.627192, -0.150505, -0.032035, 0.033135, -0.066413, 0.022648, -0.000000,
-        -0.375992, -0.316782, -0.016739, 0.322201, 0.000983, -0.134882, -0.000000,
-        0.000000, -0.727856, -0.064277, 0.388627, -0.074176, -0.022065, -0.000000,
-        0.000000, 0.903241, -0.391470, -0.919778, -0.387933, 0.667016, -0.665249,
-        -0.000000, -0.429134, -0.823965, 0.337047, -0.858275, -0.009872, 0.442326,
-        1.000000, 0.000000, 0.409673, -0.201016, 0.335963, 0.744978, 0.601491;
+    jac2 << 0.405413, 0.190410, 0.023224, 0.204609, 0.094900, 0.079130, 0.000000, 
+      0.493628, -0.095546, 0.101212, 0.271673, 0.039915, -0.075970, 0.000000, 
+      -0.000000, 0.623022, -0.138795, -0.003288, 0.052910, -0.084616, 0.000000, 
+      0.000000, -0.448493, 0.880032, 0.146207, 0.455231, -0.819850, -0.331884, 
+      -0.000000, -0.893787, -0.441590, -0.098201, -0.876764, -0.344829, 0.936721, 
+      1.000000, 0.000000, -0.174763, 0.984368, -0.155081, -0.457098, -0.111386; 
     test_jacobian_ee_expects.emplace_back(jac2);
-    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee",
-                                                                        Eigen::Vector3d(-0.375992, -0.627192, 0.683717),
-                                                                        Eigen::Quaterniond(0.399601,
-                                                                                           -0.442959,
-                                                                                           0.055149,
-                                                                                           0.800665),
-                                                                        franka->get_base_frame()));
-    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4",
-                                                                           Eigen::Vector3d(-0.121432,
-                                                                                           -0.297952,
-                                                                                           0.389048),
-                                                                           Eigen::Quaterniond(0.000372,
-                                                                                              -0.727768,
-                                                                                              0.266200,
-                                                                                              0.632054),
-                                                                           franka->get_base_frame()));
-    twist << 0.664126, 0.274603, 0.896037, -2.400900, -0.527320, 0.529481;
+    Eigen::MatrixXd damped_jac2(6, 7);
+    damped_jac2 << -0.070284, -0.439069, 0.940714, 0.246540, 0.506873, -0.821610, -0.236078, 
+      -0.034262, -0.888863, -0.416746, -0.044923, -0.862948, -0.342762, 1.033262, 
+      0.924546, -0.001518, -0.186694, 1.126537, -0.142338, -0.446259, -0.087636, 
+      -0.088691, 0.277525, 0.333443, 1.055268, 0.452283, 0.402115, 0.771950, 
+      1.167499, -0.162815, -0.126153, -0.714415, -0.283501, -0.362238, -0.682844, 
+      0.155559, 0.687084, -0.200853, -0.267861, -0.034183, -0.228977, -0.130528; 
+    test_damped_jacobian_ee_expects.emplace_back(damped_jac2);
+    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee", Eigen::Vector3d(0.493628, -0.405413, 0.119962), Eigen::Quaterniond(0.606903, -0.742705, 0.063889, 0.275636), franka->get_base_frame()));
+    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4", Eigen::Vector3d(0.240812, -0.213118, 0.275972), Eigen::Quaterniond(0.239435, -0.059390, 0.065490, -0.966879), franka->get_base_frame()));
+    twist << -0.013339, -0.074680, 0.396542, 0.063112, -0.499749, 0.745744;
     test_velocity_fk_expects.emplace_back(state_representation::CartesianTwist("ee", twist, franka->get_base_frame()));
+    joint_vel_damped << 0.101434, -0.074037, -0.453057, 0.298299, 0.000000, -0.233839, -0.994892;
+    test_velocity_damped_ik_expects.emplace_back(state_representation::JointVelocities("franka", joint_vel_damped));
 
     // Random test configuration 3:
     state_representation::JointState config3(franka->get_robot_name(), franka->get_joint_frames());
-    config3.set_positions(std::vector<double>{-1.391455, 1.057921, -0.397429, -0.338036, -1.843569, 0.977037, -2.053960});
-    config3.set_velocities(std::vector<double>{-0.727863, 0.738584, 0.159409, 0.099720, -0.710090, 0.706062, 0.244110});
+    config3.set_positions(std::vector<double>{-0.863671, 0.046713, -0.568983, -2.843748, -1.507082, 0.447412, -1.831628});
+    config3.set_velocities(std::vector<double>{-0.520095, -0.165466, -0.900691, 0.805432, 0.889574, -0.018272, -0.021495});
+    state_representation::CartesianTwist test_ee_velocity3("franka");
+    test_ee_velocity3.set_data(std::vector<double>{-0.324561, 0.800108, -0.261506, -0.777594, 0.560504, -0.220522});
+    test_ee_velocities.push_back(test_ee_velocity3);
+    test_dls_lambdas.push_back(0.573203);
     test_configs.push_back(config3);
 
     // Expected results for configuration 3:
     Eigen::MatrixXd jac3(6, 7);
-    jac3 << 0.675235, 0.057394, 0.055473, 0.127263, -0.079424, 0.017167, -0.000000,
-        -0.041899, -0.316587, -0.070569, 0.196918, -0.025838, -0.136065, 0.000000,
-        0.000000, -0.656931, -0.140875, 0.342071, -0.109756, 0.019609, -0.000000,
-        -0.000000, 0.983961, 0.155431, -0.941148, 0.047099, 0.575869, -0.702840,
-        0.000000, 0.178382, -0.857362, 0.022395, -0.979378, 0.187336, 0.610654,
-        1.000000, 0.000000, 0.490684, 0.337251, 0.196472, 0.795789, 0.364853;
+    jac3 << 0.264988, 0.012937, 0.263992, 0.044738, -0.009629, -0.056809, 0.000000, 
+      -0.089149, -0.015140, -0.089656, -0.292366, 0.121041, -0.036721, -0.000000, 
+      -0.000000, -0.143537, -0.011203, 0.155206, -0.032239, -0.120902, 0.000000, 
+      0.000000, 0.760233, 0.030336, -0.990092, 0.011235, 0.076647, -0.441463, 
+      0.000000, 0.649651, -0.035500, -0.138150, -0.256523, -0.963469, 0.197978, 
+      1.000000, 0.000000, 0.998909, 0.025158, -0.966473, 0.256617, 0.875166; 
     test_jacobian_ee_expects.emplace_back(jac3);
-    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee",
-                                                                        Eigen::Vector3d(-0.041899, -0.675235, 0.654747),
-                                                                        Eigen::Quaterniond(0.264829,
-                                                                                           -0.521437,
-                                                                                           0.213722,
-                                                                                           0.782491),
-                                                                        franka->get_base_frame()));
-    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4",
-                                                                           Eigen::Vector3d(0.024355,
-                                                                                           -0.313350,
-                                                                                           0.421774),
-                                                                           Eigen::Quaterniond(0.076121,
-                                                                                              0.571715,
-                                                                                              -0.067208,
-                                                                                              -0.814144),
-                                                                           franka->get_base_frame()));
-    twist << -0.359035, -0.272665, -0.381763, 0.859248, 0.974096, -0.104585;
+    Eigen::MatrixXd damped_jac3(6, 7);
+    damped_jac3 << 0.011534, 0.675861, 0.034236, -1.171561, -0.430891, 0.061389, -0.937657, 
+      -0.026998, 0.857111, -0.066143, -0.079801, -0.188831, -1.150077, 0.391597, 
+      1.012945, -0.089461, 1.006796, -0.079582, -1.204792, 0.291186, 0.956492, 
+      0.858231, 0.090847, 0.866806, 0.156182, 1.064270, -0.348459, -0.097657, 
+      -0.014639, -0.732738, -0.048608, -1.138509, 0.670558, -0.421332, 0.611959, 
+      0.018249, -1.856777, -0.112750, -0.442599, -2.028157, -1.030301, -1.825263; 
+    test_damped_jacobian_ee_expects.emplace_back(damped_jac3);
+    test_fk_ee_expects.emplace_back(state_representation::CartesianPose("ee", Eigen::Vector3d(-0.089149, -0.264988, 0.352914), Eigen::Quaterniond(0.725579, -0.227558, -0.103125, 0.641185), franka->get_base_frame()));
+    test_fk_link4_expects.emplace_back(state_representation::CartesianPose("link4", Eigen::Vector3d(0.020897, -0.092874, 0.645410), Eigen::Quaterniond(0.396442, -0.522349, -0.463220, 0.596166), franka->get_base_frame()));
+    twist << -0.349230, 0.002488, 0.132379, -0.932485, -0.401639, -2.282790;
     test_velocity_fk_expects.emplace_back(state_representation::CartesianTwist("ee", twist, franka->get_base_frame()));
+    joint_vel_damped << 0.000000, -0.234257, -0.563224, -0.004117, 0.081503, -0.445711, 0.578388;
+    test_velocity_damped_ik_expects.emplace_back(state_representation::JointVelocities("franka", joint_vel_damped));
   }
 };
 
@@ -338,5 +343,13 @@ TEST_F(RobotModelKinematicsTest, ComputeJacobianTimeDerivative) {
     velocities.set_zero();
     auto jt = franka->compute_jacobian_time_derivative(pos1, velocities);
     EXPECT_NEAR(jt.sum(), 0, tol);
+  }
+}
+
+TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity){
+  for (std::size_t config = 0; config < test_configs.size(); ++config){
+    state_representation::JointVelocities joint_velocities_undamped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config]);
+    state_representation::JointVelocities joint_velocities_damped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config], "", test_dls_lambdas[config]);
+    EXPECT_LT(joint_velocities_damped.data().norm() - test_velocity_damped_ik_expects[config].data().norm(), 1e-3);
   }
 }
