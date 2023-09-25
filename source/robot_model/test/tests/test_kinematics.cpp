@@ -348,7 +348,6 @@ TEST_F(RobotModelKinematicsTest, ComputeJacobianTimeDerivative) {
 
 TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity){
   for (std::size_t config = 0; config < test_configs.size(); ++config){
-    state_representation::JointVelocities joint_velocities_undamped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config]);
     state_representation::JointVelocities joint_velocities_damped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config], "", test_dls_lambdas[config]);
     EXPECT_LT(joint_velocities_damped.data().norm() - test_velocity_damped_ik_expects[config].data().norm(), 1e-3);
   }
