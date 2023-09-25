@@ -411,7 +411,7 @@ public:
   state_representation::JointVelocities inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
                                                          const state_representation::JointPositions& joint_positions,
                                                          const std::vector<std::string>& frames,
-                                                         const float dls_lambda = 0.0);
+                                                         const double dls_lambda = 0.0);
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the
@@ -427,7 +427,7 @@ public:
   state_representation::JointVelocities inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
                                                          const state_representation::JointPositions& joint_positions,
                                                          const std::string& frame = "",
-                                                         const float dls_lambda = 0.0);
+                                                         const double dls_lambda = 0.0);
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter

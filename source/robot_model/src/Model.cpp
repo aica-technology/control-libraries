@@ -394,7 +394,7 @@ state_representation::JointVelocities
 Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
                         const state_representation::JointPositions& joint_positions,
                         const std::vector<std::string>& frames,
-                        const float dls_lambda) {
+                        const double dls_lambda) {
   // sanity check
   this->check_inverse_velocity_arguments(cartesian_twists, joint_positions, frames);
 
@@ -432,7 +432,7 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
 state_representation::JointVelocities Model::inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
                                                               const state_representation::JointPositions& joint_positions,
                                                               const std::string& frame,
-                                                              const float dls_lambda) {
+                                                              const double dls_lambda) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   return this->inverse_velocity(std::vector<state_representation::CartesianTwist>({cartesian_twist}),
                                 joint_positions,
