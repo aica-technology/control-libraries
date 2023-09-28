@@ -7,7 +7,8 @@
         "target": "development",
         "args": {
             "ROS2_VERSION": "humble",
-            "PINOCCHIO_TESTS": "OFF"
+            "PINOCCHIO_TESTS": "OFF",
+            "CACHEID": "99"
         }
     },
     "workspaceMount": "source=${localWorkspaceFolder},target=/src,type=bind,consistency=cached",

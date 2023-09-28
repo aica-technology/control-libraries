@@ -412,15 +412,25 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   dX.tail(6) = cartesian_twists.back().data();
   jacobian.bottomRows(6) = this->compute_jacobian(joint_positions, frames.back()).data();
 
+  if (dls_lambda == 0.0){
+    return state_representation::JointVelocities(joint_positions.get_name(),
+                                               joint_positions.get_names(),
+                                               jacobian.colPivHouseholderQr().solve(dX));
+  }
+
   // add damped least square term
   if (jacobian.rows() > jacobian.cols()){
-    jacobian = jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse() * 
-                (jacobian.transpose() * jacobian + 
-                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols()));
+    Eigen::MatrixXd j_prime = jacobian.transpose() * jacobian + 
+                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols());
+    return state_representation::JointVelocities(joint_positions.get_name(),
+                                               joint_positions.get_names(),
+                                               j_prime.colPivHouseholderQr().solve(jacobian.transpose() * dX));
   } else {
-    jacobian = (jacobian * jacobian.transpose() + 
-                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows())) *
-                jacobian.transpose().completeOrthogonalDecomposition().pseudoInverse();
+    Eigen::MatrixXd j_prime = jacobian * jacobian.transpose() + 
+                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows());
+    return state_representation::JointVelocities(joint_positions.get_name(),
+                                               joint_positions.get_names(),
+                                               jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX));
   }
 
   // solve a linear system
