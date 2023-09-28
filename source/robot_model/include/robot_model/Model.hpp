@@ -405,7 +405,7 @@ public:
    * @param cartesian_twists vector of twist
    * @param joint_positions current joint positions, used to compute the Jacobian matrix
    * @param frames names of the frames at which to compute the twists
-   * @param damped least square term
+   * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
   state_representation::JointVelocities inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
