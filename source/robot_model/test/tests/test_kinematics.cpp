@@ -351,4 +351,22 @@ TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity){
     state_representation::JointVelocities joint_velocities_damped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config], "", test_dls_lambdas[config]);
     EXPECT_LT(joint_velocities_damped.data().norm() - test_velocity_damped_ik_expects[config].data().norm(), 1e-3);
   }
+    // additional 6 dof robot test
+  std::string robot_name_6_dof = "ur5e";
+  std::string urdf_path_6_dof = std::string(TEST_FIXTURES) + "ur5e.urdf";
+  std::unique_ptr<Model> ur5e = std::make_unique<Model>(robot_name_6_dof, urdf_path_6_dof);
+  
+  Eigen::VectorXd q(6);
+  q << -1.957518, 1.037530, -1.093933, -1.485144, -0.037432, 0.051972;
+  state_representation::JointPositions q_6dof("ur5e", q);
+  state_representation::CartesianTwist v_ee_6_dof("ur5e");
+  v_ee_6_dof.set_data(std::vector<double>{-0.695244, 0.651634, 0.076685, 0.992269, -0.843649, -0.114643});
+  double dls_lambda_6_dof = 0.782253;
+  Eigen::Matrix<double, 6, 1> twist_6_dof;
+  twist_6_dof << -0.305471, 0.217658, 0.120671, 0.321962, 0.265064, 0.352931;
+  state_representation::CartesianTwist test_velocity_fk_expects_6_dof("6dof", twist_6_dof);
+
+  state_representation::JointVelocities joint_velocities_damped_6_dof = ur5e->inverse_velocity(v_ee_6_dof, q_6dof, "", dls_lambda_6_dof);
+
+  EXPECT_LT(joint_velocities_damped_6_dof.data().norm() - test_velocity_fk_expects_6_dof.data().norm(), 1e-3);
 }
