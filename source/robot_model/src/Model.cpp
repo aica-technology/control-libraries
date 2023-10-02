@@ -432,11 +432,6 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
                                                joint_positions.get_names(),
                                                jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX));
   }
-
-  // solve a linear system
-  return state_representation::JointVelocities(joint_positions.get_name(),
-                                               joint_positions.get_names(),
-                                               jacobian.colPivHouseholderQr().solve(dX));
 }
 
 state_representation::JointVelocities Model::inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,

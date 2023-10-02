@@ -421,7 +421,7 @@ public:
    * @param frame name of the frame at which to compute the twist
    * @param parameters parameters of the inverse velocity kinematics algorithm (default is default values of the
    * QPInverseVelocityParameters structure)
-   * @param damped least square term
+   * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
   state_representation::JointVelocities inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
