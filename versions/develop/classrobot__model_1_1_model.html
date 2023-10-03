@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.2.0</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.2.1</span>
    </div>
   </td>
  </tr>
@@ -167,12 +167,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad503164e00769d138c2dd79da7629146"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#ad503164e00769d138c2dd79da7629146">forward_velocity</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> &amp;joint_state, const std::string &amp;frame=&quot;&quot;)</td></tr>
 <tr class="memdesc:ad503164e00769d138c2dd79da7629146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the forward velocity kinematics, i.e. the twist of the end-effector from the joint velocities.  <a href="classrobot__model_1_1_model.html#ad503164e00769d138c2dd79da7629146">More...</a><br /></td></tr>
 <tr class="separator:ad503164e00769d138c2dd79da7629146"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3938692368fec87675df3618894ce727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#a3938692368fec87675df3618894ce727">inverse_velocity</a> (const std::vector&lt; <a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> &gt; &amp;cartesian_twists, const <a class="el" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> &amp;joint_positions, const std::vector&lt; std::string &gt; &amp;frames)</td></tr>
-<tr class="memdesc:a3938692368fec87675df3618894ce727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter using the Jacobian.  <a href="classrobot__model_1_1_model.html#a3938692368fec87675df3618894ce727">More...</a><br /></td></tr>
-<tr class="separator:a3938692368fec87675df3618894ce727"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8468ad56ba9f61728d4ee8b1dbcec062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#a8468ad56ba9f61728d4ee8b1dbcec062">inverse_velocity</a> (const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> &amp;cartesian_twist, const <a class="el" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> &amp;joint_positions, const std::string &amp;frame=&quot;&quot;)</td></tr>
-<tr class="memdesc:a8468ad56ba9f61728d4ee8b1dbcec062"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the Jacobian.  <a href="classrobot__model_1_1_model.html#a8468ad56ba9f61728d4ee8b1dbcec062">More...</a><br /></td></tr>
-<tr class="separator:a8468ad56ba9f61728d4ee8b1dbcec062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d12b980b323d86d5c5fb6134c5b97e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#a3d12b980b323d86d5c5fb6134c5b97e5">inverse_velocity</a> (const std::vector&lt; <a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> &gt; &amp;cartesian_twists, const <a class="el" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> &amp;joint_positions, const std::vector&lt; std::string &gt; &amp;frames, const double dls_lambda=0.0)</td></tr>
+<tr class="memdesc:a3d12b980b323d86d5c5fb6134c5b97e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter using the Jacobian.  <a href="classrobot__model_1_1_model.html#a3d12b980b323d86d5c5fb6134c5b97e5">More...</a><br /></td></tr>
+<tr class="separator:a3d12b980b323d86d5c5fb6134c5b97e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3f6e0349bf32301135f87944a26a8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#a0f3f6e0349bf32301135f87944a26a8d">inverse_velocity</a> (const <a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> &amp;cartesian_twist, const <a class="el" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> &amp;joint_positions, const std::string &amp;frame=&quot;&quot;, const double dls_lambda=0.0)</td></tr>
+<tr class="memdesc:a0f3f6e0349bf32301135f87944a26a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the Jacobian.  <a href="classrobot__model_1_1_model.html#a0f3f6e0349bf32301135f87944a26a8d">More...</a><br /></td></tr>
+<tr class="separator:a0f3f6e0349bf32301135f87944a26a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd2cbe8d24babd551301528d562ddb98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">state_representation::JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#acd2cbe8d24babd551301528d562ddb98">inverse_velocity</a> (const std::vector&lt; <a class="el" href="classstate__representation_1_1_cartesian_twist.html">state_representation::CartesianTwist</a> &gt; &amp;cartesian_twists, const <a class="el" href="classstate__representation_1_1_joint_positions.html">state_representation::JointPositions</a> &amp;joint_positions, const <a class="el" href="structrobot__model_1_1_q_p_inverse_velocity_parameters.html">QPInverseVelocityParameters</a> &amp;parameters, const std::vector&lt; std::string &gt; &amp;frames)</td></tr>
 <tr class="memdesc:acd2cbe8d24babd551301528d562ddb98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter using the QP optimization method.  <a href="classrobot__model_1_1_model.html#acd2cbe8d24babd551301528d562ddb98">More...</a><br /></td></tr>
 <tr class="separator:acd2cbe8d24babd551301528d562ddb98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,7 +309,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the clamped joint states </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00562">562</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00581">581</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -779,7 +779,7 @@ Friends</h2></td></tr>
 <p>Getter of the base frame of the robot. </p>
 <dl class="section return"><dt>Returns</dt><dd>the base frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00539">539</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00543">543</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -809,7 +809,7 @@ Friends</h2></td></tr>
 <p>Getter of the frames from the model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the frame names </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00543">543</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00547">547</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -839,7 +839,7 @@ Friends</h2></td></tr>
 <p>Getter of the gravity vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>Eigen::Vector3d the gravity vector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00547">547</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00551">551</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -869,7 +869,7 @@ Friends</h2></td></tr>
 <p>Getter of the joint frames from the model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the joint frames </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00533">533</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00537">537</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -899,7 +899,7 @@ Friends</h2></td></tr>
 <p>Getter of the number of joints. </p>
 <dl class="section return"><dt>Returns</dt><dd>the number of joints </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00529">529</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00533">533</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -929,7 +929,7 @@ Friends</h2></td></tr>
 <p>Getter of the pinocchio model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the pinocchio model </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00555">555</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00559">559</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -959,7 +959,7 @@ Friends</h2></td></tr>
 <p>Getter of the robot name. </p>
 <dl class="section return"><dt>Returns</dt><dd>the robot name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00517">517</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00521">521</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -989,7 +989,7 @@ Friends</h2></td></tr>
 <p>Getter of the URDF path. </p>
 <dl class="section return"><dt>Returns</dt><dd>the URDF path </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00525">525</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00529">529</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1018,7 +1018,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the positions are inside their limits, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00534">534</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00553">553</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1047,7 +1047,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the state variables are inside the limits, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00550">550</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00569">569</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1076,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the torques are inside their limits, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00546">546</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00565">565</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1105,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the velocities are inside their limits, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00540">540</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00559">559</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1261,12 +1261,12 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the joint velocities of the robot </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00499">499</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00518">518</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8468ad56ba9f61728d4ee8b1dbcec062" name="a8468ad56ba9f61728d4ee8b1dbcec062"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8468ad56ba9f61728d4ee8b1dbcec062">&#9670;&#160;</a></span>inverse_velocity() <span class="overload">[2/4]</span></h2>
+<a id="a0f3f6e0349bf32301135f87944a26a8d" name="a0f3f6e0349bf32301135f87944a26a8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3f6e0349bf32301135f87944a26a8d">&#9670;&#160;</a></span>inverse_velocity() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1287,7 +1287,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>frame</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>frame</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>dls_lambda</em> = <code>0.0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1304,12 +1310,13 @@ Friends</h2></td></tr>
     <tr><td class="paramname">joint_positions</td><td>current joint positions, used to compute the Jacobian matrix </td></tr>
     <tr><td class="paramname">frame</td><td>name of the frame at which to compute the twist </td></tr>
     <tr><td class="paramname">parameters</td><td>parameters of the inverse velocity kinematics algorithm (default is default values of the <a class="el" href="structrobot__model_1_1_q_p_inverse_velocity_parameters.html" title="parameters for the inverse velocity kinematics function">QPInverseVelocityParameters</a> structure) </td></tr>
+    <tr><td class="paramname">dls_lambda</td><td>damped least square term </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the joint velocities of the robot </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00420">420</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00437">437</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1363,12 +1370,12 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the joint velocities of the robot </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00430">430</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00449">449</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a3938692368fec87675df3618894ce727" name="a3938692368fec87675df3618894ce727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3938692368fec87675df3618894ce727">&#9670;&#160;</a></span>inverse_velocity() <span class="overload">[4/4]</span></h2>
+<a id="a3d12b980b323d86d5c5fb6134c5b97e5" name="a3d12b980b323d86d5c5fb6134c5b97e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d12b980b323d86d5c5fb6134c5b97e5">&#9670;&#160;</a></span>inverse_velocity() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1389,7 +1396,13 @@ Friends</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
-          <td class="paramname"><em>frames</em>&#160;</td>
+          <td class="paramname"><em>frames</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>dls_lambda</em> = <code>0.0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1405,6 +1418,7 @@ Friends</h2></td></tr>
     <tr><td class="paramname">cartesian_twists</td><td>vector of twist </td></tr>
     <tr><td class="paramname">joint_positions</td><td>current joint positions, used to compute the Jacobian matrix </td></tr>
     <tr><td class="paramname">frames</td><td>names of the frames at which to compute the twists </td></tr>
+    <tr><td class="paramname">dls_lambda</td><td>damped least square term </td></tr>
   </table>
   </dd>
 </dl>
@@ -1447,7 +1461,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>reference to the current model with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00510">510</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00514">514</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1468,7 +1482,7 @@ Friends</h2></td></tr>
 
 <p>Helper function to print the qp_problem (for debugging) </p>
 
-<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00510">510</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00529">529</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
 
 </div>
 </div>
@@ -1504,7 +1518,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00551">551</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00555">555</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1540,7 +1554,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00521">521</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00525">525</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1602,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00502">502</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00506">506</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
