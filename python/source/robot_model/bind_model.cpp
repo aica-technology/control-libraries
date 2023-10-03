@@ -75,10 +75,10 @@ void model(py::module_& m) {
   c.def("forward_velocity", py::overload_cast<const JointState&, const std::string&>(&Model::forward_velocity),
         "Compute the forward velocity kinematics, i.e. the twist of the end-effector from the joint velocities", "joint_state"_a, "frame"_a = std::string(""));
 
-  c.def("inverse_velocity", py::overload_cast<const std::vector<CartesianTwist>&, const JointPositions&, const std::vector<std::string>&>(&Model::inverse_velocity),
-        "Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter the Jacobian", "cartesian_twists"_a, "joint_positions"_a, "frames"_a);
-  c.def("inverse_velocity", py::overload_cast<const CartesianTwist&, const JointPositions&, const std::string&>(&Model::inverse_velocity),
-        "Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the Jacobian", "cartesian_twist"_a, "joint_positions"_a, "frame"_a = std::string(""));
+  c.def("inverse_velocity", py::overload_cast<const std::vector<CartesianTwist>&, const JointPositions&, const std::vector<std::string>&, const double>(&Model::inverse_velocity),
+        "Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter the Jacobian", "cartesian_twists"_a, "joint_positions"_a, "frames"_a, "dls_lambda"_a = 0.0);
+  c.def("inverse_velocity", py::overload_cast<const CartesianTwist&, const JointPositions&, const std::string&, const double>(&Model::inverse_velocity),
+        "Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the Jacobian", "cartesian_twist"_a, "joint_positions"_a, "frame"_a = std::string(""), "dls_lambda"_a = 0.0);
   c.def("inverse_velocity", py::overload_cast<const std::vector<CartesianTwist>&, const JointPositions&, const QPInverseVelocityParameters&, const std::vector<std::string>&>(&Model::inverse_velocity),
         "Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter using the QP optimization method", "cartesian_twists"_a, "joint_positions"_a, "parameters"_a, "frames"_a);
   c.def("inverse_velocity", py::overload_cast<const CartesianTwist&, const JointPositions&, const QPInverseVelocityParameters&, const std::string&>(&Model::inverse_velocity),

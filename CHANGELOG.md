@@ -28,6 +28,7 @@ dependencies. This has been fixed in #134.
 - feat(build): add configuration files for VS Code devcontainer (#137, #138)
 - feat(python): auto-generate stubs for python modules in Dockerfile (#135, #139)
 - fix: build all python modules (#134)
+- feat(robot model): Damped least squared pseudoinverse (#143)
 
 ## 7.1.1
 
