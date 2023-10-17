@@ -9,6 +9,9 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+- feat(robot_model): accept frame transform from non-base frame (#145)
+
 ## 7.2.0
 
 Version 7.2.0 contains improvements for the Python bindings of control libraries.

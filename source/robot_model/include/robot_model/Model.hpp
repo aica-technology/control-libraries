@@ -122,6 +122,7 @@ private:
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions
    * @param joint_positions the joint state of the robot
    * @param frame_ids ids of the frames at which to extract the pose
+   * @param ref_frame_id id of the reference frame
    * @return the desired poses
    */
   std::vector<state_representation::CartesianPose> forward_kinematics(const state_representation::JointPositions& joint_positions,
@@ -132,6 +133,7 @@ private:
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions for a single frame
    * @param joint_positions the joint state of the robot
    * @param frame_id id of the frames at which to extract the pose
+   * @param ref_frame_id id of the reference frame
    * @return the desired pose
    */
   state_representation::CartesianPose forward_kinematics(const state_representation::JointPositions& joint_positions,
