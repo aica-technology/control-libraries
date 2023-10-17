@@ -125,7 +125,8 @@ private:
    * @return the desired poses
    */
   std::vector<state_representation::CartesianPose> forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                      const std::vector<unsigned int>& frame_ids);
+                                                                      const std::vector<unsigned int>& frame_ids,
+                                                                      const unsigned int ref_frame_id = 0);
 
   /**
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions for a single frame
@@ -134,7 +135,8 @@ private:
    * @return the desired pose
    */
   state_representation::CartesianPose forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                         unsigned int frame_id);
+                                                         const unsigned int frame_id,
+                                                         const unsigned int ref_frame_id = 0);
 
   /**
    * @brief Check if the vector's elements are inside the parameter limits

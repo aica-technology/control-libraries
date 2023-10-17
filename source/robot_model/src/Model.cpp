@@ -221,17 +221,36 @@ Model::compute_gravity_torques(const state_representation::JointPositions& joint
 }
 
 state_representation::CartesianPose Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                              unsigned int frame_id) {
-  return this->forward_kinematics(joint_positions, std::vector<unsigned int>{frame_id}).front();
+                                                              const unsigned int frame_id,
+                                                              const unsigned int ref_frame_id) {
+  return this->forward_kinematics(joint_positions, std::vector<unsigned int>{frame_id}, ref_frame_id).front();
 }
 
 std::vector<state_representation::CartesianPose> Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                           const std::vector<unsigned int>& frame_ids) {
+                                                                           const std::vector<unsigned int>& frame_ids,
+                                                                           const unsigned int ref_frame_id) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw (exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints()));
   }
   std::vector<state_representation::CartesianPose> pose_vector;
   pinocchio::forwardKinematics(this->robot_model_, this->robot_data_, joint_positions.data());
+
+  if (ref_frame_id >= static_cast<unsigned int>(this->robot_model_.nframes)) {
+    throw (exceptions::FrameNotFoundException(std::to_string(ref_frame_id)));
+    }
+  state_representation::CartesianPose ref_frame_pose = state_representation::CartesianPose::Identity(
+                                                        this->robot_model_.frames[ref_frame_id].name);
+  if (ref_frame_id > 0) {
+    pinocchio::updateFramePlacement(this->robot_model_, this->robot_data_, ref_frame_id);
+    pinocchio::SE3 ref_pose = this->robot_data_.oMf[ref_frame_id];
+    Eigen::Vector3d ref_translation = ref_pose.translation();
+    Eigen::Quaterniond ref_quaternion;
+    pinocchio::quaternion::assignQuaternion(ref_quaternion, ref_pose.rotation());
+    ref_frame_pose = state_representation::CartesianPose(this->robot_model_.frames[ref_frame_id].name,
+                                                    ref_translation,
+                                                    ref_quaternion,
+                                                    this->get_base_frame());
+  }
   for (unsigned int id : frame_ids) {
     if (id >= static_cast<unsigned int>(this->robot_model_.nframes)) {
       throw (exceptions::FrameNotFoundException(std::to_string(id)));
@@ -245,6 +264,9 @@ std::vector<state_representation::CartesianPose> Model::forward_kinematics(const
                                                    translation,
                                                    quaternion,
                                                    this->get_base_frame());
+    if (ref_frame_id > 0) {
+      frame_pose = ref_frame_pose.inverse() * frame_pose;
+    }
     pose_vector.push_back(frame_pose);
   }
   return pose_vector;
