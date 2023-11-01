@@ -14,6 +14,16 @@ const Eigen::Quaterniond log(const Eigen::Quaterniond& q) {
   return log_q;
 }
 
+const Eigen::Quaterniond exp(const Eigen::Quaterniond& q, double lambda) {
+  Eigen::Quaterniond exp_q = Eigen::Quaterniond::Identity();
+  double q_norm = q.vec().norm();
+  if (q_norm > 1e-4) {
+    exp_q.w() = cos(q_norm * lambda);
+    exp_q.vec() = (q.vec() / q_norm) * sin(q_norm * lambda);
+  }
+  return exp_q;
+}
+
 const std::vector<double> linspace(double start, double end, unsigned int number_of_points) {
   // catch rarely, throw often
   if (number_of_points < 2) {
