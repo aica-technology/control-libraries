@@ -17,7 +17,7 @@ const Eigen::Quaterniond log(const Eigen::Quaterniond& q);
  * @param  q the quaternion to apply the exp on
  * @return the exp of the quaternion
  */
-const Eigen::Quaterniond exp(const Eigen::Quaterniond& q, double lambda = 1);
+[[maybe_unused]] const Eigen::Quaterniond exp(const Eigen::Quaterniond& q, double lambda = 1);
 
 /**
  * @brief Create a vector values from start to end
