@@ -307,3 +307,18 @@ TEST(CartesianPoseTest, TestPoseNorms) {
   EXPECT_NEAR(pose_norms[0], cp.get_position().norm(), tolerance);
   EXPECT_NEAR(pose_norms[1], cp.get_orientation().norm(), tolerance);
 }
+
+TEST(CartesianPoseTest, TestScale) {
+  auto A = CartesianPose::Random("A");
+  auto B = CartesianPose::Random("B");
+  std::cout << A << std::endl;
+  std::cout << B << std::endl;
+
+  auto B_in_A = A.inverse() * B;
+  std::cout << B_in_A << std::endl;
+
+  auto B_again = A * (2 * (0.5 * B_in_A));
+  std::cout << B_again << std::endl;
+  EXPECT_TRUE(B.dist(B_again, CartesianStateVariable::POSITION) < 1e-3);
+  EXPECT_TRUE(B.dist(B_again, CartesianStateVariable::ORIENTATION) < 1e-3);
+}
