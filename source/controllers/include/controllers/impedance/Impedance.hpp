@@ -82,8 +82,7 @@ Impedance<S>::Impedance(unsigned int dimensions) :
     state_representation::make_shared_parameter<Eigen::MatrixXd>(
         "inertia", Eigen::MatrixXd::Identity(dimensions, dimensions))), feed_forward_force_(
             state_representation::make_shared_parameter<bool>("feed_forward_force", false)), force_limit_(
-    state_representation::make_shared_parameter<Eigen::VectorXd>(
-        "force_limit", Eigen::VectorXd::Zero(dimensions))), dimensions_(dimensions) {
+    state_representation::make_shared_parameter<Eigen::VectorXd>("force_limit")), dimensions_(dimensions) {
   this->parameters_.insert(std::make_pair("stiffness", stiffness_));
   this->parameters_.insert(std::make_pair("damping", damping_));
   this->parameters_.insert(std::make_pair("inertia", inertia_));
@@ -101,12 +100,7 @@ Impedance<S>::Impedance(
 
 template<class S>
 void Impedance<S>::clamp_force(Eigen::VectorXd& force) {
-  auto limit = this->force_limit_->get_value();
-  for (std::size_t index = 0; index < this->dimensions_; ++index) {
-    if (limit(index) > 0.0 && abs(force(index)) > limit(index)) {
-      force(index) = force(index) > 0.0 ? limit(index) : -limit(index);
-    }
-  }
+  force = force.cwiseMax(-this->force_limit_->get_value()).cwiseMin(this->force_limit_->get_value());
 }
 
 template<class S>

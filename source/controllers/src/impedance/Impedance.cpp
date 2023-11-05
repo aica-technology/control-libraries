@@ -37,10 +37,12 @@ CartesianState Impedance<CartesianState>::compute_command(
   Eigen::VectorXd wrench(6);
   wrench << position_control, orientation_control;
   // if the 'feed_forward_force' parameter is set to true, also add the wrench error to the command
-  if (this->get_parameter_value<bool>("feed_forward_force")) {
+  if (this->feed_forward_force_->get_value()) {
     wrench += state_error.get_wrench();
   }
-  clamp_force(wrench);
+  if (*this->force_limit_) {
+    clamp_force(wrench);
+  }
 
   command.set_wrench(wrench);
   return command;
@@ -59,10 +61,12 @@ JointState Impedance<JointState>::compute_command(
       + this->inertia_->get_value() * command_state.get_accelerations();
 
   // if the 'feed_forward_force' parameter is set to true, also add the torque error to the command
-  if (this->get_parameter_value<bool>("feed_forward_force")) {
+  if (this->feed_forward_force_->get_value()) {
     torque_control += state_error.get_torques();
   }
-  clamp_force(torque_control);
+  if (*this->force_limit_) {
+    clamp_force(torque_control);
+  }
   command.set_torques(torque_control);
   return command;
 }
