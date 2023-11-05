@@ -731,7 +731,7 @@ TEST(CartesianStateTest, ScalarMultiplication) {
   CartesianState cs = CartesianState::Random("test");
   CartesianState cscaled = scalar * cs;
   EXPECT_TRUE(cscaled.get_position().isApprox(scalar * cs.get_position()));
-  auto qscaled = Eigen::Quaterniond::Identity().slerp(scalar, cs.get_orientation());
+  auto qscaled = math_tools::exp(math_tools::log(cs.get_orientation()), scalar);
   EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
   EXPECT_TRUE(cscaled.get_twist().isApprox(scalar * cs.get_twist()));
   EXPECT_TRUE(cscaled.get_acceleration().isApprox(scalar * cs.get_acceleration()));
@@ -749,7 +749,7 @@ TEST(CartesianStateTest, ScalarDivision) {
   CartesianState cs = CartesianState::Random("test");
   CartesianState cscaled = cs / scalar;
   EXPECT_TRUE(cscaled.get_position().isApprox(cs.get_position() / scalar));
-  auto qscaled = Eigen::Quaterniond::Identity().slerp(1.0 / scalar, cs.get_orientation());
+  auto qscaled = math_tools::exp(math_tools::log(cs.get_orientation()), 1.0 / scalar);
   EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
   EXPECT_TRUE(cscaled.get_twist().isApprox(cs.get_twist() / scalar));
   EXPECT_TRUE(cscaled.get_acceleration().isApprox(cs.get_acceleration() / scalar));
@@ -761,6 +761,19 @@ TEST(CartesianStateTest, ScalarDivision) {
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);
+}
+
+TEST(CartesianStateTest, OrientationScaling) {
+  auto cs = CartesianState::Random("A");
+  auto scale = static_cast<double>(rand()) / RAND_MAX;
+  auto cscaled = scale * cs;
+  auto qscaled = Eigen::Quaterniond::Identity().slerp(scale, cs.get_orientation());
+  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
+
+  scale = 1 + static_cast<double>(rand()) / RAND_MAX;
+  cscaled = scale * cs;
+  qscaled = cs.get_orientation() * Eigen::Quaterniond::Identity().slerp(scale - 1, cs.get_orientation());
+  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
 }
 
 TEST(CartesianStateTest, Multiplication) {

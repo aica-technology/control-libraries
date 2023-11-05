@@ -701,7 +701,8 @@ CartesianState& CartesianState::operator*=(double lambda) {
   // operation
   this->set_position(lambda * this->get_position());
   // calculate the scaled rotation as a displacement from identity
-  this->set_orientation(Eigen::Quaterniond::Identity().slerp(lambda, this->get_orientation()));
+  auto q = math_tools::exp(math_tools::log(this->get_orientation()), lambda);
+  this->set_orientation(q);
   // calculate the other vectors normally
   this->set_twist(lambda * this->get_twist());
   this->set_acceleration(lambda * this->get_acceleration());
