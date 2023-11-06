@@ -40,9 +40,7 @@ CartesianState Impedance<CartesianState>::compute_command(
   if (this->feed_forward_force_->get_value()) {
     wrench += state_error.get_wrench();
   }
-  if (*this->force_limit_) {
-    clamp_force(wrench);
-  }
+  clamp_force(wrench);
 
   command.set_wrench(wrench);
   return command;
@@ -64,9 +62,8 @@ JointState Impedance<JointState>::compute_command(
   if (this->feed_forward_force_->get_value()) {
     torque_control += state_error.get_torques();
   }
-  if (*this->force_limit_) {
-    clamp_force(torque_control);
-  }
+  clamp_force(torque_control);
+
   command.set_torques(torque_control);
   return command;
 }

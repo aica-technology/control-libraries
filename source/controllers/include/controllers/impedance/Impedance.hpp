@@ -100,7 +100,9 @@ Impedance<S>::Impedance(
 
 template<class S>
 void Impedance<S>::clamp_force(Eigen::VectorXd& force) {
-  force = force.cwiseMax(-this->force_limit_->get_value()).cwiseMin(this->force_limit_->get_value());
+  if (*this->force_limit_) {
+    force = force.cwiseMax(-this->force_limit_->get_value()).cwiseMin(this->force_limit_->get_value());
+  }
 }
 
 template<class S>
