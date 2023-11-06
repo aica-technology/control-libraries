@@ -3,6 +3,9 @@
         {
             "name": "AMD",
             "includePath": [
+                "/usr/include/eigen3",
+                "/usr/include/osqp",
+                "/usr/include/OsqpEigen",
                 "/src/source/**/include"
             ],
             "compilerPath": "/usr/bin/gcc",

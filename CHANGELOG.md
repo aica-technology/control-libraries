@@ -9,6 +9,10 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+
+- feat(controllers): improve parameter validation of impedance controller (#148)
+
 ## 7.2.0
 
 Version 7.2.0 contains improvements for the Python bindings of control libraries.
