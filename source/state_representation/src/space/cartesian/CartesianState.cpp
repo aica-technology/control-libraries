@@ -702,6 +702,9 @@ CartesianState& CartesianState::operator*=(double lambda) {
   this->set_position(lambda * this->get_position());
   // calculate the scaled rotation as a displacement from identity
   auto q = math_tools::exp(math_tools::log(this->get_orientation()), lambda);
+  if (this->get_orientation().w() * q.w() < 0) {
+    q = Eigen::Quaterniond(-q.coeffs());
+  }
   this->set_orientation(q);
   // calculate the other vectors normally
   this->set_twist(lambda * this->get_twist());

@@ -765,15 +765,26 @@ TEST(CartesianStateTest, ScalarDivision) {
 
 TEST(CartesianStateTest, OrientationScaling) {
   auto cs = CartesianState::Random("A");
-  auto scale = static_cast<double>(rand()) / RAND_MAX;
-  auto cscaled = scale * cs;
-  auto qscaled = Eigen::Quaterniond::Identity().slerp(scale, cs.get_orientation());
-  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
 
-  scale = 1 + static_cast<double>(rand()) / RAND_MAX;
-  cscaled = scale * cs;
-  qscaled = cs.get_orientation() * Eigen::Quaterniond::Identity().slerp(scale - 1, cs.get_orientation());
-  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
+  for (int i = 0; i < 5; ++i) {
+    double scale = static_cast<double>(rand()) / RAND_MAX + i;
+
+    auto qscaled = Eigen::Quaterniond::Identity();
+    auto cscaled = scale * cs;
+    for (int j = 0; j < i; ++j) {
+      qscaled = qscaled * cs.get_orientation();
+    }
+    qscaled = qscaled * Eigen::Quaterniond::Identity().slerp(scale - i, cs.get_orientation());
+    EXPECT_LT(cscaled.get_orientation().angularDistance(qscaled), 1e-3);
+
+    qscaled = Eigen::Quaterniond::Identity();
+    cscaled = - scale * cs;
+    for (int j = 0; j < i; ++j) {
+      qscaled = qscaled * cs.get_orientation();
+    }
+    qscaled = qscaled * Eigen::Quaterniond::Identity().slerp(scale - i, cs.get_orientation());
+    EXPECT_LT(cscaled.get_orientation().angularDistance(qscaled.conjugate()), 1e-3);
+  }
 }
 
 TEST(CartesianStateTest, Multiplication) {
