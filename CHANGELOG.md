@@ -12,6 +12,7 @@ Release Versions:
 ## Upcoming changes (in development)
 
 - feat(controllers): improve parameter validation of impedance controller (#148)
+- fix(state_representation): remove error in orientation scaling (#147)
 
 ## 7.2.0
 
