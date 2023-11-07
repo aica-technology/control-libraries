@@ -1,6 +1,7 @@
 # CHANGELOG
 
 Release Versions:
+- [7.3.0](#730)
 - [7.2.0](#720)
 - [7.1.1](#711)
 - [7.1.0](#710)
@@ -8,6 +9,27 @@ Release Versions:
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 7.3.0
+
+Version 7.3.0 contains new improvements and a fix to the control libraries.
+
+### Features
+
+Setting controller gain parameters is now even easier than before as vectors and arrays of size 1 are also allowed and
+interpreted the same way as a double. Additionally, the robot model now has an improved inverse velocity calculation
+that uses a damped least squared pseudoinverse if desired.
+
+### Fix
+
+An error in the scalar multiplication operator of a Cartesian state that generated an incorrect orientation has now been
+fixed.
+
+### Full changelog
+
+- feat(robot model): Damped least squared pseudoinverse (#143)
+- feat(controllers): improve parameter validation of impedance controller (#148)
+- fix(state_representation): remove error in orientation scaling (#147)
 
 ## 7.2.0
 

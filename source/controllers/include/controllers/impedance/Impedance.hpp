@@ -82,8 +82,7 @@ Impedance<S>::Impedance(unsigned int dimensions) :
     state_representation::make_shared_parameter<Eigen::MatrixXd>(
         "inertia", Eigen::MatrixXd::Identity(dimensions, dimensions))), feed_forward_force_(
             state_representation::make_shared_parameter<bool>("feed_forward_force", false)), force_limit_(
-    state_representation::make_shared_parameter<Eigen::VectorXd>(
-        "force_limit", Eigen::VectorXd::Zero(dimensions))), dimensions_(dimensions) {
+    state_representation::make_shared_parameter<Eigen::VectorXd>("force_limit")), dimensions_(dimensions) {
   this->parameters_.insert(std::make_pair("stiffness", stiffness_));
   this->parameters_.insert(std::make_pair("damping", damping_));
   this->parameters_.insert(std::make_pair("inertia", inertia_));
@@ -101,11 +100,8 @@ Impedance<S>::Impedance(
 
 template<class S>
 void Impedance<S>::clamp_force(Eigen::VectorXd& force) {
-  auto limit = this->force_limit_->get_value();
-  for (std::size_t index = 0; index < this->dimensions_; ++index) {
-    if (limit(index) > 0.0 && abs(force(index)) > limit(index)) {
-      force(index) = force(index) > 0.0 ? limit(index) : -limit(index);
-    }
+  if (*this->force_limit_) {
+    force = force.cwiseMax(-this->force_limit_->get_value()).cwiseMin(this->force_limit_->get_value());
   }
 }
 
@@ -122,6 +118,10 @@ void Impedance<S>::validate_and_set_parameter(
   } else if (parameter->get_name() == "feed_forward_force") {
     this->feed_forward_force_->set_value(parameter->get_parameter_value<bool>());
   } else if (parameter->get_name() == "force_limit") {
+    if (parameter->get_parameter_type() == state_representation::ParameterType::MATRIX) {
+      throw state_representation::exceptions::InvalidParameterException(
+          "Parameter " + parameter->get_name() + " has incorrect type");
+    }
     auto limit_matrix = this->gain_matrix_from_parameter(parameter);
     this->force_limit_->set_value(limit_matrix.diagonal());
   } else {
@@ -141,22 +141,27 @@ Eigen::MatrixXd Impedance<S>::gain_matrix_from_parameter(
     matrix = gain->get_value() * Eigen::MatrixXd::Identity(this->dimensions_, this->dimensions_);
   } else if (parameter->get_parameter_type() == state_representation::ParameterType::DOUBLE_ARRAY) {
     auto gain = std::static_pointer_cast<state_representation::Parameter<std::vector<double>>>(parameter);
-    if (gain->get_value().size() != this->dimensions_) {
+    if (gain->get_value().size() == 1) {
+      matrix = gain->get_value().at(0) * Eigen::MatrixXd::Identity(this->dimensions_, this->dimensions_);
+    } else if (gain->get_value().size() == this->dimensions_) {
+      Eigen::VectorXd diagonal = Eigen::VectorXd::Map(gain->get_value().data(), this->dimensions_);
+      matrix = diagonal.asDiagonal();
+    } else {
       throw state_representation::exceptions::IncompatibleSizeException(
           "The provided diagonal coefficients do not match the dimensionality of the controller ("
               + std::to_string(this->dimensions_) + ")");
     }
-    Eigen::VectorXd diagonal = Eigen::VectorXd::Map(gain->get_value().data(), this->dimensions_);
-    matrix = diagonal.asDiagonal();
   } else if (parameter->get_parameter_type() == state_representation::ParameterType::VECTOR) {
     auto gain = std::static_pointer_cast<state_representation::Parameter<Eigen::VectorXd>>(parameter);
-    if (gain->get_value().size() != this->dimensions_) {
+    if (gain->get_value().size() == 1) {
+      matrix = gain->get_value()(0) * Eigen::MatrixXd::Identity(this->dimensions_, this->dimensions_);
+    } else if (gain->get_value().size() == this->dimensions_) {
+      matrix = gain->get_value().asDiagonal();
+    } else {
       throw state_representation::exceptions::IncompatibleSizeException(
           "The provided diagonal coefficients do not match the dimensionality of the controller ("
               + std::to_string(this->dimensions_) + ")");
     }
-    Eigen::VectorXd diagonal = gain->get_value();
-    matrix = diagonal.asDiagonal();
   } else if (parameter->get_parameter_type() == state_representation::ParameterType::MATRIX) {
     auto gain = std::static_pointer_cast<state_representation::Parameter<Eigen::MatrixXd>>(parameter);
     if (gain->get_value().rows() != this->dimensions_ || gain->get_value().cols() != this->dimensions_) {
@@ -168,6 +173,10 @@ Eigen::MatrixXd Impedance<S>::gain_matrix_from_parameter(
   } else {
     throw state_representation::exceptions::InvalidParameterException(
         "Parameter " + parameter->get_name() + " has incorrect type");
+  }
+  if ((matrix.array() < 0).any()) {
+    throw state_representation::exceptions::InvalidParameterException(
+        "Parameter " + parameter->get_name() + " cannot have negative elements");
   }
   return matrix;
 }

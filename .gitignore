@@ -41,6 +41,7 @@ source/.vs*
 
 # build
 source/build
+source/tmp
 
 # clang-format
 .clang-format

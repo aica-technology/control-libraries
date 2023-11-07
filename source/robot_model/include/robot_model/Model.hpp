@@ -405,11 +405,13 @@ public:
    * @param cartesian_twists vector of twist
    * @param joint_positions current joint positions, used to compute the Jacobian matrix
    * @param frames names of the frames at which to compute the twists
+   * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
   state_representation::JointVelocities inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
                                                          const state_representation::JointPositions& joint_positions,
-                                                         const std::vector<std::string>& frames);
+                                                         const std::vector<std::string>& frames,
+                                                         const double dls_lambda = 0.0);
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the
@@ -419,11 +421,13 @@ public:
    * @param frame name of the frame at which to compute the twist
    * @param parameters parameters of the inverse velocity kinematics algorithm (default is default values of the
    * QPInverseVelocityParameters structure)
+   * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
   state_representation::JointVelocities inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
                                                          const state_representation::JointPositions& joint_positions,
-                                                         const std::string& frame = "");
+                                                         const std::string& frame = "",
+                                                         const double dls_lambda = 0.0);
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter
