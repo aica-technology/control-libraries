@@ -221,42 +221,4 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<std::stri
   }
   return os;
 }
-
-const std::map<std::string, ParameterType>& get_parameter_type_map() {
-  return parameter_type_map;
-}
-
-ParameterType parameter_type_from_name(const std::string& label) {
-  return parameter_type_map.at(label);
-}
-
-std::string get_parameter_type_name(const ParameterType& parameter_type) {
-  switch (parameter_type) {
-    case ParameterType::BOOL:
-      return "Bool";
-    case ParameterType::BOOL_ARRAY:
-      return "BoolArray";
-    case ParameterType::INT:
-      return "Int";
-    case ParameterType::INT_ARRAY:
-      return "IntArray";
-    case ParameterType::DOUBLE:
-      return "Double";
-    case ParameterType::DOUBLE_ARRAY:
-      return "DoubleArray";
-    case ParameterType::STRING:
-      return "String";
-    case ParameterType::STRING_ARRAY:
-      return "StringArray";
-    case ParameterType::STATE:
-      return "State";
-    case ParameterType::VECTOR:
-      return "Vector";
-    case ParameterType::MATRIX:
-      return "Matrix";
-    default:
-      throw exceptions::InvalidParameterException("This ParameterType does not exist.");
-  }
-}
-
 }// namespace state_representation

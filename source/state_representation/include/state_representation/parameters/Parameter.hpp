@@ -215,35 +215,4 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
       throw exceptions::InvalidParameterException("This ParameterType is not supported for parameters.");
   }
 }
-
-static const std::map<std::string, ParameterType> parameter_type_map = {
-    {"Bool", ParameterType::BOOL},     {"BoolArray", ParameterType::BOOL_ARRAY},
-    {"Int", ParameterType::INT},       {"IntArray", ParameterType::INT_ARRAY},
-    {"Double", ParameterType::DOUBLE}, {"DoubleArray", ParameterType::DOUBLE_ARRAY},
-    {"String", ParameterType::STRING}, {"StringArray", ParameterType::STRING_ARRAY},
-    {"State", ParameterType::STATE},   {"Vector", ParameterType::VECTOR},
-    {"Matrix", ParameterType::MATRIX}};
-
-/**
- * @brief Return the parameter type map, containing tuples of human-readable and their corresponding enum type
- * @return std::map<std::string, ParameterType> with label, ParameterType pairs
- */
-const std::map<std::string, ParameterType>& get_parameter_type_map();
-
-/**
- * @brief Return the ParameterType that corresponds to a name
- * @param name The name for lookup
- * @throws out_of_range Exception if the name does not correspond to a ParameterType
- * @return ParameterType that corresponds to the (std::string) name
- */
-ParameterType parameter_type_from_name(const std::string& name);
-
-/**
- * @brief Convert parameter type enum to its corresponding human-readable name
- * @param parameter_type The parameter type
- * @throws InvalideParameterException if the type does not exist
- * @return std::string of the corresponding parameter type in human-friendly form
- */
-std::string get_parameter_type_name(const ParameterType& parameter_type);
-
 }// namespace state_representation
