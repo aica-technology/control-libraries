@@ -46,13 +46,11 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
  * @return ParameterType that corresponds to the (std::string) name
  */
 [[maybe_unused]] static ParameterType parameter_type_from_name(const std::string& name) {
-  ParameterType p;
   try {
-    p = parameter_type_map.at(name);
+    return parameter_type_map.at(name);
   } catch (...) {
-    throw std::out_of_range("This ParameterType does not exist.");
+    throw std::out_of_range("The \"" + name + "\" ParameterType does not exist.");
   }
-  return p;
 }
 
 /**
