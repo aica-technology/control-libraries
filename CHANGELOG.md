@@ -10,6 +10,10 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+
+- feat: Add ParameterType conversion functions to go from enum to type label and the inverse (#154)
+
 ## 7.3.0
 
 Version 7.3.0 contains new improvements and a fix to the control libraries.
