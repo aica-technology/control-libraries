@@ -1,10 +1,9 @@
 #pragma once
 
-#include <map>
 #include <memory>
 
-#include "state_representation/geometry/Ellipsoid.hpp"
 #include "state_representation/parameters/ParameterInterface.hpp"
+#include "state_representation/geometry/Ellipsoid.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
 
@@ -171,7 +170,8 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
  * @return A ParameterInterface pointer holding a reference to a Parameter object
  */
 [[maybe_unused]] static std::shared_ptr<ParameterInterface> make_shared_parameter_interface(
-    const std::string& name, const ParameterType& type, const StateType& parameter_state_type = StateType::NONE) {
+    const std::string& name, const ParameterType& type, const StateType& parameter_state_type = StateType::NONE
+) {
   switch (type) {
     case ParameterType::BOOL:
       return std::make_shared<Parameter<bool>>(name);
