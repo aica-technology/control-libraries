@@ -132,8 +132,7 @@ COPY --from=install /tmp/cl /usr
 COPY --chown=${USER}:${USER} ./python /python
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
-RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
-  && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
+RUN mv /tmp/python/local /tmp/python-usr
 
 FROM base as python-stubs
 ARG TARGETPLATFORM
@@ -141,7 +140,7 @@ ARG CACHEID
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python-home /home
+COPY --from=python /tmp/python-usr /usr
 RUN sudo pip install pybind11-stubgen
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
@@ -170,12 +169,11 @@ EoF
   fi
 done
 HEREDOC
-RUN mkdir -p /tmp/python-home/${USER}/.local/lib/python3.10/ \
-  && mv /tmp/python/local/lib/python3.10/dist-packages/ /tmp/python-home/${USER}/.local/lib/python3.10/site-packages/
+RUN mv /tmp/python/local /tmp/python-usr
 
 FROM scratch as production
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python-home /home
-COPY --from=python-stubs /tmp/python-home /home
+COPY --from=python /tmp/python-usr /usr
+COPY --from=python-stubs /tmp/python-usr /usr
