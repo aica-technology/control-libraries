@@ -18,7 +18,6 @@ RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # create the credentials to be able to pull private repos using ssh
 RUN mkdir /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
-RUN echo "session required pam_limits.so" | tee --append /etc/pam.d/common-session > /dev/null
 
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
