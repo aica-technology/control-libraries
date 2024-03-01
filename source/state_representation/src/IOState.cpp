@@ -9,11 +9,11 @@ void IOState<double>::set_data(const std::vector<double>& data) {
 
 template<>
 void IOState<bool>::set_data(const std::vector<bool>& data) {
-  Eigen::Vector<bool, -1> vec;
+  Eigen::Vector<bool, Eigen::Dynamic> vec;
   vec.resize(data.size());
   for (unsigned int i = 0; i < data.size(); ++i) {
     vec(i) = data.at(i);
-  } 
+  }
   this->set_data(vec);
 }
 
@@ -28,7 +28,7 @@ std::vector<bool> IOState<bool>::to_std_vector() const {
   vec.resize(this->get_size());
   for (unsigned int i = 0; i < this->get_size(); ++i) {
     vec.at(i) = this->data_(i);
-  } 
+  }
   return vec;
 }
 

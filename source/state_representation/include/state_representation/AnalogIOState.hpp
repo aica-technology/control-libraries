@@ -163,9 +163,20 @@ protected:
   void set_value(bool value, unsigned int io_index);
 
   /**
+   * @brief Swap the values of the IO states
+   * @param state1 IO state to be swapped with 2
+   * @param state2 IO state to be swapped with 1
+   */
+  friend void swap(AnalogIOState& state1, AnalogIOState& state2);
+
+  /**
    * @copydoc State::to_string
    */
   std::string to_string() const override;
 };
+
+inline void swap(AnalogIOState& state1, AnalogIOState& state2) {
+  swap(static_cast<IOState<bool>&>(state1), static_cast<IOState<bool>&>(state2));
+}
 
 }// namespace state_representation
