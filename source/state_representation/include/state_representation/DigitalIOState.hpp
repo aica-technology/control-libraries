@@ -1,0 +1,135 @@
+#pragma once
+
+#include "state_representation/IOState.hpp"
+
+namespace state_representation {
+
+class DigitalIOState : public IOState<double> {
+public:
+  /**
+   * @brief Empty constructor for a digital IO state
+   */
+  DigitalIOState();
+
+  /**
+   * @brief Constructor with name and number of digital IOs provided
+   * @param name The name of the associated IO state
+   * @param nb_ios The number of IOs for initialization
+   */
+  explicit DigitalIOState(const std::string& name, unsigned int nb_ios = 0);
+
+  /**
+   * @brief Constructor with name and list of digital IO names provided
+   * @param name The name of the associated digital IO state
+   * @param io_name List of IO names
+   */
+  DigitalIOState(const std::string& name, const std::vector<std::string>& io_names);
+
+  /**
+   * @brief Copy constructor of a digital IO state
+   * @param state The digital IO state to copy from
+   */
+  DigitalIOState(const DigitalIOState& state);
+
+  /**
+   * @brief Constructor for a zero digital IO state
+   * @param name The name of the associated digital IO state
+   * @param nb_ios The number of digital IOs for initialization
+   * @return Digital IO state with zero data
+   */
+  static DigitalIOState Zero(const std::string& name, unsigned int nb_ios);
+
+  /**
+   * @brief Constructor for a zero digital IO state
+   * @param name The name of the associated digital IO state
+   * @param names List of IO names
+   * @return Digital IO state with zero data
+   */
+  static DigitalIOState Zero(const std::string& name, const std::vector<std::string>& names);
+
+  /**
+   * @brief Constructor for a digital IO state with random data
+   * @param name The name of the associated digital IO state
+   * @param nb_ios The number of digital IOs for initialization
+   * @return Digital IO state with random data
+   */
+  static DigitalIOState Random(const std::string& name, unsigned int nb_ios);
+
+  /**
+   * @brief Constructor for a digital IO state with random data
+   * @param name The name of the associated digital IO state
+   * @param names List of IO names
+   * @return Digital IO state with random data
+   */
+  static DigitalIOState Random(const std::string& name, const std::vector<std::string>& names);
+
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param state The state with value to assign
+   * @return Reference to the current state with new values
+   */
+  DigitalIOState& operator=(const DigitalIOState& state);
+
+  /**
+   * @brief Get the value of a digital IO by its name, if it exists
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  double get_value(const std::string& name) const;
+
+  /**
+   * @brief Get the value of a digital IO by its index, if it exists
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  double get_value(unsigned int io_index) const;
+
+  /**
+   * @brief Set the value of a digital IO by its name
+   * @param value The value of the IO
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_value(double value, const std::string& name);
+
+  /**
+   * @brief Set the value of a digital IO by its index
+   * @param value The value of the IO
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_value(double value, unsigned int io_index);
+
+  /**
+   * @brief Return a copy of the digital IO state
+   */
+  DigitalIOState copy() const;
+
+  /**
+   * @copybrief State::reset
+   */
+  void reset() override;
+
+  /**
+   * @brief Set the digital IO state to zero data
+   */
+  void set_zero();
+
+  /**
+   * @brief Overload the ostream operator for printing
+   * @param os The ostream to append the string representing the state to
+   * @param state The spatial state to print
+   * @return The appended ostream
+   */
+  friend std::ostream& operator<<(std::ostream& os, const DigitalIOState& state);
+
+protected:
+  /**
+   * @copydoc State::to_string
+   */
+  std::string to_string() const override;
+};
+
+}// namespace state_representation
