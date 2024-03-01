@@ -1,6 +1,23 @@
-ARG ROS2_VERSION=humble
-FROM ghcr.io/aica-technology/ros2-ws:${ROS2_VERSION} as base
-USER ${USER}
+ARG BASE_TAG=22.04
+FROM ubuntu:${BASE_TAG} as base
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    git \
+    libgtest-dev \
+    libeigen3-dev \
+    python3-pip \
+    ssh \
+    sudo \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN echo "Set disable_coredump false" >> /etc/sudo.conf
+
+# create the credentials to be able to pull private repos using ssh
+RUN mkdir /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
 
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
@@ -13,7 +30,7 @@ fi
 
 mkdir -p /tmp/apt
 
-sudo apt-get update
+apt-get update
 # We then do a dry-run and parse the output of apt to gather the list of packages to be installed
 # Example output:
 # ```
@@ -44,7 +61,7 @@ xargs -a /apt-packages.txt apt-get install --dry-run \
   | grep -e '^Inst ' \
   | sed -E 's/^Inst (\S+) .*$/\1/' > /tmp/new-packages.txt
 # Then we install apt packages like normal
-xargs -a /apt-packages.txt sudo apt-get install -y
+xargs -a /apt-packages.txt apt-get install -y
 # Finally we use dpkg to get all files installed by those packages and copy them to a new root
 #  - get list of files installed by all the packages
 #  - remove empty lines
@@ -64,7 +81,7 @@ COPY --from=apt-dependencies /tmp/apt /
 ARG TARGETPLATFORM
 ARG CACHEID
 ARG PINOCCHIO_TAG=v2.6.9
-ARG PINOCCHIO_TESTS=ON
+ARG PINOCCHIO_TESTS=OFF
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
@@ -101,9 +118,39 @@ FROM base as code
 WORKDIR /src
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
-COPY --chown=${USER}:${USER} . /src
+COPY . /src
 
 FROM code as development
+# create and configure a new user
+ARG UID=1000
+ARG GID=1000
+ENV USER developer
+ENV HOME /home/${USER}
+
+RUN addgroup --gid ${GID} ${USER}
+RUN adduser --gecos "Remote User" --uid ${UID} --gid ${GID} ${USER} && yes | passwd ${USER}
+RUN usermod -a -G dialout ${USER}
+RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
+RUN chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget
+
+# Configure sshd server settings
+RUN ( \
+    echo 'LogLevel DEBUG2'; \
+    echo 'PubkeyAuthentication yes'; \
+    echo 'Subsystem sftp /usr/lib/openssh/sftp-server'; \
+  ) > /etc/ssh/sshd_config_development \
+  && mkdir /run/sshd
+
+# Configure sshd entrypoint to authorise the new user for ssh access and
+# optionally update UID and GID when invoking the container with the entrypoint script
+COPY ./docker/sshd_entrypoint.sh /sshd_entrypoint.sh
+RUN chmod 744 /sshd_entrypoint.sh
+
+RUN chown -R ${USER}:${USER} /src
+RUN mkdir /guidelines && cd /guidelines \
+  && wget https://raw.githubusercontent.com/aica-technology/.github/v0.9.0/guidelines/.clang-format
+
+USER ${USER}
 
 FROM code as build
 ARG TARGETPLATFORM
@@ -141,7 +188,7 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
-RUN sudo pip install pybind11-stubgen
+RUN pip install pybind11-stubgen
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
 for PKG in state_representation dynamical_systems robot_model controllers clproto; do
