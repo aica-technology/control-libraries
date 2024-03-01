@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat: add IO states to state representation (cpp) (#158)
 - build: add missing licenses (#170)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
