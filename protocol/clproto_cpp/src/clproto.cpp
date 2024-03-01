@@ -7,6 +7,8 @@
 #include "clproto/decoders.hpp"
 
 #include <state_representation/State.hpp>
+#include <state_representation/AnalogIOState.hpp>
+#include <state_representation/DigitalIOState.hpp>
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/space/SpatialState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
@@ -187,6 +189,92 @@ bool decode(const std::string& msg, State& obj) {
     auto state = message.state();
     obj = State(state.name());
 
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
+/* ----------------------
+ *     AnalogIOState
+ * ---------------------- */
+template<>
+std::string encode<AnalogIOState>(const AnalogIOState& obj);
+template<>
+AnalogIOState decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, AnalogIOState& obj);
+template<>
+std::string encode<AnalogIOState>(const AnalogIOState& obj) {
+  proto::StateMessage message;
+  *message.mutable_analog_io_state() = encoder(obj);
+  return message.SerializeAsString();
+}
+template<>
+AnalogIOState decode(const std::string& msg) {
+  AnalogIOState obj;
+  if (!decode(msg, obj)) {
+    throw DecodingException("Could not decode the message into a AnalogIOState");
+  }
+  return obj;
+}
+template<>
+bool decode(const std::string& msg, AnalogIOState& obj) {
+  try {
+    proto::StateMessage message;
+    if (!(message.ParseFromString(msg)
+        && message.message_type_case() == proto::StateMessage::MessageTypeCase::kAnalogIoState)) {
+      return false;
+    }
+
+    auto state = message.analog_io_state();
+    obj = AnalogIOState(state.state().name(), decoder(state.io_names()));
+    if (!state.state().empty()) {
+      obj.set_data(decoder(state.values()));
+    };
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
+/* ----------------------
+ *     DigitalIOState
+ * ---------------------- */
+template<>
+std::string encode<DigitalIOState>(const DigitalIOState& obj);
+template<>
+DigitalIOState decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, DigitalIOState& obj);
+template<>
+std::string encode<DigitalIOState>(const DigitalIOState& obj) {
+  proto::StateMessage message;
+  *message.mutable_digital_io_state() = encoder(obj);
+  return message.SerializeAsString();
+}
+template<>
+DigitalIOState decode(const std::string& msg) {
+  DigitalIOState obj;
+  if (!decode(msg, obj)) {
+    throw DecodingException("Could not decode the message into a DigitalIOState");
+  }
+  return obj;
+}
+template<>
+bool decode(const std::string& msg, DigitalIOState& obj) {
+  try {
+    proto::StateMessage message;
+    if (!(message.ParseFromString(msg)
+        && message.message_type_case() == proto::StateMessage::MessageTypeCase::kDigitalIoState)) {
+      return false;
+    }
+
+    auto state = message.digital_io_state();
+    obj = DigitalIOState(state.state().name(), decoder(state.io_names()));
+    if (!state.state().empty()) {
+      obj.set_data(decoder(state.values()));
+    };
     return true;
   } catch (...) {
     return false;
@@ -1041,6 +1129,12 @@ template<> std::string encode<std::shared_ptr<State>>(const std::shared_ptr<Stat
     case StateType::STATE:
       message = encode<State>(*obj);
       break;
+    case StateType::ANALOG_IO_STATE:
+      message = encode<AnalogIOState>(*safe_dynamic_pointer_cast<AnalogIOState>(obj));
+      break;
+    case StateType::DIGITAL_IO_STATE:
+      message = encode<DigitalIOState>(*safe_dynamic_pointer_cast<DigitalIOState>(obj));
+      break;
     case StateType::SPATIAL_STATE:
       message = encode<SpatialState>(*safe_dynamic_pointer_cast<SpatialState>(obj));
       break;
@@ -1127,6 +1221,12 @@ template<> std::shared_ptr<State> decode(const std::string& msg) {
   switch (check_message_type(msg)) {
     case MessageType::STATE_MESSAGE:
       obj = make_shared_state(State());
+      break;
+    case MessageType::ANALOG_IO_STATE_MESSAGE:
+      obj = make_shared_state(AnalogIOState());
+      break;
+    case MessageType::DIGITAL_IO_STATE_MESSAGE:
+      obj = make_shared_state(DigitalIOState());
       break;
     case MessageType::SPATIAL_STATE_MESSAGE:
       obj = make_shared_state(SpatialState());
@@ -1216,6 +1316,12 @@ template<> bool decode(const std::string& msg, std::shared_ptr<State>& obj) {
     switch (obj->get_type()) {
       case StateType::STATE:
         obj = make_shared_state(decode<State>(msg));
+        break;
+      case StateType::ANALOG_IO_STATE:
+        obj = make_shared_state(decode<AnalogIOState>(msg));
+        break;
+      case StateType::DIGITAL_IO_STATE:
+        obj = make_shared_state(decode<DigitalIOState>(msg));
         break;
       case StateType::SPATIAL_STATE:
         obj = make_shared_state(decode<SpatialState>(msg));
