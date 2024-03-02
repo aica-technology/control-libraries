@@ -7,5 +7,5 @@ import "state_representation/state.proto";
 message AnalogIOState {
   State state = 1;
   repeated string io_names = 2;
-  repeated bool values = 3;
+  repeated double values = 3;
 }

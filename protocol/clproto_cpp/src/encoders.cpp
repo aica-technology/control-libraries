@@ -192,8 +192,8 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::Matri
   return message;
 }
 
-proto::AnalogIOState encoder(const AnalogIOState& io_state) {
-  proto::AnalogIOState message;
+proto::DigitalIOState encoder(const DigitalIOState& io_state) {
+  proto::DigitalIOState message;
   *message.mutable_state() = encoder(static_cast<State>(io_state));
   *message.mutable_io_names() = {io_state.get_names().begin(), io_state.get_names().end()};
   if (io_state.is_empty()) {
@@ -208,8 +208,8 @@ proto::AnalogIOState encoder(const AnalogIOState& io_state) {
   return message;
 }
 
-proto::DigitalIOState encoder(const DigitalIOState& io_state) {
-  proto::DigitalIOState message;
+proto::AnalogIOState encoder(const AnalogIOState& io_state) {
+  proto::AnalogIOState message;
   *message.mutable_state() = encoder(static_cast<State>(io_state));
   *message.mutable_io_names() = {io_state.get_names().begin(), io_state.get_names().end()};
   if (io_state.is_empty()) {

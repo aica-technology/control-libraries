@@ -1129,11 +1129,11 @@ template<> std::string encode<std::shared_ptr<State>>(const std::shared_ptr<Stat
     case StateType::STATE:
       message = encode<State>(*obj);
       break;
-    case StateType::ANALOG_IO_STATE:
-      message = encode<AnalogIOState>(*safe_dynamic_pointer_cast<AnalogIOState>(obj));
-      break;
     case StateType::DIGITAL_IO_STATE:
       message = encode<DigitalIOState>(*safe_dynamic_pointer_cast<DigitalIOState>(obj));
+      break;
+    case StateType::ANALOG_IO_STATE:
+      message = encode<AnalogIOState>(*safe_dynamic_pointer_cast<AnalogIOState>(obj));
       break;
     case StateType::SPATIAL_STATE:
       message = encode<SpatialState>(*safe_dynamic_pointer_cast<SpatialState>(obj));
@@ -1222,11 +1222,11 @@ template<> std::shared_ptr<State> decode(const std::string& msg) {
     case MessageType::STATE_MESSAGE:
       obj = make_shared_state(State());
       break;
-    case MessageType::ANALOG_IO_STATE_MESSAGE:
-      obj = make_shared_state(AnalogIOState());
-      break;
     case MessageType::DIGITAL_IO_STATE_MESSAGE:
       obj = make_shared_state(DigitalIOState());
+      break;
+    case MessageType::ANALOG_IO_STATE_MESSAGE:
+      obj = make_shared_state(AnalogIOState());
       break;
     case MessageType::SPATIAL_STATE_MESSAGE:
       obj = make_shared_state(SpatialState());
@@ -1317,11 +1317,11 @@ template<> bool decode(const std::string& msg, std::shared_ptr<State>& obj) {
       case StateType::STATE:
         obj = make_shared_state(decode<State>(msg));
         break;
-      case StateType::ANALOG_IO_STATE:
-        obj = make_shared_state(decode<AnalogIOState>(msg));
-        break;
       case StateType::DIGITAL_IO_STATE:
         obj = make_shared_state(decode<DigitalIOState>(msg));
+        break;
+      case StateType::ANALOG_IO_STATE:
+        obj = make_shared_state(decode<AnalogIOState>(msg));
         break;
       case StateType::SPATIAL_STATE:
         obj = make_shared_state(decode<SpatialState>(msg));

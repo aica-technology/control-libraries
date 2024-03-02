@@ -3,8 +3,8 @@ syntax = "proto3";
 package state_representation.proto;
 
 import "state_representation/state.proto";
-import "state_representation/analog_io_state.proto";
 import "state_representation/digital_io_state.proto";
+import "state_representation/analog_io_state.proto";
 import "state_representation/space/spatial_state.proto";
 import "state_representation/space/cartesian/cartesian_state.proto";
 import "state_representation/space/joint/jacobian.proto";
@@ -31,7 +31,7 @@ message StateMessage {
     Shape shape = 14;
     Ellipsoid ellipsoid = 15;
     Parameter parameter = 16;
-    AnalogIOState analog_io_state = 17;
-    DigitalIOState digital_io_state = 18;
+    DigitalIOState digital_io_state = 17;
+    AnalogIOState analog_io_state = 18;
   }
 }
