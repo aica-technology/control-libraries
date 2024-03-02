@@ -6,13 +6,13 @@ using namespace state_representation::exceptions;
 
 namespace state_representation {
 
-DigitalIOState::DigitalIOState() : IOState<double>() {
+DigitalIOState::DigitalIOState() : IOState<bool>() {
   this->set_type(StateType::DIGITAL_IO_STATE);
 }
 
-DigitalIOState::DigitalIOState(const std::string& name, unsigned int nb_ios) : IOState<double>(name, nb_ios) {
+DigitalIOState::DigitalIOState(const std::string& name, unsigned int nb_ios) : IOState<bool>(name, nb_ios) {
   this->set_type(StateType::DIGITAL_IO_STATE);
-  this->data_ = Eigen::VectorXd::Zero(nb_ios);
+  this->data_ = Eigen::Vector<bool, Eigen::Dynamic>::Zero(nb_ios);
 }
 
 DigitalIOState::DigitalIOState(const std::string& name, const std::vector<std::string>& io_names) :
@@ -43,14 +43,14 @@ DigitalIOState DigitalIOState::Zero(const std::string& name, const std::vector<s
 DigitalIOState DigitalIOState::Random(const std::string& name, unsigned int nb_ios) {
   DigitalIOState random = DigitalIOState(name, nb_ios);
   // set all the state variables to random
-  random.set_data(Eigen::VectorXd::Random(random.get_size()));
+  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
   return random;
 }
 
 DigitalIOState DigitalIOState::Random(const std::string& name, const std::vector<std::string>& io_names) {
   DigitalIOState random = DigitalIOState(name, io_names);
   // set all the state variables to random
-  random.set_data(Eigen::VectorXd::Random(random.get_size()));
+  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
   return random;
 }
 
@@ -60,24 +60,44 @@ DigitalIOState& DigitalIOState::operator=(const DigitalIOState& state) {
   return *this;
 }
 
-double DigitalIOState::get_value(const std::string& io_name) const {
-  return this->get_value(this->get_io_index(io_name));
+bool DigitalIOState::is_true(const std::string& io_name) const {
+  return this->is_true(this->get_io_index(io_name));
 }
 
-double DigitalIOState::get_value(unsigned int io_index) const {
+bool DigitalIOState::is_true(unsigned int io_index) const {
   this->assert_not_empty();
-  IOState<double>::assert_index_in_range(io_index, this->get_size());
-  return this->data_(io_index);
+  IOState<bool>::assert_index_in_range(io_index, this->get_size());
+  return this->data_(io_index) == true;
 }
 
-void DigitalIOState::set_value(double value, const std::string& io_name) {
-  this->set_value(value, this->get_io_index(io_name));
+bool DigitalIOState::is_false(const std::string& io_name) const {
+  return !this->is_true(io_name);
 }
 
-void DigitalIOState::set_value(double value, unsigned int io_index) {
-  IOState<double>::assert_index_in_range(io_index, this->get_size());
+bool DigitalIOState::is_false(unsigned int io_index) const {
+  return !this->is_true(io_index);
+}
+
+void DigitalIOState::set_value(bool value, unsigned int io_index) {
+  IOState<bool>::assert_index_in_range(io_index, this->get_size());
   this->data_(io_index) = value;
   this->set_empty(false);
+}
+
+void DigitalIOState::set_true(const std::string& io_name) {
+  this->set_true(this->get_io_index(io_name));
+}
+
+void DigitalIOState::set_true(unsigned int io_index) {
+  this->set_value(true, io_index);
+}
+
+void DigitalIOState::set_false(const std::string& io_name) {
+  this->set_false(this->get_io_index(io_name));
+}
+
+void DigitalIOState::set_false(unsigned int io_index) {
+  this->set_value(false, io_index);
 }
 
 DigitalIOState DigitalIOState::copy() const {
@@ -86,11 +106,11 @@ DigitalIOState DigitalIOState::copy() const {
 }
 
 void DigitalIOState::reset() {
-  this->set_zero();
+  this->set_false();
   this->State::reset();
 }
 
-void DigitalIOState::set_zero() {
+void DigitalIOState::set_false() {
   if (this->get_size() > 0) {
     this->data_.setZero();
     this->set_empty(false);

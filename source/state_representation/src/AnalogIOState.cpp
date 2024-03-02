@@ -6,13 +6,13 @@ using namespace state_representation::exceptions;
 
 namespace state_representation {
 
-AnalogIOState::AnalogIOState() : IOState<bool>() {
+AnalogIOState::AnalogIOState() : IOState<double>() {
   this->set_type(StateType::ANALOG_IO_STATE);
 }
 
-AnalogIOState::AnalogIOState(const std::string& name, unsigned int nb_ios) : IOState<bool>(name, nb_ios) {
+AnalogIOState::AnalogIOState(const std::string& name, unsigned int nb_ios) : IOState<double>(name, nb_ios) {
   this->set_type(StateType::ANALOG_IO_STATE);
-  this->data_ = Eigen::Vector<bool, Eigen::Dynamic>::Zero(nb_ios);
+  this->data_ = Eigen::VectorXd::Zero(nb_ios);
 }
 
 AnalogIOState::AnalogIOState(const std::string& name, const std::vector<std::string>& io_names) :
@@ -43,14 +43,14 @@ AnalogIOState AnalogIOState::Zero(const std::string& name, const std::vector<std
 AnalogIOState AnalogIOState::Random(const std::string& name, unsigned int nb_ios) {
   AnalogIOState random = AnalogIOState(name, nb_ios);
   // set all the state variables to random
-  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
+  random.set_data(Eigen::VectorXd::Random(random.get_size()));
   return random;
 }
 
 AnalogIOState AnalogIOState::Random(const std::string& name, const std::vector<std::string>& io_names) {
   AnalogIOState random = AnalogIOState(name, io_names);
   // set all the state variables to random
-  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
+  random.set_data(Eigen::VectorXd::Random(random.get_size()));
   return random;
 }
 
@@ -60,44 +60,24 @@ AnalogIOState& AnalogIOState::operator=(const AnalogIOState& state) {
   return *this;
 }
 
-bool AnalogIOState::is_true(const std::string& io_name) const {
-  return this->is_true(this->get_io_index(io_name));
+double AnalogIOState::get_value(const std::string& io_name) const {
+  return this->get_value(this->get_io_index(io_name));
 }
 
-bool AnalogIOState::is_true(unsigned int io_index) const {
+double AnalogIOState::get_value(unsigned int io_index) const {
   this->assert_not_empty();
-  IOState<bool>::assert_index_in_range(io_index, this->get_size());
-  return this->data_(io_index) == true;
+  IOState<double>::assert_index_in_range(io_index, this->get_size());
+  return this->data_(io_index);
 }
 
-bool AnalogIOState::is_false(const std::string& io_name) const {
-  return !this->is_true(io_name);
+void AnalogIOState::set_value(double value, const std::string& io_name) {
+  this->set_value(value, this->get_io_index(io_name));
 }
 
-bool AnalogIOState::is_false(unsigned int io_index) const {
-  return !this->is_true(io_index);
-}
-
-void AnalogIOState::set_value(bool value, unsigned int io_index) {
-  IOState<bool>::assert_index_in_range(io_index, this->get_size());
+void AnalogIOState::set_value(double value, unsigned int io_index) {
+  IOState<double>::assert_index_in_range(io_index, this->get_size());
   this->data_(io_index) = value;
   this->set_empty(false);
-}
-
-void AnalogIOState::set_true(const std::string& io_name) {
-  this->set_true(this->get_io_index(io_name));
-}
-
-void AnalogIOState::set_true(unsigned int io_index) {
-  this->set_value(true, io_index);
-}
-
-void AnalogIOState::set_false(const std::string& io_name) {
-  this->set_false(this->get_io_index(io_name));
-}
-
-void AnalogIOState::set_false(unsigned int io_index) {
-  this->set_value(false, io_index);
 }
 
 AnalogIOState AnalogIOState::copy() const {
@@ -106,11 +86,11 @@ AnalogIOState AnalogIOState::copy() const {
 }
 
 void AnalogIOState::reset() {
-  this->set_false();
+  this->set_zero();
   this->State::reset();
 }
 
-void AnalogIOState::set_false() {
+void AnalogIOState::set_zero() {
   if (this->get_size() > 0) {
     this->data_.setZero();
     this->set_empty(false);

@@ -51,9 +51,13 @@ TEST(AnalogIOStateTest, ZeroInitialization) {
 }
 
 TEST(AnalogIOStateTest, RandomStateInitialization) {
-  AnalogIOState random = AnalogIOState::Random("test", 10);
+  AnalogIOState random = AnalogIOState::Random("test", 3);
   EXPECT_EQ(random.get_type(), StateType::ANALOG_IO_STATE);
-  EXPECT_TRUE(random.data().any());
+  EXPECT_NE(random.data().norm(), 0);
+
+  AnalogIOState random2 = AnalogIOState::Random("test", std::vector<std::string>{"0", "1"});
+  EXPECT_EQ(random2.get_type(), StateType::ANALOG_IO_STATE);
+  EXPECT_NE(random2.data().norm(), 0);
 }
 
 TEST(AnalogIOStateTest, CopyConstructor) {
@@ -108,27 +112,36 @@ TEST(AnalogIOStateTest, GetSetFields) {
   EXPECT_THROW(io.set_names(io_names), exceptions::IncompatibleSizeException);
 
   // fields
-  std::vector<bool> data{true, false, true};
+  std::vector<double> data{1, 2, 3};
   io.set_data(data);
   for (std::size_t i = 0; i < data.size(); ++i) {
     EXPECT_EQ(io.data()(i), data.at(i));
-    EXPECT_EQ(io.is_false(i), (data.at(i) == false));
-    EXPECT_EQ(io.is_true(i), (data.at(i) == true));
-    EXPECT_EQ(io.is_false(io.get_names().at(i)), (data.at(i) == false));
-    EXPECT_EQ(io.is_true(io.get_names().at(i)), (data.at(i) == true));
+    EXPECT_EQ(io.get_value(i), data.at(i));
+    EXPECT_EQ(io.get_value(io.get_names().at(i)), data.at(i));
   }
-  EXPECT_THROW(io.is_false(io.get_size() + 1), exceptions::IONotFoundException);
-  EXPECT_THROW(io.is_false("test"), exceptions::IONotFoundException);
-  EXPECT_THROW(io.is_true(io.get_size() + 1), exceptions::IONotFoundException);
-  EXPECT_THROW(io.is_true("test"), exceptions::IONotFoundException);
+  EXPECT_THROW(io.get_value(io.get_size() + 1), exceptions::IONotFoundException);
+  EXPECT_THROW(io.get_value("test"), exceptions::IONotFoundException);
 
-  io.set_false();
+  io.set_zero();
   EXPECT_EQ(io.get_type(), StateType::ANALOG_IO_STATE);
-  EXPECT_FALSE(io.data().any());
+  EXPECT_EQ(io.data().norm(), 0);
   EXPECT_EQ(io.is_empty(), false);
   io.reset();
   EXPECT_THROW(io.data(), exceptions::EmptyStateException);
   EXPECT_EQ(io.is_empty(), true);
+}
+
+TEST(AnalogIOStateTest, GetSetField) {
+  AnalogIOState io("test", 3);
+
+  // fields
+  io.set_value(1.0, "io0");
+  io.set_value(1.1, 1);
+  EXPECT_EQ(io.get_value(0), 1.0);
+  EXPECT_EQ(io.get_value(1), 1.1);
+  EXPECT_EQ(io.get_value(2), 0);
+  EXPECT_THROW(io.set_value(1, io.get_size() + 1), exceptions::IONotFoundException);
+  EXPECT_THROW(io.set_value(1, "test"), exceptions::IONotFoundException);
 }
 
 TEST(AnalogIOStateTest, Compatibility) {
@@ -148,9 +161,9 @@ TEST(AnalogIOStateTest, SetZero) {
   EXPECT_THROW(random1.data(), exceptions::EmptyStateException);
 
   AnalogIOState random2 = AnalogIOState::Random("test", 3);
-  random2.set_false();
+  random2.set_zero();
   EXPECT_EQ(random2.get_type(), StateType::ANALOG_IO_STATE);
-  EXPECT_FALSE(random2.data().any());
+  EXPECT_EQ(random2.data().norm(), 0);
 }
 
 TEST(AnalogIOStateTest, GetSetData) {
@@ -165,7 +178,7 @@ TEST(AnalogIOStateTest, GetSetData) {
   for (std::size_t i = 0; i < state_vec.size(); ++i) {
     EXPECT_EQ(state_vec.at(i), io1.data()(i));
   }
-  EXPECT_THROW(io1.set_data(Eigen::Vector<bool, 2>::Zero()), exceptions::IncompatibleSizeException);
+  EXPECT_THROW(io1.set_data(Eigen::Vector2d::Zero()), exceptions::IncompatibleSizeException);
 }
 
 TEST(AnalogIOStateTest, GetIndexByName) {
@@ -182,7 +195,7 @@ TEST(AnalogIOStateTest, Truthiness) {
   EXPECT_TRUE(empty.is_empty());
   EXPECT_FALSE(empty);
 
-  empty.set_data(Eigen::Vector<bool, 1>::Random());
+  empty.set_data(Eigen::VectorXd::Random(1));
   EXPECT_FALSE(empty.is_empty());
   EXPECT_TRUE(empty);
 }

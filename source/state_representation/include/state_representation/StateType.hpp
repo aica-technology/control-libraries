@@ -77,10 +77,10 @@ enum class StateType {
       return "Ellipsoid";
     case StateType::TRAJECTORY:
       return "Trajectory";
-    case StateType::ANALOG_IO_STATE:
-      return "AnalogIOState";
     case StateType::DIGITAL_IO_STATE:
       return "DigitalIOState";
+    case StateType::ANALOG_IO_STATE:
+      return "AnalogIOState";
 #ifdef EXPERIMENTAL_FEATURES
     case StateType::DUAL_QUATERNION_STATE:
       return "DualQuaternionState";

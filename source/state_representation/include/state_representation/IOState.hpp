@@ -53,7 +53,7 @@ public:
   void set_names(const std::vector<std::string>& names);
 
   /**
-   * @brief Set the vlues of the IO state from a single Eigen vector
+   * @brief Set the values of the IO state from a single Eigen vector
    * @param The data vector
    */
   void set_data(const Eigen::Vector<T, Eigen::Dynamic>& data);

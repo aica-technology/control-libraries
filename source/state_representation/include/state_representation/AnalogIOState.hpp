@@ -4,7 +4,7 @@
 
 namespace state_representation {
 
-class AnalogIOState : public IOState<bool> {
+class AnalogIOState : public IOState<double> {
 public:
   /**
    * @brief Empty constructor for an analog IO state
@@ -71,64 +71,36 @@ public:
   AnalogIOState& operator=(const AnalogIOState& state);
 
   /**
-   * @brief Check if an analog IO is true by its name, if it exists
+   * @brief Get the value of an analog IO by its name, if it exists
    * @param name The name of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
-  bool is_true(const std::string& name) const;
+  double get_value(const std::string& name) const;
 
   /**
-   * @brief Check if an analog IO is true by its index, if it exists
+   * @brief Get the value of an analog IO by its index, if it exists
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
-  bool is_true(unsigned int io_index) const;
+  double get_value(unsigned int io_index) const;
 
   /**
-   * @brief Check if an analog IO is false by its name, if it exists
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   * @return The value of the IO, if it exists
-   */
-  bool is_false(const std::string& name) const;
-
-  /**
-   * @brief Check if an analog IO is false by its index, if it exists
-   * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   * @return The value of the IO, if it exists
-   */
-  bool is_false(unsigned int io_index) const;
-
-  /**
-   * @brief Set the an analog IO to true by its name
+   * @brief Set the value of an analog IO by its name
+   * @param value The value of the IO
    * @param name The name of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
-  void set_true(const std::string& name);
+  void set_value(double value, const std::string& name);
 
   /**
-   * @brief Set the an analog IO to true by its name
+   * @brief Set the value of an analog IO by its index
+   * @param value The value of the IO
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
-  void set_true(unsigned int io_index);
-
-  /**
-   * @brief Set the an analog IO to false by its name
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_false(const std::string& name);
-
-  /**
-   * @brief Set the an analog IO to false by its name
-   * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_false(unsigned int io_index);
+  void set_value(double value, unsigned int io_index);
 
   /**
    * @brief Return a copy of the analog IO state
@@ -141,9 +113,9 @@ public:
   void reset() override;
 
   /**
-   * @brief Set all analog IOs false 
+   * @brief Set the analog IO state to zero data
    */
-  void set_false();
+  void set_zero();
 
   /**
    * @brief Overload the ostream operator for printing
@@ -154,13 +126,6 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const AnalogIOState& state);
 
 protected:
-  /**
-   * @brief Set the value of an analog IO
-   * @param value The desired value of the IO
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_value(bool value, unsigned int io_index);
 
   /**
    * @brief Swap the values of the IO states
@@ -176,7 +141,7 @@ protected:
 };
 
 inline void swap(AnalogIOState& state1, AnalogIOState& state2) {
-  swap(static_cast<IOState<bool>&>(state1), static_cast<IOState<bool>&>(state2));
+  swap(static_cast<IOState<double>&>(state1), static_cast<IOState<double>&>(state2));
 }
 
 }// namespace state_representation

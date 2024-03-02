@@ -4,7 +4,7 @@
 
 namespace state_representation {
 
-class DigitalIOState : public IOState<double> {
+class DigitalIOState : public IOState<bool> {
 public:
   /**
    * @brief Empty constructor for a digital IO state
@@ -71,36 +71,64 @@ public:
   DigitalIOState& operator=(const DigitalIOState& state);
 
   /**
-   * @brief Get the value of a digital IO by its name, if it exists
+   * @brief Check if a digital IO is true by its name, if it exists
    * @param name The name of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
-  double get_value(const std::string& name) const;
+  bool is_true(const std::string& name) const;
 
   /**
-   * @brief Get the value of a digital IO by its index, if it exists
+   * @brief Check if a digital IO is true by its index, if it exists
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
-  double get_value(unsigned int io_index) const;
+  bool is_true(unsigned int io_index) const;
 
   /**
-   * @brief Set the value of a digital IO by its name
-   * @param value The value of the IO
+   * @brief Check if a digital IO is false by its name, if it exists
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  bool is_false(const std::string& name) const;
+
+  /**
+   * @brief Check if a digital IO is false by its index, if it exists
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  bool is_false(unsigned int io_index) const;
+
+  /**
+   * @brief Set the a digital IO to true by its name
    * @param name The name of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
-  void set_value(double value, const std::string& name);
+  void set_true(const std::string& name);
 
   /**
-   * @brief Set the value of a digital IO by its index
-   * @param value The value of the IO
+   * @brief Set the a digital IO to true by its name
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
-  void set_value(double value, unsigned int io_index);
+  void set_true(unsigned int io_index);
+
+  /**
+   * @brief Set the a digital IO to false by its name
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_false(const std::string& name);
+
+  /**
+   * @brief Set the a digital IO to false by its name
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_false(unsigned int io_index);
 
   /**
    * @brief Return a copy of the digital IO state
@@ -113,9 +141,9 @@ public:
   void reset() override;
 
   /**
-   * @brief Set the digital IO state to zero data
+   * @brief Set all digital IOs false 
    */
-  void set_zero();
+  void set_false();
 
   /**
    * @brief Overload the ostream operator for printing
@@ -126,6 +154,13 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const DigitalIOState& state);
 
 protected:
+  /**
+   * @brief Set the value of a digital IO
+   * @param value The desired value of the IO
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_value(bool value, unsigned int io_index);
 
   /**
    * @brief Swap the values of the IO states
@@ -141,7 +176,7 @@ protected:
 };
 
 inline void swap(DigitalIOState& state1, DigitalIOState& state2) {
-  swap(static_cast<IOState<double>&>(state1), static_cast<IOState<double>&>(state2));
+  swap(static_cast<IOState<bool>&>(state1), static_cast<IOState<bool>&>(state2));
 }
 
 }// namespace state_representation
