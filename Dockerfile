@@ -76,42 +76,46 @@ xargs -a /tmp/new-packages.txt dpkg-query -L \
 # this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
 HEREDOC
 
-FROM base as dep-pinocchio
-COPY --from=apt-dependencies /tmp/apt /
+FROM base as dep-base
 ARG TARGETPLATFORM
 ARG CACHEID
-ARG PINOCCHIO_TAG=v2.6.9
-ARG PINOCCHIO_TESTS=OFF
+COPY dependencies/base_dependencies.cmake CMakeLists.txt
+RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
+
+FROM base as dep-pinocchio
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=dep-base /tmp/deps /usr
+ARG TARGETPLATFORM
+ARG CACHEID
+ARG PINOCCHIO_TAG=v2.9.0
+ARG HPP_FCL_TAG=v1.8.1
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
+RUN git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl \
+  && cmake -B build -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake --build build --target all install
 RUN --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   --mount=type=cache,target=./build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   if [ ! -f pinocchio/CMakeLists.txt ]; then rm -rf pinocchio/* && git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio; fi \
-  && cmake -B build -S pinocchio -DBUILD_TESTING=${PINOCCHIO_TESTS} -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake -B build -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps \
   && cmake --build build --target all install
 # FIXME: pinocchio produces non-portable paths
 RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
-
-FROM base as dep-osqp
-ARG TARGETPLATFORM
-ARG CACHEID
-COPY dependencies/osqp.cmake CMakeLists.txt
-RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base as dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
 # Needed to build `osqp-eigen`
-COPY --from=dep-osqp /tmp/deps /usr
+COPY --from=dep-base /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release \
   && cmake --build build \
   && cmake --install build --prefix /tmp/deps
-COPY --from=dep-osqp /tmp/deps /tmp/deps
+COPY --from=dep-base /tmp/deps /tmp/deps
 COPY --from=dep-pinocchio /tmp/deps /tmp/deps
 
 FROM base as code

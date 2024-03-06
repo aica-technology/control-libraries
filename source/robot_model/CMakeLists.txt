@@ -1,7 +1,7 @@
 set(LIBRARY_NAME robot_model)
 
-set(PINOCCHIO_VERSION 2.6.9)
-set(OSQP_EIGEN_VERSION 0.6.4)
+set(PINOCCHIO_VERSION 2.9.0)
+set(OSQP_EIGEN_VERSION 0.8.1)
 find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
 find_package(OsqpEigen ${OSQP_EIGEN_VERSION} REQUIRED)
 
