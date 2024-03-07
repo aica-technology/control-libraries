@@ -7,6 +7,8 @@
 #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/parsers/urdf.hpp>
+#include "pinocchio/algorithm/joint-configuration.hpp"
+#include "pinocchio/algorithm/geometry.hpp"
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/parameters/ParameterInterface.hpp>
 #include <state_representation/space/Jacobian.hpp>
@@ -67,6 +69,10 @@ private:
   std::vector<std::string> frames_;                                         ///< name of the frames
   pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
+  bool load_collision_geometries_;                                          ///< flag to load collision geometries
+  std::vector<std::string> geometry_package_paths_;                         ///< package paths for the geometries
+  pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
+  pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
   OsqpEigen::Solver solver_;                                                ///< osqp solver for the quadratic programming based inverse kinematics
   Eigen::SparseMatrix<double> hessian_;                                     ///< hessian matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd gradient_;                                                ///< gradient vector for the quadratic programming based inverse kinematics
@@ -78,6 +84,11 @@ private:
    * @brief Initialize the pinocchio model from the URDF
    */
   void init_model();
+
+  /**
+   * @brief Initialize the pinocchio geometry model from the URDF
+   */
+  void init_geom_model();
 
   /**
    * @brief initialize the constraints for the QP solver
@@ -189,13 +200,17 @@ public:
   /**
    * @brief Constructor with robot name and path to URDF file
    */
-  explicit Model(const std::string& robot_name, const std::string& urdf_path);
+  explicit Model(const std::string& robot_name, 
+                 const std::string& urdf_path, 
+                 bool load_collision_geometries = false, 
+                 const std::vector<std::string>& geometry_package_paths = {});
 
   /**
    * @brief Copy constructor
    * @param model the model to copy
    */
   Model(const Model& model);
+
 
   /**
    * @brief Swap the values of the two Model
@@ -219,6 +234,23 @@ public:
    * @return bool if operation was successful
    */
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
+
+  /**
+   * @brief Compute check if the links of the robot are in collision
+   */
+  bool check_collision(const state_representation::JointPositions& joint_positions);
+
+  /**
+   * @brief Getter of the number of collision pairs in the model
+   * @return the number of collision pairs
+   */
+  size_t get_number_of_collision_pairs();
+
+  /**
+   * @brief Check if geometry model is initialized
+   * @return true if the geometry model is initialized, false otherwise
+   */
+  bool isGeomModelInitialized();
 
   /**
    * @brief Getter of the robot name
@@ -517,6 +549,15 @@ inline Model& Model::operator=(const Model& model) {
   return *this;
 }
 
+inline size_t Model::get_number_of_collision_pairs() {
+  return this->load_collision_geometries_ ? this->geom_model_.collisionPairs.size() : 0;
+}
+
+// check if geometry model is initialized
+inline bool Model::isGeomModelInitialized() {
+  // Considered initialized if at least one collision pair exists
+  return this->load_collision_geometries_ && !this->geom_model_.collisionPairs.empty();
+}
 
 inline const std::string& Model::get_robot_name() const {
   return this->robot_name_->get_value();

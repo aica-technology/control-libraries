@@ -172,7 +172,7 @@
     <visual>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/base.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/base.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -181,7 +181,7 @@
     <collision>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/base.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/base.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -194,7 +194,7 @@
     <visual>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/shoulder.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/shoulder.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -203,7 +203,7 @@
     <collision>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/shoulder.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/shoulder.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -216,7 +216,7 @@
     <visual>
       <origin rpy="1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0.138"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/upperarm.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/upperarm.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -225,7 +225,7 @@
     <collision>
       <origin rpy="1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0.138"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/upperarm.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/upperarm.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -238,7 +238,7 @@
     <visual>
       <origin rpy="1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0.007"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/forearm.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/forearm.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -247,7 +247,7 @@
     <collision>
       <origin rpy="1.5707963267948966 0 -1.5707963267948966" xyz="0 0 0.007"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/forearm.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/forearm.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -260,7 +260,7 @@
     <visual>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 -0.127"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/wrist1.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/wrist1.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -269,7 +269,7 @@
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 -0.127"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/wrist1.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/wrist1.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -282,7 +282,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 -0.0997"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/wrist2.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/wrist2.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -291,7 +291,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 -0.0997"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/wrist2.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/wrist2.stl"/>
       </geometry>
     </collision>
     <inertial>
@@ -304,7 +304,7 @@
     <visual>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 -0.0989"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/visual/wrist3.dae"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/visual/wrist3.dae"/>
       </geometry>
       <material name="LightGrey">
         <color rgba="0.7 0.7 0.7 1.0"/>
@@ -313,7 +313,7 @@
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 -0.0989"/>
       <geometry>
-        <mesh filename="package://ur_description/meshes/ur5e/collision/wrist3.stl"/>
+        <mesh filename="/src/source/robot_model/test/fixtures/ur5e/collision/wrist3.stl"/>
       </geometry>
     </collision>
     <inertial>

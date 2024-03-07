@@ -63,8 +63,8 @@ void Model::init_geom_model() {
                                pinocchio::COLLISION, 
                                this->geom_model_, 
                                this->geometry_package_paths_);
-    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
     this->geom_model_.addAllCollisionPairs();
+    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
 }
 
 // Collision detection method
@@ -75,6 +75,10 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
     
     for(size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
         const auto& collision_result = this->geom_data_.collisionResults[pair_index];
+        // print the collision result
+        std::cout << "Collision pair: " << this->geom_model_.collisionPairs[pair_index].first << " and " << this->geom_model_.collisionPairs[pair_index].second << std::endl;
+
+
         if(collision_result.isCollision()) {
             return true; // Collision detected
         }

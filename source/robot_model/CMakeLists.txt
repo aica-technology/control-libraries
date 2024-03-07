@@ -38,6 +38,10 @@ install(DIRECTORY include/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
+
+# TODO: remove this line when the following issue is fixed
+ADD_DEFINITIONS(-DPINOCCHIO_WITH_HPP_FCL)
+
 # generate and install export file
 install(EXPORT ${LIBRARY_NAME}_targets
   FILE ${PROJECT_NAME}_${LIBRARY_NAME}_targets.cmake
