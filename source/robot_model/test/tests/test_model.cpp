@@ -33,7 +33,6 @@ protected:
 
   double tol = 1e-5;
 };
-
 TEST_F(RobotModelTest, TestGetName) {
   EXPECT_EQ(franka->get_robot_name(), robot_name);
 }

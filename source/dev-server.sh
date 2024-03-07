@@ -45,7 +45,7 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-IMAGE_NAME=ghcr.io/aica-technology/control-libraries/development-dependencies:"${BASE_TAG}"
+IMAGE_NAME=control-libraries-dev
 
 PUBLIC_KEY=$(cat "${SSH_KEY_FILE}")
 
@@ -60,14 +60,11 @@ if [[ "${OSTYPE}" != "darwin"* ]]; then
   COMMAND_FLAGS+=(--gid "${GROUP_ID}")
 fi
 
-docker pull "${IMAGE_NAME}" || exit 1
-
 docker container stop "${CONTAINER_NAME}" >/dev/null 2>&1
 docker rm --force "${CONTAINER_NAME}" >/dev/null 2>&1
 
 echo "Starting background container with access port ${SSH_PORT} for user developer"
 docker run -d --rm --cap-add sys_ptrace \
-  --user root \
   --publish 127.0.0.1:"${SSH_PORT}":22 \
   --name "${CONTAINER_NAME}" \
   --hostname "${CONTAINER_NAME}" \
