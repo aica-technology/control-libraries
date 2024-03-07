@@ -1,21 +1,31 @@
 #include <iostream>
 #include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
+#include "pinocchio/algorithm/joint-configuration.hpp"
+#include "pinocchio/algorithm/geometry.hpp"
 #include "robot_model/Model.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 
 namespace robot_model {
-Model::Model(const std::string& robot_name, const std::string& urdf_path) :
+Model::Model(const std::string& robot_name, 
+             const std::string& urdf_path, 
+             const bool load_collision_geometries, 
+             const std::vector<std::string>& geometry_package_paths) :
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
-    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)) {
+    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)), 
+    load_collision_geometries_(load_collision_geometries),
+    geometry_package_paths_(geometry_package_paths)
+    {
   this->init_model();
 }
 
 Model::Model(const Model& model) :
     robot_name_(model.robot_name_),
-    urdf_path_(model.urdf_path_) {
+    urdf_path_(model.urdf_path_), 
+    load_collision_geometries_(model.load_collision_geometries_),
+    geometry_package_paths_(model.geometry_package_paths_)
+    {
   this->init_model();
 }
 
@@ -39,7 +49,37 @@ void Model::init_model() {
   }
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
-  this->init_qp_solver();
+  this->init_qp_solver();  
+
+  if (this->load_collision_geometries_) {
+    this->init_geom_model();
+  }
+}
+
+// Method to initialize collision geometries (call inside init_model)
+void Model::init_geom_model() {
+    pinocchio::urdf::buildGeom(this->robot_model_, 
+                               this->get_urdf_path(), 
+                               pinocchio::COLLISION, 
+                               this->geom_model_, 
+                               this->geometry_package_paths_);
+    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+    this->geom_model_.addAllCollisionPairs();
+}
+
+// Collision detection method
+bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
+    Eigen::VectorXd configuration = joint_positions.get_positions();
+
+    pinocchio::computeCollisions(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration);
+    
+    for(size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
+        const auto& collision_result = this->geom_data_.collisionResults[pair_index];
+        if(collision_result.isCollision()) {
+            return true; // Collision detected
+        }
+    }
+    return false; // No collision
 }
 
 bool Model::init_qp_solver() {
