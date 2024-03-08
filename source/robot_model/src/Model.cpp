@@ -64,24 +64,52 @@ void Model::init_geom_model() {
                                this->geom_model_, 
                                this->geometry_package_paths_);
     this->geom_model_.addAllCollisionPairs();
+    
+    std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
+
+    // remove collision pairs for linked joints (i.e. parent-child joints)
+    for (const auto& pair : excluded_pairs) {
+        this->geom_model_.removeCollisionPair(pair);
+    }
+
     this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+}
+
+std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
+    std::vector<pinocchio::CollisionPair> excluded_pairs;
+    // Iterate through all joints, except the universe joint (0), which has no parent
+    for (pinocchio::JointIndex joint_id = 1u; joint_id < static_cast<pinocchio::JointIndex>(this->robot_model_.njoints); ++joint_id){
+        // Find the parent joint of the current joint
+        pinocchio::JointIndex parent_id = this->robot_model_.parents[joint_id];
+        
+        // TODO: Replace this logic with actual geometry index lookup
+        auto getGeometryIndexForJoint = [](pinocchio::JointIndex joint_id) -> int {
+            return static_cast<int>(joint_id);
+        };
+
+        int geometryIndex1 = getGeometryIndexForJoint(joint_id);
+        int geometryIndex2 = getGeometryIndexForJoint(parent_id);
+
+        // Check if the geometry indices are not equal
+        if (geometryIndex1 != geometryIndex2) {
+            excluded_pairs.push_back(pinocchio::CollisionPair(geometryIndex2, geometryIndex1));
+        }
+    }
+    return excluded_pairs;
 }
 
 // Collision detection method
 bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
     Eigen::VectorXd configuration = joint_positions.get_positions();
 
-    pinocchio::computeCollisions(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration);
+    pinocchio::computeCollisions(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true);
     
     for(size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
         const auto& collision_result = this->geom_data_.collisionResults[pair_index];
-        // print the collision result
-        std::cout << "Collision pair: " << this->geom_model_.collisionPairs[pair_index].first << " and " << this->geom_model_.collisionPairs[pair_index].second << std::endl;
-
-
+        
         if(collision_result.isCollision()) {
             return true; // Collision detected
-        }
+        } 
     }
     return false; // No collision
 }

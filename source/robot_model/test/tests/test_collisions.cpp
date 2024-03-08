@@ -71,15 +71,15 @@ TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithoutGeometries) {
     EXPECT_EQ(numPairs, 0) << "Expected zero collision pairs for model without geometries.";
 }
 
-// Test that isGeomModelInitialized() returns true for a model with collision geometries loaded
+// Test that is_geometry_model_initialized() returns true for a model with collision geometries loaded
 TEST_F(RobotModelCollisionTesting, GeomModelInitializedWithGeometries) {
-    bool isInitialized = ur5eWithGeometries->isGeomModelInitialized();
+    bool isInitialized = ur5eWithGeometries->is_geometry_model_initialized();
     EXPECT_TRUE(isInitialized) << "Expected geometry model to be initialized for model with geometries.";
 }
 
-// Test that isGeomModelInitialized() returns false for a model without collision geometries loaded
+// Test that is_geometry_model_initialized() returns false for a model without collision geometries loaded
 TEST_F(RobotModelCollisionTesting, GeomModelInitializedWithoutGeometries) {
-    bool isInitialized = ur5eWithoutGeometries->isGeomModelInitialized();
+    bool isInitialized = ur5eWithoutGeometries->is_geometry_model_initialized();
     EXPECT_FALSE(isInitialized) << "Expected geometry model to not be initialized for model without geometries.";
 }
 

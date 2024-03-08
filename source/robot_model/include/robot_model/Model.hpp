@@ -250,7 +250,13 @@ public:
    * @brief Check if geometry model is initialized
    * @return true if the geometry model is initialized, false otherwise
    */
-  bool isGeomModelInitialized();
+  bool is_geometry_model_initialized();
+
+  /**
+   * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
+   * @return the list of collision pairs to exclude 
+  */
+  std::vector<pinocchio::CollisionPair> generate_joint_exclusion_list();
 
   /**
    * @brief Getter of the robot name
@@ -554,7 +560,7 @@ inline size_t Model::get_number_of_collision_pairs() {
 }
 
 // check if geometry model is initialized
-inline bool Model::isGeomModelInitialized() {
+inline bool Model::is_geometry_model_initialized() {
   // Considered initialized if at least one collision pair exists
   return this->load_collision_geometries_ && !this->geom_model_.collisionPairs.empty();
 }
