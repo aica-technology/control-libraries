@@ -195,6 +195,13 @@ private:
                                         const state_representation::JointPositions& joint_positions,
                                         const std::vector<std::string>& frames);
 
+
+  /**
+   * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
+   * @return the list of collision pairs to exclude 
+  */
+  std::vector<pinocchio::CollisionPair> generate_joint_exclusion_list();
+
 public:
   /**
    * @brief Constructor with robot name and path to URDF file
@@ -235,9 +242,11 @@ public:
 
   /**
    * @brief Compute check if the links of the robot are in collision
+   * @param joint_positions containing the joint positions of the robot
+   * @return true if the robot is in collision, false otherwise
    */
   bool check_collision(const state_representation::JointPositions& joint_positions);
-
+  
   /**
    * @brief Getter of the number of collision pairs in the model
    * @return the number of collision pairs
@@ -249,12 +258,6 @@ public:
    * @return true if the geometry model is initialized, false otherwise
    */
   bool is_geometry_model_initialized();
-
-  /**
-   * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
-   * @return the list of collision pairs to exclude 
-  */
-  std::vector<pinocchio::CollisionPair> generate_joint_exclusion_list();
 
   /**
    * @brief Getter of the robot name

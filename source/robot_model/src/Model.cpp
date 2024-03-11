@@ -53,7 +53,7 @@ void Model::init_model() {
   }
 }
 
-// Method to initialize collision geometries (call inside init_model)
+// Method to initialize collision geometries
 void Model::init_geom_model() {
     pinocchio::urdf::buildGeom(this->robot_model_, 
                                this->get_urdf_path(), 
@@ -105,10 +105,10 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
         const auto& collision_result = this->geom_data_.collisionResults[pair_index];
         
         if(collision_result.isCollision()) {
-            return true; // Collision detected
+            return true;
         } 
     }
-    return false; // No collision
+    return false;
 }
 
 bool Model::init_qp_solver() {

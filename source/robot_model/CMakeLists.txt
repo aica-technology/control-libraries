@@ -2,8 +2,10 @@ set(LIBRARY_NAME robot_model)
 
 set(PINOCCHIO_VERSION 2.9.0)
 set(OSQP_EIGEN_VERSION 0.8.1)
+set(HPP_FCL_VERSION 1.8.1)
 find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
 find_package(OsqpEigen ${OSQP_EIGEN_VERSION} REQUIRED)
+find_package(hpp-fcl ${HPP_FCL_VERSION} REQUIRED)
 
 set(CORE_SOURCES
   src/Model.cpp
@@ -23,6 +25,7 @@ target_link_libraries(${LIBRARY_NAME}
   state_representation
   ${PINOCCHIO_LIBRARIES}
   OsqpEigen::OsqpEigen
+  ${HPP_FCL_LIBRARIES}
 )
 
 # install the target and create export-set
