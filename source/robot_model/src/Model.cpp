@@ -10,11 +10,9 @@
 namespace robot_model {
 Model::Model(const std::string& robot_name, 
              const std::string& urdf_path, 
-             const bool load_collision_geometries, 
              const std::vector<std::string>& geometry_package_paths) :
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
     urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)), 
-    load_collision_geometries_(load_collision_geometries),
     geometry_package_paths_(geometry_package_paths)
     {
   this->init_model();
@@ -23,7 +21,6 @@ Model::Model(const std::string& robot_name,
 Model::Model(const Model& model) :
     robot_name_(model.robot_name_),
     urdf_path_(model.urdf_path_), 
-    load_collision_geometries_(model.load_collision_geometries_),
     geometry_package_paths_(model.geometry_package_paths_)
     {
   this->init_model();
@@ -51,7 +48,7 @@ void Model::init_model() {
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
   this->init_qp_solver();  
 
-  if (this->load_collision_geometries_) {
+  if (this->geometry_package_paths_.size() > 0){
     this->init_geom_model();
   }
 }

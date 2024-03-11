@@ -69,7 +69,6 @@ private:
   std::vector<std::string> frames_;                                         ///< name of the frames
   pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
-  bool load_collision_geometries_;                                          ///< flag to load collision geometries
   std::vector<std::string> geometry_package_paths_;                         ///< package paths for the geometries
   pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
@@ -202,7 +201,6 @@ public:
    */
   explicit Model(const std::string& robot_name, 
                  const std::string& urdf_path, 
-                 bool load_collision_geometries = false, 
                  const std::vector<std::string>& geometry_package_paths = {});
 
   /**
@@ -556,13 +554,13 @@ inline Model& Model::operator=(const Model& model) {
 }
 
 inline size_t Model::get_number_of_collision_pairs() {
-  return this->load_collision_geometries_ ? this->geom_model_.collisionPairs.size() : 0;
+  return this->geometry_package_paths_.size() ? this->geom_model_.collisionPairs.size() : 0;
 }
 
 // check if geometry model is initialized
 inline bool Model::is_geometry_model_initialized() {
   // Considered initialized if at least one collision pair exists
-  return this->load_collision_geometries_ && !this->geom_model_.collisionPairs.empty();
+  return this->geometry_package_paths_.size() && !this->geom_model_.collisionPairs.empty();
 }
 
 inline const std::string& Model::get_robot_name() const {

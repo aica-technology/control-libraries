@@ -11,7 +11,7 @@ protected:
   void SetUp() override {
     std::vector<std::string> package_paths = {std::string(TEST_FIXTURES) + "ur5e"}; 
 
-    ur5eWithGeometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", true, package_paths);
+    ur5eWithGeometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", package_paths);
     ur5eWithoutGeometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
   };
 
