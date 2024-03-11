@@ -110,7 +110,7 @@ public:
   void set_true(const std::string& name);
 
   /**
-   * @brief Set the a digital IO to true by its name
+   * @brief Set the a digital IO to true by its index
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
@@ -124,7 +124,7 @@ public:
   void set_false(const std::string& name);
 
   /**
-   * @brief Set the a digital IO to false by its name
+   * @brief Set the a digital IO to false by its index
    * @param io_index The index of the IO
    * @throws IONotFoundException if the desired IO doesn't exist
    */
@@ -141,7 +141,7 @@ public:
   void reset() override;
 
   /**
-   * @brief Set all digital IOs false 
+   * @brief Set all digital IOs false
    */
   void set_false();
 
