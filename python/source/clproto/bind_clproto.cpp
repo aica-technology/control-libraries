@@ -17,6 +17,8 @@
 #include <state_representation/space/joint/JointTorques.hpp>
 #include <state_representation/geometry/Shape.hpp>
 #include <state_representation/geometry/Ellipsoid.hpp>
+#include <state_representation/DigitalIOState.hpp>
+#include <state_representation/AnalogIOState.hpp>
 
 using namespace clproto;
 using namespace state_representation;
@@ -139,6 +141,8 @@ void message_type(py::module_& m) {
       .value("SHAPE_MESSAGE", MessageType::SHAPE_MESSAGE)
       .value("ELLIPSOID_MESSAGE", MessageType::ELLIPSOID_MESSAGE)
       .value("PARAMETER_MESSAGE", MessageType::PARAMETER_MESSAGE)
+      .value("DIGITAL_IO_STATE_MESSAGE", MessageType::DIGITAL_IO_STATE_MESSAGE)
+      .value("ANALOG_IO_STATE_MESSAGE", MessageType::ANALOG_IO_STATE_MESSAGE)
       .export_values();
 }
 
@@ -169,6 +173,10 @@ void methods(py::module_& m) {
       switch (type) {
         case MessageType::STATE_MESSAGE:
           return encode_bytes<State>(object.cast<State>());
+        case MessageType::DIGITAL_IO_STATE_MESSAGE:
+          return encode_bytes<DigitalIOState>(object.cast<DigitalIOState>());
+        case MessageType::ANALOG_IO_STATE_MESSAGE:
+          return encode_bytes<AnalogIOState>(object.cast<AnalogIOState>());
         case MessageType::SPATIAL_STATE_MESSAGE:
           return encode_bytes<SpatialState>(object.cast<SpatialState>());
         case MessageType::CARTESIAN_STATE_MESSAGE:
@@ -208,6 +216,10 @@ void methods(py::module_& m) {
       switch (check_message_type(msg)) {
         case MessageType::STATE_MESSAGE:
           return py::cast(decode<State>(msg));
+        case MessageType::DIGITAL_IO_STATE_MESSAGE:
+          return py::cast(decode<DigitalIOState>(msg));
+        case MessageType::ANALOG_IO_STATE_MESSAGE:
+          return py::cast(decode<AnalogIOState>(msg));
         case MessageType::SPATIAL_STATE_MESSAGE:
           return py::cast(decode<SpatialState>(msg));
         case MessageType::CARTESIAN_STATE_MESSAGE:
