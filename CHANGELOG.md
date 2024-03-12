@@ -1,7 +1,6 @@
 # CHANGELOG
 
 Release Versions:
-
 - [7.3.0](#730)
 - [7.2.0](#720)
 - [7.1.1](#711)
@@ -11,7 +10,42 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes (in development)
+## 7.3.0
+
+Version 7.3.0 contains new improvements and a fix to the control libraries.
+
+### Features
+
+Setting controller gain parameters is now even easier than before as vectors and arrays of size 1 are also allowed and
+interpreted the same way as a double. Additionally, the robot model now has an improved inverse velocity calculation
+that uses a damped least squared pseudoinverse if desired.
+
+### Fix
+
+An error in the scalar multiplication operator of a Cartesian state that generated an incorrect orientation has now been
+fixed.
+
+### Full changelog
+
+- feat(robot model): Damped least squared pseudoinverse (#143)
+- feat(controllers): improve parameter validation of impedance controller (#148)
+- fix(state_representation): remove error in orientation scaling (#147)
+
+## 7.2.0
+
+Version 7.2.0 contains improvements for the Python bindings of control libraries.
+
+### Features
+
+To enable a good development experience with IDEs that cannot introspect pybind modules, so-called stubs are now
+generated for each Python module and shipped alongside the actual modules.
+
+### Fixes
+
+Since version 7.1.0, some of the Python modules have not been built in the Docker image due to missing or wrong
+dependencies. This has been fixed in #134.
+
+### Full changelog:
 
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
