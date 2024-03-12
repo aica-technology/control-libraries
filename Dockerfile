@@ -94,7 +94,9 @@ ARG HPP_FCL_TAG=v1.8.1
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
-RUN git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl \
+RUN --mount=type=cache,target=./hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=./build,id=cmake-hpp-fcl-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  if [ ! -f hpp-fcl/CMakeLists.txt ]; then rm -rf hpp-fcl/* && git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl; fi \
   && cmake -B build -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
   && cmake --build build --target all install
 RUN --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
