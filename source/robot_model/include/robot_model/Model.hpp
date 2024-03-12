@@ -557,13 +557,13 @@ inline Model& Model::operator=(const Model& model) {
 }
 
 inline size_t Model::get_number_of_collision_pairs() {
-  return this->geometry_package_paths_.size() ? this->geom_model_.collisionPairs.size() : 0;
+  return !this->geometry_package_paths_.empty() ? this->geom_model_.collisionPairs.size() : 0;
 }
 
 // check if geometry model is initialized
 inline bool Model::is_geometry_model_initialized() {
   // Considered initialized if at least one collision pair exists
-  return this->geometry_package_paths_.size() && !this->geom_model_.collisionPairs.empty();
+  return !this->geometry_package_paths_.empty() && !this->geom_model_.collisionPairs.empty();
 }
 
 inline const std::string& Model::get_robot_name() const {
