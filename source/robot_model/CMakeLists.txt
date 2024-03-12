@@ -2,10 +2,10 @@ set(LIBRARY_NAME robot_model)
 
 set(PINOCCHIO_VERSION 2.9.0)
 set(OSQP_EIGEN_VERSION 0.8.1)
-set(HPP_FCL_VERSION 1.8.1)
 find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
 find_package(OsqpEigen ${OSQP_EIGEN_VERSION} REQUIRED)
-find_package(hpp-fcl ${HPP_FCL_VERSION} REQUIRED)
+
+add_definitions(-DPINOCCHIO_WITH_HPP_FCL)
 
 set(CORE_SOURCES
   src/Model.cpp
@@ -27,6 +27,7 @@ target_link_libraries(${LIBRARY_NAME}
   OsqpEigen::OsqpEigen
   ${HPP_FCL_LIBRARIES}
 )
+target_compile_definitions(${LIBRARY_NAME} PUBLIC -DPINOCCHIO_WITH_HPP_FCL)
 
 # install the target and create export-set
 install(TARGETS ${LIBRARY_NAME}
@@ -40,10 +41,6 @@ install(TARGETS ${LIBRARY_NAME}
 install(DIRECTORY include/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
-
-
-# TODO: remove this line when the following issue is fixed
-ADD_DEFINITIONS(-DPINOCCHIO_WITH_HPP_FCL)
 
 # generate and install export file
 install(EXPORT ${LIBRARY_NAME}_targets

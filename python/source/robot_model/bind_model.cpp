@@ -35,7 +35,7 @@ void model(py::module_& m) {
     }), "Constructor with robot name, path to URDF file, and optionally geometry package paths.",
        py::arg("robot_name"), 
        py::arg("urdf_path"), 
-       py::arg("geometry_package_paths") = std::vector<std::string>() // This is the correct place to set a default argument
+       py::arg("geometry_package_paths") = std::vector<std::string>()
   );
   
   c.def(py::init<const Model&>(), "Copy constructor from another Model", "model"_a);
