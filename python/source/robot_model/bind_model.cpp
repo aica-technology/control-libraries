@@ -30,7 +30,14 @@ void model(py::module_& m) {
 
   py::class_<Model> c(m, "Model");
 
-  c.def(py::init<const std::string&, const std::string&>(), "Constructor with robot name and path to URDF file.", "robot_name"_a, "urdf_path"_a);
+  c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, const std::vector<std::string>& geometry_package_paths) {
+       return new Model(robot_name, urdf_path, geometry_package_paths);
+    }), "Constructor with robot name, path to URDF file, and optionally geometry package paths.",
+       py::arg("robot_name"), 
+       py::arg("urdf_path"), 
+       py::arg("geometry_package_paths") = std::vector<std::string>() // This is the correct place to set a default argument
+  );
+  
   c.def(py::init<const Model&>(), "Copy constructor from another Model", "model"_a);
 
   c.def("get_robot_name", &Model::get_robot_name, "Getter of the robot name.");
@@ -44,6 +51,8 @@ void model(py::module_& m) {
   c.def("set_gravity_vector", &Model::set_gravity_vector, "Setter of the gravity vector.", "gravity"_a);
 //  c.def("get_pinocchio_model", &Model::get_pinocchio_model, "Getter of the pinocchio model.");
 
+  
+  c.def("check_collision", py::overload_cast<const JointPositions&>(&Model::check_collision), "Check if the robot is in collision at a given joint state.", "joint_positions"_a);
   c.def(
       "compute_jacobian", py::overload_cast<const JointPositions&, const std::string&>(&Model::compute_jacobian),
       "Compute the Jacobian from a given joint state at the frame given in parameter.", "joint_positions"_a, "frame"_a = std::string(""));
