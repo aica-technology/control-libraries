@@ -23,6 +23,11 @@ void digital_io_state(py::module_& m) {
   c.def("set_names", py::overload_cast<unsigned int>(&DigitalIOState::set_names), "Setter of the names from the number of IOs", "nb_ios"_a);
   c.def("set_names", py::overload_cast<const std::vector<std::string>&>(&DigitalIOState::set_names), "Setter of the names from a list of IO names", "names"_a);
 
+  c.def("get_value", [](const DigitalIOState& state, const std::string& name) { return state.get_value(name); }, "Get the value of a digital IO by its name, if it exists", "name"_a);
+  c.def("get_value", [](const DigitalIOState& state, unsigned int io_index) { return state.get_value(io_index); }, "Get the value of a digital IO by its index, if it exists", "io_index"_a);
+  c.def("set_value", py::overload_cast<bool, const std::string&>(&DigitalIOState::set_value), "Set the value of a digital IO by its name", "value"_a, "name"_a);
+  c.def("set_value", py::overload_cast<bool, unsigned int>(&DigitalIOState::set_value), "Set the value of a digital IO by its index", "value"_a, "io_index"_a);
+  
   c.def("is_true", [](const DigitalIOState& state, const std::string& name) { return state.is_true(name); }, "Check if a digital IO is true by its name, if it exists", "name"_a);
   c.def("is_true", [](const DigitalIOState& state, unsigned int io_index) { return state.is_true(io_index); }, "Check if a digital IO is true by its index, if it exists", "io_index"_a);
   c.def("is_false", [](const DigitalIOState& state, const std::string& name) { return state.is_false(name); }, "Check if a digital IO is false by its name, if it exists", "name"_a);
