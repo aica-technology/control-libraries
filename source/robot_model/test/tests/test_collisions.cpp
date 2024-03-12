@@ -62,7 +62,8 @@ protected:
 TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithGeometries) {
     // Assuming your model initialization actually loads collision geometries if available
     size_t numPairs = ur5eWithGeometries->get_number_of_collision_pairs();
-    EXPECT_GT(numPairs, 6) << "Expected 6 collision pairs for ur5e with geometries.";
+    EXPECT_EQ(numPairs, 15) << "Expected 15 collision pairs for ur5e with geometries.";
+
 }
 
 // Test that get_number_of_collision_pairs() returns 0 for a model without collision geometries loaded

@@ -53,6 +53,8 @@ void model(py::module_& m) {
 
   
   c.def("check_collision", py::overload_cast<const JointPositions&>(&Model::check_collision), "Check if the robot is in collision at a given joint state.", "joint_positions"_a);
+  c.def("get_number_of_collision_pairs", &Model::get_number_of_collision_pairs, "Get the number of collision pairs in the model.");
+  c.def("is_geometry_model_initialized", &Model::is_geometry_model_initialized, "Check if the geometry model is initialized.");
   c.def(
       "compute_jacobian", py::overload_cast<const JointPositions&, const std::string&>(&Model::compute_jacobian),
       "Compute the Jacobian from a given joint state at the frame given in parameter.", "joint_positions"_a, "frame"_a = std::string(""));
