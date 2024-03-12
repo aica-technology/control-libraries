@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
 - build: copy python packages into /usr instead of ~ros2 to avoid permission issues (#155)
 - feat: Add ParameterType conversion functions to go from enum to type label and the inverse (#154)

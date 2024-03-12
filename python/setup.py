@@ -11,7 +11,7 @@ from setuptools import setup
 # names of the environment variables that define osqp and openrobots include directories
 osqp_path_var = 'OSQP_INCLUDE_DIR'
 
-__version__ = "7.3.3"
+__version__ = "7.3.4"
 __libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model']
 __include_dirs__ = ['include']
 
@@ -104,6 +104,7 @@ if __install_robot_model_module__:
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          extra_compile_args=['-DPINOCCHIO_WITH_HPP_FCL']
                           )
     )
 
