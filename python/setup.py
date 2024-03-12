@@ -104,6 +104,7 @@ if __install_robot_model_module__:
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          extra_compile_args=['-DPINOCCHIO_WITH_HPP_FCL']
                           )
     )
 
@@ -114,7 +115,7 @@ if __install_controllers_module__:
                           cxx_std=17,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'controllers', 'robot_model'],
-                          define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          define_macros=[('MODULE_VERSION_INFO', __version__)]
                           )
     )
 
