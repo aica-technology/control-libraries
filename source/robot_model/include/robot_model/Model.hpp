@@ -85,7 +85,7 @@ private:
   void init_model();
 
   /**
-   * @brief Initialize the pinocchio geometry model from the URDF
+   * @brief Initialize the pinocchio geometry model from the URDF and the package paths
    */
   void init_geom_model();
 

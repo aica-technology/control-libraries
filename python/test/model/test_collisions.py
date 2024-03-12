@@ -48,7 +48,7 @@ class RobotModelCollisionTesting(unittest.TestCase):
 
     def test_number_of_collision_pairs_with_geometries(self):
         num_pairs = self.ur5e_with_geometries.get_number_of_collision_pairs()
-        self.assertGreater(num_pairs, 6, "Expected more than 6 collision pairs for ur5e with geometries.")
+        self.assertEqual(num_pairs, 15, "Expected 15 collision pairs for ur5e with geometries.")
 
     def test_number_of_collision_pairs_without_geometries(self):
         num_pairs = self.ur5e_without_geometries.get_number_of_collision_pairs()
