@@ -1,6 +1,7 @@
 # CHANGELOG
 
 Release Versions:
+
 - [7.3.0](#730)
 - [7.2.0](#720)
 - [7.1.1](#711)
@@ -10,8 +11,7 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-
-### Full changelog:
+## Upcoming changes (in development)
 
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
