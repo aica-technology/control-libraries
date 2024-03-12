@@ -115,7 +115,7 @@ if __install_controllers_module__:
                           cxx_std=17,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'controllers', 'robot_model'],
-                          define_macros=[('MODULE_VERSION_INFO', __version__)]
+                          define_macros=[('MODULE_VERSION_INFO', __version__)],
                           )
     )
 

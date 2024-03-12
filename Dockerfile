@@ -78,7 +78,7 @@ HEREDOC
 
 FROM base as dep-base
 ARG TARGETPLATFORM
-ARG CACHEID=0
+ARG CACHEID
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
@@ -87,7 +87,7 @@ FROM base as dep-pinocchio
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dep-base /tmp/deps /usr
 ARG TARGETPLATFORM
-ARG CACHEID=0
+ARG CACHEID
 ARG PINOCCHIO_TAG=v2.9.0
 ARG HPP_FCL_TAG=v1.8.1
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
@@ -107,7 +107,7 @@ RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
 
 FROM base as dependencies
 ARG TARGETPLATFORM
-ARG CACHEID=1
+ARG CACHEID
 # Needed to build `osqp-eigen`
 COPY --from=dep-base /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt

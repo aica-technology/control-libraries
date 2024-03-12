@@ -25,7 +25,6 @@ target_link_libraries(${LIBRARY_NAME}
   state_representation
   ${PINOCCHIO_LIBRARIES}
   OsqpEigen::OsqpEigen
-  ${HPP_FCL_LIBRARIES}
 )
 target_compile_definitions(${LIBRARY_NAME} PUBLIC -DPINOCCHIO_WITH_HPP_FCL)
 
