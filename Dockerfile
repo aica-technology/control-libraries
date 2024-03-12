@@ -162,7 +162,7 @@ ARG CACHEID
 RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
 
-FROM build as test
+FROM build as cpp-test
 ARG TARGETPLATFORM
 ARG CACHEID
 RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
@@ -180,10 +180,21 @@ ARG CACHEID
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --chown=${USER}:${USER} ./python /python
+COPY --chown=${USER}:${USER} ./python/include /python/include
+COPY --chown=${USER}:${USER} ./python/source /python/source
+COPY --chown=${USER}:${USER} ./python/pyproject.toml ./python/setup.py /python/
 RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
 RUN mv /tmp/python/local /tmp/python-usr
+
+FROM cpp-test as python-test
+ARG TARGETPLATFORM
+ARG CACHEID
+RUN pip install pytest
+COPY --from=install /tmp/cl /usr
+COPY --from=python /tmp/python-usr /usr
+COPY --chown=${USER}:${USER} ./python/test /test
+RUN pytest /test
 
 FROM base as python-stubs
 ARG TARGETPLATFORM
