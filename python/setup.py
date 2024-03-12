@@ -104,6 +104,7 @@ if __install_robot_model_module__:
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          extra_compile_args=['-DPINOCCHIO_WITH_HPP_FCL']
                           )
     )
 
