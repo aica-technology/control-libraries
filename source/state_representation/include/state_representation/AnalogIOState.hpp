@@ -71,38 +71,6 @@ public:
   AnalogIOState& operator=(const AnalogIOState& state);
 
   /**
-   * @brief Get the value of an analog IO by its name, if it exists
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   * @return The value of the IO, if it exists
-   */
-  double get_value(const std::string& name) const;
-
-  /**
-   * @brief Get the value of an analog IO by its index, if it exists
-   * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   * @return The value of the IO, if it exists
-   */
-  double get_value(unsigned int io_index) const;
-
-  /**
-   * @brief Set the value of an analog IO by its name
-   * @param value The value of the IO
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_value(double value, const std::string& name);
-
-  /**
-   * @brief Set the value of an analog IO by its index
-   * @param value The value of the IO
-   * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_value(double value, unsigned int io_index);
-
-  /**
    * @brief Return a copy of the analog IO state
    */
   AnalogIOState copy() const;

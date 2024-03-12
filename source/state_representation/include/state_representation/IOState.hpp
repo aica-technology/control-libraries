@@ -31,6 +31,22 @@ public:
   unsigned int get_io_index(const std::string& io_name) const;
 
   /**
+   * @brief Get the value of an IO by its name, if it exists
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  T get_value(const std::string& name) const;
+
+  /**
+   * @brief Get the value of an IO by its index, if it exists
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   * @return The value of the IO, if it exists
+   */
+  T get_value(unsigned int io_index) const;
+
+  /**
    * @brief Returns the values of the IO state as an Eigen vector
    */
   Eigen::Vector<T, Eigen::Dynamic> data() const;
@@ -51,6 +67,22 @@ public:
    * @param names The vector of strings containing the IO names
    */
   void set_names(const std::vector<std::string>& names);
+
+  /**
+   * @brief Set the value of an IO by its name
+   * @param value The value of the IO
+   * @param name The name of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_value(T value, const std::string& name);
+
+  /**
+   * @brief Set the value of an IO by its index
+   * @param value The value of the IO
+   * @param io_index The index of the IO
+   * @throws IONotFoundException if the desired IO doesn't exist
+   */
+  void set_value(T value, unsigned int io_index);
 
   /**
    * @brief Set the values of the IO state from a single Eigen vector
@@ -146,6 +178,18 @@ unsigned int IOState<T>::get_io_index(const std::string& io_name) const {
 }
 
 template<typename T>
+T IOState<T>::get_value(const std::string& io_name) const {
+  return this->get_value(this->get_io_index(io_name));
+}
+
+template<typename T>
+T IOState<T>::get_value(unsigned int io_index) const {
+  this->assert_not_empty();
+  IOState<T>::assert_index_in_range(io_index, this->get_size());
+  return this->data_(io_index);
+}
+
+template<typename T>
 Eigen::Vector<T, Eigen::Dynamic> IOState<T>::data() const {
   this->assert_not_empty();
   return this->data_;
@@ -178,6 +222,18 @@ void IOState<T>::set_names(const std::vector<std::string>& names) {
   }
   this->names_ = names;
   this->reset_timestamp();
+}
+
+template<typename T>
+void IOState<T>::set_value(T value, const std::string& io_name) {
+  this->set_value(value, this->get_io_index(io_name));
+}
+
+template<typename T>
+void IOState<T>::set_value(T value, unsigned int io_index) {
+  IOState<T>::assert_index_in_range(io_index, this->get_size());
+  this->data_(io_index) = value;
+  this->set_empty(false);
 }
 
 template<typename T>

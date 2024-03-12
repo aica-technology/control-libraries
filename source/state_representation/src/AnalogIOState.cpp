@@ -60,26 +60,6 @@ AnalogIOState& AnalogIOState::operator=(const AnalogIOState& state) {
   return *this;
 }
 
-double AnalogIOState::get_value(const std::string& io_name) const {
-  return this->get_value(this->get_io_index(io_name));
-}
-
-double AnalogIOState::get_value(unsigned int io_index) const {
-  this->assert_not_empty();
-  IOState<double>::assert_index_in_range(io_index, this->get_size());
-  return this->data_(io_index);
-}
-
-void AnalogIOState::set_value(double value, const std::string& io_name) {
-  this->set_value(value, this->get_io_index(io_name));
-}
-
-void AnalogIOState::set_value(double value, unsigned int io_index) {
-  IOState<double>::assert_index_in_range(io_index, this->get_size());
-  this->data_(io_index) = value;
-  this->set_empty(false);
-}
-
 AnalogIOState AnalogIOState::copy() const {
   AnalogIOState result(*this);
   return result;
