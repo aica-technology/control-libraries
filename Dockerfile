@@ -196,7 +196,6 @@ COPY --from=python /tmp/python-usr /usr
 COPY --chown=${USER}:${USER} ./python/test /test
 RUN pytest /test
 
-
 FROM base as python-stubs
 ARG TARGETPLATFORM
 ARG CACHEID

@@ -2,7 +2,7 @@ import os
 import unittest
 
 from robot_model import Model
-from state_representation import JointState
+from state_representation import JointPositions
 
 class RobotModelCollisionTesting(unittest.TestCase):
     ur5e_with_geometries = None
@@ -20,29 +20,29 @@ class RobotModelCollisionTesting(unittest.TestCase):
 
     @classmethod
     def set_test_non_colliding_configurations(cls):
-        config1 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config1 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config1.set_positions([0.0, -1.63, 1.45, 0.38, 0.0, 0.0])
         cls.test_non_colliding_configs.append(config1)
 
-        config2 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config2 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config2.set_positions([0.0, -1.88, 1.45, 0.38, -4.4, -3.14])
         cls.test_non_colliding_configs.append(config2)
 
-        config3 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config3 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config3.set_positions([1.26, -1.26, 0.82, 0.38, -4.4, 3.14])
         cls.test_non_colliding_configs.append(config3)
 
     @classmethod
     def set_test_colliding_configurations(cls):
-        config1 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config1 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config1.set_positions([1.26, -1.76, 2.89, 0.38, -4.4, -6.16])
         cls.test_colliding_configs.append(config1)
 
-        config2 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config2 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config2.set_positions([1.26, -1.76, 2.89, 0.38, -1.38, -1.16])
         cls.test_colliding_configs.append(config2)
 
-        config3 = JointState(cls.ur5e_with_geometries.get_robot_name(), 6)
+        config3 = JointPositions(cls.ur5e_with_geometries.get_robot_name(), 6)
         config3.set_positions([1.26, -1.76, -3.08, 0.75, -1.38, -6.16])
         cls.test_colliding_configs.append(config3)
 

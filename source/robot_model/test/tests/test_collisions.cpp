@@ -17,23 +17,23 @@ protected:
 
   std::unique_ptr<Model> ur5eWithGeometries;
   std::unique_ptr<Model> ur5eWithoutGeometries;
-  std::vector<state_representation::JointState> test_non_coliding_configs;
-  std::vector<state_representation::JointState> test_coliding_configs;
+  std::vector<state_representation::JointPositions> test_non_coliding_configs;
+  std::vector<state_representation::JointPositions> test_coliding_configs;
 
   // create custom test fixture for robot model without collision
   void set_test_non_coliding_configurations() {
     // Random test configuration 1:
-    state_representation::JointState config1(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config1(ur5eWithGeometries->get_robot_name(), 6);
     config1.set_positions(std::vector<double>{0.0, -1.63, 1.45, 0.38, 0.0, 0.0});
     test_non_coliding_configs.push_back(config1);
 
     // Random test configuration 2:
-    state_representation::JointState config2(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config2(ur5eWithGeometries->get_robot_name(), 6);
     config2.set_positions(std::vector<double>{0.0, -1.88, 1.45, 0.38, -4.4, -3.14});
     test_non_coliding_configs.push_back(config2);
 
     // Random test configuration 3:
-    state_representation::JointState config3(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config3(ur5eWithGeometries->get_robot_name(), 6);
     config3.set_positions(std::vector<double>{1.26, -1.26, 0.82, 0.38, -4.4, 3.14});
     test_non_coliding_configs.push_back(config3);
   };
@@ -41,17 +41,17 @@ protected:
   // create custom test fixture for robot model with collision geometries
   void set_test_coliding_configurations() {
     // Random test configuration 1:
-    state_representation::JointState config1(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config1(ur5eWithGeometries->get_robot_name(), 6);
     config1.set_positions(std::vector<double>{1.26, -1.76, 2.89, 0.38, -4.4, -6.16});
     test_coliding_configs.push_back(config1);
 
     // Random test configuration 2:
-    state_representation::JointState config2(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config2(ur5eWithGeometries->get_robot_name(), 6);
     config2.set_positions(std::vector<double>{1.26, -1.76, 2.89, 0.38, -1.38, -1.16});
     test_coliding_configs.push_back(config2);
 
     // Random test configuration 3:
-    state_representation::JointState config3(ur5eWithGeometries->get_robot_name(), 6);
+    state_representation::JointPositions config3(ur5eWithGeometries->get_robot_name(), 6);
     config3.set_positions(std::vector<double>{1.26, -1.76, -3.08, 0.75, -1.38, -6.16});
     test_coliding_configs.push_back(config3);
   };
