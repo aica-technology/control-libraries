@@ -155,14 +155,6 @@ public:
 
 protected:
   /**
-   * @brief Set the value of a digital IO
-   * @param value The desired value of the IO
-   * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
-   */
-  void set_value(bool value, unsigned int io_index);
-
-  /**
    * @brief Swap the values of the IO states
    * @param state1 IO state to be swapped with 2
    * @param state2 IO state to be swapped with 1

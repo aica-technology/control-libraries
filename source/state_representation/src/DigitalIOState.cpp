@@ -78,12 +78,6 @@ bool DigitalIOState::is_false(unsigned int io_index) const {
   return !this->is_true(io_index);
 }
 
-void DigitalIOState::set_value(bool value, unsigned int io_index) {
-  IOState<bool>::assert_index_in_range(io_index, this->get_size());
-  this->data_(io_index) = value;
-  this->set_empty(false);
-}
-
 void DigitalIOState::set_true(const std::string& io_name) {
   this->set_true(this->get_io_index(io_name));
 }
