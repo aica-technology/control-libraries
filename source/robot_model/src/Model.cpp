@@ -1,21 +1,28 @@
 #include <iostream>
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
+#include <pinocchio/algorithm/geometry.hpp>
 #include "robot_model/Model.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 
 namespace robot_model {
-Model::Model(const std::string& robot_name, const std::string& urdf_path) :
+Model::Model(const std::string& robot_name, 
+             const std::string& urdf_path, 
+             const std::vector<std::string>& geometry_package_paths) :
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
-    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)) {
+    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)), 
+    geometry_package_paths_(geometry_package_paths)
+    {
   this->init_model();
 }
 
 Model::Model(const Model& model) :
     robot_name_(model.robot_name_),
-    urdf_path_(model.urdf_path_) {
+    urdf_path_(model.urdf_path_), 
+    geometry_package_paths_(model.geometry_package_paths_)
+    {
   this->init_model();
 }
 
@@ -39,7 +46,69 @@ void Model::init_model() {
   }
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
-  this->init_qp_solver();
+  this->init_qp_solver();  
+
+  if (this->geometry_package_paths_.size() > 0){
+    this->init_geom_model();
+  }
+}
+
+// Method to initialize collision geometries
+void Model::init_geom_model() {
+    pinocchio::urdf::buildGeom(this->robot_model_, 
+                               this->get_urdf_path(), 
+                               pinocchio::COLLISION, 
+                               this->geom_model_, 
+                               this->geometry_package_paths_);
+    this->geom_model_.addAllCollisionPairs();
+    
+    std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
+
+    // remove collision pairs for linked joints (i.e. parent-child joints)
+    for (const auto& pair : excluded_pairs) {
+        this->geom_model_.removeCollisionPair(pair);
+    }
+
+    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+}
+
+std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
+    std::vector<pinocchio::CollisionPair> excluded_pairs;
+    // Iterate through all joints, except the universe joint (0), which has no parent
+    for (pinocchio::JointIndex joint_id = 1u; joint_id < static_cast<pinocchio::JointIndex>(this->robot_model_.njoints); ++joint_id){
+        // Find the parent joint of the current joint
+        pinocchio::JointIndex parent_id = this->robot_model_.parents[joint_id];
+        
+        // TODO: Replace this logic with actual geometry index lookup
+        auto getGeometryIndexForJoint = [](pinocchio::JointIndex joint_id) -> int {
+            return static_cast<int>(joint_id);
+        };
+
+        int geometryIndex1 = getGeometryIndexForJoint(joint_id);
+        int geometryIndex2 = getGeometryIndexForJoint(parent_id);
+
+        // Check if the geometry indices are not equal
+        if (geometryIndex1 != geometryIndex2) {
+            excluded_pairs.push_back(pinocchio::CollisionPair(geometryIndex2, geometryIndex1));
+        }
+    }
+    return excluded_pairs;
+}
+
+// Collision detection method
+bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
+    Eigen::VectorXd configuration = joint_positions.get_positions();
+
+    pinocchio::computeCollisions(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true);
+    
+    for(size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
+        const auto& collision_result = this->geom_data_.collisionResults[pair_index];
+        
+        if(collision_result.isCollision()) {
+            return true;
+        } 
+    }
+    return false;
 }
 
 bool Model::init_qp_solver() {
