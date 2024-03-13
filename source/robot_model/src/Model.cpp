@@ -1,7 +1,5 @@
 #include <iostream>
 #include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
-#include <pinocchio/algorithm/geometry.hpp>
 #include "robot_model/Model.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
@@ -93,6 +91,16 @@ std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
         }
     }
     return excluded_pairs;
+}
+
+unsigned int Model::get_number_of_collision_pairs() {
+  return !this->geometry_package_paths_.empty() ? this->geom_model_.collisionPairs.size() : 0;
+}
+
+
+bool Model::is_geometry_model_initialized() {
+  // Considered initialized if at least one collision pair exists
+  return !this->geometry_package_paths_.empty() && !this->geom_model_.collisionPairs.empty();
 }
 
 // Collision detection method
