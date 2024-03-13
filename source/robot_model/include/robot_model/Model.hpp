@@ -216,7 +216,6 @@ public:
    */
   Model(const Model& model);
 
-
   /**
    * @brief Swap the values of the two Model
    * @param model1 Model to be swapped with 2
