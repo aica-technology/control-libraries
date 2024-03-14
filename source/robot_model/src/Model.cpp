@@ -98,7 +98,6 @@ unsigned int Model::get_number_of_collision_pairs() {
   return !this->geometry_package_paths_.empty() ? this->geom_model_.collisionPairs.size() : 0;
 }
 
-
 bool Model::is_geometry_model_initialized() {
   // Considered initialized if at least one collision pair exists
   return !this->geometry_package_paths_.empty() && !this->geom_model_.collisionPairs.empty();
@@ -120,6 +119,28 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
     return false;
 }
 
+Eigen::MatrixXd Model::compute_minimum_distance(const state_representation::JointPositions& joint_positions) {
+    Eigen::VectorXd configuration = joint_positions.get_positions();
+    pinocchio::computeDistances(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration);
+    
+    // nb_joints is the number of joints in the robot model
+    unsigned int nb_joints = this->get_number_of_joints();
+    
+    // create a 2D Eigen vector to store the distances and initialize to zero
+    Eigen::MatrixXd distances = Eigen::MatrixXd::Zero(nb_joints, nb_joints);
+    
+    // iterate over the collision pairs and extract the distances
+    unsigned int pair_index = 0;
+    for (unsigned row_index = 0; row_index < nb_joints; ++row_index) {
+        for (unsigned column_index = row_index; column_index < nb_joints; ++column_index) {
+            distances(row_index, column_index) = this->geom_data_.distanceResults[pair_index].min_distance;
+            distances(column_index, row_index) = distances(row_index, column_index);
+            pair_index++;
+        }
+    }
+    
+    return distances;
+}
 bool Model::init_qp_solver() {
   // clear the solver
   this->solver_.data()->clearHessianMatrix();

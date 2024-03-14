@@ -239,6 +239,14 @@ public:
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
 
   /**
+   * @brief Compute the minimum distance between the robot links
+   * @param joint_positions containing the joint positions of the robot
+   * @return the matrix containing the minimum distance between the robot links
+   */
+
+  Eigen::MatrixXd compute_minimum_distance(const state_representation::JointPositions& joint_positions); 
+
+  /**
    * @brief Compute check if the links of the robot are in collision
    * @param joint_positions containing the joint positions of the robot
    * @return true if the robot is in collision, false otherwise
