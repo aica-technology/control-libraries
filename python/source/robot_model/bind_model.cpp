@@ -53,6 +53,7 @@ void model(py::module_& m) {
 
   
   c.def("check_collision", py::overload_cast<const JointPositions&>(&Model::check_collision), "Check if the robot is in collision at a given joint state.", "joint_positions"_a);
+  c.def("compute_minimum_distance", py::overload_cast<const JointPositions&>(&Model::compute_minimum_distance), "Compute minimum distance at a given joint state.", "joint_positions"_a);
   c.def("get_number_of_collision_pairs", &Model::get_number_of_collision_pairs, "Get the number of collision pairs in the model.");
   c.def("is_geometry_model_initialized", &Model::is_geometry_model_initialized, "Check if the geometry model is initialized.");
   c.def(

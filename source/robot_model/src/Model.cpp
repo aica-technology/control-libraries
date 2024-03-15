@@ -119,6 +119,7 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
     return false;
 }
 
+// Compute minimum distance
 Eigen::MatrixXd Model::compute_minimum_distance(const state_representation::JointPositions& joint_positions) {
     Eigen::VectorXd configuration = joint_positions.get_positions();
     pinocchio::computeDistances(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration);
@@ -132,15 +133,16 @@ Eigen::MatrixXd Model::compute_minimum_distance(const state_representation::Join
     // iterate over the collision pairs and extract the distances
     unsigned int pair_index = 0;
     for (unsigned row_index = 0; row_index < nb_joints; ++row_index) {
-        for (unsigned column_index = row_index; column_index < nb_joints; ++column_index) {
-            distances(row_index, column_index) = this->geom_data_.distanceResults[pair_index].min_distance;
-            distances(column_index, row_index) = distances(row_index, column_index);
-            pair_index++;
+        for (unsigned column_index = row_index+1; column_index < nb_joints; ++column_index) {
+          distances(row_index, column_index) = this->geom_data_.distanceResults[pair_index].min_distance;
+          distances(column_index, row_index) = distances(row_index, column_index);
+          pair_index++;
         }
     }
-    
+
     return distances;
 }
+
 bool Model::init_qp_solver() {
   // clear the solver
   this->solver_.data()->clearHessianMatrix();
