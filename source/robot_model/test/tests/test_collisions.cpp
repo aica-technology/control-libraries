@@ -119,7 +119,7 @@ TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedNoCollision) {
         // Then check that no element is equal to zero besides the diagonals
         for (int i = 0; i < distances.rows(); ++i) {
             for (int j = 0; j < distances.cols(); ++j) {
-                if (i != j && j != i+1 && i != j+1) { // Skip diagonal elements
+                if (i != j && j != i+1 && i != j+1) { // Skip diagonal elements & adjacent links
                     EXPECT_GE(distances(i, j), 0.01) << "Found a distance at non-diagonal element [" << i << ", " << j << "], indicating a collision.";
                 }
             }
@@ -144,7 +144,7 @@ TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedCollision) {
         // Iterate over the matrix to find the minimum non-diagonal distance
         for (int i = 0; i < distances.rows(); ++i) {
             for (int j = 0; j < distances.cols(); ++j) {
-                if (i != j && j != i+1 && i != j+1 && distances(i, j) < minimum_distance) { // Skip diagonal elements
+                if (i != j && j != i+1 && i != j+1 && distances(i, j) < minimum_distance) { // Skip diagonal elements & adjacent links
                     minimum_distance = distances(i, j);
                 }
             }
