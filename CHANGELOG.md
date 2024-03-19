@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat: Integrate min distance (#167)
 - feat: integrating collision detection feature into robot model (#163)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
