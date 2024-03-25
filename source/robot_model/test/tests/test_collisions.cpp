@@ -9,10 +9,17 @@ using namespace robot_model;
 class RobotModelCollisionTesting : public testing::Test {
 protected:
   void SetUp() override {
-    std::vector<std::string> package_paths = {std::string(TEST_FIXTURES) + "ur5e"}; 
-
-    ur5e_with_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", package_paths);
+    // create a callback function to get that takes as input a package name and returns the path to the package
+    auto package_paths = [](const std::string& package_name) -> std::string {
+        if (package_name == "ur_description") {
+            return std::string(TEST_FIXTURES);
+        } else {
+            return "";
+        }
+    };
+    
     ur5e_without_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
+    ur5e_with_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", true, package_paths);
   };
 
   std::unique_ptr<Model> ur5e_with_geometries;
@@ -58,18 +65,18 @@ protected:
 
 };
 
+// Test that get_number_of_collision_pairs() returns 0 for a model without collision geometries loaded
+TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithoutGeometries) {
+    unsigned int num_pairs = ur5e_without_geometries->get_number_of_collision_pairs();
+    EXPECT_EQ(num_pairs, 0) << "Expected zero collision pairs for model without geometries.";
+}
+
 // Test that get_number_of_collision_pairs() returns a non-zero value for a model with collision geometries loaded
 TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithGeometries) {
     // Assuming your model initialization actually loads collision geometries if available
     unsigned num_pairs = ur5e_with_geometries->get_number_of_collision_pairs();
     EXPECT_EQ(num_pairs, 15) << "Expected 15 collision pairs for ur5e with geometries.";
 
-}
-
-// Test that get_number_of_collision_pairs() returns 0 for a model without collision geometries loaded
-TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithoutGeometries) {
-    unsigned int num_pairs = ur5e_without_geometries->get_number_of_collision_pairs();
-    EXPECT_EQ(num_pairs, 0) << "Expected zero collision pairs for model without geometries.";
 }
 
 // Test that is_geometry_model_initialized() returns true for a model with collision geometries loaded
