@@ -9,7 +9,7 @@ void digital_io_state(py::module_& m) {
 
   c.def(py::init(), "Empty constructor for an digital IO state");
   c.def(py::init<const std::string&, unsigned int>(), "Constructor with name and number of digital IOs provided", "name"_a, "nb_ios"_a=0);
-  c.def(py::init<const std::string&, const std::vector<std::string>&>(), "onstructor with name and list of digital IO names provided", "name"_a, "io_names"_a);
+  c.def(py::init<const std::string&, const std::vector<std::string>&>(), "Constructor with name and list of digital IO names provided", "name"_a, "io_names"_a);
   c.def(py::init<const DigitalIOState&>(), "Copy constructor of an digital IO state", "state"_a);
 
   c.def_static("Zero", py::overload_cast<const std::string&, unsigned int>(&DigitalIOState::Zero), "Constructor for a zero digital IO state", "name"_a, "nb_ios"_a);
