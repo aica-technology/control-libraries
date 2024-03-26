@@ -1,4 +1,5 @@
 #include "robot_model/Model.hpp"
+#include "robot_model/exceptions/CollisionGeometryException.hpp"
 
 #include <stdexcept>
 #include <memory>
@@ -64,6 +65,14 @@ protected:
   };
 
 };
+
+// Test calling check_collision() with an uninitialized geometry model
+TEST_F(RobotModelCollisionTesting, CheckCollisionWithoutGeometries) {
+    // Random test configuration:
+    state_representation::JointPositions config(ur5e_without_geometries->get_robot_name(), 6);
+    config.set_positions(std::vector<double>{0.0, -1.63, 1.45, 0.38, 0.0, 0.0});
+    EXPECT_THROW(ur5e_without_geometries->check_collision(config), exceptions::CollisionGeometryException) << "Expected exception for model without geometries.";
+}
 
 // Test that get_number_of_collision_pairs() returns 0 for a model without collision geometries loaded
 TEST_F(RobotModelCollisionTesting, NumberOfCollisionPairsWithoutGeometries) {

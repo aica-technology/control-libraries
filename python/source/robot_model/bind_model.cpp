@@ -31,7 +31,6 @@ void model(py::module_& m) {
   py::class_<Model> c(m, "Model");
 
   c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, bool load_collision_geometries=false, py::object meshloader_callback=py::none()) {
-    // Check if the meshloader_callback is None and set the std::function to nullptr if so
     std::function<std::string(const std::string&)> callback_cpp = nullptr;
     if (!meshloader_callback.is_none()) {
       callback_cpp = [meshloader_callback](const std::string& package_name) -> std::string {
@@ -44,7 +43,7 @@ void model(py::module_& m) {
    py::arg("robot_name"),
    py::arg("urdf_path"),
    py::arg("load_collision_geometries") = false,
-   py::arg("meshloader_callback") = py::none() // Use py::object with a default of py::none()
+   py::arg("meshloader_callback") = py::none()
   );
 
 
