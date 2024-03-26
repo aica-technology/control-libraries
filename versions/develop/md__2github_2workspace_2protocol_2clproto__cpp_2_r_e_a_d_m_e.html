@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.3.5</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.3.6</span>
    </div>
   </td>
  </tr>
@@ -155,7 +155,7 @@ $(function() {
 <div class="line"><span class="keyword">auto</span> decoded_joint_state = <a class="code hl_function" href="namespaceclproto.html#abf7d863ec82b8eab41a5078446652628">clproto::decode&lt;JointState&gt;</a>(unpacked_encoded_robot_state.at(1));</div>
 <div class="ttc" id="anamespaceclproto_html_ab707c8834e0c762b9b8a531df8d373b5"><div class="ttname"><a href="namespaceclproto.html#ab707c8834e0c762b9b8a531df8d373b5">clproto::pack_fields</a></div><div class="ttdeci">void pack_fields(const std::vector&lt; std::string &gt; &amp;fields, char *data)</div><div class="ttdoc">Pack an ordered vector of encoded field messages into a single data array.</div><div class="ttdef"><b>Definition</b> <a href="clproto_8cpp_source.html#l00070">clproto.cpp:70</a></div></div>
 <div class="ttc" id="anamespaceclproto_html_ac7a129b4c8398f6ad220743f766b270b"><div class="ttname"><a href="namespaceclproto.html#ac7a129b4c8398f6ad220743f766b270b">clproto::unpack_fields</a></div><div class="ttdeci">std::vector&lt; std::string &gt; unpack_fields(const char *data)</div><div class="ttdoc">Unpack a data array into an ordered vector of encoded field messages.</div><div class="ttdef"><b>Definition</b> <a href="clproto_8cpp_source.html#l00094">clproto.cpp:94</a></div></div>
-<div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition</b> <a href="_empty_state_exception_8hpp_source.html#l00006">EmptyStateException.hpp:6</a></div></div>
+<div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition</b> <a href="_analog_i_o_state_8hpp_source.html#l00005">AnalogIOState.hpp:5</a></div></div>
 </div><!-- fragment --><p>The pack / unpack methods are provided as a convenience only for simple synthesis of messages from core state message types. The communication implementation can always be extended further by the end user as necessary, for example to prepend an indication of the field types to the message, or to add other delimiting behaviour.</p>
 <h2>ZMQ example</h2>
 <p>The packing and unpacking of the message should be handled according to the network requirements. This sections shows an example for ZMQ messaging.</p>

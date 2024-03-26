@@ -17,5 +17,9 @@ var searchData=
   ['invalidparameterexception_14',['InvalidParameterException',['../classstate__representation_1_1exceptions_1_1_invalid_parameter_exception.html',1,'state_representation::exceptions']]],
   ['invalidpointerexception_15',['InvalidPointerException',['../classstate__representation_1_1exceptions_1_1_invalid_pointer_exception.html',1,'state_representation::exceptions']]],
   ['inversekinematicsnotconvergingexception_16',['InverseKinematicsNotConvergingException',['../classrobot__model_1_1exceptions_1_1_inverse_kinematics_not_converging_exception.html',1,'robot_model::exceptions']]],
-  ['inversekinematicsparameters_17',['InverseKinematicsParameters',['../structrobot__model_1_1_inverse_kinematics_parameters.html',1,'robot_model']]]
+  ['inversekinematicsparameters_17',['InverseKinematicsParameters',['../structrobot__model_1_1_inverse_kinematics_parameters.html',1,'robot_model']]],
+  ['ionotfoundexception_18',['IONotFoundException',['../classstate__representation_1_1exceptions_1_1_i_o_not_found_exception.html',1,'state_representation::exceptions']]],
+  ['iostate_19',['IOState',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]],
+  ['iostate_3c_20bool_20_3e_20',['IOState&lt; bool &gt;',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]],
+  ['iostate_3c_20double_20_3e_21',['IOState&lt; double &gt;',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]]
 ];

@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.3.5</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;7.3.6</span>
    </div>
   </td>
  </tr>
@@ -101,7 +101,7 @@ $(function() {
 <div class="line"><span class="comment">// create a compliant Cartesian twist controller using &quot;auto&quot; to avoid verbose typing</span></div>
 <div class="line"><span class="keyword">auto</span> twist_ctrl = CartesianControllerFactory::create_controller(CONTROLLER_TYPE::COMPLIANT_TWIST);</div>
 <div class="ttc" id="anamespacecontrollers_html"><div class="ttname"><a href="namespacecontrollers.html">controllers</a></div><div class="ttdoc">Systems to determine a command output from measured and desired inputs.</div><div class="ttdef"><b>Definition</b> <a href="_controller_factory_8hpp_source.html#l00010">ControllerFactory.hpp:10</a></div></div>
-<div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition</b> <a href="_empty_state_exception_8hpp_source.html#l00006">EmptyStateException.hpp:6</a></div></div>
+<div class="ttc" id="anamespacestate__representation_html"><div class="ttname"><a href="namespacestate__representation.html">state_representation</a></div><div class="ttdoc">Core state variables and objects.</div><div class="ttdef"><b>Definition</b> <a href="_analog_i_o_state_8hpp_source.html#l00005">AnalogIOState.hpp:5</a></div></div>
 </div><!-- fragment --><p>The <code>create_controller</code> function also has an input for the number of control dimensions. The Cartesian factory ignores this input as the dimensionality can be automatically inferred for Cartesian controllers. For the joint-space factory however, the number of joints should be provided so that the controller can initialize all internal properties to the correct dimensionality.</p>
 <div class="fragment"><div class="line"> ++</div>
 <div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> number_of_joints = 7;</div>
