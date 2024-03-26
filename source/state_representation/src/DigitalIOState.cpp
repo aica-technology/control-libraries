@@ -28,14 +28,14 @@ DigitalIOState::DigitalIOState(const DigitalIOState& state) : DigitalIOState(sta
 
 DigitalIOState DigitalIOState::Zero(const std::string& name, unsigned int nb_ios) {
   DigitalIOState zero = DigitalIOState(name, nb_ios);
-  // as opposed to the constructor specify this state to be filled
+  // specify that the default constructed zero state is non-empty
   zero.set_empty(false);
   return zero;
 }
 
 DigitalIOState DigitalIOState::Zero(const std::string& name, const std::vector<std::string>& io_names) {
   DigitalIOState zero = DigitalIOState(name, io_names);
-  // as opposed to the constructor specify this state to be filled
+  // specify that the default constructed zero state is non-empty
   zero.set_empty(false);
   return zero;
 }
@@ -43,14 +43,14 @@ DigitalIOState DigitalIOState::Zero(const std::string& name, const std::vector<s
 DigitalIOState DigitalIOState::Random(const std::string& name, unsigned int nb_ios) {
   DigitalIOState random = DigitalIOState(name, nb_ios);
   // set all the state variables to random
-  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
+  random.set_data(Eigen::Vector<bool, Eigen::Dynamic>::Random(random.get_size()));
   return random;
 }
 
 DigitalIOState DigitalIOState::Random(const std::string& name, const std::vector<std::string>& io_names) {
   DigitalIOState random = DigitalIOState(name, io_names);
   // set all the state variables to random
-  random.set_data(Eigen::Vector<bool, -1>::Random(random.get_size()));
+  random.set_data(Eigen::Vector<bool, Eigen::Dynamic>::Random(random.get_size()));
   return random;
 }
 

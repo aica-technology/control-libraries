@@ -28,14 +28,14 @@ AnalogIOState::AnalogIOState(const AnalogIOState& state) : AnalogIOState(state.g
 
 AnalogIOState AnalogIOState::Zero(const std::string& name, unsigned int nb_ios) {
   AnalogIOState zero = AnalogIOState(name, nb_ios);
-  // as opposed to the constructor specify this state to be filled
+  // specify that the default constructed zero state is non-empty
   zero.set_empty(false);
   return zero;
 }
 
 AnalogIOState AnalogIOState::Zero(const std::string& name, const std::vector<std::string>& io_names) {
   AnalogIOState zero = AnalogIOState(name, io_names);
-  // as opposed to the constructor specify this state to be filled
+  // specify that the default constructed zero state is non-empty
   zero.set_empty(false);
   return zero;
 }
