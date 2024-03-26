@@ -13,7 +13,7 @@ class RobotModelCollisionTesting(unittest.TestCase):
     @staticmethod
     def get_package_path_from_name(name):
         if name == "ur_description":
-            return f'{os.path.join(os.path.dirname(os.path.realpath(__file__)), "ur5e")}/'
+            return f'{os.path.dirname(os.path.realpath(__file__))}/'
 
 
     @classmethod
