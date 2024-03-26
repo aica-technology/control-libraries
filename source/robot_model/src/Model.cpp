@@ -180,7 +180,7 @@ std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
 }
 
 unsigned int Model::get_number_of_collision_pairs() {
-  if (this->geom_model_){
+  if (this->load_collision_geometries_){
     return this->geom_model_.collisionPairs.size();
   }
   return 0;
@@ -188,7 +188,7 @@ unsigned int Model::get_number_of_collision_pairs() {
 
 
 bool Model::is_geometry_model_initialized() {
-  if (this->geom_model_){
+  if (this->load_collision_geometries_){
     return !this->geom_model_.collisionPairs.empty();
   }
   return false;
