@@ -211,7 +211,7 @@ private:
 
 public:
   /**
-   * @brief Constructor with robot name and path to URDF file
+   * @brief Constructor with robot name and path to URDF file and callback function to resolve package paths
    * @param robot_name the name of the robot
    * @param urdf_path the path to the URDF file
    * @param meshloader_callback callback function to resolve package paths
