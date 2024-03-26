@@ -15,6 +15,7 @@ Release Versions:
 
 - feat: Integrate min distance (#167)
 - feat: integrating collision detection feature into robot model (#163)
+- build: add missing licenses (#170)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
 - build: copy python packages into /usr instead of ~ros2 to avoid permission issues (#155)
