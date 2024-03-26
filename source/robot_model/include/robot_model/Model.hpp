@@ -109,8 +109,9 @@ private:
   unsigned int get_frame_id(const std::string& frame);
 
   /**
-    * @brief Resolves the package paths in the URDF string and returns the resolved URDF string
+    * @brief Find all the package paths in the URDF and replaces them with the absolute path using meshloader_callback_
     * @param urdf string containing the URDF description of the robot
+    * @return vector of the package paths
     */
   std::vector<std::string> resolve_package_paths_in_urdf(std::string& urdf) const;
 
