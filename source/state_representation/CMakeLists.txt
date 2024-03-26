@@ -7,6 +7,9 @@ set(EIGEN_MPL2_ONLY 1)
 set(CORE_SOURCES
   src/MathTools.cpp
   src/State.cpp
+  src/IOState.cpp
+  src/DigitalIOState.cpp
+  src/AnalogIOState.cpp
   src/space/SpatialState.cpp
   src/space/cartesian/CartesianState.cpp
   src/space/cartesian/CartesianPose.cpp
