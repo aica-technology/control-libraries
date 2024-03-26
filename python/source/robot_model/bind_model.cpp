@@ -30,7 +30,7 @@ void model(py::module_& m) {
 
   py::class_<Model> c(m, "Model");
 
-  c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, py::object meshloader_callback = py::none()) {
+  c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, py::object meshloader_callback) {
   std::function<std::string(const std::string&)> callback_cpp = nullptr;
   if (!meshloader_callback.is_none()) {
         callback_cpp = [meshloader_callback](const std::string& package_name) -> std::string {
@@ -39,7 +39,7 @@ void model(py::module_& m) {
         };
   }
   return new Model(robot_name, urdf_path, callback_cpp);
-  }), py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback") = py::none());
+  }), py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
 
 
   c.def(py::init<const std::string&, const std::string&>(),
