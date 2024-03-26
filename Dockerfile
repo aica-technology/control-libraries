@@ -78,7 +78,7 @@ HEREDOC
 
 FROM base as dep-base
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
@@ -87,7 +87,7 @@ FROM base as dep-pinocchio
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dep-base /tmp/deps /usr
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 ARG PINOCCHIO_TAG=v2.9.0
 ARG HPP_FCL_TAG=v1.8.1
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
@@ -109,7 +109,7 @@ RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
 
 FROM base as dependencies
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 # Needed to build `osqp-eigen`
 COPY --from=dep-base /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
@@ -160,25 +160,25 @@ USER ${USER}
 
 FROM code as build
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
 
 FROM build as cpp-test
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DBUILD_TESTING=ON && cd build && make && CTEST_OUTPUT_ON_FAILURE=1 make test
 
 FROM build as install
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake --install build --prefix /tmp/cl
 
 FROM base as python
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
@@ -191,7 +191,7 @@ RUN mv /tmp/python/local /tmp/python-usr
 
 FROM cpp-test as python-test
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 RUN pip install pytest
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
@@ -200,7 +200,7 @@ RUN pytest /test
 
 FROM base as python-stubs
 ARG TARGETPLATFORM
-ARG CACHEID
+ARG CACHEID=0
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
