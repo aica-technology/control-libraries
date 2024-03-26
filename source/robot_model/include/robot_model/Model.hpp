@@ -69,7 +69,6 @@ private:
   std::vector<std::string> frames_;                                         ///< name of the frames
   pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
-  bool load_collision_geometries_;                                          ///< flag to load collision geometries
   std::optional<std::function<std::string(const std::string&)>> meshloader_callback_;      ///< callback function to resolve package paths
   pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
@@ -83,7 +82,7 @@ private:
   /**
    * @brief Initialize the pinocchio model from the URDF
    */
-  void init_model();
+  void init_model(bool load_collision_geometries = false);
 
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
@@ -215,13 +214,19 @@ public:
    * @brief Constructor with robot name and path to URDF file
    * @param robot_name the name of the robot
    * @param urdf_path the path to the URDF file
-   * @param load_collision_geometries flag to load collision geometries
    * @param meshloader_callback callback function to resolve package paths
    */
     explicit Model(const std::string& robot_name, 
-                   const std::string& urdf_path, 
-                   const bool load_collision_geometries = false,
-                   const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback = std::nullopt);
+                   const std::string& urdf_path,
+                   const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
+
+  /**
+   * @brief Constructor with robot name and path to URDF file
+   * @param robot_name the name of the robot
+   * @param urdf_path the path to the URDF file
+   */
+    explicit Model(const std::string& robot_name, 
+                   const std::string& urdf_path);
 
   /**
    * @brief Copy constructor

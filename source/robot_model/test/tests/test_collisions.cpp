@@ -20,7 +20,7 @@ protected:
     };
     
     ur5e_without_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
-    ur5e_with_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", true, package_paths);
+    ur5e_with_geometries = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf", package_paths);
   };
 
   std::unique_ptr<Model> ur5e_with_geometries;
