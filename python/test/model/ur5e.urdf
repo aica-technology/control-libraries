@@ -293,7 +293,4 @@
     <parent link="ur5e_flange"/>
     <child link="ur5e_tool0"/>
   </joint>
-  <!-- Add URDF transmission elements (for ros_control) -->
-  <!--<xacro:ur_arm_transmission prefix="${prefix}" hw_interface="${transmission_hw_interface}" />-->
-  <!-- Placeholder for ros2_control transmission which don't yet exist -->
 </robot>
