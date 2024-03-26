@@ -39,36 +39,32 @@ bool Model::create_urdf_from_string(const std::string& urdf_string, const std::s
   return false;
 }
 
-std::set<std::string> Model::extract_package_name_from_urdf() {
-    std::set<std::string> extracted_words;
-    std::regex package_path_pattern(R"(filename=\"([^\"]+)\")");
-    std::regex package_name_pattern(R"(package://([^/]+)/)");
+std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf) const {
+  std::set<std::string> package_names;
+  std::regex package_path_pattern(R"(filename=\"([^\"]+)\")");
+  std::regex package_name_pattern(R"(package://([^/]+)/)");
 
-    std::smatch matches_file;
-    std::smatch matches_package_name;
-    auto start = this->urdf_.str().cbegin();
-    auto end = this->urdf_.str().cend();
+  std::smatch matches_file;
+  std::smatch matches_package_name;
+  auto start = urdf.cbegin();
+  auto end = urdf.cend();
 
-    // Extract package paths
-    while (std::regex_search(start, end, matches_file, package_path_pattern)) {
-        std::string path = matches_file[1];
-        
-        if (std::regex_search(path, matches_package_name, package_name_pattern)) {
-            extracted_words.insert(matches_package_name[1]);
-        }
-        
-        start = matches_file[0].second;   
-    }
-    return extracted_words;
-}
+  // Extract package paths
+  while (std::regex_search(start, end, matches_file, package_path_pattern)) {
+      std::string path = matches_file[1];
+      
+      if (std::regex_search(path, matches_package_name, package_name_pattern)) {
+          package_names.insert(matches_package_name[1]);
+      }
+      
+      start = matches_file[0].second;   
+  }
 
-void Model::replace_package_by_full_path(const std::string& package_name, const std::string& full_path) {
-    std::string target = "package://" + package_name + "/";
-    std::string replacement = full_path;
-
-    std::string urdf = this->urdf_.str();
-
-    // Start from the beginning of the result string
+  std::vector<std::string> package_paths;
+  for (const auto& package_name : package_names) {
+    auto package_path = this->meshloader_callback_(package_name);
+    auto target = "package://" + package_name + "/";
+    auto replacement = package_path;
     size_t start_position = 0;
     while ((start_position = urdf.find(target, start_position)) != std::string::npos) {
         // Replace the target with the replacement string
@@ -76,54 +72,27 @@ void Model::replace_package_by_full_path(const std::string& package_name, const 
         // Move past the last replacement
         start_position += replacement.length();
     }
-    this->urdf_.str(urdf);
-}
 
-void Model::resolve_package_paths() {
-    std::set<std::string> package_names = this->extract_package_name_from_urdf();
-
-    for (const auto& package_name : package_names) {
-        std::string package_path = this->meshloader_callback_(package_name);
-        this->package_paths_.push_back(package_path);
-        this->replace_package_by_full_path(package_name, package_path);
-    }
-}
-
-// read the URDF file and return the string
-std::stringstream Model::read_urdf_from_file() {
-    std::ifstream file_stream(this->get_urdf_path());
-    if (!file_stream.is_open()) {
-        throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
-    }
-    std::stringstream buffer;
-    buffer << file_stream.rdbuf(); // Read the file content into the string stream
-
-    return buffer; // Convert the string stream to a string and return
+    package_paths.push_back(package_path);
+  }
+  return package_paths;
 }
 
 void Model::init_model() {
-  // initialize the collision package paths to empty
-  this->package_paths_ = {};
-
-  // check if the package path resolver callback is set then build model with the package resolver
-  if (this->load_collision_geometries_) { 
-    // read the URDF from file
-    this->urdf_ = this->read_urdf_from_file();
-
-    // resolve the package paths
-    this->resolve_package_paths();
-
-    // build the model with the resolved URDF
-    pinocchio::urdf::buildModelFromXML(this->urdf_.str(), this->robot_model_);
-
-    this->init_geom_model();
+  std::ifstream file_stream(this->get_urdf_path());
+  if (!file_stream.is_open()) {
+      throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
   }
-  else {   // build the model without the package resolver
-    pinocchio::urdf::buildModel(this->get_urdf_path(), this->robot_model_);
-  }
-  
-  // robot data
+  std::stringstream buffer;
+  buffer << file_stream.rdbuf();
+  auto urdf = buffer.str();
+
+  pinocchio::urdf::buildModelFromXML(urdf, this->robot_model_);
   this->robot_data_ = pinocchio::Data(this->robot_model_);
+
+  if (this->load_collision_geometries_) {
+    this->init_geom_model(urdf);
+  }
 
   // get the frames
   std::vector<std::string> frames;
@@ -136,14 +105,15 @@ void Model::init_model() {
 }
 
 // Method to initialize collision geometries
-void Model::init_geom_model() {
-    //print building geom model
+void Model::init_geom_model(std::string urdf) {
+    // FIXME: verify that function was provided and is not null
 
-    pinocchio::urdf::buildGeom(this->robot_model_, 
-                               this->urdf_, 
+    auto package_paths = this->resolve_package_paths_in_urdf(urdf);
+    pinocchio::urdf::buildGeom(this->robot_model_,
+                               std::istringstream(urdf),
                                pinocchio::COLLISION, 
                                this->geom_model_, 
-                               this->package_paths_);
+                               package_paths);
     this->geom_model_.addAllCollisionPairs();
   
     std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();

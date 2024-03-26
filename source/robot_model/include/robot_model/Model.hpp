@@ -70,8 +70,6 @@ private:
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
   bool load_collision_geometries_;                                          ///< flag to load collision geometries
   std::function<std::string(const std::string&)> meshloader_callback_;      ///< callback function to resolve package paths
-  std::stringstream urdf_;                                                  ///< the stream
-  std::vector<std::string> package_paths_;                                  ///< package paths for the geometry model
   pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
   OsqpEigen::Solver solver_;                                                ///< osqp solver for the quadratic programming based inverse kinematics
@@ -89,7 +87,7 @@ private:
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
    */
-  void init_geom_model();
+  void init_geom_model(std::string urdf);
 
   /**
    * @brief initialize the constraints for the QP solver
@@ -111,32 +109,10 @@ private:
   unsigned int get_frame_id(const std::string& frame);
 
   /**
-   * @brief Function that extracts package names from URDF string
-   * @param urdf string containing the URDF description of the robot
-   * @return set of package names
-  */
-  std::set<std::string> extract_package_name_from_urdf();
-
-  /**
-   * @brief Replaces the package name by the full path in the urdf file
-   * @param urdf string containing the URDF description of the robot
-   * @param package_name the name of the package to replace
-   * @param full_path the full path to replace the package name
-  */
-  void replace_package_by_full_path(const std::string& package_name, const std::string& full_path);
-
-  /**
     * @brief Resolves the package paths in the URDF string and returns the resolved URDF string
     * @param urdf string containing the URDF description of the robot
-  **/
-  void resolve_package_paths();
-
-  /**
-    @brief Reads the URDF file from the path and returns the URDF string
-    @return the URDF string
-  **/
-  std::stringstream read_urdf_from_file();
-
+    */
+  std::vector<std::string> resolve_package_paths_in_urdf(std::string& urdf) const;
 
   /**
    * @brief Compute the Jacobian from given joint positions at the frame in parameter
@@ -306,12 +282,6 @@ public:
    * @return the URDF path
    */
   const std::string& get_urdf_path() const;
-
-  /*
-    * @brief Getter of the URDF string
-    * @return the URDF string
-  */
-  const std::string get_urdf() const;
 
   /**
    * @brief Getter of the number of joints
