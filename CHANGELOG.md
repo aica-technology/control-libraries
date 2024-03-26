@@ -13,7 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- feat: integrating collision detection feature into robot model (#163)
+- feat: integrate collision detection feature into robot model (#163)
 - build: add missing licenses (#170)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
