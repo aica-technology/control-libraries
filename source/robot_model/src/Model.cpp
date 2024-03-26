@@ -12,7 +12,7 @@ namespace robot_model {
 Model::Model(const std::string& robot_name, 
              const std::string& urdf_path, 
              const bool load_collision_geometries,
-             const std::function<std::string(const std::string&)>& meshloader_callback
+             const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
              ):
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
     urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)), 
@@ -64,18 +64,19 @@ std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf)
 
   std::vector<std::string> package_paths;
   for (const auto& package_name : package_names) {
-    auto package_path = this->meshloader_callback_(package_name);
-    auto target = "package://" + package_name + "/";
-    auto replacement = package_path;
-    size_t start_position = 0;
-    while ((start_position = urdf.find(target, start_position)) != std::string::npos) {
-        // Replace the target with the replacement string
-        urdf.replace(start_position, target.length(), replacement);
-        // Move past the last replacement
-        start_position += replacement.length();
+    if (meshloader_callback_){
+      auto package_path = (*this->meshloader_callback_)(package_name);
+      auto target = "package://" + package_name + "/";
+      auto replacement = package_path;
+      size_t start_position = 0;
+      while ((start_position = urdf.find(target, start_position)) != std::string::npos) {
+          // Replace the target with the replacement string
+          urdf.replace(start_position, target.length(), replacement);
+          // Move past the last replacement
+          start_position += replacement.length();
+      }
+      package_paths.push_back(package_path);
     }
-
-    package_paths.push_back(package_path);
   }
   return package_paths;
 }
@@ -109,6 +110,7 @@ void Model::init_model() {
 // Method to initialize collision geometries
 void Model::init_geom_model(std::string urdf) {
     // FIXME: verify that function was provided and is not null
+    try {
 
     auto package_paths = this->resolve_package_paths_in_urdf(urdf);
     pinocchio::urdf::buildGeom(this->robot_model_,
@@ -126,6 +128,9 @@ void Model::init_geom_model(std::string urdf) {
     }
 
     this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+    } catch (const std::exception& e) {
+        throw robot_model::exceptions::CollisionGeometryException("Failed to initialize Geomerty model for " + this->get_robot_name());
+    }
 }
 
 std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
@@ -162,7 +167,7 @@ bool Model::is_geometry_model_initialized() {
 
 bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
     if (!this->is_geometry_model_initialized()) {
-        throw robot_model::exceptions::CollisionGeometryException(this->get_robot_name());
+        throw robot_model::exceptions::CollisionGeometryException("Geometry model not loaded for " + this->get_robot_name());
     }
 
     Eigen::VectorXd configuration = joint_positions.get_positions();
