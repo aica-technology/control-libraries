@@ -225,8 +225,7 @@ public:
    * @param robot_name the name of the robot
    * @param urdf_path the path to the URDF file
    */
-  explicit Model(const std::string& robot_name, 
-                   const std::string& urdf_path);
+  explicit Model(const std::string& robot_name, const std::string& urdf_path);
 
   /**
    * @brief Copy constructor

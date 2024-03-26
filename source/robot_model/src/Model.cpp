@@ -115,25 +115,23 @@ void Model::init_model(bool load_collision_geometries) {
 
 // Method to initialize collision geometries
 void Model::init_geom_model(std::string urdf) {
-    // FIXME: verify that function was provided and is not null
     try {
+      auto package_paths = this->resolve_package_paths_in_urdf(urdf);
+      pinocchio::urdf::buildGeom(this->robot_model_,
+                                std::istringstream(urdf),
+                                pinocchio::COLLISION, 
+                                this->geom_model_, 
+                                package_paths);
+      this->geom_model_.addAllCollisionPairs();
+    
+      std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
 
-    auto package_paths = this->resolve_package_paths_in_urdf(urdf);
-    pinocchio::urdf::buildGeom(this->robot_model_,
-                               std::istringstream(urdf),
-                               pinocchio::COLLISION, 
-                               this->geom_model_, 
-                               package_paths);
-    this->geom_model_.addAllCollisionPairs();
-  
-    std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
+      // remove collision pairs for linked joints (i.e. parent-child joints)
+      for (const auto& pair : excluded_pairs) {
+          this->geom_model_.removeCollisionPair(pair);
+      }
 
-    // remove collision pairs for linked joints (i.e. parent-child joints)
-    for (const auto& pair : excluded_pairs) {
-        this->geom_model_.removeCollisionPair(pair);
-    }
-
-    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+      this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
     } catch (const std::exception& e) {
         throw robot_model::exceptions::CollisionGeometryException("Failed to initialize Geomerty model for " + this->get_robot_name());
     }
