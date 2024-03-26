@@ -216,7 +216,7 @@ public:
    * @param urdf_path the path to the URDF file
    * @param meshloader_callback callback function to resolve package paths
    */
-    explicit Model(const std::string& robot_name, 
+  explicit Model(const std::string& robot_name, 
                    const std::string& urdf_path,
                    const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
 
@@ -225,7 +225,7 @@ public:
    * @param robot_name the name of the robot
    * @param urdf_path the path to the URDF file
    */
-    explicit Model(const std::string& robot_name, 
+  explicit Model(const std::string& robot_name, 
                    const std::string& urdf_path);
 
   /**
