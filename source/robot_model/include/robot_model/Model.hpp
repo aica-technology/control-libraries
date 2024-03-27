@@ -78,11 +78,13 @@ private:
   Eigen::SparseMatrix<double> constraint_matrix_;                           ///< constraint matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd lower_bound_constraints_;                                 ///< lower bound matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd upper_bound_constraints_;                                 ///< upper bound matrix for the quadratic programming based inverse kinematics
+  bool load_collision_geometries_;                                          ///< flag to load collision geometries
+  
   // @format:on
   /**
    * @brief Initialize the pinocchio model from the URDF
    */
-  void init_model(bool load_collision_geometries = false);
+  void init_model();
 
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths

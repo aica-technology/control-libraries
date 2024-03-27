@@ -15,9 +15,10 @@ Model::Model(const std::string& robot_name,
              ):
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
     urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)),
-    meshloader_callback_(meshloader_callback)
+    meshloader_callback_(meshloader_callback),
+    load_collision_geometries_(true)
     {
-  this->init_model(true);
+  this->init_model();
 }
 
 Model::Model(const std::string& robot_name, 
@@ -32,7 +33,8 @@ Model::Model(const std::string& robot_name,
 Model::Model(const Model& model) :
     robot_name_(model.robot_name_),
     urdf_path_(model.urdf_path_), 
-    meshloader_callback_(model.meshloader_callback_)
+    meshloader_callback_(model.meshloader_callback_),
+    load_collision_geometries_(model.load_collision_geometries_)
     {
   this->init_model();
 }
@@ -87,7 +89,7 @@ std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf)
   return package_paths;
 }
 
-void Model::init_model(bool load_collision_geometries) {
+void Model::init_model() {
   std::ifstream file_stream(this->get_urdf_path());
   if (!file_stream.is_open()) {
       throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
@@ -99,7 +101,7 @@ void Model::init_model(bool load_collision_geometries) {
   pinocchio::urdf::buildModelFromXML(urdf, this->robot_model_);
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
-  if (load_collision_geometries) {
+  if (this->load_collision_geometries_) {
     this->init_geom_model(urdf);
   }
 
