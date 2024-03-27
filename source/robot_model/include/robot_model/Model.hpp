@@ -78,7 +78,7 @@ private:
   Eigen::SparseMatrix<double> constraint_matrix_;                           ///< constraint matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd lower_bound_constraints_;                                 ///< lower bound matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd upper_bound_constraints_;                                 ///< upper bound matrix for the quadratic programming based inverse kinematics
-  bool load_collision_geometries_;                                          ///< flag to load collision geometries
+  bool load_collision_geometries_ = false;                                          ///< flag to load collision geometries
   
   // @format:on
   /**
