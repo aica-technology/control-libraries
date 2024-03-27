@@ -132,8 +132,8 @@ void Model::init_geom_model(std::string urdf) {
       }
 
       this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
-    } catch (const std::exception& e) {
-        throw robot_model::exceptions::CollisionGeometryException("Failed to initialize Geomerty model for " + this->get_robot_name());
+    } catch (const std::exception& ex) {
+        throw robot_model::exceptions::CollisionGeometryException("Failed to initialize geometry model for " + this->get_robot_name() + ": " + ex.what());
     }
 }
 

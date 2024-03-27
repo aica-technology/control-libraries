@@ -211,21 +211,28 @@ private:
 
 public:
   /**
-   * @brief Constructor with robot name and path to URDF file and callback function to resolve package paths
-   * @param robot_name the name of the robot
+   * @brief Construct with robot name and path to URDF file
+   * @details If the URDF contains references to collision geometry meshes, they will not be loaded into memory.
+   * To enable collision detection, use the alternate constructor.
+   * @param robot_name the name to associate with the model
    * @param urdf_path the path to the URDF file
-   * @param meshloader_callback callback function to resolve package paths
+   */
+  explicit Model(const std::string& robot_name, const std::string& urdf_path);
+
+  /**
+   * @brief Construct a robot model with collision geometries from a URDF file
+   * @details If the URDF contains references to collision geometry meshes, they will be loaded into memory.
+   * Subsequently, the check_collision() method can be used to check for self-collisions in the robot model.
+   * If geometry meshes are referenced with a relative package path using the `package://` prefix, then
+   * the optional meshloader_callback function should be defined to return an absolute path to a package
+   * given the package name.
+   * @param robot_name the name to associate with the model
+   * @param urdf_path the path to the URDF file
+   * @param meshloader_callback optional callback to resolve the absolute package path from a package name
    */
   explicit Model(const std::string& robot_name, 
                    const std::string& urdf_path,
                    const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
-
-  /**
-   * @brief Constructor with robot name and path to URDF file
-   * @param robot_name the name of the robot
-   * @param urdf_path the path to the URDF file
-   */
-  explicit Model(const std::string& robot_name, const std::string& urdf_path);
 
   /**
    * @brief Copy constructor
@@ -259,6 +266,7 @@ public:
   /**
    * @brief Compute check if the links of the robot are in collision
    * @param joint_positions containing the joint positions of the robot
+   * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
    * @return true if the robot is in collision, false otherwise
    */
   bool check_collision(const state_representation::JointPositions& joint_positions);
