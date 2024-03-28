@@ -39,10 +39,11 @@ void model(py::module_& m) {
         };
   }
   return new Model(robot_name, urdf_path, callback_cpp);
-  }), py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
+  }),"Constructor that creates a robot model instance with a name, URDF path, and an optional custom mesh loader callback. This constructor loads the Robot Geometries.", 
+  py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
 
 
-  c.def(py::init<const std::string&, const std::string&>(),
+  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF path. This constructor doesn't loads the Robot Geometries.",
         py::arg("robot_name"),
         py::arg("urdf_path")
   );

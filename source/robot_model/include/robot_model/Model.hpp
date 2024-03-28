@@ -266,7 +266,7 @@ public:
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
 
   /**
-   * @brief Compute check if the links of the robot are in collision
+   * @brief Check if the links of the robot are in collision
    * @param joint_positions containing the joint positions of the robot
    * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
    * @return true if the robot is in collision, false otherwise
