@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package state_representation.proto;
+
+import "state_representation/state.proto";
+
+message AnalogIOState {
+  State state = 1;
+  repeated string io_names = 2;
+  repeated double values = 3;
+}
