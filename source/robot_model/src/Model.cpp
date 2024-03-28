@@ -21,9 +21,7 @@ Model::Model(const std::string& robot_name,
   this->init_model();
 }
 
-Model::Model(const std::string& robot_name, 
-             const std::string& urdf_path
-             ):
+Model::Model(const std::string& robot_name, const std::string& urdf_path) :
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
     urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path))
     {
@@ -179,12 +177,12 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
 
   pinocchio::computeCollisions(this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true);
 
-  for(size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
+  for (size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
     const auto& collision_result = this->geom_data_.collisionResults[pair_index];
         
-    if(collision_result.isCollision()) {
-          return true;
-      }
+    if (collision_result.isCollision()) {
+      return true;
+    }
   }
   return false;
 }
