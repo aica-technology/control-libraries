@@ -204,7 +204,6 @@ private:
                                         const state_representation::JointPositions& joint_positions,
                                         const std::vector<std::string>& frames);
 
-
   /**
    * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
    * @return the list of collision pairs to exclude 
@@ -272,7 +271,7 @@ public:
    * @return true if the robot is in collision, false otherwise
    */
   bool check_collision(const state_representation::JointPositions& joint_positions);
-  
+
   /**
    * @brief Getter of the number of collision pairs in the model
    * @return the number of collision pairs
