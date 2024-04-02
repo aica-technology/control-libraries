@@ -223,7 +223,7 @@ Eigen::MatrixXd Model::compute_minimum_distance(const state_representation::Join
     // iterate over the collision pairs and extract the distances
     unsigned int pair_index = 0;
     for (unsigned int row_index = 0; row_index < nb_joints; ++row_index) {
-        for (unsigned column_index = row_index+1; column_index < nb_joints; ++column_index) {
+        for (unsigned int column_index = row_index+1; column_index < nb_joints; ++column_index) {
           distances(row_index, column_index) = this->geom_data_.distanceResults[pair_index].min_distance;
           distances(column_index, row_index) = distances(row_index, column_index);
           pair_index++;
