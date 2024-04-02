@@ -21,7 +21,7 @@ jobs:
         run: |
           git fetch origin main ${{ github.event.pull_request.base.sha }}
           CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- CHANGELOG.md)
-          if [ "${CL_DIFF}" ]; then
+          if ! [ "${CL_DIFF}" ]; then
             echo "::error file="CHANGELOG.md",title=Check failed::CHANGELOG.md must be updated!"
             exit 1
           fi
@@ -44,7 +44,7 @@ jobs:
             echo "::error file="${SOURCE_CMAKE}",title=Check failed::Version in "${SOURCE_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
             exit 1
           fi
-          PROTO_CMAKE="./protocol/clproto/CMakeLists.txt"
+          PROTO_CMAKE="./protocol/clproto_cpp/CMakeLists.txt"
           if [ $(echo $(grep "project(clproto VERSION" "${PROTO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
             echo "::error file="${PROTO_CMAKE}",title=Check failed::Version in "${PROTO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
             exit 1
@@ -55,10 +55,10 @@ jobs:
             exit 1
           fi
           DOXY="./doxygen/doxygen.conf"
-          if [ $(echo $(grep "PROJECT_NUMBER =" ./doxygen/doxygen.conf "${DOXY}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+          if [ $(echo $(echo $(grep "PROJECT_NUMBER =" "${DOXY}") | tr -d -c 0-9) | tr -d '\0' ) -ne "${VERSION}" ]; then
             echo "::error file="${DOXY}",title=Check failed::Version in "${DOXY}" does not correspond to VERSION. ${MESSAGE}"
             exit 1
-          fi"
+          fi
           DEMO_CMAKE="./demos/CMakeLists.txt"
           if [ $(echo $(grep "project(clproto VERSION" "${DEMO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
             echo "::error file="${DEMO_CMAKE}",title=Check failed::Version in "${DEMO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
