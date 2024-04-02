@@ -21,8 +21,8 @@ class RobotModelCollisionTesting(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         test_fixtures_path = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-        cls.ur5e_with_geometries = Model("ur5e", os.path.join(test_fixtures_path, "ur5e.urdf"), load_collision_geometries=True, meshloader_callback=cls.get_package_path_from_name)
-        cls.ur5e_without_geometries = Model("ur5e", os.path.join(test_fixtures_path, "ur5e.urdf"), meshloader_callback=None)
+        cls.ur5e_with_geometries = Model("ur5e", os.path.join(test_fixtures_path, "ur5e.urdf"), meshloader_callback=cls.get_package_path_from_name)
+        cls.ur5e_without_geometries = Model("ur5e", os.path.join(test_fixtures_path, "ur5e.urdf"))
         cls.set_test_non_colliding_configurations()
         cls.set_test_colliding_configurations()
 

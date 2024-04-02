@@ -30,23 +30,23 @@ void model(py::module_& m) {
 
   py::class_<Model> c(m, "Model");
 
-c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, bool load_collision_geometries=false, py::object meshloader_callback=py::none()) {
-    // Check if the meshloader_callback is None and set the std::function to nullptr if so
-    std::function<std::string(const std::string&)> callback_cpp = nullptr;
-    if (!meshloader_callback.is_none()) {
+  c.def(py::init([](const std::string& robot_name, const std::string& urdf_path, py::object meshloader_callback) {
+  std::function<std::string(const std::string&)> callback_cpp = nullptr;
+  if (!meshloader_callback.is_none()) {
         callback_cpp = [meshloader_callback](const std::string& package_name) -> std::string {
-            auto result = meshloader_callback(package_name).template cast<std::string>();
-            return result;
+              auto result = meshloader_callback(package_name).template cast<std::string>();
+              return result;
         };
-    }
-    return new Model(robot_name, urdf_path, load_collision_geometries, callback_cpp);
-}), "Constructor with robot name, path to URDF file, load collision geometries flag, and optionally a package paths resolver callback.",
-   py::arg("robot_name"),
-   py::arg("urdf_path"),
-   py::arg("load_collision_geometries") = false,
-   py::arg("meshloader_callback") = py::none() // Use py::object with a default of py::none()
-);
+  }
+  return new Model(robot_name, urdf_path, callback_cpp);
+  }), "Constructor that creates a robot model instance with a name, URDF path, and an optional custom mesh loader callback. This constructor loads the Robot Geometries.", 
+  py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
 
+
+  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF path. This constructor doesn't loads the Robot Geometries.",
+        py::arg("robot_name"),
+        py::arg("urdf_path")
+  );
 
   c.def(py::init<const Model&>(), "Copy constructor from another Model", "model"_a);
 

@@ -15,6 +15,8 @@ Release Versions:
 
 - feat: Integrate min distance (#167)
 - feat: integrating collision detection feature into robot model (#163)
+- feat: add IO states to state representation (proto) (#172)
+- feat: add IO states to state representation (cpp) (#158)
 - build: add missing licenses (#170)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)

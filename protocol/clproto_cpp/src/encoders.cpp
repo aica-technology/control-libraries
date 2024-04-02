@@ -191,4 +191,31 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<Eigen::Matri
   }
   return message;
 }
+
+proto::DigitalIOState encoder(const DigitalIOState& io_state) {
+  proto::DigitalIOState message;
+  *message.mutable_state() = encoder(static_cast<State>(io_state));
+  *message.mutable_io_names() = {io_state.get_names().begin(), io_state.get_names().end()};
+  if (io_state.is_empty()) {
+    return message;
+  }
+  std::vector<bool> vec;
+  vec.resize(io_state.get_size());
+  for (unsigned int i = 0; i < vec.size(); ++i) {
+    vec.at(i) = io_state.data()(i);
+  }
+  *message.mutable_values() = encoder(vec);
+  return message;
+}
+
+proto::AnalogIOState encoder(const AnalogIOState& io_state) {
+  proto::AnalogIOState message;
+  *message.mutable_state() = encoder(static_cast<State>(io_state));
+  *message.mutable_io_names() = {io_state.get_names().begin(), io_state.get_names().end()};
+  if (io_state.is_empty()) {
+    return message;
+  }
+  *message.mutable_values() = matrix_encoder(io_state.data());
+  return message;
+}
 }
