@@ -4,40 +4,70 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
   workflow_dispatch:
 
 jobs:
 
-  check-contribution:
-    name: Check if changelog and version have been updated
+  check-changelog:
+    name: Check if changelog has been updated
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check contributions
+      - name: Check changelog
         if: ${{ github.event.pull_request.base.sha }}
         run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          git fetch origin main ${{ github.event.pull_request.base.sha }} ${{ github.head_ref }}
-          git checkout ${{ github.head_ref }}
-          VER_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./VERSION)
-          if ! [ "${VER_DIFF}" ]; then
-            bash update_version.sh --commit && git push
+          git fetch origin main ${{ github.event.pull_request.base.sha }}
+          CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- CHANGELOG.md)
+          if [ "${CL_DIFF}" ]; then
+            echo "::error file="CHANGELOG.md",title=Check failed::CHANGELOG.md must be updated!"
+            exit 1
           fi
-          CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./CHANGELOG.md)
-          if ! [ "${CL_DIFF}" ]; then
-            SEARCH_STRING="## Upcoming changes (in development)"
-            NEW_TITLE="${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
-            sed -z "s/${SEARCH_STRING}\n/${SEARCH_STRING}\n\n- ${NEW_TITLE}/" -i CHANGELOG.md
-            git add CHANGELOG.md && git commit -m "Update CHANGELOG" && git push
+        shell: bash
+
+  check-version:
+    name: Check if version has been updated
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check version
+        if: ${{ github.event.pull_request.base.sha }}
+        run: |
+          VERSION=$(echo $(<VERSION) | tr -d -c 0-9)
+          MESSAGE="Set the desired version correctly using the 'update_version' script!"
+          SOURCE_CMAKE="./source/CMakeLists.txt"
+          if [ $(echo $(grep "project(control_libraries VERSION" "${SOURCE_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${SOURCE_CMAKE}",title=Check failed::Version in "${SOURCE_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          PROTO_CMAKE="./protocol/clproto/CMakeLists.txt"
+          if [ $(echo $(grep "project(clproto VERSION" "${PROTO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${PROTO_CMAKE}",title=Check failed::Version in "${PROTO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          PY_SETUP="./python/setup.py"
+          if [ $(echo $(grep "__version__ =" "${PY_SETUP}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${PY_SETUP}",title=Check failed::Version in "${PY_SETUP}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          DOXY="./doxygen/doxygen.conf"
+          if [ $(echo $(grep "PROJECT_NUMBER =" ./doxygen/doxygen.conf "${DOXY}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${DOXY}",title=Check failed::Version in "${DOXY}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi"
+          DEMO_CMAKE="./demos/CMakeLists.txt"
+          if [ $(echo $(grep "project(clproto VERSION" "${DEMO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${DEMO_CMAKE}",title=Check failed::Version in "${DEMO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
           fi
         shell: bash
 
   check-skippable-changes:
+    needs: [ check-changelog, check-version ]
     name: Check skippable changes
     runs-on: ubuntu-latest
     outputs:
