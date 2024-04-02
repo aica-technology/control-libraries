@@ -1,11 +1,8 @@
 name: Generate and Deploy Documentation
 on:
-  push:
-    branches:
-      - main
-      - develop
-  release:
-    types: [published]
+  push:     
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -22,19 +19,17 @@ jobs:
           doxyfile-path: 'doxygen.conf'
 
       - name: Tag release version
-        if: ${{ github.event_name == 'release' }}
+        if: ${{ github.event_name == 'push' }}
         shell: bash
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          TAG="${TAG/\//-}"
           mkdir -p doxygen/docs/versions
-          sudo mv doxygen/docs/html doxygen/docs/versions/${TAG}
+          sudo mv doxygen/docs/html doxygen/docs/versions/${{ github.ref_name }}
 
       - name: Tag branch version
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         shell: bash
         run: |
-          BRANCH="${GITHUB_REF#refs/heads/}"
+          BRANCH=${{ github.ref_name }}
           BRANCH="${BRANCH/\//-}"
           mkdir -p doxygen/docs/versions
           sudo mv doxygen/docs/html doxygen/docs/versions/${BRANCH}
