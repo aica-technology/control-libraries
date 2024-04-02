@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat: add IO states to state representation (py) (#173)
 - ci: use caching from docker to run tests in CI (#429)
 - feat: add IO states to state representation (proto) (#172)
 - feat: add IO states to state representation (cpp) (#158)
