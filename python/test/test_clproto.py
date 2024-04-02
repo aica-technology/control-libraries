@@ -5,6 +5,8 @@ import numpy as np
 import state_representation as sr
 
 states = [(sr.State("test"), clproto.MessageType.STATE_MESSAGE),
+          (sr.DigitalIOState("test"), clproto.MessageType.DIGITAL_IO_STATE_MESSAGE),
+          (sr.AnalogIOState("test"), clproto.MessageType.ANALOG_IO_STATE_MESSAGE),
           (sr.SpatialState("test", "ref"), clproto.MessageType.SPATIAL_STATE_MESSAGE),
           (sr.CartesianState("test", "ref"), clproto.MessageType.CARTESIAN_STATE_MESSAGE),
           (sr.CartesianState().Random("test"), clproto.MessageType.CARTESIAN_STATE_MESSAGE),
