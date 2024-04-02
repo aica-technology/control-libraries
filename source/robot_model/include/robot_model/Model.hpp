@@ -269,7 +269,6 @@ public:
    * @param joint_positions state_representation object containing the joint positions of the robot
    * @return the matrix containing the minimum distance between the robot links
    */
-
   Eigen::MatrixXd compute_minimum_distance(const state_representation::JointPositions& joint_positions); 
 
   /**
