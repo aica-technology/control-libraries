@@ -266,7 +266,7 @@ public:
 
   /**
    * @brief Compute the minimum distance between the robot links
-   * @param joint_positions containing the joint positions of the robot
+   * @param joint_positions state_representation object containing the joint positions of the robot
    * @return the matrix containing the minimum distance between the robot links
    */
 
