@@ -121,51 +121,54 @@ TEST_F(RobotModelCollisionTesting, CollisionDetected) {
 
 // Test that compute_minimum_distance method identifies a collision-free state
 TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedNoCollision) {
-    // iterate over test configurations and check for collision
-    set_test_non_coliding_configurations();
+  // iterate over test configurations and check for collision
+  set_test_non_coliding_configurations();
 
-    for (auto& config : test_non_coliding_configs) {
-        Eigen::MatrixXd distances= ur5e_with_geometries->compute_minimum_distance(config);
+  for (auto& config : test_non_coliding_configs) {
+    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_distance(config);
 
-        // check that no element is equal to zero besided the diagonals
-        EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
-        EXPECT_EQ(distances.cols(), 6) << "Distance matrix has incorrect number of columns.";
+    // check that no element is equal to zero besided the diagonals
+    EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
+    EXPECT_EQ(distances.cols(), 6) << "Distance matrix has incorrect number of columns.";
 
-        // Then check that no element is equal to zero besides the diagonals
-        for (int i = 0; i < distances.rows(); ++i) {
-            for (int j = 0; j < distances.cols(); ++j) {
-                if (i != j && j != i+1 && i != j+1) { // Skip diagonal elements & adjacent links
-                    EXPECT_GE(distances(i, j), 0.01) << "Found a distance at non-diagonal element [" << i << ", " << j << "], indicating a collision.";
-                }
-            }
+    // Then check that no element is equal to zero besides the diagonals
+    for (int i = 0; i < distances.rows(); ++i) {
+      for (int j = 0; j < distances.cols(); ++j) {
+        if (i != j && j != i + 1 && i != j + 1) {// Skip diagonal elements & adjacent links
+          EXPECT_GE(distances(i, j), 0.01)
+              << "Found a distance at non-diagonal element [" << i << ", " << j << "], indicating a collision.";
         }
+      }
     }
+  }
 }
 
 TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedCollision) {
-    // Iterate over test configurations expected to result in collisions
-    set_test_coliding_configurations();
+  // Iterate over test configurations expected to result in collisions
+  set_test_coliding_configurations();
 
-    for (auto& config : test_coliding_configs) {
-        Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_distance(config);
+  for (auto& config : test_coliding_configs) {
+    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_distance(config);
 
-        // Check the size of the distance matrix is 6x6
-        EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
-        EXPECT_EQ(distances.cols(), 6) << "Distance matrix has incorrect number of columns.";
+    // Check the size of the distance matrix is 6x6
+    EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
+    EXPECT_EQ(distances.cols(), 6) << "Distance matrix has incorrect number of columns.";
 
-        // Initialize a variable to keep track of the minimum non-diagonal distance
-        double minimum_distance = std::numeric_limits<double>::max();
+    // Initialize a variable to keep track of the minimum non-diagonal distance
+    double minimum_distance = std::numeric_limits<double>::max();
 
-        // Iterate over the matrix to find the minimum non-diagonal distance
-        for (int i = 0; i < distances.rows(); ++i) {
-            for (int j = 0; j < distances.cols(); ++j) {
-                if (i != j && j != i+1 && i != j+1 && distances(i, j) < minimum_distance) { // Skip diagonal elements & adjacent links
-                    minimum_distance = distances(i, j);
-                }
-            }
+    // Iterate over the matrix to find the minimum non-diagonal distance
+    for (int i = 0; i < distances.rows(); ++i) {
+      for (int j = 0; j < distances.cols(); ++j) {
+        if (i != j && j != i + 1 && i != j + 1
+            && distances(i, j) < minimum_distance) {// Skip diagonal elements & adjacent links
+          minimum_distance = distances(i, j);
         }
-
-        // Expect the minimum non-diagonal distance to be 0, indicating a collision
-        EXPECT_LE(minimum_distance, 0.01) << "Did not find a minimum distance less than a threshold indicating a collision.";
+      }
     }
+
+    // Expect the minimum non-diagonal distance to be 0, indicating a collision
+    EXPECT_LE(minimum_distance, 0.01)
+        << "Did not find a minimum distance less than a threshold indicating a collision.";
+  }
 }
