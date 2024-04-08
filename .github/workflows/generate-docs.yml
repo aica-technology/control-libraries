@@ -1,19 +1,39 @@
 name: Generate and Deploy Documentation
 on:
-  push:
+  push:   
     branches:
       - main
-      - develop
-  release:
-    types: [published]
-  workflow_dispatch:
 
 jobs:
+  check-version:
+    name: Check if the version has been updated
+    outputs:
+      has_changed: ${{ steps.check.outputs.has_changed }}
+      version: ${{ steps.versions.outputs.new_version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - id: versions
+        run: |
+          PREV_VERSION=$(git show HEAD^:VERSION)
+          NEW_VERSION=$(git show HEAD:VERSION)
+          echo "prev_version=${PREV_VERSION}" >> $GITHUB_OUTPUT
+          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+        shell: bash
+      - uses: aica-technology/.github/.github/actions/compare-versions@v0.11.0
+        id: check
+        with:
+          previous_version: ${{ steps.versions.outputs.prev_version }}
+          new_version: ${{ steps.versions.outputs.new_version }}
+
   deploy:
+    needs: check-version
     name: Generate and Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
 
       - name: Generate docs
         uses: mattnotmitt/doxygen-action@v1
@@ -21,23 +41,15 @@ jobs:
           working-directory: 'doxygen'
           doxyfile-path: 'doxygen.conf'
 
-      - name: Tag release version
-        if: ${{ github.event_name == 'release' }}
+      - name: Tag version
         shell: bash
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          TAG="${TAG/\//-}"
           mkdir -p doxygen/docs/versions
-          sudo mv doxygen/docs/html doxygen/docs/versions/${TAG}
-
-      - name: Tag branch version
-        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
-        shell: bash
-        run: |
-          BRANCH="${GITHUB_REF#refs/heads/}"
-          BRANCH="${BRANCH/\//-}"
-          mkdir -p doxygen/docs/versions
-          sudo mv doxygen/docs/html doxygen/docs/versions/${BRANCH}
+          sudo mv doxygen/docs/html doxygen/docs/versions/rolling
+          if [ ${{ needs.check-version.outputs.has_changed }} ]; then
+            sudo cp doxygen/docs/versions/rolling doxygen/docs/versions/latest
+            sudo cp doxygen/docs/versions/rolling doxygen/docs/versions/${{ needs.check-version.outputs.version }}
+          fi
 
       - name: Deploy to documentation branch
         uses: peaceiris/actions-gh-pages@v3
