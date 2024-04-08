@@ -196,7 +196,7 @@ Eigen::MatrixXd Model::compute_minimum_collision_distances(const state_represent
   // nb_joints is the number of joints in the robot model
   unsigned int nb_joints = this->get_number_of_joints();
 
-  // create a 2D Eigen vector to store the distances and initialize to zero
+  // create a square matrix to store the distances and initialize to zero
   Eigen::MatrixXd distances = Eigen::MatrixXd::Zero(nb_joints, nb_joints);
 
   // iterate over the collision pairs and extract the distances
