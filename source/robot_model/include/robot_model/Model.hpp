@@ -265,7 +265,9 @@ public:
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
 
   /**
-   * @brief Compute the minimum distance between the robot links
+   * @brief Compute the minimum distances between the robot links
+   * @details The distances are computed for each collision pair, resulting in a square matrix with
+   * the same size as the number of joints. The diagonal entries are always zero.
    * @param joint_positions state_representation object containing the joint positions of the robot
    * @return the matrix containing the minimum distance between the robot links
    */
