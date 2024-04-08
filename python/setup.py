@@ -51,7 +51,7 @@ try:
         if osqp_path_var in os.environ.keys():
             __include_dirs__.append(os.environ[osqp_path_var])
         else:
-            __include_dirs__.append('/usr/osqp')
+            __include_dirs__.append('/usr/local/include/osqp')
             __include_dirs__.append('/usr/include/osqp')
 
     if __install_controllers_module__ and not __install_robot_model_module__:
