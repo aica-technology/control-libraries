@@ -82,7 +82,7 @@ class RobotModelCollisionTesting(unittest.TestCase):
 
     def test_minimum_distance_computed_no_collision(self):
         for config in self.test_non_colliding_configs:
-            distances = self.ur5e_with_geometries.compute_minimum_distance(config)
+            distances = self.ur5e_with_geometries.compute_minimum_collision_distances(config)
             self.assertEqual(distances.shape, (6, 6), "Distance matrix has incorrect shape.")
 
             # Check that no element is equal to zero besides the diagonals
@@ -93,7 +93,7 @@ class RobotModelCollisionTesting(unittest.TestCase):
 
     def test_minimum_distance_computed_collision(self):
         for config in self.test_colliding_configs:
-            distances = self.ur5e_with_geometries.compute_minimum_distance(config)
+            distances = self.ur5e_with_geometries.compute_minimum_collision_distances(config)
             self.assertEqual(distances.shape, (6, 6), "Distance matrix has incorrect shape.")
 
             # Initialize a variable to keep track of the minimum non-diagonal distance

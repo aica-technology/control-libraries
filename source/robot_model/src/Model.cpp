@@ -184,7 +184,7 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
   return false;
 }
 
-Eigen::MatrixXd Model::compute_minimum_distance(const state_representation::JointPositions& joint_positions) {
+Eigen::MatrixXd Model::compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions) {
   if (!this->is_geometry_model_initialized()) {
     throw robot_model::exceptions::CollisionGeometryException(
         "Geometry model not loaded for " + this->get_robot_name());

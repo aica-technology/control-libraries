@@ -119,13 +119,13 @@ TEST_F(RobotModelCollisionTesting, CollisionDetected) {
   }
 }
 
-// Test that compute_minimum_distance method identifies a collision-free state
+// Test that compute_minimum_collision_distances method identifies a collision-free state
 TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedNoCollision) {
   // iterate over test configurations and check for collision
   set_test_non_coliding_configurations();
 
   for (auto& config : test_non_coliding_configs) {
-    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_distance(config);
+    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_collision_distances(config);
 
     // check that no element is equal to zero besided the diagonals
     EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
@@ -148,7 +148,7 @@ TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedCollision) {
   set_test_coliding_configurations();
 
   for (auto& config : test_coliding_configs) {
-    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_distance(config);
+    Eigen::MatrixXd distances = ur5e_with_geometries->compute_minimum_collision_distances(config);
 
     // Check the size of the distance matrix is 6x6
     EXPECT_EQ(distances.rows(), 6) << "Distance matrix has incorrect number of rows.";
