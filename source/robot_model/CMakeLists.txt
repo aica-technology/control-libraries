@@ -1,7 +1,7 @@
 set(LIBRARY_NAME robot_model)
 
-set(PINOCCHIO_VERSION 2.9.0)
-set(HPP_FCL_VERSION 1.8.1)
+set(PINOCCHIO_VERSION 2.6.20)
+set(HPP_FCL_VERSION 2.4.4)
 set(OSQP_EIGEN_VERSION 0.8.1)
 find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
 find_package(hpp-fcl ${HPP_FCL_VERSION} REQUIRED)

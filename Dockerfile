@@ -88,8 +88,8 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 ARG TARGETPLATFORM
 ARG CACHEID
-ARG PINOCCHIO_TAG=v2.9.0
-ARG HPP_FCL_TAG=v1.8.1
+ARG PINOCCHIO_TAG=v2.6.20
+ARG HPP_FCL_TAG=v2.4.4
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
