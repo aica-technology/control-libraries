@@ -13,8 +13,8 @@ Model::Model(const std::string& robot_name,
              const std::string& urdf_path,
              const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
              ):
-    robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
-    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)),
+    robot_name_(robot_name),
+    urdf_path_(urdf_path),
     meshloader_callback_(meshloader_callback),
     load_collision_geometries_(true)
     {
@@ -22,20 +22,12 @@ Model::Model(const std::string& robot_name,
 }
 
 Model::Model(const std::string& robot_name, const std::string& urdf_path) :
-    robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
-    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path))
+    robot_name_(robot_name),
+    urdf_path_(urdf_path)
     {
   this->init_model();
 }
 
-Model::Model(const Model& model) :
-    robot_name_(model.robot_name_),
-    urdf_path_(model.urdf_path_), 
-    meshloader_callback_(model.meshloader_callback_),
-    load_collision_geometries_(model.load_collision_geometries_)
-    {
-  this->init_model();
-}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);

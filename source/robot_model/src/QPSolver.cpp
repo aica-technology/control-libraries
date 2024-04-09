@@ -16,6 +16,20 @@ namespace robot_model {
       this->init_solver();
   }
 
+  QPSolver::QPSolver(const QPSolver& other) :
+    nb_joints_(other.nb_joints_),
+    lower_position_limit_(other.lower_position_limit_),
+    upper_position_limit_(other.upper_position_limit_),
+    velocity_limit_(other.velocity_limit_),
+    hessian_(other.hessian_),
+    gradient_(other.gradient_), 
+    constraint_matrix_(other.constraint_matrix_),
+    lower_bound_constraints_(other.lower_bound_constraints_),
+    upper_bound_constraints_(other.upper_bound_constraints_) 
+  {
+    this->init_solver();
+  }
+
   bool QPSolver::init_solver() {
     // Clear the solver
     this->solver_.data()->clearHessianMatrix();
@@ -95,7 +109,6 @@ namespace robot_model {
                   const Eigen::VectorXd& delta_robot,
                   const Eigen::MatrixXd& jacobian
                   ){
-    using namespace state_representation;
     using namespace std::chrono;
 
     // update the hessian matrix

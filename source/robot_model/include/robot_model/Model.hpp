@@ -49,15 +49,15 @@ struct InverseKinematicsParameters {
 class Model {
 private:
   // @format:off
-  std::shared_ptr<state_representation::Parameter<std::string>> robot_name_;///< name of the robot
-  std::shared_ptr<state_representation::Parameter<std::string>> urdf_path_; ///< path to the urdf file
+  std::string robot_name_;///< name of the robot
+  std::string urdf_path_; ///< path to the urdf file
   std::vector<std::string> frames_;                                         ///< name of the frames
   pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
   std::optional<std::function<std::string(const std::string&)>> meshloader_callback_;      ///< callback function to resolve package paths
   pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
-  std::unique_ptr<QPSolver> qp_solver_;                                                      ///< the QP solver for the inverse velocity kinematics
+  std::shared_ptr<QPSolver> qp_solver_;                                     ///< the QP solver for the inverse velocity kinematics
   bool load_collision_geometries_ = false;                                  ///< flag to load collision geometries
   
   // @format:on
@@ -209,26 +209,6 @@ public:
   explicit Model(const std::string& robot_name, 
                    const std::string& urdf_path,
                    const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
-
-  /**
-   * @brief Copy constructor
-   * @param model the model to copy
-   */
-  Model(const Model& model);
-
-  /**
-   * @brief Swap the values of the two Model
-   * @param model1 Model to be swapped with 2
-   * @param model2 Model to be swapped with 1
-   */
-  friend void swap(Model& model1, Model& model2);
-
-  /**
-   * @brief Copy assignment operator that have to be defined due to the custom assignment operator
-   * @param model the model with value to assign
-   * @return reference to the current model with new values
-   */
-  Model& operator=(const Model& Model);
 
   /**
    * @brief Creates a URDF file with desired path and name from a string (possibly the robot description
@@ -537,30 +517,16 @@ public:
   state_representation::JointState clamp_in_range(const state_representation::JointState& joint_state) const;
 };
 
-inline void swap(Model& model1, Model& model2) {
-  std::swap(model1.robot_name_, model2.robot_name_);
-  std::swap(model1.urdf_path_, model2.urdf_path_);
-  // initialize both models
-  model1.init_model();
-  model2.init_model();
-}
-
-inline Model& Model::operator=(const Model& model) {
-  Model tmp(model);
-  swap(*this, tmp);
-  return *this;
-}
-
 inline const std::string& Model::get_robot_name() const {
-  return this->robot_name_->get_value();
+  return this->robot_name_;
 }
 
 inline void Model::set_robot_name(const std::string& robot_name) {
-  this->robot_name_->set_value(robot_name);
+  this->robot_name_ = robot_name;
 }
 
 inline const std::string& Model::get_urdf_path() const {
-  return this->urdf_path_->get_value();
+  return this->urdf_path_;
 }
 
 inline unsigned int Model::get_number_of_joints() const {
