@@ -24,7 +24,7 @@ target_include_directories(${LIBRARY_NAME}
 )
 
 target_link_libraries(${LIBRARY_NAME}
-  state_representation
+  ${PROJECT_NAME}::state_representation
   ${PINOCCHIO_LIBRARIES}
   ${hpp-fcl_LIBRARIES}
   OsqpEigen::OsqpEigen
