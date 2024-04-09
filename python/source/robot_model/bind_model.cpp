@@ -62,8 +62,8 @@ void model(py::module_& m) {
 //  c.def("get_pinocchio_model", &Model::get_pinocchio_model, "Getter of the pinocchio model.");
 
   
-  c.def("check_collision", py::overload_cast<const JointPositions&>(&Model::check_collision), "Check if the robot is in collision at a given joint state.", "joint_positions"_a);
-  c.def("compute_minimum_collision_distances", py::overload_cast<const JointPositions&>(&Model::compute_minimum_collision_distances), "Compute the minimum distances between the robot links.", "joint_positions"_a);
+//   c.def("check_collision", py::overload_cast<const JointPositions&>(&Model::check_collision), "Check if the robot is in collision at a given joint state.", "joint_positions"_a);
+//   c.def("compute_minimum_collision_distances", py::overload_cast<const JointPositions&>(&Model::compute_minimum_collision_distances), "Compute the minimum distances between the robot links.", "joint_positions"_a);
   c.def("get_number_of_collision_pairs", &Model::get_number_of_collision_pairs, "Get the number of collision pairs in the model.");
   c.def("is_geometry_model_initialized", &Model::is_geometry_model_initialized, "Check if the geometry model is initialized.");
   c.def(

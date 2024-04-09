@@ -89,7 +89,7 @@ private:
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
    */
-  void init_geom_model(std::string urdf);
+  // void init_geom_model(std::string urdf);
 
   /**
    * @brief initialize the constraints for the QP solver
@@ -264,22 +264,22 @@ public:
    */
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
 
-  /**
-   * @brief Compute the minimum distances between the robot links
-   * @details The distances are computed for each collision pair, resulting in a square matrix with
-   * the same size as the number of joints. The diagonal entries are always zero.
-   * @param joint_positions state_representation object containing the joint positions of the robot
-   * @return the matrix containing the minimum distance between the robot links
-   */
-  Eigen::MatrixXd compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions); 
+  // /**
+  //  * @brief Compute the minimum distances between the robot links
+  //  * @details The distances are computed for each collision pair, resulting in a square matrix with
+  //  * the same size as the number of joints. The diagonal entries are always zero.
+  //  * @param joint_positions state_representation object containing the joint positions of the robot
+  //  * @return the matrix containing the minimum distance between the robot links
+  //  */
+  // Eigen::MatrixXd compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions); 
 
-  /**
-   * @brief Check if the links of the robot are in collision
-   * @param joint_positions containing the joint positions of the robot
-   * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
-   * @return true if the robot is in collision, false otherwise
-   */
-  bool check_collision(const state_representation::JointPositions& joint_positions);
+  // /**
+  //  * @brief Check if the links of the robot are in collision
+  //  * @param joint_positions containing the joint positions of the robot
+  //  * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
+  //  * @return true if the robot is in collision, false otherwise
+  //  */
+  // bool check_collision(const state_representation::JointPositions& joint_positions);
 
   /**
    * @brief Getter of the number of collision pairs in the model

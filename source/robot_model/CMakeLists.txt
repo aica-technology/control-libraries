@@ -7,7 +7,7 @@ find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
 find_package(hpp-fcl ${HPP_FCL_VERSION} REQUIRED)
 find_package(OsqpEigen ${OSQP_EIGEN_VERSION} REQUIRED)
 
-add_definitions(-DPINOCCHIO_WITH_HPP_FCL)
+# add_definitions(-DPINOCCHIO_WITH_HPP_FCL)
 
 set(CORE_SOURCES
   src/Model.cpp
@@ -29,7 +29,7 @@ target_link_libraries(${LIBRARY_NAME}
   ${hpp-fcl_LIBRARIES}
   OsqpEigen::OsqpEigen
 )
-target_compile_definitions(${LIBRARY_NAME} PUBLIC -DPINOCCHIO_WITH_HPP_FCL)
+# target_compile_definitions(${LIBRARY_NAME} PUBLIC -DPINOCCHIO_WITH_HPP_FCL)
 
 # install the target and create export-set
 install(TARGETS ${LIBRARY_NAME}
