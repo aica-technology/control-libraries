@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- refactor: optimize copy and swap constructor for robot model (#174)
 - feat: integrate minimum distance calculation feature into robot model(#167)
 - ci: update workflows (#175)
 - feat: integrate collision detection feature into robot model (#163)
