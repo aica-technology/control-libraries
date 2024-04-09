@@ -108,7 +108,12 @@ void Model::init_model() {
   }
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
-  this->init_qp_solver();
+
+  // define the QP solver
+  this->qp_solver_ = std::make_unique<QPSolver>(this->get_number_of_joints(),
+                        this->robot_model_.lowerPositionLimit,
+                        this->robot_model_.upperPositionLimit,
+                        this->robot_model_.velocityLimit);
 }
 
 void Model::init_geom_model(std::string urdf) {
@@ -182,64 +187,6 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
     }
   }
   return false;
-}
-
-bool Model::init_qp_solver() {
-  // clear the solver
-  this->solver_.data()->clearHessianMatrix();
-  this->solver_.data()->clearLinearConstraintsMatrix();
-  this->solver_.clearSolver();
-
-  unsigned int nb_joints = this->get_number_of_joints();
-  // initialize the matrices
-  this->hessian_ = Eigen::SparseMatrix<double>(nb_joints + 1, nb_joints + 1);
-  this->gradient_ = Eigen::VectorXd::Zero(nb_joints + 1);
-  this->constraint_matrix_ = Eigen::SparseMatrix<double>(3 * nb_joints + 1 + 2, nb_joints + 1);
-  this->lower_bound_constraints_ = Eigen::VectorXd::Zero(3 * nb_joints + 1 + 2);
-  this->upper_bound_constraints_ = Eigen::VectorXd::Zero(3 * nb_joints + 1 + 2);
-
-  // reserve the size of the matrices
-  this->hessian_.reserve(nb_joints * nb_joints + 1);
-  this->constraint_matrix_.reserve(5 * nb_joints + 2 * (nb_joints * nb_joints + nb_joints) + 4 * nb_joints + 3);
-
-  Eigen::VectorXd lower_position_limit = this->robot_model_.lowerPositionLimit;
-  Eigen::VectorXd upper_position_limit = this->robot_model_.upperPositionLimit;
-  Eigen::VectorXd velocity_limit = this->robot_model_.velocityLimit;
-
-  // configure the QP problem
-  this->solver_.settings()->setVerbosity(false);
-  this->solver_.settings()->setWarmStart(true);
-
-  // joint dependent constraints
-  for (unsigned int n = 0; n < nb_joints; ++n) {
-    // joint limits
-    this->constraint_matrix_.coeffRef(n, n) = 1.0;
-    // joint velocity limits
-    this->constraint_matrix_.coeffRef(n + nb_joints, n) = 1.0;
-    this->constraint_matrix_.coeffRef(n + nb_joints, nb_joints) = velocity_limit(n);
-    this->upper_bound_constraints_(n + nb_joints) = std::numeric_limits<double>::infinity();
-    this->constraint_matrix_.coeffRef(n + 2 * nb_joints, n) = 1.0;
-    this->constraint_matrix_.coeffRef(n + 2 * nb_joints, nb_joints) = -velocity_limit(n);
-    this->lower_bound_constraints_(n + 2 * nb_joints) = -std::numeric_limits<double>::infinity();
-  }
-
-  // time constraint
-  this->constraint_matrix_.coeffRef(3 * nb_joints, nb_joints) = 1.0;
-  this->upper_bound_constraints_(3 * nb_joints) = std::numeric_limits<double>::infinity();
-  // cartesian velocity constraints
-  this->upper_bound_constraints_(3 * nb_joints + 1) = std::numeric_limits<double>::infinity();
-  this->upper_bound_constraints_(3 * nb_joints + 2) = std::numeric_limits<double>::infinity();
-
-  // set the initial data of the QP solver_
-  this->solver_.data()->setNumberOfVariables(static_cast<int>(nb_joints) + 1);
-  this->solver_.data()->setNumberOfConstraints(this->lower_bound_constraints_.size());
-  if (!this->solver_.data()->setHessianMatrix(this->hessian_)) { return false; }
-  if (!this->solver_.data()->setGradient(this->gradient_)) { return false; }
-  if (!this->solver_.data()->setLinearConstraintsMatrix(this->constraint_matrix_)) { return false; }
-  if (!this->solver_.data()->setLowerBound(this->lower_bound_constraints_)) { return false; }
-  if (!this->solver_.data()->setUpperBound(this->upper_bound_constraints_)) { return false; }
-  // instantiate the solver_
-  return this->solver_.initSolver();
 }
 
 std::vector<unsigned int> Model::get_frame_ids(const std::vector<std::string>& frames) {
@@ -624,36 +571,18 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
     }
   }
   coefficients.emplace_back(Eigen::Triplet<double>(nb_joints, nb_joints, parameters.alpha));
-  this->hessian_.setFromTriplets(coefficients.begin(), coefficients.end());
-  //set the gradient
-  this->gradient_.head(nb_joints) = -parameters.proportional_gain * delta_r.transpose() * jacobian;
-  // update minimal time as dt expressed in seconds
-  this->lower_bound_constraints_(3 * nb_joints) = duration_cast<duration<float>>(parameters.dt).count();
-  // update joint position constraints
-  Eigen::VectorXd lower_position_limit = this->robot_model_.lowerPositionLimit;
-  Eigen::VectorXd upper_position_limit = this->robot_model_.upperPositionLimit;
-  for (unsigned int n = 0; n < nb_joints; ++n) {
-    this->lower_bound_constraints_(n) = lower_position_limit(n) - joint_positions.data()(n);
-    this->upper_bound_constraints_(n) = upper_position_limit(n) - joint_positions.data()(n);
-  }
-  // update Cartesian velocity
-  this->constraint_matrix_.coeffRef(3 * nb_joints + 1, nb_joints) = parameters.linear_velocity_limit;
-  this->constraint_matrix_.coeffRef(3 * nb_joints + 2, nb_joints) = parameters.angular_velocity_limit;
-  this->lower_bound_constraints_(3 * nb_joints + 1) = full_displacement.get_position().norm();
-  this->lower_bound_constraints_(3 * nb_joints + 2) = full_displacement.get_orientation().vec().norm();
+  
+  // set the matrices
+  this->qp_solver_->set_matrices(coefficients, parameters, joint_positions, full_displacement, delta_r, jacobian);
 
-  // update the constraints
-  this->solver_.updateHessianMatrix(this->hessian_);
-  this->solver_.updateGradient(this->gradient_);
-  this->solver_.updateBounds(this->lower_bound_constraints_, this->upper_bound_constraints_);
-  this->solver_.updateLinearConstraintsMatrix(this->constraint_matrix_);
   // solve the QP problem
-  this->solver_.solve();
+  Eigen::VectorXd solution = this->qp_solver_->solve();
+
   // extract the solution
   JointPositions joint_displacement(joint_positions.get_name(),
                                     joint_positions.get_names(),
-                                    this->solver_.getSolution().head(nb_joints));
-  double dt = this->solver_.getSolution().tail(1)(0);
+                                    solution.head(nb_joints));
+  double dt = solution.tail(1)(0);
   return JointPositions(joint_displacement) / dt;
 }
 
@@ -666,24 +595,6 @@ state_representation::JointVelocities Model::inverse_velocity(const state_repres
                                 joint_positions,
                                 parameters,
                                 std::vector<std::string>({actual_frame}));
-}
-
-void Model::print_qp_problem() {
-  std::cout << "hessian:" << std::endl;
-  std::cout << this->hessian_ << std::endl;
-
-  std::cout << "gradient:" << std::endl;
-  std::cout << this->gradient_ << std::endl;
-
-  for (unsigned int i = 0; i < this->constraint_matrix_.rows(); ++i) {
-    std::cout << this->lower_bound_constraints_(i);
-    std::cout << " < | ";
-    for (unsigned int j = 0; j < this->constraint_matrix_.cols(); ++j) {
-      std::cout << this->constraint_matrix_.coeffRef(i, j) << " | ";
-    }
-    std::cout << " < ";
-    std::cout << this->upper_bound_constraints_(i) << std::endl;
-  }
 }
 
 bool Model::in_range(const Eigen::VectorXd& vector,

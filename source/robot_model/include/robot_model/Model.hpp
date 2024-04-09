@@ -14,6 +14,7 @@
 #include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
+#include "robot_model/QPSolver.hpp"
 
 using namespace std::chrono_literals;
 
@@ -41,22 +42,6 @@ struct InverseKinematicsParameters {
 };
 
 /**
- * @brief parameters for the inverse velocity kinematics function
- * @param alpha gain associated to the time slack variable
- * @param proportional_gain gain to weight the cartesian coordinates in the gradient
- * @param linear_velocity_limit maximum linear velocity allowed in Cartesian space (m/s)
- * @param angular_velocity_limit maximum angular velocity allowed in Cartesian space (rad/s)
- * @param period of the control loop (ns)
- */
-struct QPInverseVelocityParameters {
-  double alpha = 0.1;
-  double proportional_gain = 1.0;
-  double linear_velocity_limit = 2.0;
-  double angular_velocity_limit = 2.0;
-  std::chrono::nanoseconds dt = 1000ns;
-};
-
-/**
  * @class Model
  * @brief The Model class is a wrapper around pinocchio dynamic computation library with state_representation
  * encapsulations.
@@ -72,13 +57,8 @@ private:
   std::optional<std::function<std::string(const std::string&)>> meshloader_callback_;      ///< callback function to resolve package paths
   pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
-  OsqpEigen::Solver solver_;                                                ///< osqp solver for the quadratic programming based inverse kinematics
-  Eigen::SparseMatrix<double> hessian_;                                     ///< hessian matrix for the quadratic programming based inverse kinematics
-  Eigen::VectorXd gradient_;                                                ///< gradient vector for the quadratic programming based inverse kinematics
-  Eigen::SparseMatrix<double> constraint_matrix_;                           ///< constraint matrix for the quadratic programming based inverse kinematics
-  Eigen::VectorXd lower_bound_constraints_;                                 ///< lower bound matrix for the quadratic programming based inverse kinematics
-  Eigen::VectorXd upper_bound_constraints_;                                 ///< upper bound matrix for the quadratic programming based inverse kinematics
-  bool load_collision_geometries_ = false;                                          ///< flag to load collision geometries
+  std::unique_ptr<QPSolver> qp_solver_;                                                      ///< the QP solver for the inverse velocity kinematics
+  bool load_collision_geometries_ = false;                                  ///< flag to load collision geometries
   
   // @format:on
   /**
@@ -90,11 +70,6 @@ private:
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
    */
   void init_geom_model(std::string urdf);
-
-  /**
-   * @brief initialize the constraints for the QP solver
-   */
-  bool init_qp_solver();
 
   /**
    * @brief Check if frames exist in robot model and return its ids
@@ -523,11 +498,6 @@ public:
                                                          const state_representation::JointPositions& joint_positions,
                                                          const QPInverseVelocityParameters& parameters,
                                                          const std::string& frame = "");
-
-  /**
-   * @brief Helper function to print the qp_problem (for debugging)
-   */
-  void print_qp_problem();
 
   /**
    * @brief Check if the joint positions are inside the limits provided by the model
