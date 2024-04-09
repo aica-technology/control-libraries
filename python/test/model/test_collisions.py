@@ -1,8 +1,10 @@
 import os
 import unittest
 
+import numpy as np
 from robot_model import Model
 from state_representation import JointPositions
+
 
 class RobotModelCollisionTesting(unittest.TestCase):
     ur5e_with_geometries = None
@@ -77,6 +79,28 @@ class RobotModelCollisionTesting(unittest.TestCase):
         for config in self.test_colliding_configs:
             is_colliding = self.ur5e_with_geometries.check_collision(config)
             self.assertTrue(is_colliding, "Expected collision for configuration")
+
+    def test_minimum_distance_computed_no_collision(self):
+        for config in self.test_non_colliding_configs:
+            distances = self.ur5e_with_geometries.compute_minimum_collision_distances(config)
+            self.assertEqual(distances.shape, (6, 6), "Distance matrix has incorrect shape.")
+
+            # Check that no element is equal to zero besides the diagonals
+            for i in range(distances.shape[0]):
+                for j in range(distances.shape[1]):
+                    if i != j and j != i+1 and i != j+1:  # Skip diagonal and adjacent elements
+                        self.assertGreaterEqual(distances[i, j], 0.01, "Found a distance at non-diagonal element indicating a collision.")
+
+    def test_minimum_distance_computed_collision(self):
+        for config in self.test_colliding_configs:
+            distances = self.ur5e_with_geometries.compute_minimum_collision_distances(config)
+            self.assertEqual(distances.shape, (6, 6), "Distance matrix has incorrect shape.")
+
+            # Initialize a variable to keep track of the minimum non-diagonal distance
+            minimum_distance = np.min(distances[np.triu_indices(n=6, k=2)])
+            # Expect the minimum non-diagonal distance to indicate a collision
+            self.assertLessEqual(minimum_distance, 0.01, "Did not find a minimum distance less than a threshold indicating a collision.")
+
 
 
 if __name__ == '__main__':
