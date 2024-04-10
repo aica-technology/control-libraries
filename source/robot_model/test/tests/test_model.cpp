@@ -49,6 +49,11 @@ TEST_F(RobotModelTest, TestGetUrdfPath) {
 
 TEST_F(RobotModelTest, TestCopyConstructor) {
   Model tmp(robot_name, urdf_path);
+  EXPECT_NO_THROW(Model frankCopy(tmp));
+}
+
+TEST_F(RobotModelTest, TestEqualityConstructor) {
+  Model tmp(robot_name, urdf_path);
   EXPECT_NO_THROW(*franka = tmp);
 }
 

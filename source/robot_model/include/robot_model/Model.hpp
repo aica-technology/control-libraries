@@ -58,7 +58,7 @@ private:
       meshloader_callback_;               ///< callback function to resolve package paths
   pinocchio::GeometryModel geom_model_;   ///< the robot geometry model with pinocchio
   pinocchio::GeometryData geom_data_;     ///< the robot geometry data with pinocchio
-  std::shared_ptr<QPSolver> qp_solver_;   ///< the QP solver for the inverse velocity kinematics
+  std::unique_ptr<QPSolver> qp_solver_;   ///< the QP solver for the inverse velocity kinematics
   bool load_collision_geometries_ = false;///< flag to load collision geometries
 
   // @format:on
@@ -210,6 +210,26 @@ public:
   explicit Model(const std::string& robot_name, 
                    const std::string& urdf_path,
                    const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
+
+  /**
+   * @brief Copy constructor
+   * @param model the model to copy
+   */
+  Model(const Model& model);
+
+  /**
+   * @brief Swap the values of the two Model
+   * @param model1 Model to be swapped with 2
+   * @param model2 Model to be swapped with 1
+   */
+  friend void swap(Model& model1, Model& model2);
+
+  /**
+   * @brief Copy assignment operator that have to be defined due to the custom assignment operator
+   * @param model the model with value to assign
+   * @return reference to the current model with new values
+   */
+  Model& operator=(const Model& Model);
 
   /**
    * @brief Creates a URDF file with desired path and name from a string (possibly the robot description
@@ -529,6 +549,26 @@ public:
 
 inline const std::string& Model::get_robot_name() const {
   return this->robot_name_;
+}
+
+inline void swap(Model& first, Model& second) {
+  using std::swap;
+  swap(first.robot_name_, second.robot_name_);
+  swap(first.urdf_path_, second.urdf_path_);
+  swap(first.frames_, second.frames_);
+  swap(first.robot_model_, second.robot_model_);
+  swap(first.robot_data_, second.robot_data_);
+  swap(first.meshloader_callback_, second.meshloader_callback_);
+  swap(first.geom_model_, second.geom_model_);
+  swap(first.geom_data_, second.geom_data_);
+  swap(first.qp_solver_, second.qp_solver_);
+  swap(first.load_collision_geometries_, second.load_collision_geometries_);
+}
+
+inline Model& Model::operator=(const Model& model) {
+  Model tmp(model);
+  swap(*this, tmp);
+  return *this;
 }
 
 inline void Model::set_robot_name(const std::string& robot_name) {
