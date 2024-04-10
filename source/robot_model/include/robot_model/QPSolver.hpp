@@ -30,17 +30,22 @@ struct QPInverseVelocityParameters {
 */
 class QPSolver {
 private:
-  // @format:off
-  unsigned nb_joints_;                                                         ///< number of joints in the robot model
-  pinocchio::ModelTpl<double>::ConfigVectorType lower_position_limit_;         ///< lower position limits of the joints from the URDF
-  pinocchio::ModelTpl<double>::ConfigVectorType upper_position_limit_;         ///< upper position limits of the joints from the URDF
-  pinocchio::ModelTpl<double>::TangentVectorType velocity_limit_;              ///< velocity limits of the joints from the URDF
-  OsqpEigen::Solver solver_;                                                   ///< osqp solver for the quadratic programming based inverse kinematics
-  Eigen::SparseMatrix<double> hessian_;                                        ///< hessian matrix for the quadratic programming based inverse kinematics
-  Eigen::VectorXd gradient_;                                                   ///< gradient vector for the quadratic programming based inverse kinematics
-  Eigen::SparseMatrix<double> constraint_matrix_;                              ///< constraint matrix for the quadratic programming based inverse kinematics
-  Eigen::VectorXd lower_bound_constraints_;                                    ///< lower bound vector for the quadratic programming based inverse kinematics
-  Eigen::VectorXd upper_bound_constraints_;                                    ///< upper bound vector for the quadratic programming based inverse kinematics
+  // @format:on
+  unsigned nb_joints_;///< number of joints in the robot model
+  pinocchio::ModelTpl<double>::ConfigVectorType
+      lower_position_limit_;///< lower position limits of the joints from the URDF
+  pinocchio::ModelTpl<double>::ConfigVectorType
+      upper_position_limit_;                                     ///< upper position limits of the joints from the URDF
+  pinocchio::ModelTpl<double>::TangentVectorType velocity_limit_;///< velocity limits of the joints from the URDF
+  OsqpEigen::Solver solver_;           ///< osqp solver for the quadratic programming based inverse kinematics
+  Eigen::SparseMatrix<double> hessian_;///< hessian matrix for the quadratic programming based inverse kinematics
+  Eigen::VectorXd gradient_;           ///< gradient vector for the quadratic programming based inverse kinematics
+  Eigen::SparseMatrix<double>
+      constraint_matrix_;///< constraint matrix for the quadratic programming based inverse kinematics
+  Eigen::VectorXd
+      lower_bound_constraints_;///< lower bound vector for the quadratic programming based inverse kinematics
+  Eigen::VectorXd
+      upper_bound_constraints_;///< upper bound vector for the quadratic programming based inverse kinematics
 
   /**
    * @brief Initialize the QP solver

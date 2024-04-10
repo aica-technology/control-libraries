@@ -48,18 +48,19 @@ struct InverseKinematicsParameters {
  */
 class Model {
 private:
-  // @format:off
-  std::string robot_name_;///< name of the robot
-  std::string urdf_path_; ///< path to the urdf file
-  std::vector<std::string> frames_;                                         ///< name of the frames
-  pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
-  pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
-  std::optional<std::function<std::string(const std::string&)>> meshloader_callback_;      ///< callback function to resolve package paths
-  pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
-  pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
-  std::shared_ptr<QPSolver> qp_solver_;                                     ///< the QP solver for the inverse velocity kinematics
-  bool load_collision_geometries_ = false;                                  ///< flag to load collision geometries
-  
+  // @format:on
+  std::string robot_name_;         ///< name of the robot
+  std::string urdf_path_;          ///< path to the urdf file
+  std::vector<std::string> frames_;///< name of the frames
+  pinocchio::Model robot_model_;   ///< the robot model with pinocchio
+  pinocchio::Data robot_data_;     ///< the robot data with pinocchio
+  std::optional<std::function<std::string(const std::string&)>>
+      meshloader_callback_;               ///< callback function to resolve package paths
+  pinocchio::GeometryModel geom_model_;   ///< the robot geometry model with pinocchio
+  pinocchio::GeometryData geom_data_;     ///< the robot geometry data with pinocchio
+  std::shared_ptr<QPSolver> qp_solver_;   ///< the QP solver for the inverse velocity kinematics
+  bool load_collision_geometries_ = false;///< flag to load collision geometries
+
   // @format:on
   /**
    * @brief Initialize the pinocchio model from the URDF
