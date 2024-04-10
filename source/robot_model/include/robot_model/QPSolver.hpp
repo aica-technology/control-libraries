@@ -30,7 +30,6 @@ struct QPInverseVelocityParameters {
 */
 class QPSolver {
 private:
-  // @format:on
   unsigned nb_joints_;///< number of joints in the robot model
   pinocchio::ModelTpl<double>::ConfigVectorType
       lower_position_limit_;///< lower position limits of the joints from the URDF

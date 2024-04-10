@@ -48,7 +48,6 @@ struct InverseKinematicsParameters {
  */
 class Model {
 private:
-  // @format:on
   std::string robot_name_;         ///< name of the robot
   std::string urdf_path_;          ///< path to the urdf file
   std::vector<std::string> frames_;///< name of the frames
@@ -61,7 +60,6 @@ private:
   std::unique_ptr<QPSolver> qp_solver_;   ///< the QP solver for the inverse velocity kinematics
   bool load_collision_geometries_ = false;///< flag to load collision geometries
 
-  // @format:on
   /**
    * @brief Initialize the pinocchio model from the URDF
    */
