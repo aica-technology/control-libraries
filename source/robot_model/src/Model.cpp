@@ -595,13 +595,13 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   this->qp_solver_->set_matrices(coefficients, parameters, joint_positions, full_displacement, delta_r, jacobian);
 
   // solve the QP problem
-  Eigen::VectorXd solution = this->qp_solver_->solve();
+  auto solution = this->qp_solver_->solve();
 
   // extract the solution
   JointPositions joint_displacement(joint_positions.get_name(),
                                     joint_positions.get_names(),
                                     solution.head(nb_joints));
-  double dt = solution.tail(1)(0);
+  auto dt = solution.tail(1)(0);
   return JointPositions(joint_displacement) / dt;
 }
 
