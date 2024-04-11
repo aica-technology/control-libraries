@@ -10,8 +10,10 @@ QPSolver::QPSolver(
       lower_position_limit_(lower_position_limit),
       upper_position_limit_(upper_position_limit),
       velocity_limit_(velocity_limit) {
-  // Initialize the QP solver
-  this->init_solver();
+
+  if(!this->init_solver()){
+    throw std::runtime_error("QP solver initialization failed");
+  }
 }
 
 QPSolver::QPSolver(const QPSolver& other)
@@ -24,7 +26,10 @@ QPSolver::QPSolver(const QPSolver& other)
       constraint_matrix_(other.constraint_matrix_),
       lower_bound_constraints_(other.lower_bound_constraints_),
       upper_bound_constraints_(other.upper_bound_constraints_) {
-  this->init_solver();
+
+  if(!this->init_solver()){
+    throw std::runtime_error("QP solver initialization failed");
+  }
 }
 
 bool QPSolver::init_solver() {
