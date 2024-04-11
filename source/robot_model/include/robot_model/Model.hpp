@@ -3,17 +3,20 @@
 #include <string>
 #include <vector>
 #include <optional>
+
 #include <OsqpEigen/OsqpEigen.h>
 #include <pinocchio/algorithm/crba.hpp>
 #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/parsers/urdf.hpp>
 #include <pinocchio/algorithm/geometry.hpp>
+
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/parameters/ParameterInterface.hpp>
 #include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
+
 #include "robot_model/QPSolver.hpp"
 
 using namespace std::chrono_literals;
