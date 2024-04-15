@@ -60,7 +60,7 @@ jobs:
             exit 1
           fi
           DEMO_CMAKE="./demos/CMakeLists.txt"
-          if [ $(echo $(grep "project(clproto VERSION" "${DEMO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+          if [ $(echo $(grep "find_package(control_libraries" "${DEMO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
             echo "::error file="${DEMO_CMAKE}",title=Check failed::Version in "${DEMO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
             exit 1
           fi
