@@ -13,6 +13,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- fix: update copy constructor to avoid warnings (#180)
 - build: remove deprecated Dockerfiles and scripts and update installation instructions (#176)
 - refactor: optimize copy and swap constructor for robot model (#174)
 - fix: refactor cmake project to deal with robot model dependencies (#178)
