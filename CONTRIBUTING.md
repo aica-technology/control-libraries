@@ -55,8 +55,8 @@ several minutes.
 
 ## Release strategy
 
-All pull requests are merged into `main` using the "Squash and Merge" option. To trigger new releases, the version o
-the project is increased using traditional semantic versioning (major.minor.patch) at regular intervals.
+All pull requests are merged into `main` using the "Squash and Merge" option. To trigger new releases, the version of
+the project version is increased using traditional semantic versioning (major.minor.patch) at regular intervals.
 
 The major release number should be incremented whenever there is a breaking change to the public API (for example, when
 a previously existing function is deleted or renamed). Minor version numbers contain general new features and
