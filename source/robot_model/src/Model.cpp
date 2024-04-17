@@ -1,21 +1,39 @@
-#include <iostream>
+#include <regex>
+#include <set>
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
 #include "robot_model/Model.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include "robot_model/exceptions/CollisionGeometryException.hpp" 
 
 namespace robot_model {
+Model::Model(const std::string& robot_name, 
+             const std::string& urdf_path,
+             const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
+             ):
+    robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
+    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)),
+    meshloader_callback_(meshloader_callback),
+    load_collision_geometries_(true)
+    {
+  this->init_model();
+}
+
 Model::Model(const std::string& robot_name, const std::string& urdf_path) :
     robot_name_(std::make_shared<state_representation::Parameter<std::string>>("robot_name", robot_name)),
-    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path)) {
+    urdf_path_(std::make_shared<state_representation::Parameter<std::string>>("urdf_path", urdf_path))
+    {
   this->init_model();
 }
 
 Model::Model(const Model& model) :
     robot_name_(model.robot_name_),
-    urdf_path_(model.urdf_path_) {
+    urdf_path_(model.urdf_path_), 
+    meshloader_callback_(model.meshloader_callback_),
+    load_collision_geometries_(model.load_collision_geometries_)
+    {
   this->init_model();
 }
 
@@ -29,9 +47,60 @@ bool Model::create_urdf_from_string(const std::string& urdf_string, const std::s
   return false;
 }
 
+std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf) const {
+  std::set<std::string> package_names;
+  std::regex package_path_pattern(R"(filename=\"([^\"]+)\")");
+  std::regex package_name_pattern(R"(package://([^/]+)/)");
+
+  std::smatch matches_file;
+  std::smatch matches_package_name;
+  auto start = urdf.cbegin();
+  auto end = urdf.cend();
+
+  // Extract package paths
+  while (std::regex_search(start, end, matches_file, package_path_pattern)) {
+    std::string path = matches_file[1];
+    if (std::regex_search(path, matches_package_name, package_name_pattern)) {
+      package_names.insert(matches_package_name[1]);
+    }
+    start = matches_file[0].second;
+  }
+
+  std::vector<std::string> package_paths;
+  for (const auto& package_name : package_names) {
+    if (meshloader_callback_) {
+      auto package_path = (*this->meshloader_callback_)(package_name);
+      auto target = "package://" + package_name + "/";
+      auto replacement = package_path;
+      size_t start_position = 0;
+      while ((start_position = urdf.find(target, start_position)) != std::string::npos) {
+        // Replace the target with the replacement string
+        urdf.replace(start_position, target.length(), replacement);
+        // Move past the last replacement
+        start_position += replacement.length();
+      }
+      package_paths.push_back(package_path);
+    }
+  }
+  return package_paths;
+}
+
 void Model::init_model() {
-  pinocchio::urdf::buildModel(this->get_urdf_path(), this->robot_model_);
+  std::ifstream file_stream(this->get_urdf_path());
+  if (!file_stream.is_open()) {
+    throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
+  }
+  std::stringstream buffer;
+  buffer << file_stream.rdbuf();
+  auto urdf = buffer.str();
+
+  pinocchio::urdf::buildModelFromXML(urdf, this->robot_model_);
   this->robot_data_ = pinocchio::Data(this->robot_model_);
+
+  if (this->load_collision_geometries_) {
+    this->init_geom_model(urdf);
+  }
+
   // get the frames
   std::vector<std::string> frames;
   for (auto& f : this->robot_model_.frames) {
@@ -40,6 +109,79 @@ void Model::init_model() {
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
   this->init_qp_solver();
+}
+
+void Model::init_geom_model(std::string urdf) {
+  try {
+    auto package_paths = this->resolve_package_paths_in_urdf(urdf);
+    pinocchio::urdf::buildGeom(
+        this->robot_model_, std::istringstream(urdf), pinocchio::COLLISION, this->geom_model_, package_paths);
+    this->geom_model_.addAllCollisionPairs();
+
+    std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
+
+    // remove collision pairs for linked joints (i.e. parent-child joints)
+    for (const auto& pair : excluded_pairs) {
+      this->geom_model_.removeCollisionPair(pair);
+    }
+
+    this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
+  } catch (const std::exception& ex) {
+    throw robot_model::exceptions::CollisionGeometryException(
+        "Failed to initialize geometry model for " + this->get_robot_name() + ": " + ex.what());
+  }
+}
+
+std::vector<pinocchio::CollisionPair> Model::generate_joint_exclusion_list() {
+  std::vector<pinocchio::CollisionPair> excluded_pairs;
+  // Iterate through all joints, except the universe joint (0), which has no parent
+  for (pinocchio::JointIndex joint_id = 1u; joint_id < static_cast<pinocchio::JointIndex>(this->robot_model_.njoints);
+       ++joint_id) {
+    // Find the parent joint of the current joint
+    pinocchio::JointIndex parent_id = this->robot_model_.parents[joint_id];
+
+    // TODO: Replace this logic with actual geometry index lookup
+    auto getGeometryIndexForJoint = [](pinocchio::JointIndex joint_id) -> int {
+      return static_cast<int>(joint_id);
+    };
+
+    int geometryIndex1 = getGeometryIndexForJoint(joint_id);
+    int geometryIndex2 = getGeometryIndexForJoint(parent_id);
+
+    // Check if the geometry indices are not equal
+    if (geometryIndex1 != geometryIndex2) {
+      excluded_pairs.push_back(pinocchio::CollisionPair(geometryIndex2, geometryIndex1));
+    }
+  }
+  return excluded_pairs;
+}
+
+unsigned int Model::get_number_of_collision_pairs() {
+  return this->geom_model_.collisionPairs.size();
+}
+
+bool Model::is_geometry_model_initialized() {
+  return !this->geom_model_.collisionPairs.empty();
+}
+
+bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
+  if (!this->is_geometry_model_initialized()) {
+    throw robot_model::exceptions::CollisionGeometryException(
+        "Geometry model not loaded for " + this->get_robot_name());
+  }
+
+  Eigen::VectorXd configuration = joint_positions.get_positions();
+
+  pinocchio::computeCollisions(
+      this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true);
+
+  for (size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
+    const auto& collision_result = this->geom_data_.collisionResults[pair_index];
+    if (collision_result.isCollision()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool Model::init_qp_solver() {
@@ -111,7 +253,7 @@ std::vector<unsigned int> Model::get_frame_ids(const std::vector<std::string>& f
     } else {
       // throw error if specified frame does not exist
       if (!this->robot_model_.existFrame(frame)) {
-        throw (exceptions::FrameNotFoundException(frame));
+        throw exceptions::FrameNotFoundException(frame);
       }
       frame_ids.push_back(this->robot_model_.getFrameId(frame));
     }
@@ -126,7 +268,7 @@ unsigned int Model::get_frame_id(const std::string& frame) {
 state_representation::Jacobian Model::compute_jacobian(const state_representation::JointPositions& joint_positions,
                                                        unsigned int frame_id) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
-    throw (exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints()));
+    throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   // compute the Jacobian from the joint state
   pinocchio::Data::Matrix6x J(6, this->get_number_of_joints());
@@ -155,10 +297,10 @@ Eigen::MatrixXd Model::compute_jacobian_time_derivative(const state_representati
                                                         const state_representation::JointVelocities& joint_velocities,
                                                         unsigned int frame_id) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
-    throw (exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints()));
+    throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   if (joint_velocities.get_size() != this->get_number_of_joints()) {
-    throw (exceptions::InvalidJointStateSizeException(joint_velocities.get_size(), this->get_number_of_joints()));
+    throw exceptions::InvalidJointStateSizeException(joint_velocities.get_size(), this->get_number_of_joints());
   }
   // compute the Jacobian from the joint state
   pinocchio::Data::Matrix6x dJ = Eigen::MatrixXd::Zero(6, this->get_number_of_joints());
@@ -228,13 +370,13 @@ state_representation::CartesianPose Model::forward_kinematics(const state_repres
 std::vector<state_representation::CartesianPose> Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
                                                                            const std::vector<unsigned int>& frame_ids) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
-    throw (exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints()));
+    throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   std::vector<state_representation::CartesianPose> pose_vector;
   pinocchio::forwardKinematics(this->robot_model_, this->robot_data_, joint_positions.data());
   for (unsigned int id : frame_ids) {
     if (id >= static_cast<unsigned int>(this->robot_model_.nframes)) {
-      throw (exceptions::FrameNotFoundException(std::to_string(id)));
+      throw exceptions::FrameNotFoundException(std::to_string(id));
     }
     pinocchio::updateFramePlacement(this->robot_model_, this->robot_data_, id);
     pinocchio::SE3 pose = this->robot_data_.oMf[id];
@@ -311,7 +453,7 @@ Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_p
                           const std::string& frame) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   if (!this->robot_model_.existFrame(actual_frame)) {
-    throw (exceptions::FrameNotFoundException(actual_frame));
+    throw exceptions::FrameNotFoundException(actual_frame);
   }
   // 1 second for the Newton-Raphson method
   const std::chrono::nanoseconds dt(static_cast<int>(1e9));
@@ -378,14 +520,14 @@ void Model::check_inverse_velocity_arguments(const std::vector<state_representat
                                              const state_representation::JointPositions& joint_positions,
                                              const std::vector<std::string>& frames) {
   if (cartesian_twists.size() != frames.size()) {
-    throw (std::invalid_argument("The number of provided twists and frames does not match"));
+    throw std::invalid_argument("The number of provided twists and frames does not match");
   }
   if (joint_positions.get_size() != this->get_number_of_joints()) {
-    throw (exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints()));
+    throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   for (auto& frame : frames) {
     if (!this->robot_model_.existFrame(frame)) {
-      throw (exceptions::FrameNotFoundException(frame));
+      throw exceptions::FrameNotFoundException(frame);
     }
   }
 }
@@ -412,25 +554,25 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   dX.tail(6) = cartesian_twists.back().data();
   jacobian.bottomRows(6) = this->compute_jacobian(joint_positions, frames.back()).data();
 
-  if (dls_lambda == 0.0){
+  if (dls_lambda == 0.0) {
     return state_representation::JointVelocities(joint_positions.get_name(),
-                                               joint_positions.get_names(),
-                                               jacobian.colPivHouseholderQr().solve(dX));
+                                                 joint_positions.get_names(),
+                                                 jacobian.colPivHouseholderQr().solve(dX));
   }
 
   // add damped least square term
-  if (jacobian.rows() > jacobian.cols()){
+  if (jacobian.rows() > jacobian.cols()) {
     Eigen::MatrixXd j_prime = jacobian.transpose() * jacobian + 
                 dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols());
     return state_representation::JointVelocities(joint_positions.get_name(),
-                                               joint_positions.get_names(),
-                                               j_prime.colPivHouseholderQr().solve(jacobian.transpose() * dX));
+                                                 joint_positions.get_names(),
+                                                 j_prime.colPivHouseholderQr().solve(jacobian.transpose() * dX));
   } else {
     Eigen::MatrixXd j_prime = jacobian * jacobian.transpose() + 
                 dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows());
     return state_representation::JointVelocities(joint_positions.get_name(),
-                                               joint_positions.get_names(),
-                                               jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX));
+                                                 joint_positions.get_names(),
+                                                 jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX));
   }
 }
 
