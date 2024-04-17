@@ -1,6 +1,6 @@
 # CHANGELOG
 
-Release Versions:
+Release Versions
 
 - [7.4.0](#740)
 - [7.3.0](#730)
