@@ -1,20 +1,17 @@
-ARG BASE_TAG=latest
-FROM ghcr.io/aica-technology/control-libraries/development-dependencies:${BASE_TAG} as build
-ARG BRANCH=develop
+FROM ghcr.io/aica-technology/control-libraries:rolling as cl
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /source
-RUN git clone --depth 1 --branch ${BRANCH} https://github.com/aica-technology/control-libraries
-RUN bash control-libraries/source/install.sh --auto
-RUN bash control-libraries/protocol/install.sh --auto
-RUN pip3 install control-libraries/python
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    python3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN rm -rf /source
+COPY --from=cl / /
 
-
-FROM build as demos
-
-USER developer
-WORKDIR ${HOME}/control_loop_examples
+WORKDIR /control_loop_examples
 COPY ./ ./
 
-RUN mkdir build && cd build && cmake .. && sudo make -j all && sudo make install
+RUN mkdir build && cd build && cmake .. && make -j all && make install
