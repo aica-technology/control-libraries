@@ -1,19 +1,20 @@
 @PACKAGE_INIT@
 
-set(_control_libraries_supported_components state_representation dynamical_systems robot_model controllers)
-set(control_libraries_LIBRARIES "@INSTALL_INTERFACE_LINK_LIBRARIES@")
+set(_control_libraries_namespace "control_libraries::")
+set(_control_libraries_supported_components "@INSTALL_SUPPORTED_COMPONENTS@")
 
 include(CMakeFindDependencyMacro)
 find_dependency(Eigen3)
 
-# Find robot model dependencies if it is in the interface library list and no components are explicitly listed
-if ("robot_model" IN_LIST control_libraries_LIBRARIES AND NOT control_libraries_FIND_COMPONENTS)
-  find_dependency(pinocchio)
-  find_dependency(OsqpEigen)
-  find_dependency(osqp)
+set(_control_libraries_to_find ${control_libraries_FIND_COMPONENTS})
+if (NOT control_libraries_FIND_COMPONENTS)
+  set(_control_libraries_to_find ${_control_libraries_supported_components})
 endif()
 
-foreach(_comp ${control_libraries_FIND_COMPONENTS})
+set(control_libraries_LIBRARIES "")
+while(_control_libraries_to_find)
+  list(POP_FRONT _control_libraries_to_find _comp)
+
   if (${_comp} IN_LIST _control_libraries_supported_components)
     set(control_libraries_${_comp}_FOUND True)
   else()
@@ -21,14 +22,37 @@ foreach(_comp ${control_libraries_FIND_COMPONENTS})
     set_and_check(control_libraries_NOT_FOUND_MESSAGE "Unsupported component: ${_comp}")
   endif()
 
-  # Find robot model dependencies if the corresponding components are explicitly listed
-  if (${_comp} STREQUAL "controllers" OR ${_comp} STREQUAL "robot_model")
+  # Find robot model dependencies if the corresponding component is needed
+  # FIXME: this should be done automatically
+  if (${_comp} STREQUAL "robot_model")
     find_dependency(pinocchio)
     find_dependency(OsqpEigen)
     find_dependency(osqp)
   endif()
 
   include("${CMAKE_CURRENT_LIST_DIR}/control_libraries_${_comp}_targets.cmake")
-endforeach()
+
+  list(APPEND control_libraries_LIBRARIES "${_control_libraries_namespace}${_comp}")
+
+  get_property(_comp_link_libraries TARGET "${_control_libraries_namespace}${_comp}" PROPERTY INTERFACE_LINK_LIBRARIES)
+  foreach(_dep ${_comp_link_libraries})
+    if (_dep MATCHES "^${_control_libraries_namespace}")
+      string(REPLACE "${_control_libraries_namespace}" "" _dep ${_dep})
+      if (NOT _dep IN_LIST _control_libraries_to_find)
+        list(APPEND _control_libraries_to_find ${_dep})
+      endif()
+    else()
+      list(APPEND control_libraries_LIBRARIES ${_dep})
+    endif()
+  endforeach()
+endwhile()
+
+list(REMOVE_DUPLICATES control_libraries_LIBRARIES)
+
+unset(_dep)
+unset(_comp)
+unset(_comp_link_libraries)
+unset(_control_libraries_to_find)
+unset(_control_libraries_supported_components)
 
 check_required_components(control_libraries)
