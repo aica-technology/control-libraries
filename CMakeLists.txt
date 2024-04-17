@@ -12,5 +12,5 @@ endif()
 # add licenses
 install(
   DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/licenses"
-  DESTINATION "share/doc/control-libraries"
+  DESTINATION "share/doc/control-libraries/licenses"
 )
