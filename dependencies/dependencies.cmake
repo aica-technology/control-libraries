@@ -2,7 +2,7 @@
 #  * `OVERRIDE_FIND_PACKAGE` requires CMake 3.24
 #  * some `protobuf` includes don't work when using `FetchContent`
 cmake_minimum_required(VERSION 3.15)
-project(control-libraries-deps)
+project(control-libraries-dependencies)
 
 include(FetchContent)
 FetchContent_Declare(

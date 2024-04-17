@@ -1,5 +1,6 @@
 name: Build and Test
 
+# Run workflow on pushes to main and develop branches, on any pull request, or by manual dispatch
 on:
   push:
     branches:
@@ -8,6 +9,7 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Define the build test jobs for each configuration
 jobs:
 
   check-contribution:
@@ -15,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Check contributions
         if: ${{ github.event.pull_request.base.sha }}
@@ -37,6 +39,7 @@ jobs:
           fi
         shell: bash
 
+  # check if jobs can be skipped
   check-skippable-changes:
     name: Check skippable changes
     runs-on: ubuntu-latest
@@ -51,30 +54,62 @@ jobs:
           paths_ignore: '["**.md", ".**/**", "**.gitignore"]'
           skip_after_successful_duplicate: 'true'
 
-  build-test:
+  build-test-debug:
     needs: check-skippable-changes
     if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
-    name: Run tests
+    name: Debug configuration test
     steps:
+      # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Build Cache for Docker
-        uses: actions/cache@v3
-        with:
-          path: build-cache
-          key: ${{ runner.os }}-build-cache-${{ hashFiles('./') }}
-      - name: Inject build-cache into docker
-        uses: reproducible-containers/buildkit-cache-dance@v2.1.2
-        with:
-          cache-source: build-cache
-          cache-target: /build
+        uses: actions/checkout@v3
+      # Load the repository build-test action
       - name: Build and Test
-        uses: docker/build-push-action@v5
+        uses: ./.github/actions/build-test
         with:
-          context: .
-          target: python-test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          configuration: Debug
+
+  build-test-release:
+    needs: check-skippable-changes
+    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
+    runs-on: ubuntu-latest
+    name: Release configuration test
+    steps:
+      # First check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Load the repository build-test action
+      - name: Build and Test
+        uses: ./.github/actions/build-test
+        with:
+          configuration: Release
+
+  build-test-python:
+    needs:
+      - check-skippable-changes
+      - build-test-release
+    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
+    runs-on: ubuntu-latest
+    name: Python bindings test
+    steps:
+      # First check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Load the repository build-test-python action
+      - name: Build and Test Python
+        uses: ./.github/actions/build-test-python
+
+  build-test-protocol:
+    needs:
+      - check-skippable-changes
+      - build-test-release
+    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
+    runs-on: ubuntu-latest
+    name: Protocol library test
+    steps:
+      # First check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Load the repository build-test-python action
+      - name: Build and Test Protocol
+        uses: ./.github/actions/build-test-protocol
