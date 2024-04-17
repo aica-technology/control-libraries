@@ -2,6 +2,7 @@
 
 Release Versions:
 
+- [7.4.0](#740)
 - [7.3.0](#730)
 - [7.2.0](#720)
 - [7.1.1](#711)
@@ -11,7 +12,15 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes (in development)
+## 7.4.0
+
+Version 7.4.0 brings Analog and Digital IO State types as a new feature to the `state_representation` module.
+
+### Features
+
+`AnalogIOState` and `DigitalIOState` classes have been added as new state types in `state_representation`.
+
+### Full changelog
 
 - feat: add IO states to state representation (py) (#173)
 - feat: add IO states to state representation (proto) (#172)
