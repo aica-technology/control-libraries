@@ -28,7 +28,8 @@ ROBOT_MODEL_METHOD_EXPECTS = [
     'forward_velocity',
     'inverse_velocity',
     'in_range',
-    'clamp_in_range'
+    'clamp_in_range',
+    'print_qp_problem',
 ]
 
 
