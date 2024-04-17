@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y \
     g++ \
     git \
     libgtest-dev \
-    libeigen3-dev \
     python3-pip \
     ssh \
     sudo \
@@ -83,7 +82,7 @@ ARG TARGETPLATFORM
 ARG CACHEID
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+  cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base as pinocchio-dependencies
 COPY --from=apt-dependencies /tmp/apt /
@@ -126,6 +125,7 @@ FROM base as dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
 # Needed to build `osqp-eigen`
+COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
