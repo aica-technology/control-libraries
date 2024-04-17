@@ -16,7 +16,6 @@ Release Versions:
 - feat: add IO states to state representation (py) (#173)
 - feat: add IO states to state representation (proto) (#172)
 - feat: add IO states to state representation (cpp) (#158)
-- build: add missing licenses (#170)
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 - build: update dockerfiles (#153)
 - build: copy python packages into /usr instead of ~ros2 to avoid permission issues (#155)
