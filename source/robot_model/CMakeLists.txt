@@ -11,7 +11,6 @@ add_definitions(-DPINOCCHIO_WITH_HPP_FCL)
 
 set(CORE_SOURCES
   src/Model.cpp
-  src/QPSolver.cpp
 )
 
 add_library(${LIBRARY_NAME} SHARED ${CORE_SOURCES})
