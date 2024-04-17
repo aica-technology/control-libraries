@@ -1,6 +1,6 @@
 name: Generate and Deploy Documentation
 on:
-  push:   
+  push:
     branches:
       - main
 
