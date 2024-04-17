@@ -19,9 +19,9 @@ demo scripts and run the one of your choice:
 ```console
 ./run-demo-script.sh
 # Run a python script
-root@xxxxxxxxx:/control_loop_examples$ python3 python_scripts/<script>.py
+developer@xxxxxxxxx:~/control_loop_examples$ python3 python_scripts/<script>.py
 # Run a cpp script from the build folder
-root@xxxxxxxxx:/control_loop_examples$ ./build/<script>
+developer@xxxxxxxxx:~/control_loop_examples$ ./build/<script>
 ```
 
 The available scripts are:
