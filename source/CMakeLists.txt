@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(control_libraries VERSION 7.3.13)
+project(control_libraries VERSION 7.3.12)
 
 # Build options
 option(BUILD_TESTING "Build all tests." OFF)
@@ -54,29 +54,45 @@ if(EXPERIMENTAL_FEATURES)
   add_compile_definitions(EXPERIMENTAL_FEATURES)
 endif()
 
-set(INSTALL_SUPPORTED_COMPONENTS)
-
 add_subdirectory(state_representation)
-list(APPEND INSTALL_SUPPORTED_COMPONENTS state_representation)
+list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES state_representation)
+get_target_property(TARGET_INTERFACE_LINK_LIBRARIES state_representation INTERFACE_LINK_LIBRARIES)
+if(TARGET_INTERFACE_LINK_LIBRARIES)
+  list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
+endif()
 add_pkgconfig_library(state_representation ${PROJECT_VERSION})
 
 if(BUILD_DYNAMICAL_SYSTEMS)
   add_subdirectory(dynamical_systems)
-  list(APPEND INSTALL_SUPPORTED_COMPONENTS dynamical_systems)
+  list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES dynamical_systems)
+  get_target_property(TARGET_INTERFACE_LINK_LIBRARIES dynamical_systems INTERFACE_LINK_LIBRARIES)
+  if(TARGET_INTERFACE_LINK_LIBRARIES)
+    list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
+  endif()
   add_pkgconfig_library(dynamical_systems ${PROJECT_VERSION})
 endif()
 
 if(BUILD_ROBOT_MODEL OR BUILD_CONTROLLERS)
   add_subdirectory(robot_model)
-  list(APPEND INSTALL_SUPPORTED_COMPONENTS robot_model)
+  list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES robot_model)
+  get_target_property(TARGET_INTERFACE_LINK_LIBRARIES robot_model INTERFACE_LINK_LIBRARIES)
+  if(TARGET_INTERFACE_LINK_LIBRARIES)
+    list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
+  endif()
   add_pkgconfig_library(robot_model ${PROJECT_VERSION})
 endif()
 
 if(BUILD_CONTROLLERS)
   add_subdirectory(controllers)
-  list(APPEND INSTALL_SUPPORTED_COMPONENTS controllers)
+  list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES controllers)
+  get_target_property(TARGET_INTERFACE_LINK_LIBRARIES controllers INTERFACE_LINK_LIBRARIES)
+  if(TARGET_INTERFACE_LINK_LIBRARIES)
+    list(APPEND INSTALL_INTERFACE_LINK_LIBRARIES "${TARGET_INTERFACE_LINK_LIBRARIES}")
+  endif()
   add_pkgconfig_library(controllers ${PROJECT_VERSION})
 endif()
+
+list(REMOVE_DUPLICATES INSTALL_INTERFACE_LINK_LIBRARIES)
 
 # generate the version file for the config file
 write_basic_package_version_file(

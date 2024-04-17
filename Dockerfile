@@ -19,8 +19,6 @@ RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 # create the credentials to be able to pull private repos using ssh
 RUN mkdir /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
 
-ARG CMAKE_BUILD_TYPE=Release
-
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
 
@@ -83,44 +81,31 @@ ARG TARGETPLATFORM
 ARG CACHEID
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base as pinocchio-dependencies
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 ARG TARGETPLATFORM
 ARG CACHEID
-ARG PINOCCHIO_TAG=v2.6.20
-ARG HPP_FCL_TAG=v2.4.4
+ARG PINOCCHIO_TAG=v2.9.0
+ARG HPP_FCL_TAG=v1.8.1
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
+RUN --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=/build,id=cmake-hpp-fcl-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  if [ ! -f hpp-fcl/CMakeLists.txt ]; then rm -rf hpp-fcl/* && git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl; fi \
+  && cmake -B build -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake --build build --target all install
 RUN --mount=type=cache,target=/pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=/build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-<<EOF
-set -e
-
-if [ ! -f hpp-fcl/CMakeLists.txt ]; then
-  rm -rf hpp-fcl/*
-  git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl
-fi
-
-cmake -B build/hpp-fcl -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps
-cmake --build build/hpp-fcl --target all install
-
-if [ ! -f pinocchio/CMakeLists.txt ]; then
-  rm -rf pinocchio/*
-  git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio
-fi
-
-cmake -B build/pinocchio -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps
-cmake --build build/pinocchio --target all install
-
+  --mount=type=cache,target=/build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  if [ ! -f pinocchio/CMakeLists.txt ]; then rm -rf pinocchio/* && git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio; fi \
+  && cmake -B build -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps \
+  && cmake --build build --target all install
 # FIXME: pinocchio produces non-portable paths
-find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
-EOF
+RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
 
 FROM base as dependencies
 ARG TARGETPLATFORM
@@ -129,7 +114,7 @@ ARG CACHEID
 COPY --from=base-dependencies /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
 COPY --from=base-dependencies /tmp/deps /tmp/deps
 COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
@@ -178,13 +163,13 @@ COPY protocol protocol
 COPY source source
 COPY CMakeLists.txt CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build
+  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
 
 FROM build as cpp-test
 ARG TARGETPLATFORM
 ARG CACHEID
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DBUILD_TESTING=ON && make -C build && CTEST_OUTPUT_ON_FAILURE=1 make -C build test
+  cmake -B build -DBUILD_TESTING=ON && cd build && make && CTEST_OUTPUT_ON_FAILURE=1 make test
 
 FROM build as install
 ARG TARGETPLATFORM
