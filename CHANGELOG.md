@@ -14,6 +14,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- chore: touch up workflows and documentation (#181)
 - feat: update demos directory (#179)
 - fix: update copy constructor to avoid warnings (#180)
 - build: remove deprecated Dockerfiles and scripts and update installation instructions (#176)
