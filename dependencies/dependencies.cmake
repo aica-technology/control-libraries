@@ -8,7 +8,7 @@ include(FetchContent)
 FetchContent_Declare(
   OsqpEigen
   GIT_REPOSITORY https://github.com/robotology/osqp-eigen.git
-  GIT_TAG        v0.6.4
+  GIT_TAG        v0.8.1
 )
 
 FetchContent_Declare(
