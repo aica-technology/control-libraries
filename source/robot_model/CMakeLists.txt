@@ -1,13 +1,9 @@
 set(LIBRARY_NAME robot_model)
 
-set(PINOCCHIO_VERSION 2.9.0)
-set(HPP_FCL_VERSION 1.8.1)
-set(OSQP_EIGEN_VERSION 0.8.1)
+set(PINOCCHIO_VERSION 2.6.9)
+set(OSQP_EIGEN_VERSION 0.6.4)
 find_package(pinocchio ${PINOCCHIO_VERSION} REQUIRED)
-find_package(hpp-fcl ${HPP_FCL_VERSION} REQUIRED)
 find_package(OsqpEigen ${OSQP_EIGEN_VERSION} REQUIRED)
-
-add_definitions(-DPINOCCHIO_WITH_HPP_FCL)
 
 set(CORE_SOURCES
   src/Model.cpp
@@ -26,10 +22,8 @@ target_include_directories(${LIBRARY_NAME}
 target_link_libraries(${LIBRARY_NAME}
   state_representation
   ${PINOCCHIO_LIBRARIES}
-  ${hpp-fcl_LIBRARIES}
   OsqpEigen::OsqpEigen
 )
-target_compile_definitions(${LIBRARY_NAME} PUBLIC -DPINOCCHIO_WITH_HPP_FCL)
 
 # install the target and create export-set
 install(TARGETS ${LIBRARY_NAME}

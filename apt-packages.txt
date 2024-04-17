@@ -1,3 +1,2 @@
 libboost-all-dev
 liburdfdom-dev
-libassimp-dev
