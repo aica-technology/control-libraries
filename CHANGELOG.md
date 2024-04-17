@@ -12,6 +12,10 @@ Release Versions:
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes (in development)
+
+- feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
+
 ## 7.4.0
 
 Version 7.4.0 brings Analog and Digital IO State types as a new feature to the `state_representation` module.
