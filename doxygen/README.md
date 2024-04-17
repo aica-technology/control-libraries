@@ -2,6 +2,8 @@
 
 This directory contains configurations for automatic documentation generation using doxygen.
 
+Currently, only documentation for the [source](../source) folder is generated.
+
 ## Manual generation
 
 Use `doxygen doxygen.conf` to generate an html directory in `docs/html`.

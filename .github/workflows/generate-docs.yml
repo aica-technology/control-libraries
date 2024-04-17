@@ -12,7 +12,7 @@ jobs:
       version: ${{ steps.versions.outputs.new_version }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 2
       - id: versions
@@ -33,10 +33,10 @@ jobs:
     name: Generate and Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Generate docs
-        uses: mattnotmitt/doxygen-action@v1.9
+        uses: mattnotmitt/doxygen-action@v1
         with:
           working-directory: 'doxygen'
           doxyfile-path: 'doxygen.conf'
@@ -46,9 +46,9 @@ jobs:
         run: |
           mkdir -p doxygen/docs/versions
           sudo mv doxygen/docs/html doxygen/docs/versions/rolling
-          if [ ${{ needs.check-version.outputs.has_changed }} = 'true' ]; then
-            sudo cp -r doxygen/docs/versions/rolling doxygen/docs/versions/latest
-            sudo cp -r doxygen/docs/versions/rolling doxygen/docs/versions/${{ needs.check-version.outputs.version }}
+          if [ ${{ needs.check-version.outputs.has_changed }} ]; then
+            sudo cp doxygen/docs/versions/rolling doxygen/docs/versions/latest
+            sudo cp doxygen/docs/versions/rolling doxygen/docs/versions/${{ needs.check-version.outputs.version }}
           fi
 
       - name: Deploy to documentation branch
