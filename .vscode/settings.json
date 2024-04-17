@@ -1,5 +1,5 @@
 {
     "cmake.sourceDirectory": "/src/source",
     "cmake.configureArgs": [ "-DBUILD_TESTING=ON" ],
-    "C_Cpp.clang_format_style": "file:/home/ros2/.clang-format"
+    "C_Cpp.clang_format_style": "file:/guidelines/.clang-format"
 }

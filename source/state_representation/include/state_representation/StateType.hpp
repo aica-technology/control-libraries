@@ -29,6 +29,8 @@ enum class StateType {
   GEOMETRY_SHAPE,
   GEOMETRY_ELLIPSOID,
   TRAJECTORY,
+  DIGITAL_IO_STATE,
+  ANALOG_IO_STATE,
 #ifdef EXPERIMENTAL_FEATURES
   DUAL_QUATERNION_STATE,
   DUAL_QUATERNION_POSE,
@@ -75,6 +77,10 @@ enum class StateType {
       return "Ellipsoid";
     case StateType::TRAJECTORY:
       return "Trajectory";
+    case StateType::DIGITAL_IO_STATE:
+      return "DigitalIOState";
+    case StateType::ANALOG_IO_STATE:
+      return "AnalogIOState";
 #ifdef EXPERIMENTAL_FEATURES
     case StateType::DUAL_QUATERNION_STATE:
       return "DualQuaternionState";

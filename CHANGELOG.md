@@ -1,6 +1,8 @@
 # CHANGELOG
 
-Release Versions:
+Release Versions
+
+- [7.4.0](#740)
 - [7.3.0](#730)
 - [7.2.0](#720)
 - [7.1.1](#711)
@@ -9,6 +11,23 @@ Release Versions:
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 7.4.0
+
+Version 7.4.0 brings Analog and Digital IO State types as a new feature to the `state_representation` module.
+
+### Features
+
+`AnalogIOState` and `DigitalIOState` classes have been added as new state types in `state_representation`.
+
+### Full changelog
+
+- feat: add IO states to state representation (py) (#173)
+- feat: add IO states to state representation (proto) (#172)
+- feat: add IO states to state representation (cpp) (#158)
+- build: update dockerfiles (#153)
+- build: copy python packages into /usr instead of ~ros2 to avoid permission issues (#155)
+- feat: Add ParameterType conversion functions to go from enum to type label and the inverse (#154)
 
 ## 7.3.0
 
@@ -64,7 +83,7 @@ minor improvements and fixes to state_representation.
 
 - Update push hooks in build-release.yaml (#127)
 - feat(ci): add prebuilt control-libraries image akin to network-interfaces (#125)
-- Add overloaded `make_shared_parameter` with no parameter  (#123)
+- Add overloaded `make_shared_parameter` with no parameter (#123)
 - Catch out of range exception in `ParameterMap::assert_parameter_valid` (#122)
 - Construct zero matrices in compliant twist controller (#120)
 
@@ -78,6 +97,7 @@ and safe to use.
 **state_representation**
 
 The `State` class has been reworked, with the following breaking changes to the API:
+
 - `State::initialize` has been reworked as `State::reset`.
 - `State::is_compatible` has been removed in favor of the new `State::is_incompatible`.
 - `State::set_empty` and `State::set_filled` have been removed from the public API.
@@ -104,7 +124,7 @@ All header files now use the `.hpp` extension.
 
 **state_representation**
 
-The timestamp of a `State` object is now consistently reset by every non-const method, so that it always indicates the 
+The timestamp of a `State` object is now consistently reset by every non-const method, so that it always indicates the
 time of last modification. The method `State::get_age()` can be used to get the time since last modification in seconds.
 
 The emptiness of a state is handled more consistently, and accessing data on an empty state will now throw an exception.
@@ -123,6 +143,7 @@ of a feedback state is passed through to the command as a feed-forward force or 
 **Python**
 
 The Python bindings now include the exceptions for each module. For example:
+
 - `from state_representation.exceptions import EmptyStateError`
 
 The bindings have also been updated to include the breaking changes in `state_representation`.
@@ -156,7 +177,7 @@ A contributor license agreement and signature workflow have been added to protec
 - Update python bindings after Jacobian refactor (#105)
 - Set reference frame of Jacobian with string instead of pose (#103)
 - Refactor Jacobian methods and operators (#101)
-- Remove rows_ and cols_ and improve constructors (#100)
+- Remove rows* and cols* and improve constructors (#100)
 - Revise clproto to remove StateType and timestamp from State message (#104)
 - Raise exception in getters if state is empty (#97)
 - Bind error objects of all library modules with Pybind (#98)
@@ -184,7 +205,7 @@ A contributor license agreement and signature workflow have been added to protec
 - Bind operators of Cartesian states (#60)
 - Fix quaternion differentiation (#58)
 - Refactor operators in CartesianState for addition (#23), subtraction (#33, #40), transformation (#28, #45),
-division (#41) and multiplication (#43)
+  division (#41) and multiplication (#43)
 - Add a Contributor License Agreement (#61)
 - Uniformly sample orientation with UnitRandom (#56)
 - Refactor get/set variable helpers in Cartesian and joint state (#39, #57)
