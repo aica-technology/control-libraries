@@ -2,7 +2,7 @@
 #  * `OVERRIDE_FIND_PACKAGE` requires CMake 3.24
 #  * `osqp::osqp` is somehow not working in OSQP-Eigen when built together
 cmake_minimum_required(VERSION 3.15)
-project(control-libraries-pre-deps)
+project(control-libraries-base-deps)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -14,7 +14,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   Octomap
   GIT_REPOSITORY https://github.com/OctoMap/octomap.git
-  GIT_TAG        devel
+  GIT_TAG        v1.10.0
   SOURCE_SUBDIR  octomap
 )
 
