@@ -13,7 +13,6 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- feat: integrate minimum distance calculation feature into robot model(#167)
 - ci: update workflows (#175)
 - feat: integrate collision detection feature into robot model (#163)
 - feat: add IO states to state representation (py) (#173)
