@@ -14,10 +14,11 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
-- build: add missing licenses (#170)
-- ci: use caching from docker to run tests in CI (#429)
+- ci: update workflows (#175)
 - feat: integrate collision detection feature into robot model (#163)
+- ci: use caching from docker to run tests in CI (#429)
+- build: add missing licenses (#170)
+- feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 
 ## 7.4.0
 
