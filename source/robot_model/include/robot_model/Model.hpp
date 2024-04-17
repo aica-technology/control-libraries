@@ -2,13 +2,11 @@
 
 #include <string>
 #include <vector>
-#include <optional>
 #include <OsqpEigen/OsqpEigen.h>
 #include <pinocchio/algorithm/crba.hpp>
 #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/parsers/urdf.hpp>
-#include <pinocchio/algorithm/geometry.hpp>
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/parameters/ParameterInterface.hpp>
 #include <state_representation/space/Jacobian.hpp>
@@ -69,27 +67,17 @@ private:
   std::vector<std::string> frames_;                                         ///< name of the frames
   pinocchio::Model robot_model_;                                            ///< the robot model with pinocchio
   pinocchio::Data robot_data_;                                              ///< the robot data with pinocchio
-  std::optional<std::function<std::string(const std::string&)>> meshloader_callback_;      ///< callback function to resolve package paths
-  pinocchio::GeometryModel geom_model_;                                     ///< the robot geometry model with pinocchio
-  pinocchio::GeometryData geom_data_;                                       ///< the robot geometry data with pinocchio
   OsqpEigen::Solver solver_;                                                ///< osqp solver for the quadratic programming based inverse kinematics
   Eigen::SparseMatrix<double> hessian_;                                     ///< hessian matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd gradient_;                                                ///< gradient vector for the quadratic programming based inverse kinematics
   Eigen::SparseMatrix<double> constraint_matrix_;                           ///< constraint matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd lower_bound_constraints_;                                 ///< lower bound matrix for the quadratic programming based inverse kinematics
   Eigen::VectorXd upper_bound_constraints_;                                 ///< upper bound matrix for the quadratic programming based inverse kinematics
-  bool load_collision_geometries_ = false;                                          ///< flag to load collision geometries
-  
   // @format:on
   /**
    * @brief Initialize the pinocchio model from the URDF
    */
   void init_model();
-
-  /**
-   * @brief Initialize the pinocchio geometry model from the URDF and the package paths
-   */
-  void init_geom_model(std::string urdf);
 
   /**
    * @brief initialize the constraints for the QP solver
@@ -109,13 +97,6 @@ private:
    * @return the id of the frame if it exists
    */
   unsigned int get_frame_id(const std::string& frame);
-
-  /**
-    * @brief Find all the package paths in the URDF and replaces them with the absolute path using meshloader_callback_
-    * @param urdf string containing the URDF description of the robot
-    * @return vector of the package paths
-    */
-  std::vector<std::string> resolve_package_paths_in_urdf(std::string& urdf) const;
 
   /**
    * @brief Compute the Jacobian from given joint positions at the frame in parameter
@@ -204,36 +185,11 @@ private:
                                         const state_representation::JointPositions& joint_positions,
                                         const std::vector<std::string>& frames);
 
-  /**
-   * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
-   * @return the list of collision pairs to exclude 
-  */
-  std::vector<pinocchio::CollisionPair> generate_joint_exclusion_list();
-
 public:
   /**
-   * @brief Construct with robot name and path to URDF file
-   * @details If the URDF contains references to collision geometry meshes, they will not be loaded into memory.
-   * To enable collision detection, use the alternate constructor.
-   * @param robot_name the name to associate with the model
-   * @param urdf_path the path to the URDF file
+   * @brief Constructor with robot name and path to URDF file
    */
   explicit Model(const std::string& robot_name, const std::string& urdf_path);
-
-  /**
-   * @brief Construct a robot model with collision geometries from a URDF file
-   * @details If the URDF contains references to collision geometry meshes, they will be loaded into memory.
-   * Subsequently, the check_collision() method can be used to check for self-collisions in the robot model.
-   * If geometry meshes are referenced with a relative package path using the `package://` prefix, then
-   * the optional meshloader_callback function should be defined to return an absolute path to a package
-   * given the package name.
-   * @param robot_name the name to associate with the model
-   * @param urdf_path the path to the URDF file
-   * @param meshloader_callback optional callback to resolve the absolute package path from a package name
-   */
-  explicit Model(const std::string& robot_name, 
-                   const std::string& urdf_path,
-                   const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
 
   /**
    * @brief Copy constructor
@@ -263,26 +219,6 @@ public:
    * @return bool if operation was successful
    */
   static bool create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path);
-
-  /**
-   * @brief Check if the links of the robot are in collision
-   * @param joint_positions containing the joint positions of the robot
-   * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
-   * @return true if the robot is in collision, false otherwise
-   */
-  bool check_collision(const state_representation::JointPositions& joint_positions);
-
-  /**
-   * @brief Getter of the number of collision pairs in the model
-   * @return the number of collision pairs
-   */
-  unsigned int get_number_of_collision_pairs();
-
-  /**
-   * @brief Check if geometry model is initialized
-   * @return true if the geometry model is initialized, false otherwise
-   */
-  bool is_geometry_model_initialized();
 
   /**
    * @brief Getter of the robot name
@@ -580,6 +516,7 @@ inline Model& Model::operator=(const Model& model) {
   swap(*this, tmp);
   return *this;
 }
+
 
 inline const std::string& Model::get_robot_name() const {
   return this->robot_name_->get_value();

@@ -13,7 +13,6 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
-- feat: integrate collision detection feature into robot model (#163)
 - feat: add IO states to state representation (py) (#173)
 - ci: use caching from docker to run tests in CI (#429)
 - feat: add IO states to state representation (proto) (#172)
