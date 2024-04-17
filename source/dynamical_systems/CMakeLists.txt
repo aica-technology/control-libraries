@@ -18,7 +18,7 @@ target_include_directories(${LIBRARY_NAME}
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${LIBRARY_NAME} ${PROJECT_NAME}::state_representation)
+target_link_libraries(${LIBRARY_NAME} state_representation)
 
 # install the target and create export-set
 install(TARGETS ${LIBRARY_NAME}
