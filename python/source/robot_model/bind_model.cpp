@@ -106,7 +106,6 @@ void model(py::module_& m) {
   c.def("inverse_velocity", py::overload_cast<const CartesianTwist&, const JointPositions&, const QPInverseVelocityParameters&, const std::string&>(&Model::inverse_velocity),
         "Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the QP optimization method", "cartesian_twist"_a, "joint_positions"_a, "parameters"_a, "frame"_a = std::string(""));
 
-  c.def("print_qp_problem", &Model::print_qp_problem, "Helper function to print the qp problem (for debugging).");
   c.def("in_range", [](Model& self, const JointPositions& joint_positions) -> bool { return self.in_range(joint_positions); },
         "Check if the joint positions are inside the limits provided by the model", "joint_positions"_a);
   c.def("in_range", [](Model& self, const JointVelocities& joint_velocities) -> bool { return self.in_range(joint_velocities); },
