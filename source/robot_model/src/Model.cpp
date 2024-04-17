@@ -31,16 +31,14 @@ Model::Model(const std::string& robot_name, const std::string& urdf_path) :
 Model::Model(const Model& other):
     robot_name_(other.robot_name_),
     urdf_path_(other.urdf_path_),
+    frames_(other.frames_),
     robot_model_(other.robot_model_),
     robot_data_(other.robot_data_),
+    meshloader_callback_(other.meshloader_callback_),
     geom_model_(other.geom_model_),
     geom_data_(other.geom_data_),
     qp_solver_(std::make_unique<QPSolver>(*other.qp_solver_)),
-    frames_(other.frames_),
-    meshloader_callback_(other.meshloader_callback_),
-    load_collision_geometries_(other.load_collision_geometries_)
-    {
-}
+    load_collision_geometries_(other.load_collision_geometries_) {}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);
