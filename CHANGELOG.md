@@ -15,6 +15,7 @@ Release Versions:
 ## Upcoming changes (in development)
 
 - feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
+- build: add missing licenses (#170)
 
 ## 7.4.0
 
