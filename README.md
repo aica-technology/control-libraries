@@ -1,8 +1,9 @@
+<!-- include general status checks here -->
 <span>
     <img alt="build-release workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/build-release.yml/badge.svg">
     <img alt="build-test workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/build-test.yml/badge.svg?branch=main">
-    <img alt="contribution license agreement workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/check-contribution.yml/badge.svg?branch=main">
-    <img alt="page build and deployment workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/generate-docs/badge.svg?branch=main">
+    <img alt="contribution license agreement workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/check-contribution.yml/badge.svg">
+    <img alt="page build and deployment workflow badge" src="https://github.com/aica-technology/control-libraries/actions/workflows/pages/pages-build-deployment/badge.svg">
 </span>
 
 # Control Libraries
