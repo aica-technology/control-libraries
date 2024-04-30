@@ -64,7 +64,7 @@ jobs:
         shell: bash
 
   build:
-    needs: metadata
+    needs: [check-version, metadata]
     strategy:
       matrix:
         arch: [amd64, arm64]
@@ -90,13 +90,14 @@ jobs:
         with:
           image_name: ${{ needs.metadata.outputs.image_name }}
           image_tags: ${{ steps.merge-tags.outputs.list }}
+          build_flags: --build-arg VERSION=${{ needs.check-version.outputs.version }}
           dockerfile_path: Dockerfile
           token: ${{ secrets.GITHUB_TOKEN }}
 
   multi-arch:
     runs-on: ubuntu-latest
     name: Merge into a multi-arch image
-    needs: [ metadata, build ]
+    needs: [metadata, build]
     steps:
       - uses: aica-technology/.github/.github/actions/ghcr-manifest-merge@v0.6.1
         with:
