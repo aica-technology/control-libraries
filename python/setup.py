@@ -11,7 +11,7 @@ from setuptools import setup
 # names of the environment variables that define osqp and openrobots include directories
 osqp_path_var = 'OSQP_INCLUDE_DIR'
 
-__version__ = "7.4.0"
+__version__ = "8.0.0"
 __libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model']
 __include_dirs__ = ['include']
 
@@ -48,8 +48,11 @@ try:
                 raise Exception(msg)
 
     if __install_robot_model_module__:
-        osqp_path = os.environ[osqp_path_var] if osqp_path_var in os.environ.keys() else '/usr/include/osqp'
-        __include_dirs__.append(osqp_path)
+        if osqp_path_var in os.environ.keys():
+            __include_dirs__.append(os.environ[osqp_path_var])
+        else:
+            __include_dirs__.append('/usr/local/include/osqp')
+            __include_dirs__.append('/usr/include/osqp')
 
     if __install_controllers_module__ and not __install_robot_model_module__:
         warnings.warn(
@@ -104,6 +107,7 @@ if __install_robot_model_module__:
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          extra_compile_args=['-DPINOCCHIO_WITH_HPP_FCL']
                           )
     )
 

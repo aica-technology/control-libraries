@@ -1,0 +1,107 @@
+name: Build and Push Multi-Arch Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-version:
+    name: Check if the version has been updated
+    outputs:
+      has_changed: ${{ steps.check.outputs.has_changed }}
+      version: ${{ steps.versions.outputs.new_version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - id: versions
+        run: |
+          PREV_VERSION=$(git show HEAD^:VERSION)
+          NEW_VERSION=$(git show HEAD:VERSION)
+          echo "prev_version=${PREV_VERSION}" >> $GITHUB_OUTPUT
+          echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+        shell: bash
+      - uses: aica-technology/.github/.github/actions/compare-versions@v0.11.0
+        id: check
+        with:
+          previous_version: ${{ steps.versions.outputs.prev_version }}
+          new_version: ${{ steps.versions.outputs.new_version }}
+
+  metadata:
+    name: Get metadata
+    needs: check-version
+    runs-on: ubuntu-latest
+    outputs:
+      image_name: ${{ steps.ensure-image.outputs.image_name }}
+      image_tags: ${{ steps.tags.outputs.image_tags }}
+      create_tag: ${{ steps.tags.outputs.create_tag }}
+      git_tag: ${{ steps.tags.outputs.git_tag }}
+    steps:
+      - uses: aica-technology/.github/.github/actions/ghcr-ensure-prefix@v0.6.0
+        id: ensure-image
+        with:
+          image_name: aica-technology/control-libraries
+
+      - run: |
+          CREATE_TAG=false
+          GIT_TAG=""
+          if [ ${{ needs.check-version.outputs.has_changed }} = 'true' ]; then
+            CREATE_TAG=true
+            GIT_TAG="v${{ needs.check-version.outputs.version }}"
+            IMAGE_TAGS=latest,"${GIT_TAG}",rolling
+          else
+            IMAGE_TAGS=rolling
+          fi
+          echo "Image tags: ${IMAGE_TAGS}"
+          echo "Create tag: ${CREATE_TAG}"
+          echo "Git tag: ${GIT_TAG}"
+          echo "image_tags=${IMAGE_TAGS}" >> $GITHUB_OUTPUT
+          echo "create_tag=${CREATE_TAG}" >> $GITHUB_OUTPUT
+          echo "git_tag=${GIT_TAG}" >> $GITHUB_OUTPUT
+        id: tags
+        shell: bash
+
+  build:
+    needs: [check-version, metadata]
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+        include:
+          - image: ubuntu-latest
+          # FIXME: using 4vcpu image because of heavy RAM usage when building pinoccio on arm64
+          - image: buildjet-4vcpu-ubuntu-2204-arm
+            arch: arm64
+
+    runs-on: ${{ matrix.image }}
+    name: Build and publish (${{ matrix.arch }})
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: aica-technology/.github/.github/actions/list-add-suffixes@v0.6.1
+        id: merge-tags
+        with:
+          list: ${{ needs.metadata.outputs.image_tags }}
+          suffixes: ${{ matrix.arch }}
+          glue_separator: "-"
+
+      - uses: aica-technology/.github/.github/actions/ghcr-build@v0.6.1
+        with:
+          image_name: ${{ needs.metadata.outputs.image_name }}
+          image_tags: ${{ steps.merge-tags.outputs.list }}
+          build_flags: --build-arg VERSION=${{ needs.check-version.outputs.version }}
+          dockerfile_path: Dockerfile
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  multi-arch:
+    runs-on: ubuntu-latest
+    name: Merge into a multi-arch image
+    needs: [metadata, build]
+    steps:
+      - uses: aica-technology/.github/.github/actions/ghcr-manifest-merge@v0.6.1
+        with:
+          image_name: ${{ needs.metadata.outputs.image_name }}
+          image_tags: ${{ needs.metadata.outputs.image_tags }}
+          archs: amd64,arm64
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [8.0.0](#800)
 - [7.4.0](#740)
 - [7.3.0](#730)
 - [7.2.0](#720)
@@ -11,6 +12,51 @@ Release Versions
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 8.0.0
+
+Version 8.0.0 is a major update that adds new state types and collision detection features to control-libraries.
+
+### Breaking changes
+
+**robot_model**
+
+As part of the collision detection features in `robot_model::Model`, the dependencies of the `robot_model` module have
+changed which constitutes a breaking change that requires users of the module to rebuild their code.
+
+**General**
+
+As of version 8.0.0, the `develop` branch will be deleted and the Linear Git-Flow workflow will be abandoned in favor of
+easier release cycles (see [CONTRIBUING](./CONTRIBUTING.md)). Additionally, the `development-dependencies` and
+`proto-dependencies` images will no longer be supported or maintained.
+
+### Features
+
+The `state_representation` module was extended with two new classes, `AnalogIOState` and `DigitalIOState`. Additionally,
+the `robot_model` module now supports collision detection features from pinocchio, allowing to retrieve minimum
+distances between links.
+
+### General
+
+The behind-the-scenes structural improvements to the build system and the CI that have existed in parallel since version
+7.1.0 have now replaced the legacy build system with multiple shell scripts and Dockerfiles. All information regarding
+building and using control-libraries should still be available in the READMEs.
+
+### Full changelog
+
+- feat: add metadata to docker image (#188)
+- chore: touch up workflows and documentation (#181)
+- feat: update demos directory (#179)
+- fix: update copy constructor to avoid warnings (#180)
+- build: remove deprecated Dockerfiles and scripts and update installation instructions (#176)
+- refactor: optimize copy and swap constructor for robot model (#174)
+- fix: refactor cmake project to deal with robot model dependencies (#178)
+- feat: integrate minimum distance calculation feature into robot model(#167)
+- ci: update workflows (#175)
+- feat: integrate collision detection feature into robot model (#163)
+- ci: use caching from docker to run tests in CI (#169)
+- build: add missing licenses (#170)
+- feat(build): handle installation and linking of dependencies for pinocchio collision support (#161)
 
 ## 7.4.0
 

@@ -2,13 +2,13 @@
 #  * `OVERRIDE_FIND_PACKAGE` requires CMake 3.24
 #  * some `protobuf` includes don't work when using `FetchContent`
 cmake_minimum_required(VERSION 3.15)
-project(control-libraries-dependencies)
+project(control-libraries-deps)
 
 include(FetchContent)
 FetchContent_Declare(
   OsqpEigen
   GIT_REPOSITORY https://github.com/robotology/osqp-eigen.git
-  GIT_TAG        v0.6.4
+  GIT_TAG        v0.8.1
 )
 
 FetchContent_Declare(

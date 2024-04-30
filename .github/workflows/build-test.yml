@@ -1,46 +1,73 @@
 name: Build and Test
 
-# Run workflow on pushes to main and develop branches, on any pull request, or by manual dispatch
 on:
   push:
     branches:
       - main
-      - develop
   pull_request:
   workflow_dispatch:
 
-# Define the build test jobs for each configuration
 jobs:
 
-  check-contribution:
-    name: Check if changelog and version have been updated
+  check-changelog:
+    name: Check if changelog has been updated
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Check contributions
+      - name: Check changelog
         if: ${{ github.event.pull_request.base.sha }}
         run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          git fetch origin main ${{ github.event.pull_request.base.sha }} ${{ github.head_ref }}
-          git checkout ${{ github.head_ref }}
-          VER_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./VERSION)
-          if ! [ "${VER_DIFF}" ]; then
-            bash update_version.sh --commit && git push
-          fi
-          CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- ./CHANGELOG.md)
+          git fetch origin main ${{ github.event.pull_request.base.sha }}
+          CL_DIFF=$(git diff ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- CHANGELOG.md)
           if ! [ "${CL_DIFF}" ]; then
-            SEARCH_STRING="## Upcoming changes (in development)"
-            NEW_TITLE="${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"
-            sed -z "s/${SEARCH_STRING}\n/${SEARCH_STRING}\n\n- ${NEW_TITLE}/" -i CHANGELOG.md
-            git add CHANGELOG.md && git commit -m "Update CHANGELOG" && git push
+            echo "::error file="CHANGELOG.md",title=Check failed::CHANGELOG.md must be updated!"
+            exit 1
           fi
         shell: bash
 
-  # check if jobs can be skipped
+  check-version:
+    name: Check if version has been updated
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check version
+        if: ${{ github.event.pull_request.base.sha }}
+        run: |
+          VERSION=$(echo $(<VERSION) | tr -d -c 0-9)
+          MESSAGE="Set the desired version correctly using the 'update_version' script!"
+          SOURCE_CMAKE="./source/CMakeLists.txt"
+          if [ $(echo $(grep "project(control_libraries VERSION" "${SOURCE_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${SOURCE_CMAKE}",title=Check failed::Version in "${SOURCE_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          PROTO_CMAKE="./protocol/clproto_cpp/CMakeLists.txt"
+          if [ $(echo $(grep "project(clproto VERSION" "${PROTO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${PROTO_CMAKE}",title=Check failed::Version in "${PROTO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          PY_SETUP="./python/setup.py"
+          if [ $(echo $(grep "__version__ =" "${PY_SETUP}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${PY_SETUP}",title=Check failed::Version in "${PY_SETUP}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          DOXY="./doxygen/doxygen.conf"
+          if [ $(echo $(echo $(grep "PROJECT_NUMBER =" "${DOXY}") | tr -d -c 0-9) | tr -d '\0' ) -ne "${VERSION}" ]; then
+            echo "::error file="${DOXY}",title=Check failed::Version in "${DOXY}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+          DEMO_CMAKE="./demos/CMakeLists.txt"
+          if [ $(echo $(grep "find_package(control_libraries" "${DEMO_CMAKE}") | tr -d -c 0-9) -ne "${VERSION}" ]; then
+            echo "::error file="${DEMO_CMAKE}",title=Check failed::Version in "${DEMO_CMAKE}" does not correspond to VERSION. ${MESSAGE}"
+            exit 1
+          fi
+        shell: bash
+
   check-skippable-changes:
+    needs: [ check-changelog, check-version ]
     name: Check skippable changes
     runs-on: ubuntu-latest
     outputs:
@@ -54,62 +81,30 @@ jobs:
           paths_ignore: '["**.md", ".**/**", "**.gitignore"]'
           skip_after_successful_duplicate: 'true'
 
-  build-test-debug:
+  build-test:
     needs: check-skippable-changes
     if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
     runs-on: ubuntu-latest
-    name: Debug configuration test
+    name: Run tests
     steps:
-      # First check out the repository
       - name: Checkout
-        uses: actions/checkout@v3
-      # Load the repository build-test action
-      - name: Build and Test
-        uses: ./.github/actions/build-test
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Cache for Docker
+        uses: actions/cache@v3
         with:
-          configuration: Debug
-
-  build-test-release:
-    needs: check-skippable-changes
-    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
-    runs-on: ubuntu-latest
-    name: Release configuration test
-    steps:
-      # First check out the repository
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Load the repository build-test action
-      - name: Build and Test
-        uses: ./.github/actions/build-test
+          path: build-cache
+          key: ${{ runner.os }}-build-cache-${{ hashFiles('./') }}
+      - name: Inject build-cache into docker
+        uses: reproducible-containers/buildkit-cache-dance@v2.1.2
         with:
-          configuration: Release
-
-  build-test-python:
-    needs:
-      - check-skippable-changes
-      - build-test-release
-    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
-    runs-on: ubuntu-latest
-    name: Python bindings test
-    steps:
-      # First check out the repository
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Load the repository build-test-python action
-      - name: Build and Test Python
-        uses: ./.github/actions/build-test-python
-
-  build-test-protocol:
-    needs:
-      - check-skippable-changes
-      - build-test-release
-    if: ${{ needs.check-skippable-changes.outputs.skip != 'true' }}
-    runs-on: ubuntu-latest
-    name: Protocol library test
-    steps:
-      # First check out the repository
-      - name: Checkout
-        uses: actions/checkout@v3
-      # Load the repository build-test-python action
-      - name: Build and Test Protocol
-        uses: ./.github/actions/build-test-protocol
+          cache-source: build-cache
+          cache-target: /build
+      - name: Build and Test
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: python-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

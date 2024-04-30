@@ -7,7 +7,6 @@ RUN apt-get update && apt-get install -y \
     g++ \
     git \
     libgtest-dev \
-    libeigen3-dev \
     python3-pip \
     ssh \
     sudo \
@@ -18,6 +17,8 @@ RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # create the credentials to be able to pull private repos using ssh
 RUN mkdir /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
+
+ARG CMAKE_BUILD_TYPE=Release
 
 FROM base as apt-dependencies
 COPY apt-packages.tx[t] /
@@ -76,49 +77,65 @@ xargs -a /tmp/new-packages.txt dpkg-query -L \
 # this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
 HEREDOC
 
-FROM base as dep-pinocchio
-COPY --from=apt-dependencies /tmp/apt /
+FROM base as base-dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
-ARG PINOCCHIO_TAG=v2.6.9
-ARG PINOCCHIO_TESTS=OFF
+COPY dependencies/base_dependencies.cmake CMakeLists.txt
+RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+
+FROM base as pinocchio-dependencies
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=base-dependencies /tmp/deps /usr
+ARG TARGETPLATFORM
+ARG CACHEID
+ARG PINOCCHIO_TAG=v2.6.20
+ARG HPP_FCL_TAG=v2.4.4
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
-RUN --mount=type=cache,target=./pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=./build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  if [ ! -f pinocchio/CMakeLists.txt ]; then rm -rf pinocchio/* && git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio; fi \
-  && cmake -B build -S pinocchio -DBUILD_TESTING=${PINOCCHIO_TESTS} -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps \
-  && cmake --build build --target all install
-# FIXME: pinocchio produces non-portable paths
-RUN find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
+RUN --mount=type=cache,target=/pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=/build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+<<EOF
+set -e
 
-FROM base as dep-osqp
-ARG TARGETPLATFORM
-ARG CACHEID
-COPY dependencies/osqp.cmake CMakeLists.txt
-RUN --mount=type=cache,target=./build,id=cmake-osqp-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix /tmp/deps
+if [ ! -f hpp-fcl/CMakeLists.txt ]; then
+  rm -rf hpp-fcl/*
+  git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl
+fi
+
+cmake -B build/hpp-fcl -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps
+cmake --build build/hpp-fcl --target all install
+
+if [ ! -f pinocchio/CMakeLists.txt ]; then
+  rm -rf pinocchio/*
+  git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio
+fi
+
+cmake -B build/pinocchio -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps
+cmake --build build/pinocchio --target all install
+
+# FIXME: pinocchio produces non-portable paths
+find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
+EOF
 
 FROM base as dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
 # Needed to build `osqp-eigen`
-COPY --from=dep-osqp /tmp/deps /usr
+COPY --from=apt-dependencies /tmp/apt /
+COPY --from=base-dependencies /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
-RUN --mount=type=cache,target=./build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release \
-  && cmake --build build \
-  && cmake --install build --prefix /tmp/deps
-COPY --from=dep-osqp /tmp/deps /tmp/deps
-COPY --from=dep-pinocchio /tmp/deps /tmp/deps
+RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+COPY --from=base-dependencies /tmp/deps /tmp/deps
+COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
 FROM base as code
-WORKDIR /src
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
-COPY . /src
 
 FROM code as development
 # create and configure a new user
@@ -146,50 +163,60 @@ RUN ( \
 COPY ./docker/sshd_entrypoint.sh /sshd_entrypoint.sh
 RUN chmod 744 /sshd_entrypoint.sh
 
-RUN chown -R ${USER}:${USER} /src
 RUN mkdir /guidelines && cd /guidelines \
   && wget https://raw.githubusercontent.com/aica-technology/.github/v0.9.0/guidelines/.clang-format
 
 USER ${USER}
+WORKDIR /src
+COPY --chown=${USER}:${USER} . .
 
 FROM code as build
 ARG TARGETPLATFORM
 ARG CACHEID
-RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build
+COPY licenses licenses
+COPY protocol protocol
+COPY source source
+COPY CMakeLists.txt CMakeLists.txt
+RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build
 
-FROM build as test
+FROM build as cpp-test
 ARG TARGETPLATFORM
 ARG CACHEID
-RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DBUILD_TESTING=ON && cd build && make && CTEST_OUTPUT_ON_FAILURE=1 make test
+RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  cmake -B build -DBUILD_TESTING=ON && make -C build && CTEST_OUTPUT_ON_FAILURE=1 make -C build test
 
 FROM build as install
 ARG TARGETPLATFORM
 ARG CACHEID
-RUN --mount=type=cache,target=./build,id=cmake-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake --install build --prefix /tmp/cl
 
-FROM base as python
+FROM code as python
 ARG TARGETPLATFORM
 ARG CACHEID
-COPY --from=apt-dependencies /tmp/apt /
-COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --chown=${USER}:${USER} ./python /python
-RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+COPY ./python/include /python/include
+COPY ./python/source /python/source
+COPY ./python/pyproject.toml ./python/setup.py /python/
+RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
 RUN mv /tmp/python/local /tmp/python-usr
 
-FROM base as python-stubs
+FROM cpp-test as python-test
+RUN pip install pytest
+COPY --from=install /tmp/cl /usr
+COPY --from=python /tmp/python-usr /usr
+COPY ./python/test /test
+RUN pytest /test
+
+FROM code as python-stubs
 ARG TARGETPLATFORM
 ARG CACHEID
-COPY --from=apt-dependencies /tmp/apt /
-COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 RUN pip install pybind11-stubgen
-RUN --mount=type=cache,target=${HOME}/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
 for PKG in state_representation dynamical_systems robot_model controllers clproto; do
   python3 -c "import ${PKG}"
@@ -224,3 +251,9 @@ COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 COPY --from=python-stubs /tmp/python-usr /usr
+
+ARG VERSION
+LABEL org.opencontainers.image.title="AICA control-libraries"
+LABEL org.opencontainers.image.description="AICA control libraries"
+LABEL org.opencontainers.image.version="${VERSION}"
+LABEL tech.aica.image.metadata='{"type":"lib"}'
