@@ -14,6 +14,7 @@ Release Versions:
 
 ## Upcoming changes (in development)
 
+- feat: add metadata to docker image (#188)
 - chore: touch up workflows and documentation (#181)
 - feat: update demos directory (#179)
 - fix: update copy constructor to avoid warnings (#180)
