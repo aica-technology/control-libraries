@@ -1,6 +1,6 @@
 # CHANGELOG
 
-Release Versions:
+Release Versions
 
 - [8.0.0](#800)
 - [7.4.0](#740)
