@@ -32,8 +32,7 @@ easier release cycles (see [CONTRIBUING](./CONTRIBUTING.md)). Additionally, the 
 
 ### Features
 
-The `state_representation` module was extended with two new classes, `AnalogIOState` and `DigitalIOState`. Additionally,
-the `robot_model` module now supports collision detection features from pinocchio, allowing to retrieve minimum
+The `robot_model` module now supports collision detection features from pinocchio, allowing to retrieve minimum
 distances between links.
 
 ### General
