@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [8.1.0](#810)
 - [8.0.0](#800)
 - [7.4.0](#740)
 - [7.3.0](#730)
@@ -12,6 +13,16 @@ Release Versions
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 8.1.0
+
+Version 8.1.0 adds a new module called `communication_interfaces` to the control libraries. This is a library for
+simple socket communication and was previously developed in a different place. It currently implements sockets for UPD,
+TCP, and ZMQ communication.
+
+### Full changelog
+
+- feat: migrate communication interfaces (#190)
 
 ## 8.0.0
 
