@@ -129,7 +129,8 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+  && cmake --build build && cmake --install build --prefix /tmp/deps
 COPY --from=base-dependencies /tmp/deps /tmp/deps
 COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 

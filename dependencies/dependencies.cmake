@@ -18,4 +18,12 @@ FetchContent_Declare(
   SOURCE_SUBDIR  cmake
 )
 
-FetchContent_MakeAvailable(OsqpEigen protobuf)
+FetchContent_Declare(
+  cppzmq
+  GIT_REPOSITORY https://github.com/zeromq/cppzmq/
+  GIT_TAG        v4.7.1
+)
+FetchContent_MakeAvailable(cppzmq)
+
+
+FetchContent_MakeAvailable(OsqpEigen protobuf cppzmq)

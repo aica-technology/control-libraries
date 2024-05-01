@@ -22,6 +22,12 @@ while(_control_libraries_to_find)
     set_and_check(control_libraries_NOT_FOUND_MESSAGE "Unsupported component: ${_comp}")
   endif()
 
+  # Find communication interfaces dependencies if the corresponding component is needed
+  # FIXME: this should be done automatically
+  if (${_comp} STREQUAL "communication_interfaces")
+    find_dependency(cppzmq)
+  endif()
+
   # Find robot model dependencies if the corresponding component is needed
   # FIXME: this should be done automatically
   if (${_comp} STREQUAL "robot_model")
