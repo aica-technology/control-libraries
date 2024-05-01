@@ -67,7 +67,6 @@ jobs:
         shell: bash
 
   check-skippable-changes:
-    needs: [ check-changelog, check-version ]
     name: Check skippable changes
     runs-on: ubuntu-latest
     outputs:
