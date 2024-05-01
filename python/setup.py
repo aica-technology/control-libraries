@@ -12,7 +12,7 @@ from setuptools import setup
 osqp_path_var = 'OSQP_INCLUDE_DIR'
 
 __version__ = "8.0.0"
-__libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model', 'communicatoin_interfaces']
+__libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model', 'communication_interfaces']
 __include_dirs__ = ['include']
 
 __install_clproto_module__ = True
