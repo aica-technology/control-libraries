@@ -13,7 +13,7 @@ jobs:
       version: ${{ steps.versions.outputs.new_version }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - id: versions
@@ -77,7 +77,7 @@ jobs:
     runs-on: ${{ matrix.image }}
     name: Build and publish (${{ matrix.arch }})
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: aica-technology/.github/.github/actions/list-add-suffixes@v0.6.1
         id: merge-tags
