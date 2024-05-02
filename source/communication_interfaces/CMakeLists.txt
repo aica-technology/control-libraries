@@ -65,7 +65,7 @@ endif ()
 if(${PKG_CONFIG_FOUND})
   set(PKG_NAME ${LIBRARY_NAME})
   set(PKG_DESC "Communication interfaces for socket communication.")
-  set(pkg_conf_file "communicatoin_interfaces.pc")
+  set(pkg_conf_file "communication_interfaces.pc")
   set(PKG_CFLAGS "-lcppzmq")
   configure_file("${CMAKE_CURRENT_SOURCE_DIR}/../library_template.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}" @ONLY)
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pkg_conf_file}"
