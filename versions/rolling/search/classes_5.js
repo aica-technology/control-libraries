@@ -21,5 +21,6 @@ var searchData=
   ['ionotfoundexception_18',['IONotFoundException',['../classstate__representation_1_1exceptions_1_1_i_o_not_found_exception.html',1,'state_representation::exceptions']]],
   ['iostate_19',['IOState',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]],
   ['iostate_3c_20bool_20_3e_20',['IOState&lt; bool &gt;',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]],
-  ['iostate_3c_20double_20_3e_21',['IOState&lt; double &gt;',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]]
+  ['iostate_3c_20double_20_3e_21',['IOState&lt; double &gt;',['../classstate__representation_1_1_i_o_state.html',1,'state_representation']]],
+  ['isocket_22',['ISocket',['../classcommunication__interfaces_1_1sockets_1_1_i_socket.html',1,'communication_interfaces::sockets']]]
 ];

@@ -1,5 +1,6 @@
 var searchData=
 [
   ['basis_5f_0',['basis_',['../classcontrollers_1_1impedance_1_1_dissipative.html#a374d85d3859a1a646ef246d91556b4ea',1,'controllers::impedance::Dissipative']]],
-  ['bindings_1',['Python Bindings',['../md__2github_2workspace_2python_2_r_e_a_d_m_e.html',1,'']]]
+  ['bindings_1',['Python Bindings',['../md__2github_2workspace_2python_2_r_e_a_d_m_e.html',1,'']]],
+  ['buffer_5fsize_5f_2',['buffer_size_',['../classcommunication__interfaces_1_1sockets_1_1_t_c_p_socket.html#a42b6e675b0654912e1626d99e766b3a7',1,'communication_interfaces::sockets::TCPSocket']]]
 ];

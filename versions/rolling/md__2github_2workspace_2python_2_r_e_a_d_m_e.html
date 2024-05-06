@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Control Libraries<span id="projectnumber">&#160;8.0.0</span>
+   <div id="projectname">Control Libraries<span id="projectnumber">&#160;8.1.0</span>
    </div>
   </td>
  </tr>
@@ -108,6 +108,23 @@ $(function() {
 <div class="line">decoded_object = <a class="code hl_function" href="namespaceclproto.html#a6e069b963d40b003f87e9a3d7822df18">clproto.decode</a>(encoded_msg)</div>
 <div class="ttc" id="anamespaceclproto_html_a6e069b963d40b003f87e9a3d7822df18"><div class="ttname"><a href="namespaceclproto.html#a6e069b963d40b003f87e9a3d7822df18">clproto::decode</a></div><div class="ttdeci">T decode(const std::string &amp;msg)</div><div class="ttdoc">Decode a serialized binary string from wire format into a control libraries object instance.</div></div>
 <div class="ttc" id="anamespaceclproto_html_abf7d863ec82b8eab41a5078446652628"><div class="ttname"><a href="namespaceclproto.html#abf7d863ec82b8eab41a5078446652628">clproto::encode</a></div><div class="ttdeci">std::string encode(const T &amp;obj)</div><div class="ttdoc">Encode a control libraries object into a serialized binary string representation (wire format).</div></div>
+</div><!-- fragment --><h2>Note on the communication interfaces</h2>
+<p>The Python bindings require an additional step of sanitizing the data when sending and receiving bytes. To illustrate this, an example is provided here.</p>
+<div class="fragment"><div class="line"><span class="comment"># First a server and a client is connected</span></div>
+<div class="line">context = ZMQContext()</div>
+<div class="line">server = ZMQPublisher(ZMQSocketConfiguration(context, <span class="stringliteral">&quot;127.0.0.1&quot;</span>, <span class="stringliteral">&quot;5001&quot;</span>, <span class="keyword">True</span>))</div>
+<div class="line">client = ZMQSubscriber(ZMQSocketConfiguration(context, <span class="stringliteral">&quot;127.0.0.1&quot;</span>, <span class="stringliteral">&quot;5001&quot;</span>, <span class="keyword">False</span>))</div>
+<div class="line">server.open()</div>
+<div class="line">client.open()</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="comment"># Then a string is sent through</span></div>
+<div class="line">str_msg = <span class="stringliteral">&quot;Hello!&quot;</span></div>
+<div class="line">server.send_bytes(str_msg)</div>
+<div class="line">received_str_msg = client.receive_bytes()</div>
+<div class="line"><span class="keywordflow">if</span> received_str_msg <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line">    print(received_str_msg)</div>
+</div><!-- fragment --><p>Here we expect the printed value to be <code>Hello!</code>, however due to the way strings and bytes are processed, the string message is left as a byte literal and &lsquo;b'Hello!&rsquo;` is printed instead. We can correct this as follows:</p>
+<div class="fragment"><div class="line"><span class="comment"># Instead, decode the value</span></div>
+<div class="line">print(received_str_msg.decode(<span class="stringliteral">&quot;utf-8&quot;</span>)) <span class="comment"># will print Hello! as expected</span></div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
