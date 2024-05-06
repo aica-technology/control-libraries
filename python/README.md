@@ -62,3 +62,34 @@ encoded_msg = clproto.encode(B, clproto.MessageType.JOINT_STATE_MESSAGE)
 
 decoded_object = clproto.decode(encoded_msg)
 ```
+
+### Note on the communication interfaces
+
+The Python bindings require an additional step of sanitizing the data when sending and receiving bytes. To illustrate
+this, an example is provided here.
+
+```python
+# First a server and a client is connected
+context = ZMQContext()
+server = ZMQPublisher(ZMQSocketConfiguration(context, "127.0.0.1", "5001", True))
+client = ZMQSubscriber(ZMQSocketConfiguration(context, "127.0.0.1", "5001", False))
+server.open()
+client.open()
+```
+
+```python
+# Then a string is sent through
+str_msg = "Hello!"
+server.send_bytes(str_msg)
+received_str_msg = client.receive_bytes()
+if received_str_msg is not None:
+    print(received_str_msg)
+```
+
+Here we expect the printed value to be `Hello!`, however due to the way strings and bytes are processed, the string
+message is left as a byte literal and `b'Hello!'` is printed instead. We can correct this as follows:
+
+```python
+# Instead, decode the value
+print(received_str_msg.decode("utf-8")) # will print Hello! as expected
+```

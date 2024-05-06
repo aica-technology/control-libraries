@@ -11,14 +11,15 @@ from setuptools import setup
 # names of the environment variables that define osqp and openrobots include directories
 osqp_path_var = 'OSQP_INCLUDE_DIR'
 
-__version__ = "8.0.0"
-__libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model']
+__version__ = "8.1.0"
+__libraries__ = ['state_representation', 'clproto', 'controllers', 'dynamical_systems', 'robot_model', 'communication_interfaces']
 __include_dirs__ = ['include']
 
 __install_clproto_module__ = True
 __install_controllers_module__ = True
 __install_dynamical_systems_module__ = True
 __install_robot_model_module__ = True
+__install_communication_interfaces_module__ = True
 
 # check that necessary libraries can be found
 try:
@@ -118,6 +119,17 @@ if __install_controllers_module__:
                           cxx_std=17,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'controllers', 'robot_model'],
+                          define_macros=[('MODULE_VERSION_INFO', __version__)],
+                          )
+    )
+
+if __install_communication_interfaces_module__:
+    ext_modules.append(
+        Pybind11Extension('communication_interfaces',
+                          sorted(glob('source/communication_interfaces/*.cpp')),
+                          cxx_std=17,
+                          include_dirs=__include_dirs__,
+                          libraries=['communication_interfaces'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
                           )
     )

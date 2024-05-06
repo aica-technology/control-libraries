@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(control_libraries VERSION 8.0.0)
+project(control_libraries VERSION 8.1.0)
 
 # Build options
 option(BUILD_TESTING "Build all tests." OFF)
 option(BUILD_CONTROLLERS "Build and install controllers library" ON)
 option(BUILD_DYNAMICAL_SYSTEMS "Build and install dynamical systems library" ON)
 option(BUILD_ROBOT_MODEL "Build and install robot model library" ON)
+option(BUILD_COMMUNICATION_INTERFACES "Build and install communication interfaces library" ON)
 option(EXPERIMENTAL_FEATURES "Include experimental features" OFF)
 
 # Default to C99
@@ -76,6 +77,12 @@ if(BUILD_CONTROLLERS)
   add_subdirectory(controllers)
   list(APPEND INSTALL_SUPPORTED_COMPONENTS controllers)
   add_pkgconfig_library(controllers ${PROJECT_VERSION})
+endif()
+
+if(BUILD_COMMUNICATION_INTERFACES)
+  add_subdirectory(communication_interfaces)
+  list(APPEND INSTALL_SUPPORTED_COMPONENTS communication_interfaces)
+  add_pkgconfig_library(communication_interfaces ${PROJECT_VERSION})
 endif()
 
 # generate the version file for the config file
