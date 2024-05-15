@@ -12,18 +12,9 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-  protobuf
-  GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
-  GIT_TAG        v3.17.0
-  SOURCE_SUBDIR  cmake
-)
-
-FetchContent_Declare(
   cppzmq
   GIT_REPOSITORY https://github.com/zeromq/cppzmq/
   GIT_TAG        v4.7.1
 )
-FetchContent_MakeAvailable(cppzmq)
 
-
-FetchContent_MakeAvailable(OsqpEigen protobuf cppzmq)
+FetchContent_MakeAvailable(OsqpEigen cppzmq)

@@ -1,9 +1,10 @@
-ARG BASE_TAG=22.04
+ARG BASE_TAG=20.04
 FROM ubuntu:${BASE_TAG} as base
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     cmake \
+    curl \
     g++ \
     git \
     libgtest-dev \
@@ -12,6 +13,11 @@ RUN apt-get update && apt-get install -y \
     sudo \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Python 3.9, development headers and make Python 3.9 the default
+RUN apt-get update && apt-get install -y python3.9 python3.9-dev
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1 \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3.9 1
 
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
@@ -82,7 +88,7 @@ ARG TARGETPLATFORM
 ARG CACHEID
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
+  cmake -B build -DBUILD_TESTING=OFF -DEIGEN_MPL2_ONLY=ON -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base as pinocchio-dependencies
 COPY --from=apt-dependencies /tmp/apt /
@@ -131,12 +137,21 @@ COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
   && cmake --build build && cmake --install build --prefix /tmp/deps
+
+RUN curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.17.0/protobuf-all-3.17.0.tar.gz \
+    && tar -zxvf protobuf-all-3.17.0.tar.gz \
+    && cd protobuf-3.17.0 \
+    && ./configure --prefix=/tmp/deps \
+    && make \
+    && make install
+
 COPY --from=base-dependencies /tmp/deps /tmp/deps
 COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
 FROM base as code
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
+RUN rm -rf /usr/local/include/eigen3 && ln -s /usr/include/eigen3 /usr/local/include/eigen3
 
 FROM code as development
 # create and configure a new user
@@ -202,12 +217,12 @@ COPY ./python/source /python/source
 COPY ./python/pyproject.toml ./python/setup.py /python/
 RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   python3 -m pip install --prefix=/tmp/python /python
-RUN mv /tmp/python/local /tmp/python-usr
+RUN mv /tmp/python/lib/python3.9/site-packages /tmp/python-usr
 
 FROM cpp-test as python-test
 RUN pip install pytest
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python-usr /usr
+COPY --from=python /tmp/python-usr /usr/lib/python3.9
 COPY ./python/test /test
 RUN pytest /test
 
@@ -215,8 +230,8 @@ FROM code as python-stubs
 ARG TARGETPLATFORM
 ARG CACHEID
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python-usr /usr
-RUN pip install pybind11-stubgen
+COPY --from=python /tmp/python-usr /usr/lib/python3.9
+RUN python3 -m pip install pybind11-stubgen
 RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
 for PKG in state_representation dynamical_systems robot_model controllers clproto; do
@@ -244,14 +259,14 @@ EoF
   fi
 done
 HEREDOC
-RUN mv /tmp/python/local /tmp/python-usr
+RUN mv /tmp/python/lib/python3.9/site-packages /tmp/python-usr
 
 FROM scratch as production
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
-COPY --from=python /tmp/python-usr /usr
-COPY --from=python-stubs /tmp/python-usr /usr
+COPY --from=python /tmp/python-usr /usr/lib/python3.9
+COPY --from=python /tmp/python-usr /usr/lib/python3.9
 
 ARG VERSION
 LABEL org.opencontainers.image.title="AICA control-libraries"

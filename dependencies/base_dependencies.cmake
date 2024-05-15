@@ -6,6 +6,11 @@ project(control-libraries-base-deps)
 
 include(FetchContent)
 FetchContent_Declare(
+  eigen3
+  URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.gz
+)
+
+FetchContent_Declare(
   osqp
   GIT_REPOSITORY https://github.com/oxfordcontrol/osqp
   GIT_TAG        v0.6.3
@@ -18,4 +23,4 @@ FetchContent_Declare(
   SOURCE_SUBDIR  octomap
 )
 
-FetchContent_MakeAvailable(osqp octomap)
+FetchContent_MakeAvailable(eigen3 osqp octomap)

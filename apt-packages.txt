@@ -1,5 +1,4 @@
 libboost-all-dev
-libeigen3-dev
 liburdfdom-dev
 libassimp-dev
 libzmq3-dev
