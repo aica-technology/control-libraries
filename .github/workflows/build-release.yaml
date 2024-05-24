@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - main
+      - patch/v7.4.1
     tags:
       - "v*.*.*"
 
@@ -13,11 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Get tag
     outputs:
-      tag: ${{ steps.parse-tag.outputs.tag }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: aica-technology/.github/.github/actions/docker-tag-from-git@v0.6.1
-        id: parse-tag
+      tag: v7.4.1
+    steps: []
 
   build:
     needs: [get-tag]
