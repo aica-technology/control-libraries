@@ -10,15 +10,7 @@ on:
       - "v*.*.*"
 
 jobs:
-  get-tag:
-    runs-on: ubuntu-latest
-    name: Get tag
-    outputs:
-      tag: v7.4.1
-    steps: []
-
   build:
-    needs: [get-tag]
     strategy:
       matrix:
         arch: [amd64, arm64]
@@ -36,7 +28,7 @@ jobs:
       - uses: aica-technology/.github/.github/actions/list-add-suffixes@v0.6.1
         id: merge-tags
         with:
-          list: ${{ needs.get-tag.outputs.tag }}
+          list: v7.4.1
           suffixes: ${{ matrix.arch }}
           glue_separator: "-"
 
@@ -50,11 +42,11 @@ jobs:
   multi-arch:
     runs-on: ubuntu-latest
     name: Merge into a multi-arch image
-    needs: [get-tag, build]
+    needs: [build]
     steps:
       - uses: aica-technology/.github/.github/actions/ghcr-manifest-merge@v0.6.1
         with:
           image_name: aica-technology/control-libraries
-          image_tags: ${{ needs.get-tag.outputs.tag }}
+          image_tags: v7.4.1
           archs: amd64,arm64
           token: ${{ secrets.GITHUB_TOKEN }}
