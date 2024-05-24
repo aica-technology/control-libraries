@@ -3,11 +3,7 @@ name: Build and Push Multi-Arch Images
 on:
   push:
     branches:
-      - develop
-      - main
       - patch/v7.4.1
-    tags:
-      - "v*.*.*"
 
 jobs:
   build:
