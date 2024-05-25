@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [7.4.1](#741)
 - [7.4.0](#740)
 - [7.3.0](#730)
 - [7.2.0](#720)
@@ -11,6 +12,12 @@ Release Versions
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+
+## 7.4.1
+
+Version 7.4.1 is a retro-active patch that adds metadata to the final control-libraries Docker image required
+for aica-technology/package-builder:v1.
 
 ## 7.4.0
 

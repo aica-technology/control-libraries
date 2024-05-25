@@ -224,3 +224,8 @@ COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 COPY --from=python-stubs /tmp/python-usr /usr
+
+LABEL org.opencontainers.image.title="AICA control-libraries"
+LABEL org.opencontainers.image.description="AICA control libraries"
+LABEL org.opencontainers.image.version="v7.4.1"
+LABEL tech.aica.image.metadata='{"type":"lib"}'
