@@ -198,7 +198,7 @@ RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=10
 RUN mv /tmp/python/local /tmp/python-usr
 
 FROM cpp-test as python-test
-RUN pip install pytest
+RUN pip install pytest --break-system-packages
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 COPY ./python/test /test
