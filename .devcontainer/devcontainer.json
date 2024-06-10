@@ -1,6 +1,6 @@
 {
     "name": "control libraries",
-    "remoteUser": "developer",
+    "remoteUser": "ubuntu",
     "build": {
         "dockerfile": "../Dockerfile",
         "context": "..",

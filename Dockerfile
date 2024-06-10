@@ -1,4 +1,4 @@
-ARG BASE_TAG=22.04
+ARG BASE_TAG=24.04
 FROM ubuntu:${BASE_TAG} as base
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
 
 # create the credentials to be able to pull private repos using ssh
-RUN mkdir /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
+RUN mkdir -p /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hosts
 
 ARG CMAKE_BUILD_TYPE=Release
 
@@ -139,16 +139,9 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 
 FROM code as development
-# create and configure a new user
-ARG UID=1000
-ARG GID=1000
-ENV USER developer
-ENV HOME /home/${USER}
 
-RUN addgroup --gid ${GID} ${USER}
-RUN adduser --gecos "Remote User" --uid ${UID} --gid ${GID} ${USER} && yes | passwd ${USER}
-RUN usermod -a -G dialout ${USER}
-RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
+RUN usermod -a -G dialout ubuntu
+RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
 RUN chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget
 
 # Configure sshd server settings
@@ -216,7 +209,7 @@ ARG TARGETPLATFORM
 ARG CACHEID
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
-RUN pip install pybind11-stubgen
+RUN pip install pybind11-stubgen --break-system-packages
 RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
 for PKG in state_representation dynamical_systems robot_model controllers clproto; do
