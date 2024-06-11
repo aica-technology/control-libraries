@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.0.0](#900)
 - [8.1.0](#810)
 - [8.0.0](#800)
 - [7.4.0](#740)
@@ -13,6 +14,11 @@ Release Versions
 - [6.3.1](#631)
 - [6.3.0](#630)
 - [6.2.0](#620)
+
+## 9.0.0
+
+Version 9.0.0 is a new major version of control libraries that is built on Ubuntu 24.04 with Python 3.12. It does not
+contain any new features or fixes compared to version 8.1.0.
 
 ## 8.1.0
 
