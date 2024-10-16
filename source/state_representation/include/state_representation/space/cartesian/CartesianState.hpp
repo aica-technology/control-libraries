@@ -608,7 +608,9 @@ inline void swap(CartesianState& state1, CartesianState& state2) {
  */
 inline state_representation::CartesianStateVariable string_to_cartesian_state_variable(const std::string& variable) {
   std::string case_insensitive_variable;
-  std::transform(variable.begin(), variable.end(), std::back_inserter(case_insensitive_variable), [](unsigned char c) { return std::tolower(c); });
+  std::transform(variable.begin(), variable.end(), std::back_inserter(case_insensitive_variable), [](unsigned char c) {
+    return std::tolower(c);
+  });
   if (case_insensitive_variable == "position") {
     return CartesianStateVariable::POSITION;
   } else if (case_insensitive_variable == "orientation") {
