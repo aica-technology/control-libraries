@@ -550,7 +550,6 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const CartesianState& state);
 
-protected:
   /**
    * @brief Getter of the variable value corresponding to the input
    * @param state_variable_type The type of variable to get
@@ -564,6 +563,7 @@ protected:
    */
   void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
 
+protected:
   /**
    * @brief Setter of the variable value corresponding to the input
    * @param new_value The new value of the variable as std vector
