@@ -2,6 +2,7 @@
 
 #include "state_representation/space/SpatialState.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/exceptions/InvalidStateException.hpp"
 
 namespace state_representation {
 
@@ -598,4 +599,85 @@ inline void swap(CartesianState& state1, CartesianState& state2) {
   std::swap(state1.force_, state2.force_);
   std::swap(state1.torque_, state2.torque_);
 }
+
+/**
+ * @brief Convert a string to a CartesianStateVariable enum (case insensitive)
+ * @throws exceptions::InvalidStateException
+ * @param variable The string to convert
+ * @return A CartesianStateVariable enum corresponding to the input string
+ */
+inline state_representation::CartesianStateVariable string_to_cartesian_state_variable(const std::string& variable) {
+  std::string case_insensitive_variable;
+  std::transform(variable.begin(), variable.end(), std::back_inserter(case_insensitive_variable), [](unsigned char c) { return std::tolower(c); });
+  if (case_insensitive_variable == "position") {
+    return CartesianStateVariable::POSITION;
+  } else if (case_insensitive_variable == "orientation") {
+    return CartesianStateVariable::ORIENTATION;
+  } else if (case_insensitive_variable == "pose") {
+    return CartesianStateVariable::POSE;
+  } else if (case_insensitive_variable == "linear_velocity") {
+    return CartesianStateVariable::LINEAR_VELOCITY;
+  } else if (case_insensitive_variable == "angular_velocity") {
+    return CartesianStateVariable::ANGULAR_VELOCITY;
+  } else if (case_insensitive_variable == "twist") {
+    return CartesianStateVariable::TWIST;
+  } else if (case_insensitive_variable == "linear_acceleration") {
+    return CartesianStateVariable::LINEAR_ACCELERATION;
+  } else if (case_insensitive_variable == "angular_acceleration") {
+    return CartesianStateVariable::ANGULAR_ACCELERATION;
+  } else if (case_insensitive_variable == "acceleration") {
+    return CartesianStateVariable::ACCELERATION;
+  } else if (case_insensitive_variable == "force") {
+    return CartesianStateVariable::FORCE;
+  } else if (case_insensitive_variable == "torque") {
+    return CartesianStateVariable::TORQUE;
+  } else if (case_insensitive_variable == "twist") {
+    return CartesianStateVariable::TWIST;
+  } else if (case_insensitive_variable == "wrench") {
+    return CartesianStateVariable::WRENCH;
+  } else if (case_insensitive_variable == "all") {
+    return CartesianStateVariable::ALL;
+  } else {
+    throw exceptions::InvalidStateException("Invalid Cartesian state variable: " + variable);
+  }
+}
+
+/**
+ * @brief Convert CartesianStateVariable to a string
+ * @throws exceptions::InvalidStateException
+ * @param variable The CartesianStateVariable enum to convert
+ * @return A string corresponding to the CartesianStateVariable enum
+ */
+inline std::string
+cartesian_state_variable_to_string(const CartesianStateVariable variable) {
+  switch (variable) {
+    case CartesianStateVariable::POSITION:
+      return "position";
+    case CartesianStateVariable::ORIENTATION:
+      return "orientation";
+    case CartesianStateVariable::POSE:
+      return "pose";
+    case CartesianStateVariable::LINEAR_VELOCITY:
+      return "linear_velocity";
+    case CartesianStateVariable::ANGULAR_VELOCITY:
+      return "angular_velocity";
+    case CartesianStateVariable::TWIST:
+      return "twist";
+    case CartesianStateVariable::LINEAR_ACCELERATION:
+      return "linear_acceleration";
+    case CartesianStateVariable::ANGULAR_ACCELERATION:
+      return "angular_acceleration";
+    case CartesianStateVariable::ACCELERATION:
+      return "acceleration";
+    case CartesianStateVariable::FORCE:
+      return "force";
+    case CartesianStateVariable::TORQUE:
+      return "torque";
+    case CartesianStateVariable::WRENCH:
+      return "wrench";
+    case CartesianStateVariable::ALL:
+      return "all";
+  }
+}
+
 }// namespace state_representation

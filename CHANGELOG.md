@@ -15,6 +15,11 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+
+## Upcoming changes (in development)
+
+- feat(state-representation): add utilities for CartesianStateVariable (#196)
+
 ## 9.0.0
 
 Version 9.0.0 is a new major version of control libraries that is built on Ubuntu 24.04 with Python 3.12. It does not
