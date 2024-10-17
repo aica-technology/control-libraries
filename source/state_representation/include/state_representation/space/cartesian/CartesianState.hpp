@@ -564,7 +564,6 @@ public:
    */
   void set_state_variable(const Eigen::VectorXd& new_value, const CartesianStateVariable& state_variable_type);
 
-protected:
   /**
    * @brief Setter of the variable value corresponding to the input
    * @param new_value The new value of the variable as std vector
@@ -572,6 +571,7 @@ protected:
    */
   void set_state_variable(const std::vector<double>& new_value, const CartesianStateVariable& state_variable_type);
 
+protected:
   /**
    * @copydoc SpatialState::to_string
    */
@@ -650,7 +650,7 @@ inline state_representation::CartesianStateVariable string_to_cartesian_state_va
  * @param variable The CartesianStateVariable enum to convert
  * @return A string corresponding to the CartesianStateVariable enum
  */
-inline std::string cartesian_state_variable_to_string(const CartesianStateVariable variable) {
+inline std::string cartesian_state_variable_to_string(const CartesianStateVariable& variable) {
   switch (variable) {
     case CartesianStateVariable::POSITION:
       return "position";
