@@ -20,6 +20,7 @@ Release Versions
 
 - feat(state-representation): add utilities for CartesianStateVariable (#195)
 - feat(state-representation): add utilities for JointStateVariable (#197)
+- feat(robot-model): add clamp_in_range function for individual JointStateVariable (#194)
 
 ## 9.0.0
 
