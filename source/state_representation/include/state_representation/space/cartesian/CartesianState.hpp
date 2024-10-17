@@ -2,7 +2,7 @@
 
 #include "state_representation/space/SpatialState.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
-#include "state_representation/exceptions/InvalidStateException.hpp"
+#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 
 namespace state_representation {
 
@@ -602,7 +602,7 @@ inline void swap(CartesianState& state1, CartesianState& state2) {
 
 /**
  * @brief Convert a string to a CartesianStateVariable enum (case insensitive)
- * @throws exceptions::InvalidStateException
+ * @throws exceptions::InvalidStateVariableException
  * @param variable The string to convert
  * @return A CartesianStateVariable enum corresponding to the input string
  */
@@ -640,18 +640,17 @@ inline state_representation::CartesianStateVariable string_to_cartesian_state_va
   } else if (case_insensitive_variable == "all") {
     return CartesianStateVariable::ALL;
   } else {
-    throw exceptions::InvalidStateException("Invalid Cartesian state variable: " + variable);
+    throw exceptions::InvalidVariableStateException("Invalid Cartesian state variable: " + variable);
   }
 }
 
 /**
  * @brief Convert CartesianStateVariable to a string
- * @throws exceptions::InvalidStateException
+ * @throws exceptions::InvalidVariableStateException
  * @param variable The CartesianStateVariable enum to convert
  * @return A string corresponding to the CartesianStateVariable enum
  */
-inline std::string
-cartesian_state_variable_to_string(const CartesianStateVariable variable) {
+inline std::string cartesian_state_variable_to_string(const CartesianStateVariable variable) {
   switch (variable) {
     case CartesianStateVariable::POSITION:
       return "position";
