@@ -12,7 +12,7 @@
 
 void bind_exceptions(py::module_& m) {
   py::register_exception<exceptions::EmptyStateException>(m, "EmptyStateError", PyExc_RuntimeError);
-  py::register_exception<exceptions::EmptyStateException>(m, "InvalidStateVariableException", PyExc_RuntimeError);
+  py::register_exception<exceptions::InvalidStateVariableException>(m, "InvalidStateVariableError", PyExc_RuntimeError);
   py::register_exception<exceptions::IncompatibleReferenceFramesException>(m, "IncompatibleReferenceFramesError", PyExc_RuntimeError);
   py::register_exception<exceptions::IncompatibleSizeException>(m, "IncompatibleSizeError", PyExc_RuntimeError);
   py::register_exception<exceptions::IncompatibleStatesException>(m, "IncompatibleStatesError", PyExc_RuntimeError);
