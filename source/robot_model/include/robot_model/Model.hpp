@@ -540,6 +540,14 @@ public:
   bool in_range(const state_representation::JointState& joint_state) const;
 
   /**
+   * @brief Clamp the joint state variables of a JointStateVariable according to the limits provided by the model
+   * @param joint_state the joint state to be clamped
+   * @param state_variable_type the type of the joint state variable to be clamped
+   * @return the clamped joint states
+   */
+  state_representation::JointState clamp_in_range(const state_representation::JointState& joint_state, const state_representation::JointStateVariable& state_variable_type) const;
+
+  /**
    * @brief Clamp the joint state variables (positions, velocities & torques) according to the limits provided by
    * the model
    * @param joint_state the joint state to be clamped
