@@ -2,6 +2,7 @@
 
 #include "state_representation/State.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 
 namespace state_representation {
 
@@ -579,5 +580,52 @@ inline void swap(JointState& state1, JointState& state2) {
   std::swap(state1.velocities_, state2.velocities_);
   std::swap(state1.accelerations_, state2.accelerations_);
   std::swap(state1.torques_, state2.torques_);
+}
+
+/**
+ * @brief Convert a string to a JointStateVariable enum (case insensitive)
+ * @throws exceptions::InvalidStateVariableException
+ * @param variable The string to convert
+ * @return A JointStateVariable enum corresponding to the input string
+ */
+inline state_representation::JointStateVariable string_to_joint_state_variable(const std::string& variable) {
+  std::string case_insensitive_variable;
+  std::transform(variable.begin(), variable.end(), std::back_inserter(case_insensitive_variable), [](unsigned char c) {
+    return std::tolower(c);
+  });
+  if (case_insensitive_variable == "positions") {
+    return JointStateVariable::POSITIONS;
+  } else if (case_insensitive_variable == "velocities") {
+    return JointStateVariable::VELOCITIES;
+  } else if (case_insensitive_variable == "accelerations") {
+    return JointStateVariable::ACCELERATIONS;
+  } else if (case_insensitive_variable == "torques") {
+    return JointStateVariable::TORQUES;
+  } else if (case_insensitive_variable == "all") {
+    return JointStateVariable::ALL;
+  } else {
+    throw exceptions::InvalidStateVariableException("Invalid joint state variable: " + variable);
+  }
+}
+
+/**
+ * @brief Convert JointStateVariable to a string
+ * @throws exceptions::InvalidStateVariableException
+ * @param variable The JointStateVariable enum to convert
+ * @return A string corresponding to the JointStateVariable enum
+ */
+inline std::string joint_state_variable_to_string(const JointStateVariable& variable) {
+  switch (variable) {
+    case JointStateVariable::POSITIONS:
+      return "positions";
+    case JointStateVariable::VELOCITIES:
+      return "velocities";
+    case JointStateVariable::ACCELERATIONS:
+      return "accelerations";
+    case JointStateVariable::TORQUES:
+      return "torques";
+    case JointStateVariable::ALL:
+      return "all";
+  }
 }
 }// namespace state_representation
