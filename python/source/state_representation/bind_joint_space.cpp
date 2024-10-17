@@ -14,6 +14,9 @@ void joint_state_variable(py::module_& m) {
       .value("TORQUES", JointStateVariable::TORQUES)
       .value("ALL", JointStateVariable::ALL)
       .export_values();
+
+  m.def("string_to_joint_state_variable", &state_representation::string_to_joint_state_variable, "Convert a string to a JointStateVariable enum (case insensitive)", "variable"_a);
+  m.def("joint_state_variable_to_string", &state_representation::joint_state_variable_to_string, "Convert JointStateVariable to a string", "variable"_a);
 }
 
 void joint_state(py::module_& m) {
@@ -105,6 +108,12 @@ void joint_state(py::module_& m) {
     buffer << state;
     return buffer.str();
   });
+
+  c.def("multiply_state_variable", py::overload_cast<const Eigen::MatrixXd&, const JointStateVariable&>(&JointState::multiply_state_variable), "Proxy function that scale the specified state variable by a matrix", "matrix"_a, "state_variable_type"_a);
+  c.def("get_state_variable", &JointState::get_state_variable, "Getter of the variable value corresponding to the input", "state_variable_type"_a);
+  c.def("set_state_variable", py::overload_cast<const Eigen::VectorXd&, const JointStateVariable&>(&JointState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
+  c.def("set_state_variable", py::overload_cast<const std::vector<double>&, const JointStateVariable&>(&JointState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
+  c.def("set_state_variable", py::overload_cast<double, unsigned int, const JointStateVariable&>(&JointState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "joint_index"_a, "state_variable_type"_a);
 }
 
 void joint_positions(py::module_& m) {

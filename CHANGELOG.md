@@ -18,7 +18,8 @@ Release Versions
 
 ## Upcoming changes (in development)
 
-- feat(state-representation): add utilities for CartesianStateVariable (#196)
+- feat(state-representation): add utilities for CartesianStateVariable (#195)
+- feat(state-representation): add utilities for JointStateVariable (#197)
 
 ## 9.0.0
 
