@@ -260,6 +260,12 @@ Functions</h2></td></tr>
 <tr class="separator:a19d515e5b5252641cf0796315baef1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b029559fdd5c2b0f67aeea8ce759a11" id="r_a7b029559fdd5c2b0f67aeea8ce759a11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a7b029559fdd5c2b0f67aeea8ce759a11">swap</a> (<a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state1, <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;state2)</td></tr>
 <tr class="separator:a7b029559fdd5c2b0f67aeea8ce759a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4281a89c903bded542735b54d63828a4" id="r_a4281a89c903bded542735b54d63828a4"><td class="memItemLeft" align="right" valign="top">state_representation::CartesianStateVariable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a4281a89c903bded542735b54d63828a4">string_to_cartesian_state_variable</a> (const std::string &amp;variable)</td></tr>
+<tr class="memdesc:a4281a89c903bded542735b54d63828a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a string to a CartesianStateVariable enum (case insensitive)  <br /></td></tr>
+<tr class="separator:a4281a89c903bded542735b54d63828a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a734d37b432c926f5fb6b9f2329ddb0bf" id="r_a734d37b432c926f5fb6b9f2329ddb0bf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a734d37b432c926f5fb6b9f2329ddb0bf">cartesian_state_variable_to_string</a> (const CartesianStateVariable &amp;variable)</td></tr>
+<tr class="memdesc:a734d37b432c926f5fb6b9f2329ddb0bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert CartesianStateVariable to a string.  <br /></td></tr>
+<tr class="separator:a734d37b432c926f5fb6b9f2329ddb0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a832ff2cdc279aeecd369f8c1dc920a9a" id="r_a832ff2cdc279aeecd369f8c1dc920a9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a832ff2cdc279aeecd369f8c1dc920a9a">swap</a> (<a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian1, <a class="el" href="classstate__representation_1_1_jacobian.html">Jacobian</a> &amp;jacobian2)</td></tr>
 <tr class="separator:a832ff2cdc279aeecd369f8c1dc920a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31f5461a6788ad4bae174490255b486f" id="r_a31f5461a6788ad4bae174490255b486f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a31f5461a6788ad4bae174490255b486f">dist</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;s1, const <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;s2, const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">JointStateVariable</a> &amp;state_variable_type=JointStateVariable::ALL)</td></tr>
@@ -479,7 +485,7 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00015">15</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00016">16</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
 
 </div>
 </div>
@@ -562,6 +568,49 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a734d37b432c926f5fb6b9f2329ddb0bf" name="a734d37b432c926f5fb6b9f2329ddb0bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a734d37b432c926f5fb6b9f2329ddb0bf">&#9670;&#160;</a></span>cartesian_state_variable_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string state_representation::cartesian_state_variable_to_string </td>
+          <td>(</td>
+          <td class="paramtype">const CartesianStateVariable &amp;&#160;</td>
+          <td class="paramname"><em>variable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert CartesianStateVariable to a string. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_state_variable_exception.html">exceptions::InvalidStateVariableException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variable</td><td>The CartesianStateVariable enum to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string corresponding to the CartesianStateVariable enum </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00653">653</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a19d515e5b5252641cf0796315baef1f6" name="a19d515e5b5252641cf0796315baef1f6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a19d515e5b5252641cf0796315baef1f6">&#9670;&#160;</a></span>dist() <span class="overload">[1/2]</span></h2>
 
@@ -2777,6 +2826,49 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a4281a89c903bded542735b54d63828a4" name="a4281a89c903bded542735b54d63828a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4281a89c903bded542735b54d63828a4">&#9670;&#160;</a></span>string_to_cartesian_state_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">state_representation::CartesianStateVariable state_representation::string_to_cartesian_state_variable </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>variable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert a string to a CartesianStateVariable enum (case insensitive) </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_state_variable_exception.html">exceptions::InvalidStateVariableException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variable</td><td>The string to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A CartesianStateVariable enum corresponding to the input string </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00609">609</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a1c97b53e3f9dfcb2b8b28ebc5e90818c" name="a1c97b53e3f9dfcb2b8b28ebc5e90818c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c97b53e3f9dfcb2b8b28ebc5e90818c">&#9670;&#160;</a></span>swap() <span class="overload">[1/9]</span></h2>
 
@@ -2863,7 +2955,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00590">590</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00591">591</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
 
 </div>
 </div>
