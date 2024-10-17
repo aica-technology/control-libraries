@@ -273,6 +273,12 @@ Functions</h2></td></tr>
 <tr class="separator:a31f5461a6788ad4bae174490255b486f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb43830cd7d4bb607ab7aa93537c6df4" id="r_aeb43830cd7d4bb607ab7aa93537c6df4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#aeb43830cd7d4bb607ab7aa93537c6df4">swap</a> (<a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state1, <a class="el" href="classstate__representation_1_1_joint_state.html">JointState</a> &amp;state2)</td></tr>
 <tr class="separator:aeb43830cd7d4bb607ab7aa93537c6df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac4e7a1c8c5feb766414bd42f5ec99cc" id="r_aac4e7a1c8c5feb766414bd42f5ec99cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">state_representation::JointStateVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#aac4e7a1c8c5feb766414bd42f5ec99cc">string_to_joint_state_variable</a> (const std::string &amp;variable)</td></tr>
+<tr class="memdesc:aac4e7a1c8c5feb766414bd42f5ec99cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a string to a JointStateVariable enum (case insensitive)  <br /></td></tr>
+<tr class="separator:aac4e7a1c8c5feb766414bd42f5ec99cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f95b8f6517e6a2706859f297c60efdd" id="r_a5f95b8f6517e6a2706859f297c60efdd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a5f95b8f6517e6a2706859f297c60efdd">joint_state_variable_to_string</a> (const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">JointStateVariable</a> &amp;variable)</td></tr>
+<tr class="memdesc:a5f95b8f6517e6a2706859f297c60efdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert JointStateVariable to a string.  <br /></td></tr>
+<tr class="separator:a5f95b8f6517e6a2706859f297c60efdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12f179ef6871fd79ae70b847651fdd61" id="r_a12f179ef6871fd79ae70b847651fdd61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a12f179ef6871fd79ae70b847651fdd61">swap</a> (<a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state1, <a class="el" href="classstate__representation_1_1_spatial_state.html">SpatialState</a> &amp;state2)</td></tr>
 <tr class="separator:a12f179ef6871fd79ae70b847651fdd61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af345b0edaa0326532a3f5dce4072438a" id="r_af345b0edaa0326532a3f5dce4072438a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#af345b0edaa0326532a3f5dce4072438a">swap</a> (<a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state1, <a class="el" href="classstate__representation_1_1_state.html">State</a> &amp;state2)</td></tr>
@@ -511,7 +517,7 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 
 <p>Enum representing all the fields (positions, velocities, accelerations and torques) of the <a class="el" href="classstate__representation_1_1_joint_state.html" title="Class to define a state in joint space.">JointState</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00015">15</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00016">16</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
 
 </div>
 </div>
@@ -729,6 +735,49 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <dl class="section return"><dt>Returns</dt><dd>the exponential of the DualQuaternion provided </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_dual_quaternion_state_8cpp_source.html#l00062">62</a> of file <a class="el" href="_dual_quaternion_state_8cpp_source.html">DualQuaternionState.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a5f95b8f6517e6a2706859f297c60efdd" name="a5f95b8f6517e6a2706859f297c60efdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f95b8f6517e6a2706859f297c60efdd">&#9670;&#160;</a></span>joint_state_variable_to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string state_representation::joint_state_variable_to_string </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">JointStateVariable</a> &amp;&#160;</td>
+          <td class="paramname"><em>variable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert JointStateVariable to a string. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_state_variable_exception.html">exceptions::InvalidStateVariableException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variable</td><td>The JointStateVariable enum to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A string corresponding to the JointStateVariable enum </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00617">617</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
 
 </div>
 </div>
@@ -2869,6 +2918,49 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aac4e7a1c8c5feb766414bd42f5ec99cc" name="aac4e7a1c8c5feb766414bd42f5ec99cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac4e7a1c8c5feb766414bd42f5ec99cc">&#9670;&#160;</a></span>string_to_joint_state_variable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">state_representation::JointStateVariable</a> state_representation::string_to_joint_state_variable </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>variable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convert a string to a JointStateVariable enum (case insensitive) </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_state_variable_exception.html">exceptions::InvalidStateVariableException</a></td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">variable</td><td>The string to convert </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A JointStateVariable enum corresponding to the input string </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00591">591</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a1c97b53e3f9dfcb2b8b28ebc5e90818c" name="a1c97b53e3f9dfcb2b8b28ebc5e90818c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c97b53e3f9dfcb2b8b28ebc5e90818c">&#9670;&#160;</a></span>swap() <span class="overload">[1/9]</span></h2>
 
@@ -3135,7 +3227,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00575">575</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_state_8hpp_source.html#l00576">576</a> of file <a class="el" href="_joint_state_8hpp_source.html">JointState.hpp</a>.</p>
 
 </div>
 </div>
