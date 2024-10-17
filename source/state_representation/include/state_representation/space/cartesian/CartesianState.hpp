@@ -640,13 +640,13 @@ inline state_representation::CartesianStateVariable string_to_cartesian_state_va
   } else if (case_insensitive_variable == "all") {
     return CartesianStateVariable::ALL;
   } else {
-    throw exceptions::InvalidVariableStateException("Invalid Cartesian state variable: " + variable);
+    throw exceptions::InvalidStateVariableException("Invalid Cartesian state variable: " + variable);
   }
 }
 
 /**
  * @brief Convert CartesianStateVariable to a string
- * @throws exceptions::InvalidVariableStateException
+ * @throws exceptions::InvalidStateVariableException
  * @param variable The CartesianStateVariable enum to convert
  * @return A string corresponding to the CartesianStateVariable enum
  */
