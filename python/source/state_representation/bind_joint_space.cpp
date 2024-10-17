@@ -109,7 +109,7 @@ void joint_state(py::module_& m) {
     return buffer.str();
   });
 
-  c.def("multiply_state_variable", py::overload_cast<const Eigen::MatrixXd&, const JointStateVariable&>(&JointState::multiply_state_variable), "Setter of the variable value corresponding to the input", "matrix"_a, "state_variable_type"_a);
+  c.def("multiply_state_variable", py::overload_cast<const Eigen::MatrixXd&, const JointStateVariable&>(&JointState::multiply_state_variable), "Proxy function that scale the specified state variable by a matrix", "matrix"_a, "state_variable_type"_a);
   c.def("get_state_variable", &JointState::get_state_variable, "Getter of the variable value corresponding to the input", "state_variable_type"_a);
   c.def("set_state_variable", py::overload_cast<const Eigen::VectorXd&, const JointStateVariable&>(&JointState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
   c.def("set_state_variable", py::overload_cast<const std::vector<double>&, const JointStateVariable&>(&JointState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
