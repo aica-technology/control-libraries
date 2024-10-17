@@ -521,7 +521,6 @@ public:
    */
   friend std::ostream& operator<<(std::ostream& os, const JointState& state);
 
-protected:
   /**
    * @brief Proxy function that scale the specified state variable by a matrix
    * @param lambda The scaling matrix
@@ -559,6 +558,7 @@ protected:
    */
   void set_state_variable(double new_value, unsigned int joint_index, const JointStateVariable& state_variable_type);
 
+protected:
   /**
    * @copydoc State::to_string
    */
