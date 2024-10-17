@@ -48,6 +48,9 @@ void cartesian_state_variable(py::module_& m) {
       .value("WRENCH", CartesianStateVariable::WRENCH)
       .value("ALL", CartesianStateVariable::ALL)
       .export_values();
+
+  m.def("string_to_cartesian_state_variable", &state_representation::string_to_cartesian_state_variable, "Convert a string to a CartesianStateVariable enum (case insensitive)", "variable"_a);
+  m.def("cartesian_state_variable_to_string", &state_representation::cartesian_state_variable_to_string, "Convert CartesianStateVariable to a string", "variable"_a);
 }
 
 void cartesian_state(py::module_& m) {
@@ -173,6 +176,10 @@ void cartesian_state(py::module_& m) {
     buffer << state;
     return buffer.str();
   });
+
+  c.def("get_state_variable", &CartesianState::get_state_variable, "Getter of the variable value corresponding to the input", "state_variable_type"_a);
+  c.def("set_state_variable", py::overload_cast<const Eigen::VectorXd&, const CartesianStateVariable&>(&CartesianState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
+  c.def("set_state_variable", py::overload_cast<const std::vector<double>&, const CartesianStateVariable&>(&CartesianState::set_state_variable), "Setter of the variable value corresponding to the input", "new_value"_a, "state_variable_type"_a);
 }
 
 void cartesian_pose(py::module_& m) {
