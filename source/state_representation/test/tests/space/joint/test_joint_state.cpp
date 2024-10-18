@@ -609,11 +609,12 @@ TEST(JointStateTest, TestUtilities) {
   EXPECT_THROW(string_to_joint_state_variable("foo"), exceptions::InvalidStateVariableException);
 
   auto state = JointState("foo", 3);
-  state.set_positions(std::vector<double>{1.0, 2.0, 3.0});
-  EXPECT_TRUE(state.get_positions().cwiseEqual(state.get_state_variable(JointStateVariable::POSITIONS)).all());
-  EXPECT_TRUE(state.get_positions().cwiseEqual(state.get_state_variable(state_variable_type)).all());
+  auto new_values = Eigen::VectorXd(3);
+  new_values << 1.0, 2.0, 3.0;
+  state.set_positions(new_values);
+  EXPECT_TRUE(state.get_state_variable(JointStateVariable::POSITIONS).cwiseEqual(new_values).all());
+  EXPECT_TRUE(state.get_state_variable(state_variable_type).cwiseEqual(new_values).all());
 
-  Eigen::VectorXd new_values(3);
   new_values << 4.0, 5.0, 6.0;
   state.set_state_variable(new_values, JointStateVariable::POSITIONS);
   EXPECT_TRUE(state.get_positions().cwiseEqual(new_values).all());
