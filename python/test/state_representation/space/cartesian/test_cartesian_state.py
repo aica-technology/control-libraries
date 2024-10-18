@@ -5,9 +5,10 @@ import numpy as np
 from pyquaternion.quaternion import Quaternion
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 from state_representation import State, CartesianState, StateType, CartesianStateVariable, CartesianPose, \
-    CartesianTwist, CartesianAcceleration, CartesianWrench
-from state_representation.exceptions import EmptyStateError, IncompatibleReferenceFramesError, IncompatibleSizeError, \
-    NotImplementedError
+    CartesianTwist, CartesianAcceleration, CartesianWrench, string_to_cartesian_state_variable, \
+    cartesian_state_variable_to_string
+from state_representation.exceptions import EmptyStateError, InvalidStateVariableError, IncompatibleReferenceFramesError, \
+    IncompatibleSizeError, NotImplementedError
 from datetime import timedelta
 
 from ..test_spatial_state import SPATIAL_STATE_METHOD_EXPECTS
@@ -63,7 +64,9 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'set_twist',
     'set_wrench',
     'set_zero',
-    'to_list'
+    'to_list',
+    'get_state_variable',
+    'set_state_variable',
 ]
 
 
@@ -996,6 +999,23 @@ class TestCartesianState(unittest.TestCase):
         with self.assertRaises(TypeError):
             wrench / timedelta(seconds=1)
 
+    def test_utilities(self):
+        state_variable_type = string_to_cartesian_state_variable("position")
+        self.assertIsInstance(state_variable_type, CartesianStateVariable)
+        self.assertEqual("position", cartesian_state_variable_to_string(state_variable_type))
+        with self.assertRaises(InvalidStateVariableError):
+            result = string_to_cartesian_state_variable("foo")
+
+        state = CartesianState()
+        state.set_position([1.0, 2.0, 3.0])
+        self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [1.0, 2.0, 3.0]).all())
+        self.assertTrue((state.get_state_variable(state_variable_type) == [1.0, 2.0, 3.0]).all())
+
+        state.set_state_variable([4.0, 5.0, 6.0], CartesianStateVariable.POSITION)
+        self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [4.0, 5.0, 6.0]).all())
+
+        state.set_state_variable(np.array([7.0, 8.0, 9.0]), CartesianStateVariable.POSITION)
+        self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [7.0, 8.0, 9.0]).all())
 
 if __name__ == '__main__':
     unittest.main()
