@@ -606,6 +606,7 @@ inline state_representation::JointStateVariable string_to_joint_state_variable(c
   } else {
     throw exceptions::InvalidStateVariableException("Invalid joint state variable: " + variable);
   }
+  __builtin_unreachable();
 }
 
 /**
@@ -627,5 +628,6 @@ inline std::string joint_state_variable_to_string(const JointStateVariable& vari
     case JointStateVariable::ALL:
       return "all";
   }
+  __builtin_unreachable();
 }
 }// namespace state_representation
