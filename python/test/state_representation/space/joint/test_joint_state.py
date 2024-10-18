@@ -486,7 +486,7 @@ class TestJointState(unittest.TestCase):
         self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [4.0, 5.0, 6.0]).all())
 
         state.set_state_variable(np.array([7.0, 8.0, 9.0]), JointStateVariable.POSITIONS)
-        self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [7.0, 8.0, 9.0]).all())
+        self.assertTrue((state.get_positions() == [7.0, 8.0, 9.0]).all())
 
 if __name__ == '__main__':
     unittest.main()

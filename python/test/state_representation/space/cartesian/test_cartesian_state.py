@@ -1015,7 +1015,7 @@ class TestCartesianState(unittest.TestCase):
         self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [4.0, 5.0, 6.0]).all())
 
         state.set_state_variable(np.array([7.0, 8.0, 9.0]), CartesianStateVariable.POSITION)
-        self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [7.0, 8.0, 9.0]).all())
+        self.assertTrue((state.get_position() == [7.0, 8.0, 9.0]).all())
 
 if __name__ == '__main__':
     unittest.main()
