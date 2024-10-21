@@ -642,6 +642,7 @@ inline state_representation::CartesianStateVariable string_to_cartesian_state_va
   } else {
     throw exceptions::InvalidStateVariableException("Invalid Cartesian state variable: " + variable);
   }
+  __builtin_unreachable();
 }
 
 /**
@@ -679,6 +680,7 @@ inline std::string cartesian_state_variable_to_string(const CartesianStateVariab
     case CartesianStateVariable::ALL:
       return "all";
   }
+  __builtin_unreachable();
 }
 
 }// namespace state_representation

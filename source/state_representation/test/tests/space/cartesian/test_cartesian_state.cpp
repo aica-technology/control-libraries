@@ -7,6 +7,7 @@
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
 
@@ -1082,4 +1083,25 @@ TEST(CartesianStateTest, TestSubtractionOperators) {
   //wrench -= pose;
   //wrench -= twist;
   //wrench -= acc;
+}
+
+TEST(CartesianStateTest, TestUtilities) {
+  auto state_variable_type = string_to_cartesian_state_variable("position");
+  EXPECT_EQ(state_variable_type, CartesianStateVariable::POSITION);
+  EXPECT_EQ("position", cartesian_state_variable_to_string(CartesianStateVariable::POSITION));
+  EXPECT_THROW(string_to_cartesian_state_variable("foo"), exceptions::InvalidStateVariableException);
+
+  auto state = CartesianState();
+  auto new_values = Eigen::VectorXd(4);
+  new_values << 1.0, 2.0, 3.0, 4.0;
+  EXPECT_THROW(state.set_state_variable(new_values, state_variable_type), exceptions::IncompatibleSizeException);
+  new_values = Eigen::VectorXd(3);
+  new_values << 1.0, 2.0, 3.0;
+  state.set_state_variable(new_values, state_variable_type);
+  EXPECT_TRUE(state.get_state_variable(CartesianStateVariable::POSITION).cwiseEqual(new_values).all());
+  EXPECT_TRUE(state.get_state_variable(state_variable_type).cwiseEqual(new_values).all());
+
+  new_values << 4.0, 5.0, 6.0;
+  state.set_state_variable(new_values, CartesianStateVariable::POSITION);
+  EXPECT_TRUE(state.get_position().cwiseEqual(new_values).all());
 }
