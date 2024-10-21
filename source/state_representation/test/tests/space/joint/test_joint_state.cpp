@@ -9,6 +9,7 @@
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 
 using namespace state_representation;
 
@@ -599,4 +600,30 @@ TEST(JointStateTest, TestSubtractionOperators) {
   //torques -= positions;
   //torques -= velocities;
   //torques -= accelerations;
+}
+
+TEST(JointStateTest, TestUtilities) {
+  auto state_variable_type = string_to_joint_state_variable("positions");
+  EXPECT_EQ(state_variable_type, JointStateVariable::POSITIONS);
+  EXPECT_EQ("positions", joint_state_variable_to_string(JointStateVariable::POSITIONS));
+  EXPECT_THROW(string_to_joint_state_variable("foo"), exceptions::InvalidStateVariableException);
+
+  auto state = JointState("foo", 3);
+  auto new_values = Eigen::VectorXd(4);
+  EXPECT_THROW(
+      state.set_state_variable(new_values, JointStateVariable::POSITIONS), exceptions::IncompatibleSizeException);
+  new_values = Eigen::VectorXd(3);
+  new_values << 1.0, 2.0, 3.0;
+  state.set_state_variable(new_values, JointStateVariable::POSITIONS);
+  EXPECT_TRUE(state.get_state_variable(JointStateVariable::POSITIONS).cwiseEqual(new_values).all());
+  EXPECT_TRUE(state.get_state_variable(state_variable_type).cwiseEqual(new_values).all());
+
+  Eigen::MatrixXd matrix = Eigen::MatrixXd::Random(3, 3);
+  auto expected = matrix * new_values;
+  state.multiply_state_variable(matrix, JointStateVariable::POSITIONS);
+  EXPECT_TRUE((expected.array() == state.get_positions().array()).all());
+
+  new_values << 4.0, 5.0, 6.0;
+  state.set_state_variable(new_values, JointStateVariable::POSITIONS);
+  EXPECT_TRUE(state.get_positions().cwiseEqual(new_values).all());
 }

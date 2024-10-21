@@ -2,7 +2,9 @@ import unittest
 import copy
 
 import numpy as np
-from state_representation import JointState, JointPositions, JointVelocities, JointAccelerations, JointTorques
+from state_representation import JointState, JointPositions, JointVelocities, JointAccelerations, JointTorques, \
+    JointStateVariable, string_to_joint_state_variable, joint_state_variable_to_string
+from state_representation.exceptions import InvalidStateVariableError, IncompatibleSizeError
 from datetime import timedelta
 
 JOINT_STATE_METHOD_EXPECTS = [
@@ -44,7 +46,10 @@ JOINT_STATE_METHOD_EXPECTS = [
     'set_torques',
     'set_torque',
     'set_zero',
-    'to_list'
+    'to_list',
+    'multiply_state_variable',
+    'get_state_variable',
+    'set_state_variable'
 ]
 
 
@@ -465,6 +470,30 @@ class TestJointState(unittest.TestCase):
         with self.assertRaises(TypeError):
             torques / timedelta(seconds=1)
 
+    def test_utilities(self):
+        state_variable_type = string_to_joint_state_variable("positions")
+        self.assertIsInstance(state_variable_type, JointStateVariable)
+        self.assertEqual("positions", joint_state_variable_to_string(state_variable_type))
+        with self.assertRaises(InvalidStateVariableError):
+            string_to_joint_state_variable("foo")
+
+        state = JointState("foo", 3)
+        with self.assertRaises(IncompatibleSizeError):
+            state.set_state_variable([1.0, 2.0, 3.0, 4.0], JointStateVariable.POSITIONS)
+        state.set_state_variable([1.0, 2.0, 3.0], JointStateVariable.POSITIONS)
+        self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [1.0, 2.0, 3.0]).all())
+        self.assertTrue((state.get_state_variable(state_variable_type) == [1.0, 2.0, 3.0]).all())
+
+        matrix = np.random.rand(3, 3)
+        expected = matrix @ np.array([1.0, 2.0, 3.0])
+        state.multiply_state_variable(matrix, JointStateVariable.POSITIONS)
+        self.assertTrue((state.get_positions() == expected).all())
+
+        state.set_state_variable([4.0, 5.0, 6.0], JointStateVariable.POSITIONS)
+        self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [4.0, 5.0, 6.0]).all())
+
+        state.set_state_variable(np.array([7.0, 8.0, 9.0]), JointStateVariable.POSITIONS)
+        self.assertTrue((state.get_positions() == [7.0, 8.0, 9.0]).all())
 
 if __name__ == '__main__':
     unittest.main()
