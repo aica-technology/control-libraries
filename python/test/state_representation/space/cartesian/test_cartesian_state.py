@@ -1004,10 +1004,12 @@ class TestCartesianState(unittest.TestCase):
         self.assertIsInstance(state_variable_type, CartesianStateVariable)
         self.assertEqual("position", cartesian_state_variable_to_string(state_variable_type))
         with self.assertRaises(InvalidStateVariableError):
-            result = string_to_cartesian_state_variable("foo")
+            string_to_cartesian_state_variable("foo")
 
         state = CartesianState()
-        state.set_position([1.0, 2.0, 3.0])
+        with self.assertRaises(IncompatibleSizeError):
+            state.set_state_variable([1.0, 2.0, 3.0, 4.0], state_variable_type)
+        state.set_state_variable([1.0, 2.0, 3.0], state_variable_type)
         self.assertTrue((state.get_state_variable(CartesianStateVariable.POSITION) == [1.0, 2.0, 3.0]).all())
         self.assertTrue((state.get_state_variable(state_variable_type) == [1.0, 2.0, 3.0]).all())
 

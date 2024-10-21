@@ -4,7 +4,7 @@ import copy
 import numpy as np
 from state_representation import JointState, JointPositions, JointVelocities, JointAccelerations, JointTorques, \
     JointStateVariable, string_to_joint_state_variable, joint_state_variable_to_string
-from state_representation.exceptions import InvalidStateVariableError
+from state_representation.exceptions import InvalidStateVariableError, IncompatibleSizeError
 from datetime import timedelta
 
 JOINT_STATE_METHOD_EXPECTS = [
@@ -475,12 +475,19 @@ class TestJointState(unittest.TestCase):
         self.assertIsInstance(state_variable_type, JointStateVariable)
         self.assertEqual("positions", joint_state_variable_to_string(state_variable_type))
         with self.assertRaises(InvalidStateVariableError):
-            result = string_to_joint_state_variable("foo")
+            string_to_joint_state_variable("foo")
 
         state = JointState("foo", 3)
-        state.set_positions([1.0, 2.0, 3.0])
+        with self.assertRaises(IncompatibleSizeError):
+            state.set_state_variable([1.0, 2.0, 3.0, 4.0], JointStateVariable.POSITIONS)
+        state.set_state_variable([1.0, 2.0, 3.0], JointStateVariable.POSITIONS)
         self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [1.0, 2.0, 3.0]).all())
         self.assertTrue((state.get_state_variable(state_variable_type) == [1.0, 2.0, 3.0]).all())
+
+        matrix = np.random.rand(3, 3)
+        expected = matrix @ np.array([1.0, 2.0, 3.0])
+        state.multiply_state_variable(matrix, JointStateVariable.POSITIONS)
+        self.assertTrue((state.get_positions() == expected).all())
 
         state.set_state_variable([4.0, 5.0, 6.0], JointStateVariable.POSITIONS)
         self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [4.0, 5.0, 6.0]).all())

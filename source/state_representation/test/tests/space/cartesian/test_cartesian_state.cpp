@@ -1092,9 +1092,12 @@ TEST(CartesianStateTest, TestUtilities) {
   EXPECT_THROW(string_to_cartesian_state_variable("foo"), exceptions::InvalidStateVariableException);
 
   auto state = CartesianState();
-  auto new_values = Eigen::VectorXd(3);
+  auto new_values = Eigen::VectorXd(4);
+  new_values << 1.0, 2.0, 3.0, 4.0;
+  EXPECT_THROW(state.set_state_variable(new_values, state_variable_type), exceptions::IncompatibleSizeException);
+  new_values = Eigen::VectorXd(3);
   new_values << 1.0, 2.0, 3.0;
-  state.set_position(new_values);
+  state.set_state_variable(new_values, state_variable_type);
   EXPECT_TRUE(state.get_state_variable(CartesianStateVariable::POSITION).cwiseEqual(new_values).all());
   EXPECT_TRUE(state.get_state_variable(state_variable_type).cwiseEqual(new_values).all());
 

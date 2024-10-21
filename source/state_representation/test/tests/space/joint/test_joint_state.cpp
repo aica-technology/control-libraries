@@ -609,11 +609,19 @@ TEST(JointStateTest, TestUtilities) {
   EXPECT_THROW(string_to_joint_state_variable("foo"), exceptions::InvalidStateVariableException);
 
   auto state = JointState("foo", 3);
-  auto new_values = Eigen::VectorXd(3);
+  auto new_values = Eigen::VectorXd(4);
+  EXPECT_THROW(
+      state.set_state_variable(new_values, JointStateVariable::POSITIONS), exceptions::IncompatibleSizeException);
+  new_values = Eigen::VectorXd(3);
   new_values << 1.0, 2.0, 3.0;
-  state.set_positions(new_values);
+  state.set_state_variable(new_values, JointStateVariable::POSITIONS);
   EXPECT_TRUE(state.get_state_variable(JointStateVariable::POSITIONS).cwiseEqual(new_values).all());
   EXPECT_TRUE(state.get_state_variable(state_variable_type).cwiseEqual(new_values).all());
+
+  Eigen::MatrixXd matrix = Eigen::MatrixXd::Random(3, 3);
+  auto expected = matrix * new_values;
+  state.multiply_state_variable(matrix, JointStateVariable::POSITIONS);
+  EXPECT_TRUE((expected.array() == state.get_positions().array()).all());
 
   new_values << 4.0, 5.0, 6.0;
   state.set_state_variable(new_values, JointStateVariable::POSITIONS);
