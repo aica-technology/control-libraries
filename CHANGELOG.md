@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.0.1](#901)
 - [9.0.0](#900)
 - [8.1.0](#810)
 - [8.0.0](#800)
@@ -15,8 +16,16 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## 9.0.1
 
-## Upcoming changes (in development)
+Version 9.0.1 is a minor version update that exposes Cartesian and Joint state utility functions from the 
+corresponding `state_representation` classes.
+
+### Features
+
+It is now possible to convert `CartesianStateVariable` and `JointStateVariable`s from and to `std::string`.
+
+### Full changelog
 
 - feat(state-representation): add utilities for CartesianStateVariable (#195, #201)
 - feat(state-representation): add utilities for JointStateVariable (#197, #201)
