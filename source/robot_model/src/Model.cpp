@@ -682,7 +682,7 @@ state_representation::JointState Model::clamp_in_range(
     default:
       return joint_state;
   }
-  state_representation::JointState joint_state_clamped(joint_state);
+  auto joint_state_clamped(joint_state);
   joint_state_clamped.set_state_variable(clamped_vector, state_variable_type);
   return joint_state_clamped;
 }
