@@ -115,6 +115,13 @@ void model(py::module_& m) {
   c.def("in_range", [](Model& self, const JointState& joint_state) -> bool { return self.in_range(joint_state); },
         "Check if the joint state variables (positions, velocities & torques) are inside the limits provided by the model", "joint_state"_a);
 
+  c.def(
+      "clamp_in_range",
+      [](Model& self, const JointState& joint_state, const JointStateVariable& state_variable_type) -> JointState {
+        return self.clamp_in_range(joint_state, state_variable_type);
+      },
+      "Clamp the joint state variables (positions, velocities & torques) according to the limits provided by the model",
+      "joint_state"_a, "state_variable_type"_a);
   c.def("clamp_in_range", [](Model& self, const JointState& joint_state) -> JointState { return self.clamp_in_range(joint_state); },
         "Clamp the joint state variables (positions, velocities & torques) according to the limits provided by the model", "joint_state"_a);
 }
