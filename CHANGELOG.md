@@ -18,8 +18,8 @@ Release Versions
 
 ## 9.0.1
 
-Version 9.0.1 is a minor version update that exposes Cartesian and Joint state utility functions to `Model` derived 
-classes.
+Version 9.0.1 is a minor version update that exposes Cartesian and Joint state utility functions from the 
+corresponding `state_representation` classes.
 
 ### Features
 
