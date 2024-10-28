@@ -206,6 +206,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7b54872ed5a27e5e67af758dfab2470" id="r_ae7b54872ed5a27e5e67af758dfab2470"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#ae7b54872ed5a27e5e67af758dfab2470">in_range</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> &amp;joint_state) const</td></tr>
 <tr class="memdesc:ae7b54872ed5a27e5e67af758dfab2470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the joint state variables (positions, velocities &amp; torques) are inside the limits provided by the model.  <br /></td></tr>
 <tr class="separator:ae7b54872ed5a27e5e67af758dfab2470"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9412dcb23238248a93b2550973526cd" id="r_aa9412dcb23238248a93b2550973526cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#aa9412dcb23238248a93b2550973526cd">clamp_in_range</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> &amp;joint_state, const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">state_representation::JointStateVariable</a> &amp;state_variable_type) const</td></tr>
+<tr class="memdesc:aa9412dcb23238248a93b2550973526cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp the joint state variables of a JointStateVariable according to the limits provided by the model.  <br /></td></tr>
+<tr class="separator:aa9412dcb23238248a93b2550973526cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7be997ecd9d9fde596d183c01afb72e4" id="r_a7be997ecd9d9fde596d183c01afb72e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html#a7be997ecd9d9fde596d183c01afb72e4">clamp_in_range</a> (const <a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> &amp;joint_state) const</td></tr>
 <tr class="memdesc:a7be997ecd9d9fde596d183c01afb72e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clamp the joint state variables (positions, velocities &amp; torques) according to the limits provided by the model.  <br /></td></tr>
 <tr class="separator:a7be997ecd9d9fde596d183c01afb72e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -393,7 +396,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a7be997ecd9d9fde596d183c01afb72e4" name="a7be997ecd9d9fde596d183c01afb72e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7be997ecd9d9fde596d183c01afb72e4">&#9670;&#160;</a></span>clamp_in_range()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7be997ecd9d9fde596d183c01afb72e4">&#9670;&#160;</a></span>clamp_in_range() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -412,6 +415,46 @@ Friends</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">joint_state</td><td>the joint state to be clamped </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the clamped joint states </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_model_8cpp_source.html#l00690">690</a> of file <a class="el" href="_model_8cpp_source.html">Model.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa9412dcb23238248a93b2550973526cd" name="aa9412dcb23238248a93b2550973526cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9412dcb23238248a93b2550973526cd">&#9670;&#160;</a></span>clamp_in_range() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> robot_model::Model::clamp_in_range </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classstate__representation_1_1_joint_state.html">state_representation::JointState</a> &amp;&#160;</td>
+          <td class="paramname"><em>joint_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacestate__representation.html#a65e64875cc8437e40b1debd7ae30bcdc">state_representation::JointStateVariable</a> &amp;&#160;</td>
+          <td class="paramname"><em>state_variable_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clamp the joint state variables of a JointStateVariable according to the limits provided by the model. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">joint_state</td><td>the joint state to be clamped </td></tr>
+    <tr><td class="paramname">state_variable_type</td><td>the type of the joint state variable to be clamped </td></tr>
   </table>
   </dd>
 </dl>
@@ -916,7 +959,7 @@ Friends</h2></td></tr>
 <p>Getter of the base frame of the robot. </p>
 <dl class="section return"><dt>Returns</dt><dd>the base frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00593">593</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00601">601</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -946,7 +989,7 @@ Friends</h2></td></tr>
 <p>Getter of the frames from the model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the frame names </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00597">597</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00605">605</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -976,7 +1019,7 @@ Friends</h2></td></tr>
 <p>Getter of the gravity vector. </p>
 <dl class="section return"><dt>Returns</dt><dd>Eigen::Vector3d the gravity vector </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00601">601</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00609">609</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +1049,7 @@ Friends</h2></td></tr>
 <p>Getter of the joint frames from the model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the joint frames </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00587">587</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00595">595</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1101,7 @@ Friends</h2></td></tr>
 <p>Getter of the number of joints. </p>
 <dl class="section return"><dt>Returns</dt><dd>the number of joints </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00583">583</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00591">591</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1131,7 @@ Friends</h2></td></tr>
 <p>Getter of the pinocchio model. </p>
 <dl class="section return"><dt>Returns</dt><dd>the pinocchio model </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00609">609</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00617">617</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1118,7 +1161,7 @@ Friends</h2></td></tr>
 <p>Getter of the robot name. </p>
 <dl class="section return"><dt>Returns</dt><dd>the robot name </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00551">551</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00559">559</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1191,7 @@ Friends</h2></td></tr>
 <p>Getter of the URDF path. </p>
 <dl class="section return"><dt>Returns</dt><dd>the URDF path </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00579">579</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00587">587</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1642,7 +1685,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>reference to the current model with new values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00569">569</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00577">577</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1678,7 +1721,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00605">605</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00613">613</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1714,7 +1757,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00575">575</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00583">583</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
@@ -1762,7 +1805,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00555">555</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00563">563</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
