@@ -21,7 +21,7 @@ Release Versions
 - feat(state-representation): add utilities for CartesianStateVariable (#195, #201)
 - feat(state-representation): add utilities for JointStateVariable (#197, #201)
 - feat(robot-model): add clamp_in_range function for individual JointStateVariable (#194)
-- 
+  
 ## 9.0.0
 
 Version 9.0.0 is a new major version of control libraries that is built on Ubuntu 24.04 with Python 3.12. It does not
