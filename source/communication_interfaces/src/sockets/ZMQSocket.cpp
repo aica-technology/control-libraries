@@ -53,7 +53,7 @@ bool ZMQSocket::on_send_bytes(const std::string& buffer) {
 }
 
 void ZMQSocket::on_close() {
-  if (this->socket_ != nullptr && this->socket_->connected()) {
+  if (this->socket_ != nullptr && *this->socket_) {
     this->socket_->close();
   }
 }
