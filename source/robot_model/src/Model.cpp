@@ -448,6 +448,9 @@ Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_p
     const pinocchio::SE3 iMd = this->robot_data_.oMi[joint_id].actInv(oMdes);
     err = pinocchio::log6(iMd).toVector();
     if (err.norm() < parameters.tolerance) {
+      if (!this->in_range(q)) {
+        throw std::runtime_error("out of range");
+      }
       return q;
     }
     pinocchio::computeJointJacobian(this->robot_model_, this->robot_data_, q.get_positions(), joint_id, J);
@@ -465,7 +468,7 @@ Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_p
     qd.noalias() = W_c * psi - parameters.alpha * W_b * (J_b.transpose() * JJt.ldlt().solve(err - J * W_c * psi));
     // qd.noalias() = -J.transpose() * JJt.ldlt().solve(err); if no clwn
     q.set_positions(pinocchio::integrate(this->robot_model_, q.get_positions(), qd * dt));
-    q = this->clamp_in_range(q);
+    // q = this->clamp_in_range(q);
   }
 
   // // 1 second for the Newton-Raphson method
@@ -500,8 +503,7 @@ Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_p
   //   q += dq * dt;
   //   q = this->clamp_in_range(q);
   // }
-  throw (exceptions::InverseKinematicsNotConvergingException(parameters.max_number_of_iterations,
-                                                             err.array().abs().maxCoeff()));
+  throw exceptions::InverseKinematicsNotConvergingException(parameters.max_number_of_iterations, err.norm());
 }
 
 state_representation::JointPositions
