@@ -463,10 +463,10 @@ Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_p
     auto J_b = J * W_b;
     pinocchio::Data::Matrix6 JJt;
     JJt.noalias() = J_b * J_b.transpose();
-    // JJt.noalias() = J * J.transpose(); if no cwln
+    // JJt.noalias() = J * J.transpose(); // if no cwln
     JJt.diagonal().array() += parameters.damp;
     qd.noalias() = W_c * psi - parameters.alpha * W_b * (J_b.transpose() * JJt.ldlt().solve(err - J * W_c * psi));
-    // qd.noalias() = -J.transpose() * JJt.ldlt().solve(err); if no clwn
+    // qd.noalias() = -J.transpose() * JJt.ldlt().solve(err); // if no clwn
     q.set_positions(pinocchio::integrate(this->robot_model_, q.get_positions(), qd * dt));
     // q = this->clamp_in_range(q);
   }

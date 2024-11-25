@@ -315,6 +315,9 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematicsUR) {
   config2.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
   config3.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
 
+  state_representation::JointPositions start_config1("robot", ur5e->get_joint_frames());
+  start_config1.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+
   std::vector<state_representation::JointPositions> test_configs = {config1, config2, config3};
   std::chrono::nanoseconds dt(static_cast<int>(1e9));
   double tol = 1e-3;
@@ -323,7 +326,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematicsUR) {
 
   for (auto& config : test_configs) {
     state_representation::CartesianPose reference = ur5e->forward_kinematics(config, "ur5e_tool0");
-    state_representation::JointPositions q = ur5e->inverse_kinematics(reference, param, "ur5e_tool0");
+    state_representation::JointPositions q = ur5e->inverse_kinematics(reference, start_config1, param, "ur5e_tool0");
     state_representation::CartesianPose X = ur5e->forward_kinematics(q, "ur5e_tool0");
     EXPECT_TRUE(((reference - X) / dt).data().norm() < tol);
   }
