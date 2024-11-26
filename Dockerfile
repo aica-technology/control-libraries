@@ -1,5 +1,5 @@
 ARG BASE_TAG=24.04
-FROM ubuntu:${BASE_TAG} as base
+FROM ubuntu:${BASE_TAG} AS base
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
@@ -20,7 +20,7 @@ RUN mkdir -p /root/.ssh/ && ssh-keyscan github.com | tee -a /root/.ssh/known_hos
 
 ARG CMAKE_BUILD_TYPE=Release
 
-FROM base as apt-dependencies
+FROM base AS apt-dependencies
 COPY apt-packages.tx[t] /
 
 RUN <<HEREDOC
@@ -77,14 +77,14 @@ xargs -a /tmp/new-packages.txt dpkg-query -L \
 # this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
 HEREDOC
 
-FROM base as base-dependencies
+FROM base AS base-dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
 COPY dependencies/base_dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
 
-FROM base as pinocchio-dependencies
+FROM base AS pinocchio-dependencies
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 ARG TARGETPLATFORM
@@ -95,8 +95,8 @@ ARG HPP_FCL_TAG=v2.4.4
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
 # FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
-RUN --mount=type=cache,target=/pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+RUN --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+  --mount=type=cache,target=/pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   --mount=type=cache,target=/build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<EOF
 set -e
@@ -121,7 +121,7 @@ cmake --build build/pinocchio --target all install
 find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
 EOF
 
-FROM base as dependencies
+FROM base AS dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
 # Needed to build `osqp-eigen`
@@ -134,11 +134,11 @@ RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},
 COPY --from=base-dependencies /tmp/deps /tmp/deps
 COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
-FROM base as code
+FROM base AS code
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 
-FROM code as development
+FROM code AS development
 
 RUN usermod -a -G dialout ubuntu
 RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
@@ -164,7 +164,7 @@ USER ${USER}
 WORKDIR /src
 COPY --chown=${USER}:${USER} . .
 
-FROM code as build
+FROM code AS build
 ARG TARGETPLATFORM
 ARG CACHEID
 COPY licenses licenses
@@ -174,19 +174,19 @@ COPY CMakeLists.txt CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build
 
-FROM build as cpp-test
+FROM build AS cpp-test
 ARG TARGETPLATFORM
 ARG CACHEID
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -DBUILD_TESTING=ON && make -C build && CTEST_OUTPUT_ON_FAILURE=1 make -C build test
 
-FROM build as install
+FROM build AS install
 ARG TARGETPLATFORM
 ARG CACHEID
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake --install build --prefix /tmp/cl
 
-FROM code as python
+FROM code AS python
 ARG TARGETPLATFORM
 ARG CACHEID
 COPY --from=install /tmp/cl /usr
@@ -197,14 +197,14 @@ RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=10
   python3 -m pip install --prefix=/tmp/python /python
 RUN mv /tmp/python/local /tmp/python-usr
 
-FROM cpp-test as python-test
+FROM cpp-test AS python-test
 RUN pip install pytest --break-system-packages
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 COPY ./python/test /test
 RUN pytest /test
 
-FROM code as python-stubs
+FROM code AS python-stubs
 ARG TARGETPLATFORM
 ARG CACHEID
 COPY --from=install /tmp/cl /usr
@@ -239,7 +239,7 @@ done
 HEREDOC
 RUN mv /tmp/python/local /tmp/python-usr
 
-FROM scratch as production
+FROM scratch AS production
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr

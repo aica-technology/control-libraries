@@ -4,6 +4,8 @@
 #include <memory>
 #include <gtest/gtest.h>
 
+#include <pinocchio/algorithm/joint-configuration.hpp>
+
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
@@ -281,15 +283,15 @@ TEST_F(RobotModelKinematicsTest, TestClamp) {
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
-  state_representation::JointState config1("robot", franka->get_joint_frames());
-  state_representation::JointState config2("robot", franka->get_joint_frames());
-  state_representation::JointState config3("robot", franka->get_joint_frames());
+  state_representation::JointPositions config1("robot", franka->get_joint_frames());
+  state_representation::JointPositions config2("robot", franka->get_joint_frames());
+  state_representation::JointPositions config3("robot", franka->get_joint_frames());
   // Random test configurations
   config1.set_positions(std::vector<double>{-0.059943, 1.667088, 1.439900, -1.367141, -1.164922, 0.948034, 2.239983});
   config2.set_positions(std::vector<double>{2.648782, -0.553976, 0.801067, -2.042097, -1.642935, 2.946476, 1.292717});
   config3.set_positions(std::vector<double>{-0.329909, -0.235174, -1.881858, -2.491807, 0.674615, 0.996670, 0.345810});
 
-  std::vector<state_representation::JointState> test_configs = {config1, config2, config3};
+  std::vector<state_representation::JointPositions> test_configs = {config1, config2, config3};
   double tol = 1e-3;
   std::chrono::nanoseconds dt(static_cast<int>(1e9));
   InverseKinematicsParameters param = InverseKinematicsParameters();
@@ -300,6 +302,33 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
     state_representation::JointPositions q = franka->inverse_kinematics(reference, param, "panda_link8");
     state_representation::CartesianPose X = franka->forward_kinematics(q, "panda_link8");
     EXPECT_TRUE(((reference - X) / dt).data().cwiseAbs().maxCoeff() < tol);
+  }
+}
+
+TEST_F(RobotModelKinematicsTest, TestInverseKinematicsUR) {
+  auto ur5e = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
+  state_representation::JointPositions config1("robot", ur5e->get_joint_frames());
+  state_representation::JointPositions config2("robot", ur5e->get_joint_frames());
+  state_representation::JointPositions config3("robot", ur5e->get_joint_frames());
+  // Random test configurations
+  config1.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+  config2.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+  config3.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+
+  state_representation::JointPositions start_config1("robot", ur5e->get_joint_frames());
+  start_config1.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+
+  std::vector<state_representation::JointPositions> test_configs = {config1, config2, config3};
+  std::chrono::nanoseconds dt(static_cast<int>(1e9));
+  double tol = 1e-3;
+  InverseKinematicsParameters param = InverseKinematicsParameters();
+  param.tolerance = tol;
+
+  for (auto& config : test_configs) {
+    state_representation::CartesianPose reference = ur5e->forward_kinematics(config, "ur5e_tool0");
+    state_representation::JointPositions q = ur5e->inverse_kinematics(reference, start_config1, param, "ur5e_tool0");
+    state_representation::CartesianPose X = ur5e->forward_kinematics(q, "ur5e_tool0");
+    EXPECT_TRUE(((reference - X) / dt).data().norm() < tol);
   }
 }
 
