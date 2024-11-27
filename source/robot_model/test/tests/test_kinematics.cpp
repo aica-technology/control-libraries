@@ -306,30 +306,55 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseKinematicsUR) {
-  auto ur5e = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
-  state_representation::JointPositions config1("robot", ur5e->get_joint_frames());
-  state_representation::JointPositions config2("robot", ur5e->get_joint_frames());
-  state_representation::JointPositions config3("robot", ur5e->get_joint_frames());
-  // Random test configurations
-  config1.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
-  config2.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
-  config3.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
+  auto robot = std::make_unique<Model>("ur5e", std::string(TEST_FIXTURES) + "ur5e.urdf");
+  state_representation::JointPositions config("robot", robot->get_joint_frames());
 
-  state_representation::JointPositions start_config1("robot", ur5e->get_joint_frames());
-  start_config1.set_positions(pinocchio::randomConfiguration(ur5e->get_pinocchio_model()));
-
-  std::vector<state_representation::JointPositions> test_configs = {config1, config2, config3};
   std::chrono::nanoseconds dt(static_cast<int>(1e9));
   double tol = 1e-3;
   InverseKinematicsParameters param = InverseKinematicsParameters();
   param.tolerance = tol;
 
-  for (auto& config : test_configs) {
-    state_representation::CartesianPose reference = ur5e->forward_kinematics(config, "ur5e_tool0");
-    state_representation::JointPositions q = ur5e->inverse_kinematics(reference, start_config1, param, "ur5e_tool0");
-    state_representation::CartesianPose X = ur5e->forward_kinematics(q, "ur5e_tool0");
+  int failed = 0;
+  for (std::size_t i = 0; i < 20; ++i) {
+    config.set_positions(pinocchio::randomConfiguration(robot->get_pinocchio_model()));
+    auto reference = robot->forward_kinematics(config);
+    state_representation::JointPositions q;
+    try {
+      q = robot->inverse_kinematics(reference, param);
+    } catch (const std::exception&) {
+      ++failed;
+      continue;
+    }
+    auto X = robot->forward_kinematics(q);
     EXPECT_TRUE(((reference - X) / dt).data().norm() < tol);
   }
+  EXPECT_EQ(failed, 0);
+}
+
+TEST_F(RobotModelKinematicsTest, TestInverseKinematicsXArm) {
+  auto robot = std::make_unique<Model>("xarm", std::string(TEST_FIXTURES) + "xarm.urdf");
+  state_representation::JointPositions config("robot", robot->get_joint_frames());
+
+  std::chrono::nanoseconds dt(static_cast<int>(1e9));
+  double tol = 1e-3;
+  InverseKinematicsParameters param = InverseKinematicsParameters();
+  param.tolerance = tol;
+
+  int failed = 0;
+  for (std::size_t i = 0; i < 20; ++i) {
+    config.set_positions(pinocchio::randomConfiguration(robot->get_pinocchio_model()));
+    auto reference = robot->forward_kinematics(config);
+    state_representation::JointPositions q;
+    try {
+      q = robot->inverse_kinematics(reference, param);
+    } catch (const std::exception&) {
+      ++failed;
+      continue;
+    }
+    auto X = robot->forward_kinematics(q);
+    EXPECT_TRUE(((reference - X) / dt).data().norm() < tol);
+  }
+  EXPECT_EQ(failed, 0);
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseKinematicsIKDoesNotConverge) {
