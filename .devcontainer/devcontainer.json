@@ -1,11 +1,14 @@
 {
     "name": "control libraries",
     "containerUser": "ubuntu",
-    "build": {
-        "dockerfile": "../Dockerfile",
-        "context": "..",
-        "target": "development"
-    },
+    "initializeCommand": [
+        "docker",
+        "build",
+        "--target=development",
+        "--tag=control-libraries:development",
+        "."
+    ],
+    "image": "control-libraries:development",
     "workspaceMount": "source=${localWorkspaceFolder},target=/src,type=bind,consistency=cached",
     "workspaceFolder": "/src",
     "customizations": {
