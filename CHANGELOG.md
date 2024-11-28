@@ -16,6 +16,10 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- fix(robot-model): improve ik performance (#205)
+
 ## 9.0.1
 
 Version 9.0.1 is a minor version update that exposes Cartesian and Joint state utility functions from the 
