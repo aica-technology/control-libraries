@@ -1,11 +1,13 @@
 #include "robot_model/Model.hpp"
 
-#include <stdexcept>
-#include <memory>
 #include <gtest/gtest.h>
+#include <memory>
+#include <stdexcept>
 
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include <pinocchio/algorithm/joint-configuration.hpp>
+
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
+#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 
 using namespace robot_model;
 
@@ -20,9 +22,7 @@ protected:
     create_urdf_test_path = std::string(TEST_FIXTURES) + "urdf_test.urdf";
   }
 
-  void TearDown() override {
-    std::remove(create_urdf_test_path.c_str());
-  }
+  void TearDown() override { std::remove(create_urdf_test_path.c_str()); }
 
   std::unique_ptr<Model> franka;
   std::string robot_name;
@@ -60,7 +60,6 @@ TEST_F(RobotModelTest, TestEqualityConstructor) {
 TEST_F(RobotModelTest, TestNumberOfJoints) {
   EXPECT_EQ(franka->get_number_of_joints(), 7);
 }
-
 
 TEST_F(RobotModelTest, TestJacobianJointNames) {
   state_representation::JointState dummy = state_representation::JointState::Zero(robot_name, 7);
@@ -133,4 +132,66 @@ TEST_F(RobotModelTest, TestCreateURDFFromStringFail) {
 TEST_F(RobotModelTest, TestModelGetter) {
   const pinocchio::Model& robot_model = franka->get_pinocchio_model();
   EXPECT_TRUE(robot_model.existBodyName("panda_link0"));
+}
+
+TEST_F(RobotModelTest, TestStuff) {
+  auto robot = std::make_unique<Model>("robot", std::string(TEST_FIXTURES) + "ur5e.urdf");
+  const auto& robot_model = robot->get_pinocchio_model();
+  const auto& robot_data = robot->get_pinocchio_data();
+
+  auto config = state_representation::JointPositions::Zero("robot", robot->get_joint_frames());
+  // config.set_positions(pinocchio::randomConfiguration(robot_model));
+  robot->forward_kinematics(config);
+
+  std::string previous_frame;
+  for (std::size_t j = 0; j < robot_model.frames.size(); ++j) {
+    auto frame = robot_model.frames.at(j);
+    if (frame.previousFrame == 0) {
+      continue;
+    }
+    if (frame.type == pinocchio::JOINT) {
+      previous_frame = robot_model.frames.at(j + 1).name;
+    }
+    if (frame.type == pinocchio::FIXED_JOINT) {
+      auto base_frame = previous_frame.empty() ? robot_model.frames.at(frame.previousFrame).name : previous_frame;
+      std::cerr << robot_model.frames.at(j + 1).name << " in " << base_frame << std::endl;
+    }
+  }
+
+  for (std::size_t i = 0; i < robot->get_number_of_joints(); ++i) {
+    auto frame_id = robot_model.getFrameId(robot->get_joint_frames().at(i));
+    std::cerr << robot_model.frames.at(frame_id - 1).name << std::endl;
+    std::cerr << robot_model.frames.at(frame_id - 1).placement * robot_data.liMi.at(i + 1) << std::endl;
+    std::cerr << robot_model.frames.at(frame_id + 1).name << std::endl;
+  }
+
+  for (std::size_t j = 0; j < robot_model.frames.size(); ++j) {
+    auto frame = robot_model.frames.at(j);
+    if (frame.previousFrame == 0) {
+      continue;
+    }
+    if (frame.type == pinocchio::JOINT) {
+      std::cerr << robot_model.frames.at(j - 1).name << std::endl;
+      // std::cerr << robot_model.frames.at(j - 1).placement;
+      // std::cerr << frame.placement;
+      // std::cerr << frame.parent << std::endl;
+      std::cerr << robot_model.frames.at(j - 1).placement * robot_data.liMi.at(frame.parent) << std::endl;
+      std::cerr << robot_model.frames.at(j + 1).name << std::endl;
+    }
+  }
+
+  // config.set_positions(pinocchio::randomConfiguration(robot_model));
+  // franka->forward_kinematics(config);
+  // for (std::size_t j = 0; j < robot_model.frames.size(); ++j) {
+  //   auto frame = robot_model.frames.at(j);
+  //   if (frame.previousFrame == 0) {
+  //     continue;
+  //   }
+  //   if (frame.type == pinocchio::JOINT) {
+  //     std::cerr << robot_model.frames.at(j - 1).name << std::endl;
+  //     std::cerr << robot_data.liMi.at(robot_model.getJointId(frame.name)) << std::endl;
+  //     std::cerr << robot_model.frames.at(j + 1).name << std::endl;
+  //   }
+  // }
+  EXPECT_TRUE(false);
 }
