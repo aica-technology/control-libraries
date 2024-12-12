@@ -19,6 +19,7 @@ Release Versions
 ## Upcoming changes
 
 - fix(robot-model): improve ik performance (#205)
+- fix(robot-model): kinematics tests (#207)
 
 ## 9.0.1
 
