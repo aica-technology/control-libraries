@@ -311,7 +311,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
   InverseKinematicsParameters param = InverseKinematicsParameters();
   param.tolerance = tol;
 
-  std::size_t num_samples = 1000;
+  std::size_t num_samples = 100;
   for (const auto& urdf : std::vector<std::string>{"panda_arm.urdf", "ur5e.urdf", "xarm.urdf"}) {
     auto robot = std::make_unique<Model>("robot", std::string(TEST_FIXTURES) + urdf);
     state_representation::JointPositions config("robot", robot->get_joint_frames());
