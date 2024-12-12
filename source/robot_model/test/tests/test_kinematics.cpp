@@ -330,7 +330,8 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
         total_time += diff.count();
         ++success;
       } catch (const std::exception&) {
-        continue;
+        diff = std::chrono::system_clock::now() - start_time;
+        total_time += diff.count();
       }
     }
     std::cout << urdf << ": found " << success << " solutions (" << 100.0 * success / num_samples
