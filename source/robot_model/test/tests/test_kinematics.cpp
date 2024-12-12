@@ -313,7 +313,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
 
   std::size_t num_samples = 10000;
   for (const auto& urdf : std::vector<std::string>{"panda_arm.urdf", "ur5e.urdf", "xarm.urdf"}) {
-    auto robot = std::make_unique<Model>("robot", std::string(TEST_FIXTURES) + "panda_arm.urdf");
+    auto robot = std::make_unique<Model>("robot", std::string(TEST_FIXTURES) + urdf);
     state_representation::JointPositions config("robot", robot->get_joint_frames());
 
     int success = 0;
@@ -322,7 +322,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
     double total_time = 0;
     for (std::size_t i = 0; i < num_samples; ++i) {
       config.set_positions(pinocchio::randomConfiguration(robot->get_pinocchio_model()));
-      auto reference = franka->forward_kinematics(config);
+      auto reference = robot->forward_kinematics(config);
       try {
         start_time = std::chrono::system_clock::now();
         robot->inverse_kinematics(reference, param);
