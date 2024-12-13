@@ -311,7 +311,7 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
   InverseKinematicsParameters param = InverseKinematicsParameters();
   param.tolerance = tol;
 
-  std::size_t num_samples = 100;
+  std::size_t num_samples = 1000;
   for (const auto& urdf : std::vector<std::string>{"panda_arm.urdf", "ur5e.urdf", "xarm.urdf"}) {
     auto robot = std::make_unique<Model>("robot", std::string(TEST_FIXTURES) + urdf);
     state_representation::JointPositions config("robot", robot->get_joint_frames());
@@ -323,15 +323,13 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
     for (std::size_t i = 0; i < num_samples; ++i) {
       config.set_positions(pinocchio::randomConfiguration(robot->get_pinocchio_model()));
       auto reference = robot->forward_kinematics(config);
+      start_time = std::chrono::system_clock::now();
       try {
-        start_time = std::chrono::system_clock::now();
         robot->inverse_kinematics(reference, param);
-        diff = std::chrono::system_clock::now() - start_time;
-        total_time += diff.count();
         ++success;
-      } catch (const std::exception&) {
-        continue;
-      }
+      } catch (const std::exception&) {}
+      diff = std::chrono::system_clock::now() - start_time;
+      total_time += diff.count();
     }
     std::cout << urdf << ": found " << success << " solutions (" << 100.0 * success / num_samples
             << "%) with an average of " << total_time / num_samples << " secs per sample" << std::endl;
