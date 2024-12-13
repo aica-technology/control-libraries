@@ -6,7 +6,7 @@
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
-#include "robot_model/exceptions/CollisionGeometryException.hpp" 
+#include "robot_model/exceptions/CollisionGeometryException.hpp"
 
 namespace robot_model {
 Model::Model(const std::string& robot_name, 
@@ -381,99 +381,106 @@ std::vector<state_representation::CartesianPose> Model::forward_kinematics(const
   return this->forward_kinematics(joint_positions, frame_ids);
 }
 
-Eigen::MatrixXd Model::cwln_weighted_matrix(const state_representation::JointPositions& joint_positions,
-                                            const double margin) {
-  Eigen::MatrixXd W_b = Eigen::MatrixXd::Identity(this->robot_model_.nq, this->robot_model_.nq);
-  for (int n = 0; n < this->robot_model_.nq; ++n) {
-    double d = 1;
-    W_b(n, n) = 1;
-    if (joint_positions.data()[n] < this->robot_model_.lowerPositionLimit[n] + margin) {
-      if (joint_positions.data()[n] < this->robot_model_.lowerPositionLimit[n]) {
-        W_b(n, n) = 0;
+Eigen::MatrixXd
+Model::cwln_weighted_matrix(const state_representation::JointPositions& joint_positions, const double margin) {
+  Eigen::VectorXd diag = Eigen::VectorXd::Ones(joint_positions.get_size());
+  const auto positions = joint_positions.get_positions();
+  for (int i = 0; i < positions.size(); ++i) {
+    if (positions(i) < this->robot_model_.lowerPositionLimit(i) + margin) {
+      if (positions(i) < this->robot_model_.lowerPositionLimit(i)) {
+        diag(i) = 0;
       } else {
-        d = (this->robot_model_.lowerPositionLimit[n] + margin - joint_positions.data()[n]) / margin;
-        W_b(n, n) = -2 * d * d * d + 3 * d * d;
+        auto d = (this->robot_model_.lowerPositionLimit(i) + margin - positions(i)) / margin;
+        diag(i) = -2 * d * d * d + 3 * d * d;
       }
-    } else if (this->robot_model_.upperPositionLimit[n] - margin < joint_positions.data()[n]) {
-      if (this->robot_model_.upperPositionLimit[n] < joint_positions.data()[n]) {
-        W_b(n, n) = 0;
+    } else if (this->robot_model_.upperPositionLimit(i) - margin < positions(i)) {
+      if (this->robot_model_.upperPositionLimit(i) < positions(i)) {
+        diag(i) = 0;
       } else {
-        d = (joint_positions.data()[n] - (this->robot_model_.upperPositionLimit[n] - margin)) / margin;
-        W_b(n, n) = -2 * d * d * d + 3 * d * d;
+        auto d = (positions(i) - (this->robot_model_.upperPositionLimit(i) - margin)) / margin;
+        diag(i) = -2 * d * d * d + 3 * d * d;
       }
     }
   }
-  return W_b;
+  return diag.asDiagonal();
 }
 
-Eigen::VectorXd Model::cwln_repulsive_potential_field(const state_representation::JointPositions& joint_positions,
-                                                      double margin) {
-  Eigen::VectorXd Psi(this->robot_model_.nq);
-  Eigen::VectorXd q = joint_positions.data();
-  for (int i = 0; i < this->robot_model_.nq; ++i) {
-    Psi[i] = 0;
-    if (q[i] < this->robot_model_.lowerPositionLimit[i] + margin) {
-      Psi[i] = this->robot_model_.upperPositionLimit[i] - margin
-          - std::max(q[i], this->robot_model_.lowerPositionLimit[i]);
-    } else if (this->robot_model_.upperPositionLimit[i] - margin < q[i]) {
-      Psi[i] = this->robot_model_.lowerPositionLimit[i] + margin
-          - std::min(q[i], this->robot_model_.upperPositionLimit[i]);
+Eigen::VectorXd
+Model::cwln_repulsive_potential_field(const state_representation::JointPositions& joint_positions, double margin) {
+  Eigen::VectorXd psi = Eigen::VectorXd::Zero(joint_positions.get_size());
+  const auto positions = joint_positions.get_positions();
+  for (int i = 0; i < positions.size(); ++i) {
+    if (positions(i) < this->robot_model_.lowerPositionLimit(i) + margin) {
+      psi(i) = this->robot_model_.upperPositionLimit(i) - margin
+          - std::max(positions(i), this->robot_model_.lowerPositionLimit(i));
+    } else if (this->robot_model_.upperPositionLimit(i) - margin < positions(i)) {
+      psi(i) = this->robot_model_.lowerPositionLimit(i) + margin
+          - std::min(positions(i), this->robot_model_.upperPositionLimit(i));
     }
   }
-  return Psi;
+  return psi;
 }
 
-state_representation::JointPositions
-Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_pose,
-                          const state_representation::JointPositions& joint_positions,
-                          const InverseKinematicsParameters& parameters,
-                          const std::string& frame) {
+state_representation::JointPositions Model::inverse_kinematics(
+    const state_representation::CartesianPose& cartesian_pose,
+    const state_representation::JointPositions& joint_positions, const InverseKinematicsParameters& parameters,
+    const std::string& frame) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   if (!this->robot_model_.existFrame(actual_frame)) {
     throw exceptions::FrameNotFoundException(actual_frame);
   }
-  // 1 second for the Newton-Raphson method
-  const std::chrono::nanoseconds dt(static_cast<int>(1e9));
-  // initialization of the loop variables
-  state_representation::JointPositions q(joint_positions);
-  state_representation::JointVelocities dq(this->get_robot_name(), joint_positions.get_names());
-  state_representation::Jacobian J(this->get_robot_name(),
-                                   this->get_joint_frames(),
-                                   actual_frame,
-                                   this->get_base_frame());
-  Eigen::MatrixXd J_b = Eigen::MatrixXd::Zero(6, this->get_number_of_joints());
-  Eigen::MatrixXd JJt(6, 6);
-  Eigen::MatrixXd W_b = Eigen::MatrixXd::Identity(this->get_number_of_joints(), this->get_number_of_joints());
-  Eigen::MatrixXd W_c = Eigen::MatrixXd::Identity(this->get_number_of_joints(), this->get_number_of_joints());
-  Eigen::VectorXd psi(this->get_number_of_joints());
-  Eigen::VectorXd err(6);
-  for (unsigned int i = 0; i < parameters.max_number_of_iterations; ++i) {
-    err = ((cartesian_pose - this->forward_kinematics(q, actual_frame)) / dt).data();
-    // break in case of convergence
-    if (err.cwiseAbs().maxCoeff() < parameters.tolerance) {
-      return q;
-    }
-    J = this->compute_jacobian(q, actual_frame);
-    W_b = this->cwln_weighted_matrix(q, parameters.margin);
-    W_c = Eigen::MatrixXd::Identity(this->get_number_of_joints(), this->get_number_of_joints()) - W_b;
-    psi = parameters.gamma * this->cwln_repulsive_potential_field(q, parameters.margin);
-    J_b = J * W_b;
-    JJt.noalias() = J_b * J_b.transpose();
-    JJt.diagonal().array() += parameters.damp;
-    dq.set_velocities(W_c * psi + parameters.alpha * W_b * (J_b.transpose() * JJt.ldlt().solve(err - J * W_c * psi)));
-    q += dq * dt;
-    q = this->clamp_in_range(q);
+  const auto pinocchio_frame = this->robot_model_.frames.at(this->robot_model_.getFrameId(actual_frame));
+  const auto joint_id = pinocchio_frame.parent;
+  const auto oMdes = pinocchio::SE3(cartesian_pose.get_orientation().matrix(), cartesian_pose.get_position())
+      * pinocchio_frame.placement.inverse();// desired pose of parent joint in base frame
+
+  auto q = joint_positions;
+  if (joint_positions.is_empty()) {
+    q.set_positions(pinocchio::randomConfiguration(this->robot_model_));
   }
-  throw (exceptions::InverseKinematicsNotConvergingException(parameters.max_number_of_iterations,
-                                                             err.array().abs().maxCoeff()));
+  auto max_retries = joint_positions ? 1 : 3;
+  auto retries = 0;
+  Eigen::Vector<double, 6> err;
+  const double dt = 1;
+  while (retries < max_retries) {
+    Eigen::VectorXd qd(this->robot_model_.nv);
+    Eigen::MatrixXd J = Eigen::MatrixXd::Zero(6, this->robot_model_.nv);
+    for (unsigned int i = 0; i < parameters.max_number_of_iterations; ++i) {
+      pinocchio::forwardKinematics(this->robot_model_, this->robot_data_, q.get_positions());
+      const pinocchio::SE3 iMd = this->robot_data_.oMi[joint_id].actInv(oMdes);
+      err = pinocchio::log6(iMd).toVector();
+      if (err.norm() < parameters.tolerance) {
+        if (!this->in_range(q)) {
+          throw std::runtime_error(
+              "The inverse kinematics algorithm converged to a configuration that is not within joint limits.");
+        }
+        return q;
+      }
+      pinocchio::computeJointJacobian(this->robot_model_, this->robot_data_, q.get_positions(), joint_id, J);
+      pinocchio::Data::Matrix6 Jlog;
+      pinocchio::Jlog6(iMd.inverse(), Jlog);
+      J = -Jlog * J;
+      auto W_b = this->cwln_weighted_matrix(q, parameters.margin);
+      auto W_c = Eigen::MatrixXd::Identity(this->robot_model_.nv, this->robot_model_.nv) - W_b;
+      Eigen::VectorXd psi = parameters.gamma * this->cwln_repulsive_potential_field(q, parameters.margin);
+      auto J_b = J * W_b;
+      pinocchio::Data::Matrix6 JJt;
+      JJt.noalias() = J_b * J_b.transpose();
+      JJt.diagonal().array() += parameters.damp;
+      qd.noalias() = W_c * psi - parameters.alpha * W_b * (J_b.transpose() * JJt.ldlt().solve(err - J * W_c * psi));
+      q.set_positions(pinocchio::integrate(this->robot_model_, q.get_positions(), qd * dt));
+    }
+    q.set_positions(pinocchio::randomConfiguration(this->robot_model_));
+    ++retries;
+  }
+  throw exceptions::InverseKinematicsNotConvergingException(parameters.max_number_of_iterations, err.norm());
 }
 
 state_representation::JointPositions
 Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_pose,
                           const InverseKinematicsParameters& parameters,
                           const std::string& frame) {
-  Eigen::VectorXd q(pinocchio::neutral(this->robot_model_));
-  state_representation::JointPositions positions(this->get_robot_name(), this->get_joint_frames(), q);
+  state_representation::JointPositions positions(this->get_robot_name(), this->get_joint_frames());
   return this->inverse_kinematics(cartesian_pose, positions, parameters, frame);
 }
 
