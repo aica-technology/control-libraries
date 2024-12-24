@@ -196,6 +196,34 @@ public:
   CartesianTwist copy() const;
 
   /**
+   * @brief Differentiate a Cartesian twist over a time period
+   * @param dt The time period used for derivation in seconds
+   * @return The resulting Cartesian acceleration after derivation
+   */
+  CartesianAcceleration differentiate(double dt) const;
+
+  /**
+   * @brief Differentiate a Cartesian twist over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting Cartesian acceleration after derivation
+   */
+  CartesianAcceleration differentiate(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Integrate the Cartesian twist over a time period
+   * @param dt The time period used for integration in seconds
+   * @return The resulting Cartesian pose after integration
+   */
+  CartesianPose integrate(double dt) const;
+
+  /**
+   * @brief Integrate the Cartesian twist over a time period
+   * @param dt The time period used for integration
+   * @return The resulting Cartesian pose after integration
+   */
+  CartesianPose integrate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Compute the inverse of the current Cartesian twist
    */
   CartesianTwist inverse() const;

@@ -181,6 +181,20 @@ public:
   CartesianPose copy() const;
 
   /**
+   * @brief Differentiate a Cartesian pose over a time period
+   * @param dt The time period used for derivation in seconds
+   * @return The resulting Cartesian twist after derivation
+   */
+  CartesianTwist differentiate(double dt) const;
+
+  /**
+   * @brief Differentiate a Cartesian pose over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting Cartesian twist after derivation
+   */
+  CartesianTwist differentiate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Compute the inverse of the current Cartesian pose
    * @return The inverse corresponding to b_S_f (assuming this is f_S_b)
    */
