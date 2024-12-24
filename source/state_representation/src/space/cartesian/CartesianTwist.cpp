@@ -126,7 +126,8 @@ CartesianPose CartesianTwist::integrate(double dt) const {
 }
 
 CartesianPose CartesianTwist::integrate(const std::chrono::nanoseconds& dt) const {
-  return *this * dt;
+  // convert the dt to a double with the second as reference
+  return this->integrate(dt.count() / 1e9);
 }
 
 CartesianTwist CartesianTwist::inverse() const {
@@ -161,11 +162,11 @@ CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const Cartes
 }
 
 CartesianPose CartesianTwist::operator*(const std::chrono::nanoseconds& dt) const {
-  return this->integrate(dt.count() / 1e9);
+  return this->integrate(dt);
 }
 
 CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist) {
-  return twist * dt;
+  return twist.integrate(dt);
 }
 
 CartesianTwist& CartesianTwist::operator/=(double lambda) {
