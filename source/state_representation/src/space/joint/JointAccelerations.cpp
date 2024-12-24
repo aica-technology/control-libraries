@@ -44,7 +44,7 @@ JointAccelerations::JointAccelerations(const JointAccelerations& accelerations) 
     JointAccelerations(static_cast<const JointState&>(accelerations)) {}
 
 JointAccelerations::JointAccelerations(const JointVelocities& velocities) :
-    JointAccelerations(velocities / std::chrono::seconds(1)) {}
+    JointAccelerations(velocities.differentiate(1.0)) {}
 
 JointAccelerations JointAccelerations::Zero(const std::string& robot_name, unsigned int nb_joints) {
   return JointState::Zero(robot_name, nb_joints);
@@ -103,6 +103,15 @@ JointAccelerations JointAccelerations::copy() const {
   return result;
 }
 
+JointVelocities JointAccelerations::integrate(double dt) const {
+  return JointVelocities(this->get_name(), this->get_names(), dt * this->get_accelerations());
+}
+
+JointVelocities JointAccelerations::integrate(const std::chrono::nanoseconds& dt) const {
+  // convert the period to a double with the second as reference
+  return this->integrate(dt.count() / 1e9);  
+}
+
 JointAccelerations& JointAccelerations::operator*=(double lambda) {
   this->JointState::operator*=(lambda);
   return (*this);
@@ -125,18 +134,11 @@ JointAccelerations operator*(const Eigen::MatrixXd& lambda, const JointAccelerat
 }
 
 JointVelocities JointAccelerations::operator*(const std::chrono::nanoseconds& dt) const {
-  // operations
-  JointVelocities velocities(this->get_name(), this->get_names());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // multiply the velocities by this period value and assign it as position
-  velocities.set_velocities(period * this->get_accelerations());
-  return velocities;
+  return this->integrate(dt);
 }
 
 JointVelocities operator*(const std::chrono::nanoseconds& dt, const JointAccelerations& accelerations) {
-  return accelerations * dt;
+  return accelerations.integrate(dt);
 }
 
 JointAccelerations& JointAccelerations::operator/=(double lambda) {

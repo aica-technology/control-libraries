@@ -170,16 +170,20 @@ TEST(JointAccelerationsTest, MatrixMultiplication) {
   EXPECT_THROW(gains * ja, exceptions::IncompatibleSizeException);
 }
 
-TEST(JointAccelerationsTest, ChronoMultiplication) {
-  JointAccelerations ja = JointAccelerations::Random("test", 3);
-  auto time = std::chrono::seconds(2);
-  JointVelocities jv1 = ja * time;
-  EXPECT_EQ(jv1.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jv1.get_velocities(), ja.get_accelerations() * time.count());
-  JointVelocities jv2 = time * ja;
-  EXPECT_EQ(jv2.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jv2.get_velocities(), ja.get_accelerations() * time.count());
-
-  JointAccelerations empty;
-  EXPECT_THROW(empty * time, exceptions::EmptyStateException);
+TEST(JointAccelerationTest, TestIntegrate) {
+  auto ja = JointAccelerations::Random("test", 3);
+  auto dt1 = 0.1;
+  std::chrono::milliseconds dt2(100);
+  auto res1 = ja * dt2;
+  EXPECT_EQ(res1.get_type(), StateType::JOINT_VELOCITIES);
+  EXPECT_TRUE((dt1 * ja.get_accelerations()).isApprox(res1.get_velocities()));
+  auto res2 = dt2 * ja;
+  EXPECT_EQ(res2.get_type(), StateType::JOINT_VELOCITIES);
+  EXPECT_TRUE((dt1 * ja.get_accelerations()).isApprox(res2.get_velocities()));
+  auto res3 = ja.integrate(dt1);
+  EXPECT_EQ(res3.get_type(), StateType::JOINT_VELOCITIES);
+  EXPECT_TRUE((dt1 * ja.get_accelerations()).isApprox(res3.get_velocities()));
+  
+  JointVelocities jv(ja);
+  EXPECT_TRUE(ja.get_accelerations().isApprox(jv.get_velocities()));
 }

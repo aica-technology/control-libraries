@@ -168,14 +168,17 @@ TEST(JointPositionsTest, MatrixMultiplication) {
   EXPECT_THROW(gains * jp, exceptions::IncompatibleSizeException);
 }
 
-TEST(JointPositionsTest, ChronoDivision) {
-  JointPositions jp = JointPositions::Random("test", 3);
-  EXPECT_EQ(jp.get_type(), StateType::JOINT_POSITIONS);
-  auto time = std::chrono::seconds(1);
-  JointVelocities jv = jp / time;
-  EXPECT_EQ(jv.get_type(), StateType::JOINT_VELOCITIES);
-  EXPECT_EQ(jv.get_velocities(), jp.get_positions() / time.count());
-
-  JointPositions empty;
-  EXPECT_THROW(empty / time, exceptions::EmptyStateException);
+TEST(JointPositionsTest, TestDifferentiate) {
+  auto jp = JointPositions::Random("test", 3);
+  auto dt1 = 0.1;
+  std::chrono::milliseconds dt2(100);
+  auto res1 = jp / dt2;
+  EXPECT_EQ(res1.get_type(), StateType::JOINT_VELOCITIES);
+  EXPECT_TRUE(jp.get_positions().isApprox(dt1 * res1.get_velocities()));
+  auto res2 = jp.differentiate(dt1);
+  EXPECT_EQ(res2.get_type(), StateType::JOINT_VELOCITIES);
+  EXPECT_TRUE(jp.get_positions().isApprox(dt1 * res2.get_velocities()));
+  
+  JointVelocities jv(jp);
+  EXPECT_TRUE(jp.get_positions().isApprox(jv.get_velocities()));
 }

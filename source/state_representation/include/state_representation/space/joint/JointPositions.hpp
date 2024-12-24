@@ -200,6 +200,20 @@ public:
   JointPositions copy() const;
 
   /**
+   * @brief Differentiate joint positions over a time period
+   * @param dt The time period used for derivation in seconds
+   * @return The resulting joint velocities after derivation
+   */
+  JointVelocities differentiate(double dt) const;
+
+  /**
+   * @brief Differentiate joint positions over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting joint velocities after derivation
+   */
+  JointVelocities differentiate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Scale inplace by a scalar
    * @copydetails JointState::operator*=(double)
    * @param lambda The scaling factor
@@ -249,7 +263,7 @@ public:
   JointPositions operator/(double lambda) const;
 
   /**
-   * @brief Differentiate joint positions pose over a time period
+   * @brief Differentiate joint positions over a time period
    * @param dt The time period used for derivation
    * @return The resulting joint velocities after derivation
    */
