@@ -188,18 +188,22 @@ TEST_F(CartesianPoseTestClass, TestSubtraction) {
   EXPECT_TRUE(diff_1.get_position().isApprox(-diff_2.get_position()));
 }
 
-TEST_F(CartesianPoseTestClass, TestPoseToVelocity) {
+TEST_F(CartesianPoseTestClass, TestDifferentation) {
   tf1.set_orientation(Eigen::Quaterniond(0, 1, 0, 0));
-  std::chrono::seconds dt1(1);
+  auto dt1 = 0.1;
   std::chrono::milliseconds dt2(100);
-  auto res1 = tf1 / dt1;
+  auto res1 = tf1 / dt2;
   EXPECT_EQ(res1.get_type(), StateType::CARTESIAN_TWIST);
-  EXPECT_EQ(res1.get_linear_velocity(), tf1.get_position());
-  EXPECT_EQ(res1.get_angular_velocity(), Eigen::Vector3d(M_PI, 0, 0));
-  auto res2 = tf1 / dt2;
+  EXPECT_TRUE(tf1.get_position().isApprox(dt1 * res1.get_linear_velocity()));
+  EXPECT_TRUE(Eigen::Vector3d(M_PI, 0, 0).isApprox(dt1 * res1.get_angular_velocity()));
+  auto res2 = tf1.differentiate(dt1);
   EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_TWIST);
-  EXPECT_EQ(res2.get_linear_velocity(), 10 * tf1.get_position());
-  EXPECT_EQ(res2.get_angular_velocity(), 10 * Eigen::Vector3d(M_PI, 0, 0));
+  EXPECT_TRUE(tf1.get_position().isApprox(dt1 * res2.get_linear_velocity()));
+  EXPECT_TRUE(Eigen::Vector3d(M_PI, 0, 0).isApprox(dt1 * res2.get_angular_velocity()));
+
+  CartesianTwist twist(tf1);
+  EXPECT_TRUE(tf1.get_position().isApprox(twist.get_linear_velocity()));
+  EXPECT_TRUE(Eigen::Vector3d(M_PI, 0, 0).isApprox(twist.get_angular_velocity()));
 }
 
 TEST_F(CartesianPoseTestClass, TestDerivationIntegration) {

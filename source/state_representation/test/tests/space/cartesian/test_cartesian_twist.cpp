@@ -118,26 +118,41 @@ TEST(CartesianTwistTest, TestTwistNorms) {
   EXPECT_NEAR(twist_norms[1], ct.get_angular_velocity().norm(), tolerance);
 }
 
-TEST(CartesianTwistTest, TestVelocityToAcceleration) {
-  auto twist = CartesianTwist::Random("test");
-  std::chrono::seconds dt1(1);
+TEST(CartesianTwistTest, TestIntegrate) {
+  auto dt1 = 0.1;
   std::chrono::milliseconds dt2(100);
-  auto res1 = twist / dt1;
-  EXPECT_EQ(res1.get_type(), StateType::CARTESIAN_ACCELERATION);
-  EXPECT_EQ(res1.get_linear_acceleration(), twist.get_linear_velocity());
-  EXPECT_EQ(res1.get_angular_acceleration(), twist.get_angular_velocity());
-  auto res2 = twist / dt2;
-  EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_ACCELERATION);
-  EXPECT_TRUE(res2.get_linear_acceleration().isApprox(10 * twist.get_linear_velocity()));
-  EXPECT_TRUE(res2.get_angular_acceleration().isApprox(10 * twist.get_angular_velocity()));
+  auto twist = CartesianTwist::Random("test");
+  twist.set_angular_velocity(Eigen::Vector3d(M_PI, 0, 0) / dt1);
+  auto res1 = twist * dt2;
+  EXPECT_EQ(res1.get_type(), StateType::CARTESIAN_POSE);
+  EXPECT_TRUE(res1.get_position().isApprox(dt1 * twist.get_linear_velocity()));
+  EXPECT_TRUE(res1.get_orientation().coeffs().isApprox(Eigen::Quaterniond(0, 1, 0, 0).coeffs()));
+  auto res2 = dt2 * twist;
+  EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_POSE);
+  EXPECT_TRUE(res2.get_position().isApprox(dt1 * twist.get_linear_velocity()));
+  EXPECT_TRUE(res2.get_orientation().coeffs().isApprox(Eigen::Quaterniond(0, 1, 0, 0).coeffs()));
+  auto res3 = twist.integrate(dt1);
+  EXPECT_EQ(res3.get_type(), StateType::CARTESIAN_POSE);
+  EXPECT_TRUE(res3.get_position().isApprox(dt1 * twist.get_linear_velocity()));
+  EXPECT_TRUE(res3.get_orientation().coeffs().isApprox(Eigen::Quaterniond(0, 1, 0, 0).coeffs()));
+
+  twist.set_angular_velocity(Eigen::Vector3d(M_PI, 0, 0));
+  CartesianPose pose(twist);
+  EXPECT_TRUE(pose.get_position().isApprox(twist.get_linear_velocity()));
+  EXPECT_TRUE(pose.get_orientation().coeffs().isApprox(Eigen::Quaterniond(0, 1, 0, 0).coeffs()));
 }
 
-TEST(CartesianTwistTest, TestImplicitConversion) {
-  CartesianAcceleration acc("test");
-  acc.set_linear_acceleration(Eigen::Vector3d(0.1, 0.1, 0.1));
-  acc.set_linear_acceleration(Eigen::Vector3d(M_PI, 0, 0));
-  CartesianTwist twist(acc);
-  EXPECT_EQ(twist.get_type(), StateType::CARTESIAN_TWIST);
-  EXPECT_EQ(twist.get_linear_velocity(), acc.get_linear_acceleration());
-  EXPECT_EQ(twist.get_angular_velocity(), acc.get_angular_acceleration());
+TEST(CartesianTwistTest, TestDifferentiate) {
+  auto twist = CartesianTwist::Random("test");
+  auto dt1 = 0.1;
+  std::chrono::milliseconds dt2(100);
+  auto res1 = twist / dt2;
+  EXPECT_EQ(res1.get_type(), StateType::CARTESIAN_ACCELERATION);
+  EXPECT_TRUE(res1.get_acceleration().isApprox(twist.get_twist() / dt1));
+  auto res2 = twist.differentiate(dt1);
+  EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_ACCELERATION);
+  EXPECT_TRUE(res2.get_acceleration().isApprox(twist.get_twist() / dt1));
+  
+  CartesianAcceleration acc(twist);
+  EXPECT_TRUE(acc.get_acceleration().isApprox(twist.get_twist()));
 }
