@@ -108,6 +108,7 @@ CartesianAcceleration CartesianTwist::differentiate(double dt) const {
 }
 
 CartesianAcceleration CartesianTwist::differentiate(const std::chrono::nanoseconds& dt) const {
+  // convert the dt to a double with the second as reference
   return this->differentiate(dt.count() / 1e9);
 }
 
