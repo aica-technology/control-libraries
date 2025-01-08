@@ -190,6 +190,20 @@ public:
   CartesianAcceleration copy() const;
 
   /**
+   * @brief Integrate the Cartesian acceleration over a time period
+   * @param dt The time period used for integration in seconds
+   * @return The resulting Cartesian twist after integration
+   */
+  CartesianTwist integrate(double dt) const;
+
+  /**
+   * @brief Integrate the Cartesian acceleration over a time period
+   * @param dt The time period used for integration
+   * @return The resulting Cartesian twist after integration
+   */
+  CartesianTwist integrate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Compute the inverse of the current Cartesian acceleration
    */
   CartesianAcceleration inverse() const;

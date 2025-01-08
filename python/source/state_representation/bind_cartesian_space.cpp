@@ -268,6 +268,12 @@ void cartesian_pose(py::module_& m) {
 
   c.def("copy", &CartesianPose::copy, "Return a copy of the CartesianPose");
   c.def("data", &CartesianPose::data, "Returns the pose data as a vector");
+  c.def("differentiate", [](const CartesianPose &pose, double dt) -> CartesianTwist {
+    return pose.differentiate(dt);
+  }, "Differentiate a Cartesian pose over a time period in seconds", "dt"_a);
+  c.def("differentiate", [](const CartesianPose &pose, const std::chrono::nanoseconds& dt) -> CartesianTwist {
+    return pose.differentiate(dt);
+  }, "Differentiate a Cartesian pose over a time period", "dt"_a);
   c.def("inverse", &CartesianPose::inverse, "Compute the inverse of the current CartesianPose");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&CartesianPose::set_data), "Set the pose data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&CartesianPose::set_data), "Set the pose data from a list", "data"_a);
@@ -360,6 +366,18 @@ void cartesian_twist(py::module_& m) {
 
   c.def("copy", &CartesianTwist::copy, "Return a copy of the CartesianTwist");
   c.def("data", &CartesianTwist::data, "Returns the twist data as a vector");
+  c.def("differentiate", [](const CartesianTwist &twist, double dt) -> CartesianAcceleration {
+    return twist.differentiate(dt);
+  }, "Differentiate a Cartesian twist over a time period in seconds", "dt"_a);
+  c.def("differentiate", [](const CartesianTwist &twist, const std::chrono::nanoseconds& dt) -> CartesianAcceleration {
+    return twist.differentiate(dt);
+  }, "Differentiate a Cartesian twist over a time period", "dt"_a);
+  c.def("integrate", [](const CartesianTwist &twist, double dt) -> CartesianPose {
+    return twist.integrate(dt);
+  }, "Integrate a Cartesian twist over a time period in seconds", "dt"_a);
+  c.def("integrate", [](const CartesianTwist &twist, const std::chrono::nanoseconds& dt) -> CartesianPose {
+    return twist.integrate(dt);
+  }, "Integrate a Cartesian twist over a time period", "dt"_a);
   c.def("inverse", &CartesianTwist::inverse, "Compute the inverse of the current CartesianTwist");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&CartesianTwist::set_data), "Set the twist data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&CartesianTwist::set_data), "Set the twist data from a list", "data"_a);
@@ -451,6 +469,12 @@ void cartesian_acceleration(py::module_& m) {
 
   c.def("copy", &CartesianAcceleration::copy, "Return a copy of the CartesianAcceleration");
   c.def("data", &CartesianAcceleration::data, "Returns the acceleration data as a vector");
+  c.def("integrate", [](const CartesianAcceleration &acceleration, double dt) -> CartesianTwist {
+    return acceleration.integrate(dt);
+  }, "Integrate a Cartesian acceleration over a time period in seconds", "dt"_a);
+  c.def("integrate", [](const CartesianAcceleration &acceleration, const std::chrono::nanoseconds& dt) -> CartesianTwist {
+    return acceleration.integrate(dt);
+  }, "Integrate a Cartesian acceleration over a time period", "dt"_a);
   c.def("inverse", &CartesianAcceleration::inverse, "Compute the inverse of the current CartesianPose");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&CartesianAcceleration::set_data), "Set the acceleration data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&CartesianAcceleration::set_data), "Set the acceleration data from a list", "data"_a);

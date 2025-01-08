@@ -49,7 +49,7 @@ CartesianAcceleration::CartesianAcceleration(const CartesianAcceleration& accele
     CartesianAcceleration(static_cast<const CartesianState&>(acceleration)) {}
 
 CartesianAcceleration::CartesianAcceleration(const CartesianTwist& twist) :
-    CartesianAcceleration(twist / std::chrono::seconds(1)) {}
+    CartesianAcceleration(twist.differentiate(1.0)) {}
 
 CartesianAcceleration CartesianAcceleration::Zero(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -99,6 +99,17 @@ CartesianAcceleration CartesianAcceleration::copy() const {
   return result;
 }
 
+CartesianTwist CartesianAcceleration::integrate(double dt) const {
+  CartesianTwist twist(this->get_name(), this->get_reference_frame());
+  twist.set_twist(dt * this->get_acceleration());
+  return twist;
+}
+
+CartesianTwist CartesianAcceleration::integrate(const std::chrono::nanoseconds& dt) const {
+  // convert the dt to a double with the second as reference
+  return this->integrate(dt.count() / 1e9);
+}
+
 CartesianAcceleration CartesianAcceleration::inverse() const {
   return this->CartesianState::inverse();
 }
@@ -131,19 +142,11 @@ CartesianAcceleration operator*(const Eigen::Matrix<double, 6, 6>& lambda, const
 }
 
 CartesianTwist CartesianAcceleration::operator*(const std::chrono::nanoseconds& dt) const {
-  // operations
-  CartesianTwist twist(this->get_name(), this->get_reference_frame());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // convert the acceleration into a twist
-  twist.set_linear_velocity(period * this->get_linear_acceleration());
-  twist.set_angular_velocity(period * this->get_angular_acceleration());
-  return twist;
+  return this->integrate(dt);
 }
 
 CartesianTwist operator*(const std::chrono::nanoseconds& dt, const CartesianAcceleration& acceleration) {
-  return acceleration * dt;
+  return acceleration.integrate(dt);
 }
 
 CartesianAcceleration& CartesianAcceleration::operator/=(double lambda) {

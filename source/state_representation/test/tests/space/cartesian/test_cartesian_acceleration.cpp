@@ -117,3 +117,21 @@ TEST(CartesianAccelerationTest, TestAccelerationNorms) {
   EXPECT_NEAR(twist_norms[0], ct.get_linear_acceleration().norm(), tolerance);
   EXPECT_NEAR(twist_norms[1], ct.get_angular_acceleration().norm(), tolerance);
 }
+
+TEST(CartesianAccelerationTest, TestIntegrate) {
+  auto acc = CartesianAcceleration::Random("test");
+  auto dt1 = 0.1;
+  std::chrono::milliseconds dt2(100);
+  auto res1 = acc * dt2;
+  EXPECT_EQ(res1.get_type(), StateType::CARTESIAN_TWIST);
+  EXPECT_TRUE((dt1 * acc.get_acceleration()).isApprox(res1.get_twist()));
+  auto res2 = dt2 * acc;
+  EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_TWIST);
+  EXPECT_TRUE((dt1 * acc.get_acceleration()).isApprox(res2.get_twist()));
+  auto res3 = acc.integrate(dt1);
+  EXPECT_EQ(res3.get_type(), StateType::CARTESIAN_TWIST);
+  EXPECT_TRUE((dt1 * acc.get_acceleration()).isApprox(res3.get_twist()));
+  
+  CartesianTwist twist(acc);
+  EXPECT_TRUE(acc.get_acceleration().isApprox(twist.get_twist()));
+}

@@ -48,10 +48,10 @@ CartesianTwist::CartesianTwist(const CartesianState& state) : CartesianState(sta
 CartesianTwist::CartesianTwist(const CartesianTwist& twist) :
     CartesianTwist(static_cast<const CartesianState&>(twist)) {}
 
-CartesianTwist::CartesianTwist(const CartesianPose& pose) : CartesianTwist(pose / std::chrono::seconds(1)) {}
+CartesianTwist::CartesianTwist(const CartesianPose& pose) : CartesianTwist(pose.differentiate(1.0)) {}
 
 CartesianTwist::CartesianTwist(const CartesianAcceleration& acceleration) :
-    CartesianTwist(acceleration * std::chrono::seconds(1)) {}
+    CartesianTwist(acceleration.integrate(1.0)) {}
 
 CartesianTwist CartesianTwist::Zero(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -101,6 +101,36 @@ CartesianTwist CartesianTwist::copy() const {
   return result;
 }
 
+CartesianAcceleration CartesianTwist::differentiate(double dt) const {
+  CartesianAcceleration acceleration(this->get_name(), this->get_reference_frame());
+  acceleration.set_acceleration(this->get_twist() / dt);
+  return acceleration;
+}
+
+CartesianAcceleration CartesianTwist::differentiate(const std::chrono::nanoseconds& dt) const {
+  // convert the dt to a double with the second as reference
+  return this->differentiate(dt.count() / 1e9);
+}
+
+CartesianPose CartesianTwist::integrate(double dt) const {
+  CartesianPose displacement(this->get_name(), this->get_reference_frame());
+  displacement.set_position(dt * this->get_linear_velocity());
+  Eigen::Quaterniond angular_displacement = Eigen::Quaterniond::Identity();
+  double angular_norm = this->get_angular_velocity().norm();
+  if (angular_norm > 1e-4) {
+    double theta = angular_norm * dt * 0.5;
+    angular_displacement.w() = cos(theta);
+    angular_displacement.vec() = this->get_angular_velocity() / angular_norm * sin(theta);
+  }
+  displacement.set_orientation(angular_displacement);
+  return displacement;
+}
+
+CartesianPose CartesianTwist::integrate(const std::chrono::nanoseconds& dt) const {
+  // convert the dt to a double with the second as reference
+  return this->integrate(dt.count() / 1e9);
+}
+
 CartesianTwist CartesianTwist::inverse() const {
   return this->CartesianState::inverse();
 }
@@ -133,26 +163,11 @@ CartesianTwist operator*(const Eigen::Matrix<double, 6, 6>& lambda, const Cartes
 }
 
 CartesianPose CartesianTwist::operator*(const std::chrono::nanoseconds& dt) const {
-  // operations
-  CartesianPose displacement(this->get_name(), this->get_reference_frame());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // convert the velocities into a displacement
-  displacement.set_position(period * this->get_linear_velocity());
-  Eigen::Quaterniond angular_displacement = Eigen::Quaterniond::Identity();
-  double angular_norm = this->get_angular_velocity().norm();
-  if (angular_norm > 1e-4) {
-    double theta = angular_norm * period * 0.5;
-    angular_displacement.w() = cos(theta);
-    angular_displacement.vec() = this->get_angular_velocity() / angular_norm * sin(theta);
-  }
-  displacement.set_orientation(angular_displacement);
-  return displacement;
+  return this->integrate(dt);
 }
 
 CartesianPose operator*(const std::chrono::nanoseconds& dt, const CartesianTwist& twist) {
-  return twist * dt;
+  return twist.integrate(dt);
 }
 
 CartesianTwist& CartesianTwist::operator/=(double lambda) {
@@ -165,13 +180,7 @@ CartesianTwist CartesianTwist::operator/(double lambda) const {
 }
 
 CartesianAcceleration CartesianTwist::operator/(const std::chrono::nanoseconds& dt) const {
-  CartesianAcceleration acceleration(this->get_name(), this->get_reference_frame());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  acceleration.set_linear_acceleration(this->get_linear_velocity() / period);
-  acceleration.set_angular_acceleration(this->get_angular_velocity() / period);
-  return acceleration;
+  return this->differentiate(dt);
 }
 
 CartesianTwist& CartesianTwist::operator+=(const CartesianTwist& twist) {

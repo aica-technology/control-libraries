@@ -53,7 +53,7 @@ CartesianPose::CartesianPose(const CartesianState& state) : CartesianState(state
 
 CartesianPose::CartesianPose(const CartesianPose& pose) : CartesianPose(static_cast<const CartesianState&>(pose)) {}
 
-CartesianPose::CartesianPose(const CartesianTwist& twist) : CartesianPose(std::chrono::seconds(1) * twist) {}
+CartesianPose::CartesianPose(const CartesianTwist& twist) : CartesianPose(twist.integrate(1.0)) {}
 
 CartesianPose CartesianPose::Identity(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -82,6 +82,19 @@ void CartesianPose::set_data(const std::vector<double>& data) {
 CartesianPose CartesianPose::copy() const {
   CartesianPose result(*this);
   return result;
+}
+
+CartesianTwist CartesianPose::differentiate(double dt) const {
+  CartesianTwist twist(this->get_name(), this->get_reference_frame());
+  twist.set_linear_velocity(this->get_position() / dt);
+  // set angular velocity from the log of the quaternion error
+  Eigen::Quaterniond log_q = math_tools::log(this->get_orientation());
+  twist.set_angular_velocity(2 * log_q.vec() / dt);
+  return twist;
+}
+
+CartesianTwist CartesianPose::differentiate(const std::chrono::nanoseconds& dt) const {
+  return this->differentiate(dt.count() / 1e9);
 }
 
 CartesianPose CartesianPose::inverse() const {
@@ -149,17 +162,7 @@ CartesianPose CartesianPose::operator/(double lambda) const {
 }
 
 CartesianTwist CartesianPose::operator/(const std::chrono::nanoseconds& dt) const {
-  // operations
-  CartesianTwist twist(this->get_name(), this->get_reference_frame());
-  // convert the period to a double with the second as reference
-  double period = dt.count();
-  period /= 1e9;
-  // set linear velocity
-  twist.set_linear_velocity(this->get_position() / period);
-  // set angular velocity from the log of the quaternion error
-  Eigen::Quaterniond log_q = math_tools::log(this->get_orientation());
-  twist.set_angular_velocity(2 * log_q.vec() / period);
-  return twist;
+  return this->differentiate(dt);
 }
 
 CartesianPose& CartesianPose::operator+=(const CartesianPose& pose) {

@@ -1,7 +1,8 @@
 import unittest
 import copy
+from datetime import timedelta
 
-from state_representation import CartesianPose
+from state_representation import CartesianPose, CartesianTwist
 import numpy as np
 
 class TestCartesianPose(unittest.TestCase):
@@ -37,6 +38,22 @@ class TestCartesianPose(unittest.TestCase):
         pose = CartesianPose.Random("A", "B")
         inv_pose = pose.inverse()
         self.assertIsInstance(inv_pose, CartesianPose)
+
+    def test_differentiation(self):
+        pose = CartesianPose.Random("test")
+        pose.set_orientation([0, 1, 0, 0])
+        dt1 = 0.1
+        dt2 = timedelta(milliseconds=100)
+
+        res1 = pose / dt2
+        self.assertIsInstance(res1, CartesianTwist)
+        self.assert_np_array_equal(pose.get_position(), dt1 * res1.get_linear_velocity())
+        self.assert_np_array_equal(np.array([np.pi, 0, 0]), dt1 * res1.get_angular_velocity())
+
+        res2 = pose.differentiate(dt1)
+        self.assertIsInstance(res2, CartesianTwist)
+        self.assert_np_array_equal(pose.get_position(), dt1 * res2.get_linear_velocity())
+        self.assert_np_array_equal(np.array([np.pi, 0, 0]), dt1 * res2.get_angular_velocity())
 
 if __name__ == '__main__':
     unittest.main()
