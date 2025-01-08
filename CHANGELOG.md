@@ -21,6 +21,7 @@ Release Versions
 - fix(robot-model): improve ik performance (#205)
 - fix(robot-model): kinematics tests (#207)
 - feat: add integrate and differentiate methods to Cartesian types (#209)
+- feat(robot-model): improve inverse kinematics (#208)
 
 ## 9.0.1
 
@@ -36,7 +37,6 @@ It is now possible to convert `CartesianStateVariable` and `JointStateVariable`s
 - feat(state-representation): add utilities for CartesianStateVariable (#195, #201)
 - feat(state-representation): add utilities for JointStateVariable (#197, #201)
 - feat(robot-model): add clamp_in_range function for individual JointStateVariable (#194)
-- feat(robot-model): improve inverse kinematics (#208)
   
 ## 9.0.0
 
