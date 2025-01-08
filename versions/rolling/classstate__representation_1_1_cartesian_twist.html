@@ -304,6 +304,18 @@ Eigen::Vector3d&#160;</td><td class="memItemRight" valign="bottom"><b>operator*<
 <tr class="memitem:ab92f57637965980b870215f2c43e8b98" id="r_ab92f57637965980b870215f2c43e8b98"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ab92f57637965980b870215f2c43e8b98">copy</a> () const</td></tr>
 <tr class="memdesc:ab92f57637965980b870215f2c43e8b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian twist.  <br /></td></tr>
 <tr class="separator:ab92f57637965980b870215f2c43e8b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64646179cc13ff0d3e75c93fa149d0fa" id="r_a64646179cc13ff0d3e75c93fa149d0fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a64646179cc13ff0d3e75c93fa149d0fa">differentiate</a> (double dt) const</td></tr>
+<tr class="memdesc:a64646179cc13ff0d3e75c93fa149d0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate a Cartesian twist over a time period.  <br /></td></tr>
+<tr class="separator:a64646179cc13ff0d3e75c93fa149d0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a260590c5a5f014300ddfd828d8dad" id="r_ad0a260590c5a5f014300ddfd828d8dad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#ad0a260590c5a5f014300ddfd828d8dad">differentiate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:ad0a260590c5a5f014300ddfd828d8dad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate a Cartesian twist over a time period.  <br /></td></tr>
+<tr class="separator:ad0a260590c5a5f014300ddfd828d8dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f974a047b1e234744f03d0e0e1b6e61" id="r_a1f974a047b1e234744f03d0e0e1b6e61"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a1f974a047b1e234744f03d0e0e1b6e61">integrate</a> (double dt) const</td></tr>
+<tr class="memdesc:a1f974a047b1e234744f03d0e0e1b6e61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the Cartesian twist over a time period.  <br /></td></tr>
+<tr class="separator:a1f974a047b1e234744f03d0e0e1b6e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d1c4ac139348f48e17eac9210fc6b89" id="r_a6d1c4ac139348f48e17eac9210fc6b89"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#a6d1c4ac139348f48e17eac9210fc6b89">integrate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:a6d1c4ac139348f48e17eac9210fc6b89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the Cartesian twist over a time period.  <br /></td></tr>
+<tr class="separator:a6d1c4ac139348f48e17eac9210fc6b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeb354a3fb8a9f6f2efa8f441fb12489" id="r_adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_twist.html#adeb354a3fb8a9f6f2efa8f441fb12489">inverse</a> () const</td></tr>
 <tr class="memdesc:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian twist.  <br /></td></tr>
 <tr class="separator:adeb354a3fb8a9f6f2efa8f441fb12489"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1189,6 +1201,122 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ad0a260590c5a5f014300ddfd828d8dad" name="ad0a260590c5a5f014300ddfd828d8dad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0a260590c5a5f014300ddfd828d8dad">&#9670;&#160;</a></span>differentiate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a> state_representation::CartesianTwist::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate a Cartesian twist over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian acceleration after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00110">110</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a64646179cc13ff0d3e75c93fa149d0fa" name="a64646179cc13ff0d3e75c93fa149d0fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64646179cc13ff0d3e75c93fa149d0fa">&#9670;&#160;</a></span>differentiate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a> state_representation::CartesianTwist::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate a Cartesian twist over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian acceleration after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00104">104</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6d1c4ac139348f48e17eac9210fc6b89" name="a6d1c4ac139348f48e17eac9210fc6b89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d1c4ac139348f48e17eac9210fc6b89">&#9670;&#160;</a></span>integrate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> state_representation::CartesianTwist::integrate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate the Cartesian twist over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian pose after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00129">129</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a1f974a047b1e234744f03d0e0e1b6e61" name="a1f974a047b1e234744f03d0e0e1b6e61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f974a047b1e234744f03d0e0e1b6e61">&#9670;&#160;</a></span>integrate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a> state_representation::CartesianTwist::integrate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate the Cartesian twist over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian pose after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00115">115</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+
+</div>
+</div>
 <a id="adeb354a3fb8a9f6f2efa8f441fb12489" name="adeb354a3fb8a9f6f2efa8f441fb12489"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adeb354a3fb8a9f6f2efa8f441fb12489">&#9670;&#160;</a></span>inverse()</h2>
 
@@ -1206,7 +1334,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Compute the inverse of the current Cartesian twist. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00104">104</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00134">134</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1235,7 +1363,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00138">138</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1274,7 +1402,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00142">142</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1303,7 +1431,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian pose after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00135">135</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00165">165</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1339,7 +1467,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00121">121</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00151">151</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1375,7 +1503,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00116">116</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00146">146</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1532,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00191">191</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00200">200</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1433,7 +1561,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00187">187</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00196">196</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1590,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00182">182</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00191">191</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1619,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00177">177</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00186">186</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1641,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate a Cartesian twist. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00195">195</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00204">204</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1542,7 +1670,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00213">213</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00222">222</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1571,7 +1699,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00209">209</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00218">218</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1600,7 +1728,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00204">204</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00213">213</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1629,7 +1757,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00199">199</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00208">208</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1658,7 +1786,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian acceleration after derivation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00167">167</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00182">182</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1694,7 +1822,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00163">163</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00178">178</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1730,7 +1858,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00158">158</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00173">173</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -1974,7 +2102,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00129">129</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00159">159</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -2022,7 +2150,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian pose after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00154">154</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00169">169</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -2077,7 +2205,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian twist </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00125">125</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00155">155</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>
@@ -2125,7 +2253,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00217">217</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_twist_8cpp_source.html#l00226">226</a> of file <a class="el" href="_cartesian_twist_8cpp_source.html">CartesianTwist.cpp</a>.</p>
 
 </div>
 </div>

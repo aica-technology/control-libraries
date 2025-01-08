@@ -301,6 +301,12 @@ Eigen::Vector3d&#160;</td><td class="memItemRight" valign="bottom"><b>operator*<
 <tr class="memitem:a4abcdde75f190db105e884f86208e31f" id="r_a4abcdde75f190db105e884f86208e31f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#a4abcdde75f190db105e884f86208e31f">copy</a> () const</td></tr>
 <tr class="memdesc:a4abcdde75f190db105e884f86208e31f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian acceleration.  <br /></td></tr>
 <tr class="separator:a4abcdde75f190db105e884f86208e31f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c39ac1f39ce95da9146e58c2cc8f615" id="r_a8c39ac1f39ce95da9146e58c2cc8f615"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#a8c39ac1f39ce95da9146e58c2cc8f615">integrate</a> (double dt) const</td></tr>
+<tr class="memdesc:a8c39ac1f39ce95da9146e58c2cc8f615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the Cartesian acceleration over a time period.  <br /></td></tr>
+<tr class="separator:a8c39ac1f39ce95da9146e58c2cc8f615"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a458213b4b41a500f8f684d69a71f912e" id="r_a458213b4b41a500f8f684d69a71f912e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#a458213b4b41a500f8f684d69a71f912e">integrate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:a458213b4b41a500f8f684d69a71f912e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate the Cartesian acceleration over a time period.  <br /></td></tr>
+<tr class="separator:a458213b4b41a500f8f684d69a71f912e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1a86bbcc32c24145d2493619d0e27aa" id="r_ae1a86bbcc32c24145d2493619d0e27aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html">CartesianAcceleration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#ae1a86bbcc32c24145d2493619d0e27aa">inverse</a> () const</td></tr>
 <tr class="memdesc:ae1a86bbcc32c24145d2493619d0e27aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian acceleration.  <br /></td></tr>
 <tr class="separator:ae1a86bbcc32c24145d2493619d0e27aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1161,6 +1167,64 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a458213b4b41a500f8f684d69a71f912e" name="a458213b4b41a500f8f684d69a71f912e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a458213b4b41a500f8f684d69a71f912e">&#9670;&#160;</a></span>integrate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> state_representation::CartesianAcceleration::integrate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate the Cartesian acceleration over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8c39ac1f39ce95da9146e58c2cc8f615" name="a8c39ac1f39ce95da9146e58c2cc8f615"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c39ac1f39ce95da9146e58c2cc8f615">&#9670;&#160;</a></span>integrate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> state_representation::CartesianAcceleration::integrate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate the Cartesian acceleration over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00102">102</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ae1a86bbcc32c24145d2493619d0e27aa" name="ae1a86bbcc32c24145d2493619d0e27aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae1a86bbcc32c24145d2493619d0e27aa">&#9670;&#160;</a></span>inverse()</h2>
 
@@ -1178,7 +1242,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Compute the inverse of the current Cartesian acceleration. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00102">102</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00113">113</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1207,7 +1271,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00106">106</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00117">117</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1246,7 +1310,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00110">110</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00121">121</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1275,7 +1339,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00133">133</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00144">144</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1311,7 +1375,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00119">119</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00130">130</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1411,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00114">114</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00125">125</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1376,7 +1440,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00168">168</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00171">171</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1405,7 +1469,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00172">172</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00175">175</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1434,7 +1498,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00158">158</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00161">161</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1527,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00163">163</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00166">166</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1485,7 +1549,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate a Cartesian acceleration. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00176">176</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00179">179</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1514,7 +1578,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00190">190</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00193">193</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1543,7 +1607,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00194">194</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00197">197</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1572,7 +1636,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00180">180</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00183">183</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1601,7 +1665,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00185">185</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00188">188</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1637,7 +1701,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00154">154</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00157">157</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1673,7 +1737,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00149">149</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00152">152</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1917,7 +1981,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00127">127</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00138">138</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -1965,7 +2029,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00145">145</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00148">148</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -2020,7 +2084,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00123">123</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00134">134</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>
@@ -2068,7 +2132,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00198">198</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_acceleration_8cpp_source.html#l00201">201</a> of file <a class="el" href="_cartesian_acceleration_8cpp_source.html">CartesianAcceleration.cpp</a>.</p>
 
 </div>
 </div>

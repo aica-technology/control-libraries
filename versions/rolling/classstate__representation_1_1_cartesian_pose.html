@@ -286,6 +286,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_wrench</b> (const
 <tr class="memitem:ad96b3ef534fbff8666d3350a64405370" id="r_ad96b3ef534fbff8666d3350a64405370"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_pose.html#ad96b3ef534fbff8666d3350a64405370">copy</a> () const</td></tr>
 <tr class="memdesc:ad96b3ef534fbff8666d3350a64405370"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the Cartesian pose.  <br /></td></tr>
 <tr class="separator:ad96b3ef534fbff8666d3350a64405370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0676f7fb7a2482e9f33c3ff7e24424d" id="r_ae0676f7fb7a2482e9f33c3ff7e24424d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_pose.html#ae0676f7fb7a2482e9f33c3ff7e24424d">differentiate</a> (double dt) const</td></tr>
+<tr class="memdesc:ae0676f7fb7a2482e9f33c3ff7e24424d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate a Cartesian pose over a time period.  <br /></td></tr>
+<tr class="separator:ae0676f7fb7a2482e9f33c3ff7e24424d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ab597b332940dea06018cb244a4639" id="r_ab6ab597b332940dea06018cb244a4639"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_pose.html#ab6ab597b332940dea06018cb244a4639">differentiate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:ab6ab597b332940dea06018cb244a4639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate a Cartesian pose over a time period.  <br /></td></tr>
+<tr class="separator:ab6ab597b332940dea06018cb244a4639"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5920caed434f02897d01cc65b7d7cfc" id="r_ae5920caed434f02897d01cc65b7d7cfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_cartesian_pose.html">CartesianPose</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_pose.html#ae5920caed434f02897d01cc65b7d7cfc">inverse</a> () const</td></tr>
 <tr class="memdesc:ae5920caed434f02897d01cc65b7d7cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the inverse of the current Cartesian pose.  <br /></td></tr>
 <tr class="separator:ae5920caed434f02897d01cc65b7d7cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1147,6 +1153,64 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="ab6ab597b332940dea06018cb244a4639" name="ab6ab597b332940dea06018cb244a4639"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6ab597b332940dea06018cb244a4639">&#9670;&#160;</a></span>differentiate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> state_representation::CartesianPose::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate a Cartesian pose over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00096">96</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae0676f7fb7a2482e9f33c3ff7e24424d" name="ae0676f7fb7a2482e9f33c3ff7e24424d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0676f7fb7a2482e9f33c3ff7e24424d">&#9670;&#160;</a></span>differentiate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_cartesian_twist.html">CartesianTwist</a> state_representation::CartesianPose::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate a Cartesian pose over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00087">87</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a95275004a743093f6c2807a790970d3d" name="a95275004a743093f6c2807a790970d3d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95275004a743093f6c2807a790970d3d">&#9670;&#160;</a></span>Identity()</h2>
 
@@ -1213,7 +1277,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Compute the inverse of the current Cartesian pose. </p>
 <dl class="section return"><dt>Returns</dt><dd>The inverse corresponding to b_S_f (assuming this is f_S_b) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00087">87</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00100">100</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1242,7 +1306,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized pose FIXME: state variable type doesnt make sense here </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00091">91</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00104">104</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1345,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_cartesian_state.html#a4ef6fcae833ef73901d174b4a7e84b76">state_representation::CartesianState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00095">95</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00108">108</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1374,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed acceleration expressed in the pose reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00121">121</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00134">134</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1339,7 +1403,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed pose expressed in the left operand pose reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00113">113</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00126">126</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1368,7 +1432,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed state expressed in the pose reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00109">109</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00122">122</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1397,7 +1461,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed twist expressed in the pose reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00117">117</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00130">130</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1426,7 +1490,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed wrench expressed in the pose reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00125">125</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00138">138</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1526,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00134">134</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00147">147</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1491,7 +1555,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed pose expressed in the original reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00104">104</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00117">117</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1520,7 +1584,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed pose expressed in the original reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00099">99</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00112">112</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1556,7 +1620,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00129">129</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00142">142</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1585,7 +1649,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00175">175</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00178">178</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1614,7 +1678,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00179">179</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00182">182</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1643,7 +1707,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00165">165</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00168">168</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1672,7 +1736,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00170">170</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00173">173</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1694,7 +1758,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate a Cartesian pose. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00183">183</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00186">186</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1787,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00197">197</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00200">200</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1752,7 +1816,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00201">201</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00204">204</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1781,7 +1845,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00187">187</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00190">190</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1810,7 +1874,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00192">192</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00195">195</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1839,7 +1903,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting Cartesian twist after derivation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00151">151</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00164">164</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1875,7 +1939,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian acceleration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00147">147</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00160">160</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -1911,7 +1975,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00142">142</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00155">155</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -2114,7 +2178,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00138">138</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00151">151</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
@@ -2162,7 +2226,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00205">205</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_pose_8cpp_source.html#l00208">208</a> of file <a class="el" href="_cartesian_pose_8cpp_source.html">CartesianPose.cpp</a>.</p>
 
 </div>
 </div>
