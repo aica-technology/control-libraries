@@ -185,6 +185,13 @@ void joint_positions(py::module_& m) {
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&JointPositions::set_data), "Set the positions data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&JointPositions::set_data), "Set the positions data from a list", "data"_a);
 
+  c.def("differentiate", [](const JointPositions &positions, double dt) -> JointVelocities {
+    return positions.differentiate(dt);
+  }, "Differentiate joint positions over a time period in seconds", "dt"_a);
+  c.def("differentiate", [](const JointPositions &positions, const std::chrono::nanoseconds& dt) -> JointVelocities {
+    return positions.differentiate(dt);
+  }, "Differentiate joint positions over a time period", "dt"_a);
+
   c.def("__copy__", [](const JointPositions &positions) {
     return JointPositions(positions);
   });
@@ -269,6 +276,19 @@ void joint_velocities(py::module_& m) {
   c.def("data", &JointVelocities::data, "Returns the velocities data as a vector");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&JointVelocities::set_data), "Set the velocities data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&JointVelocities::set_data), "Set the velocities data from a list", "data"_a);
+
+  c.def("differentiate", [](const JointVelocities &velocities, double dt) -> JointAccelerations {
+    return velocities.differentiate(dt);
+  }, "Differentiate joint velocities over a time period in seconds", "dt"_a);
+  c.def("differentiate", [](const JointVelocities &velocities, const std::chrono::nanoseconds& dt) -> JointAccelerations {
+    return velocities.differentiate(dt);
+  }, "Differentiate joint velocities over a time period", "dt"_a);
+  c.def("integrate", [](const JointVelocities &velocities, double dt) -> JointPositions {
+    return velocities.integrate(dt);
+  }, "Integrate joint velocities over a time period in seconds", "dt"_a);
+  c.def("integrate", [](const JointVelocities &velocities, const std::chrono::nanoseconds& dt) -> JointPositions {
+    return velocities.integrate(dt);
+  }, "Integrate joint velocities over a time period", "dt"_a);
 
   c.def("clamp", py::overload_cast<double, double>(&JointVelocities::clamp), "Clamp inplace the magnitude of the velocity to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
   c.def("clamped", py::overload_cast<double, double>(&JointVelocities::clamp), "Return the velocity clamped to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
@@ -357,6 +377,13 @@ void joint_accelerations(py::module_& m) {
   c.def("data", &JointAccelerations::data, "Returns the accelerations data as a vector");
   c.def("set_data", py::overload_cast<const Eigen::VectorXd&>(&JointAccelerations::set_data), "Set the accelerations data from a vector", "data"_a);
   c.def("set_data", py::overload_cast<const std::vector<double>&>(&JointAccelerations::set_data), "Set the accelerations data from a list", "data"_a);
+
+  c.def("integrate", [](const JointAccelerations &accelerations, double dt) -> JointVelocities {
+    return accelerations.integrate(dt);
+  }, "Integrate joint accelerations over a time period in seconds", "dt"_a);
+  c.def("integrate", [](const JointAccelerations &accelerations, const std::chrono::nanoseconds& dt) -> JointVelocities {
+    return accelerations.integrate(dt);
+  }, "Integrate joint accelerations over a time period", "dt"_a);
 
   c.def("clamp", py::overload_cast<double, double>(&JointAccelerations::clamp), "Clamp inplace the magnitude of the accelerations to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
   c.def("clamped", py::overload_cast<double, double>(&JointAccelerations::clamp), "Return the accelerations clamped to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);

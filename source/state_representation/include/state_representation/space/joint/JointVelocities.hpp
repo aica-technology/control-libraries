@@ -208,6 +208,34 @@ public:
   JointVelocities copy() const;
 
   /**
+   * @brief Differentiate joint velocities over a time period
+   * @param dt The time period used for derivation in seconds
+   * @return The resulting joint accelerations after derivation
+   */
+  JointAccelerations differentiate(double dt) const;
+
+  /**
+   * @brief Differentiate joint velocities over a time period
+   * @param dt The time period used for derivation
+   * @return The resulting joint accelerations after derivation
+   */
+  JointAccelerations differentiate(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Integrate joint velocities over a time period
+   * @param dt The time period used for integration in seconds
+   * @return The resulting joint positions after integration
+   */
+  JointPositions integrate(double dt) const;
+
+  /**
+   * @brief Integrate joint velocities over a time period
+   * @param dt The time period used for integration
+   * @return The resulting joint positions after integration
+   */
+  JointPositions integrate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Scale inplace by a scalar
    * @copydetails JointState::operator*=(double)
    * @param lambda The scaling factor

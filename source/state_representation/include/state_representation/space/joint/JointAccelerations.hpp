@@ -202,6 +202,20 @@ public:
   JointAccelerations copy() const;
 
   /**
+   * @brief Integrate joint accelerations over a time period
+   * @param dt The time period used for integration in seconds
+   * @return The resulting joint velocities after integration
+   */
+  JointVelocities integrate(double dt) const;
+
+  /**
+   * @brief Integrate joint accelerations over a time period
+   * @param dt The time period used for integration
+   * @return The resulting joint velocities after integration
+   */
+  JointVelocities integrate(const std::chrono::nanoseconds& dt) const;
+
+  /**
    * @brief Scale inplace by a scalar
    * @copydetails JointState::operator*=(double)
    * @param lambda The scaling factor
