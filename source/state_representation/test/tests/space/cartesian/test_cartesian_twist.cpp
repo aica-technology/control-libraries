@@ -135,6 +135,10 @@ TEST(CartesianTwistTest, TestIntegrate) {
   EXPECT_EQ(res3.get_type(), StateType::CARTESIAN_POSE);
   EXPECT_TRUE(res3.get_position().isApprox(dt1 * twist.get_linear_velocity()));
   EXPECT_TRUE(res3.get_orientation().coeffs().isApprox(Eigen::Quaterniond(0, 1, 0, 0).coeffs()));
+  auto res4 = twist.integrate(dt1, res3);
+  EXPECT_EQ(res4.get_type(), StateType::CARTESIAN_POSE);
+  EXPECT_TRUE(res4.get_position().isApprox(2 * dt1 * twist.get_linear_velocity()));
+  EXPECT_TRUE(res4.get_orientation().coeffs().isApprox(Eigen::Quaterniond(-1, 0, 0, 0).coeffs()));
 
   twist.set_angular_velocity(Eigen::Vector3d(M_PI, 0, 0));
   CartesianPose pose(twist);
