@@ -106,6 +106,7 @@ JointVelocities JointPositions::differentiate(double dt) const {
 }
 
 JointVelocities JointPositions::differentiate(const std::chrono::nanoseconds& dt) const {
+  // convert the period to a double with the second as reference
   return this->differentiate(dt.count() / 1e9);
 }
 
