@@ -190,7 +190,7 @@ void joint_positions(py::module_& m) {
   }, "Differentiate joint positions over a time period in seconds", "dt"_a);
   c.def("differentiate", [](const JointPositions &positions, const std::chrono::nanoseconds& dt) -> JointVelocities {
     return positions.differentiate(dt);
-  }, "Differentiate a joint positions over a time period", "dt"_a);
+  }, "Differentiate joint positions over a time period", "dt"_a);
 
   c.def("__copy__", [](const JointPositions &positions) {
     return JointPositions(positions);
@@ -282,13 +282,13 @@ void joint_velocities(py::module_& m) {
   }, "Differentiate joint velocities over a time period in seconds", "dt"_a);
   c.def("differentiate", [](const JointVelocities &velocities, const std::chrono::nanoseconds& dt) -> JointAccelerations {
     return velocities.differentiate(dt);
-  }, "Differentiate a joint velocities over a time period", "dt"_a);
+  }, "Differentiate joint velocities over a time period", "dt"_a);
   c.def("integrate", [](const JointVelocities &velocities, double dt) -> JointPositions {
     return velocities.integrate(dt);
   }, "Integrate joint velocities over a time period in seconds", "dt"_a);
   c.def("integrate", [](const JointVelocities &velocities, const std::chrono::nanoseconds& dt) -> JointPositions {
     return velocities.integrate(dt);
-  }, "Integrate a joint velocities over a time period", "dt"_a);
+  }, "Integrate joint velocities over a time period", "dt"_a);
 
   c.def("clamp", py::overload_cast<double, double>(&JointVelocities::clamp), "Clamp inplace the magnitude of the velocity to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
   c.def("clamped", py::overload_cast<double, double>(&JointVelocities::clamp), "Return the velocity clamped to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
@@ -383,7 +383,7 @@ void joint_accelerations(py::module_& m) {
   }, "Integrate joint accelerations over a time period in seconds", "dt"_a);
   c.def("integrate", [](const JointAccelerations &accelerations, const std::chrono::nanoseconds& dt) -> JointVelocities {
     return accelerations.integrate(dt);
-  }, "Integrate a joint accelerations over a time period", "dt"_a);
+  }, "Integrate joint accelerations over a time period", "dt"_a);
 
   c.def("clamp", py::overload_cast<double, double>(&JointAccelerations::clamp), "Clamp inplace the magnitude of the accelerations to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
   c.def("clamped", py::overload_cast<double, double>(&JointAccelerations::clamp), "Return the accelerations clamped to the values in argument", "max_absolute_value"_a, "noise_ratio"_a=0.0);
