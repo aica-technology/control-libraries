@@ -249,6 +249,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_torque</b> (doubl
 <tr class="memitem:ac33d7ade38d1f120c128c950adb1d734" id="r_ac33d7ade38d1f120c128c950adb1d734"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#ac33d7ade38d1f120c128c950adb1d734">copy</a> () const</td></tr>
 <tr class="memdesc:ac33d7ade38d1f120c128c950adb1d734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the joint positions.  <br /></td></tr>
 <tr class="separator:ac33d7ade38d1f120c128c950adb1d734"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8524f63e8477b5b948b815433f57957a" id="r_a8524f63e8477b5b948b815433f57957a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#a8524f63e8477b5b948b815433f57957a">differentiate</a> (double dt) const</td></tr>
+<tr class="memdesc:a8524f63e8477b5b948b815433f57957a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint positions over a time period.  <br /></td></tr>
+<tr class="separator:a8524f63e8477b5b948b815433f57957a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80444e7813f3e268c3542c7065c1a708" id="r_a80444e7813f3e268c3542c7065c1a708"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#a80444e7813f3e268c3542c7065c1a708">differentiate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:a80444e7813f3e268c3542c7065c1a708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint positions over a time period.  <br /></td></tr>
+<tr class="separator:a80444e7813f3e268c3542c7065c1a708"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dfca8fc955b6cf04ec1b1358371c241" id="r_a4dfca8fc955b6cf04ec1b1358371c241"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#a4dfca8fc955b6cf04ec1b1358371c241">operator*=</a> (double lambda)</td></tr>
 <tr class="memdesc:a4dfca8fc955b6cf04ec1b1358371c241"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale inplace by a scalar.  <br /></td></tr>
 <tr class="separator:a4dfca8fc955b6cf04ec1b1358371c241"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,7 +268,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_torque</b> (doubl
 <tr class="memdesc:a859200c5837889a699681efff37e14c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale joint positions by a scalar.  <br /></td></tr>
 <tr class="separator:a859200c5837889a699681efff37e14c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada88c1e7d9481b44371187a62509e6b1" id="r_ada88c1e7d9481b44371187a62509e6b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#ada88c1e7d9481b44371187a62509e6b1">operator/</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
-<tr class="memdesc:ada88c1e7d9481b44371187a62509e6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint positions pose over a time period.  <br /></td></tr>
+<tr class="memdesc:ada88c1e7d9481b44371187a62509e6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint positions over a time period.  <br /></td></tr>
 <tr class="separator:ada88c1e7d9481b44371187a62509e6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a760e272b39afb2838938cbd88dadf1a8" id="r_a760e272b39afb2838938cbd88dadf1a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_positions.html#a760e272b39afb2838938cbd88dadf1a8">operator+=</a> (const <a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> &amp;positions)</td></tr>
 <tr class="memdesc:a760e272b39afb2838938cbd88dadf1a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add inplace other joint positions.  <br /></td></tr>
@@ -895,7 +901,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00082">82</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00081">81</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -934,7 +940,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00078">78</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00077">77</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -974,7 +980,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The clamped joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00092">92</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00091">91</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1014,7 +1020,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The clamped joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00086">86</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00085">85</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1035,7 +1041,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Return a copy of the joint positions. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00100">100</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00099">99</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1067,7 +1073,65 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#afc0197b9568761e8611eafd033f24773">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00066">66</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00065">65</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a80444e7813f3e268c3542c7065c1a708" name="a80444e7813f3e268c3542c7065c1a708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80444e7813f3e268c3542c7065c1a708">&#9670;&#160;</a></span>differentiate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> state_representation::JointPositions::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate joint positions over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint velocities after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00108">108</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8524f63e8477b5b948b815433f57957a" name="a8524f63e8477b5b948b815433f57957a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8524f63e8477b5b948b815433f57957a">&#9670;&#160;</a></span>differentiate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> state_representation::JointPositions::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate joint positions over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint velocities after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00104">104</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1167,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00110">110</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00118">118</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1203,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00105">105</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00113">113</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1168,7 +1232,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00156">156</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00157">157</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1197,7 +1261,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined joint state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00160">160</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00161">161</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1226,7 +1290,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00146">146</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00147">147</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1255,7 +1319,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00151">151</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00152">152</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1277,7 +1341,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate joint positions. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00164">164</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00165">165</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1306,7 +1370,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00178">178</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00179">179</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1335,7 +1399,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00182">182</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00183">183</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1364,7 +1428,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00168">168</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00169">169</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1393,7 +1457,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00173">173</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00174">174</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +1477,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Differentiate joint positions pose over a time period. </p>
+<p>Differentiate joint positions over a time period. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dt</td><td>The time period used for derivation </td></tr>
@@ -1422,7 +1486,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting joint velocities after derivation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00135">135</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00143">143</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1458,7 +1522,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00131">131</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00139">139</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1494,7 +1558,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00126">126</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00134">134</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1577,7 +1641,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint positions with random values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00062">62</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00061">61</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1625,7 +1689,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint positions with random values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00058">58</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00057">57</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1663,7 +1727,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#a7e93abd241903d306030af1d09c14605">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00070">70</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00069">69</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1701,7 +1765,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#ae87f4f2e85899b44b5e6a743034dbae8">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00074">74</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00073">73</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1749,7 +1813,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint positions with zero values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00054">54</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00053">53</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1797,7 +1861,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint positions with zero values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00050">50</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00049">49</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1846,7 +1910,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint accelerations </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00120">120</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00128">128</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1901,7 +1965,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint positions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00114">114</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00122">122</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>
@@ -1949,7 +2013,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00186">186</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_positions_8cpp_source.html#l00187">187</a> of file <a class="el" href="_joint_positions_8cpp_source.html">JointPositions.cpp</a>.</p>
 
 </div>
 </div>

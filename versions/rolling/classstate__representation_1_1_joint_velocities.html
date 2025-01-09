@@ -252,6 +252,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_torque</b> (doubl
 <tr class="memitem:a8c866b57ad496d93b11d616e5df0ea95" id="r_a8c866b57ad496d93b11d616e5df0ea95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#a8c866b57ad496d93b11d616e5df0ea95">copy</a> () const</td></tr>
 <tr class="memdesc:a8c866b57ad496d93b11d616e5df0ea95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a copy of the joint velocities.  <br /></td></tr>
 <tr class="separator:a8c866b57ad496d93b11d616e5df0ea95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2551a839c8742fceb0c942b027dfb30c" id="r_a2551a839c8742fceb0c942b027dfb30c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#a2551a839c8742fceb0c942b027dfb30c">differentiate</a> (double dt) const</td></tr>
+<tr class="memdesc:a2551a839c8742fceb0c942b027dfb30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint velocities over a time period.  <br /></td></tr>
+<tr class="separator:a2551a839c8742fceb0c942b027dfb30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8fa405b5b28ce6903736a73e9d8813" id="r_aad8fa405b5b28ce6903736a73e9d8813"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#aad8fa405b5b28ce6903736a73e9d8813">differentiate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:aad8fa405b5b28ce6903736a73e9d8813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Differentiate joint velocities over a time period.  <br /></td></tr>
+<tr class="separator:aad8fa405b5b28ce6903736a73e9d8813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30942bd2ae129995b71ef229d0df99b" id="r_ae30942bd2ae129995b71ef229d0df99b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#ae30942bd2ae129995b71ef229d0df99b">integrate</a> (double dt) const</td></tr>
+<tr class="memdesc:ae30942bd2ae129995b71ef229d0df99b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate joint velocities over a time period.  <br /></td></tr>
+<tr class="separator:ae30942bd2ae129995b71ef229d0df99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19ce5a3fb9ff54655a624504aa3492ca" id="r_a19ce5a3fb9ff54655a624504aa3492ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#a19ce5a3fb9ff54655a624504aa3492ca">integrate</a> (const std::chrono::nanoseconds &amp;dt) const</td></tr>
+<tr class="memdesc:a19ce5a3fb9ff54655a624504aa3492ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integrate joint velocities over a time period.  <br /></td></tr>
+<tr class="separator:a19ce5a3fb9ff54655a624504aa3492ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7186617f9428ca4c874e1a86d9fa86d7" id="r_a7186617f9428ca4c874e1a86d9fa86d7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstate__representation_1_1_joint_velocities.html">JointVelocities</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_joint_velocities.html#a7186617f9428ca4c874e1a86d9fa86d7">operator*=</a> (double lambda)</td></tr>
 <tr class="memdesc:a7186617f9428ca4c874e1a86d9fa86d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale inplace by a scalar.  <br /></td></tr>
 <tr class="separator:a7186617f9428ca4c874e1a86d9fa86d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -926,7 +938,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00084">84</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00083">83</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -965,7 +977,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00080">80</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00079">79</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1017,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The clamped joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00094">94</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00093">93</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1045,7 +1057,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The clamped joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00088">88</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00087">87</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1066,7 +1078,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Return a copy of the joint velocities. </p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00102">102</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00101">101</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1098,7 +1110,123 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#afc0197b9568761e8611eafd033f24773">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00068">68</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00067">67</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aad8fa405b5b28ce6903736a73e9d8813" name="aad8fa405b5b28ce6903736a73e9d8813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad8fa405b5b28ce6903736a73e9d8813">&#9670;&#160;</a></span>differentiate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> state_representation::JointVelocities::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate joint velocities over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint accelerations after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00110">110</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a2551a839c8742fceb0c942b027dfb30c" name="a2551a839c8742fceb0c942b027dfb30c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2551a839c8742fceb0c942b027dfb30c">&#9670;&#160;</a></span>differentiate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_accelerations.html">JointAccelerations</a> state_representation::JointVelocities::differentiate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Differentiate joint velocities over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for derivation in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint accelerations after derivation </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00106">106</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a19ce5a3fb9ff54655a624504aa3492ca" name="a19ce5a3fb9ff54655a624504aa3492ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19ce5a3fb9ff54655a624504aa3492ca">&#9670;&#160;</a></span>integrate() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> state_representation::JointVelocities::integrate </td>
+          <td>(</td>
+          <td class="paramtype">const std::chrono::nanoseconds &amp;&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate joint velocities over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint positions after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00119">119</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ae30942bd2ae129995b71ef229d0df99b" name="ae30942bd2ae129995b71ef229d0df99b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30942bd2ae129995b71ef229d0df99b">&#9670;&#160;</a></span>integrate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstate__representation_1_1_joint_positions.html">JointPositions</a> state_representation::JointVelocities::integrate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Integrate joint velocities over a time period. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>The time period used for integration in seconds </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting joint positions after integration </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00115">115</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1127,7 +1255,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting joint positions after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00128">128</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00145">145</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1163,7 +1291,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00112">112</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00129">129</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1199,7 +1327,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00107">107</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00124">124</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1228,7 +1356,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined joint state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00177">177</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00180">180</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1257,7 +1385,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00173">173</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00176">176</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1286,7 +1414,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00168">168</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00171">171</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1315,7 +1443,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00163">163</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00166">166</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1337,7 +1465,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Negate joint velocities. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00181">181</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00184">184</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1366,7 +1494,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00199">199</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00202">202</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1395,7 +1523,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00195">195</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00198">198</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1424,7 +1552,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00190">190</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00193">193</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1453,7 +1581,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00185">185</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00188">188</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1482,7 +1610,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting joint accelerations after derivation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00152">152</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00162">162</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1518,7 +1646,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00148">148</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00158">158</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1554,7 +1682,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00143">143</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00153">153</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1637,7 +1765,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint velocities with random values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00064">64</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00063">63</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1685,7 +1813,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint velocities with random values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00060">60</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00059">59</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1723,7 +1851,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#a7e93abd241903d306030af1d09c14605">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00072">72</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00071">71</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1761,7 +1889,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_joint_state.html#ae87f4f2e85899b44b5e6a743034dbae8">state_representation::JointState</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00076">76</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00075">75</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1809,7 +1937,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint velocities with zero values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00056">56</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00055">55</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1857,7 +1985,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Joint velocities with zero values </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00052">52</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00051">51</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1906,7 +2034,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00122">122</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00139">139</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -1954,7 +2082,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting joint positions after integration </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00139">139</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00149">149</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -2009,7 +2137,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled joint velocities </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00116">116</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00133">133</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
@@ -2057,7 +2185,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00203">203</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_joint_velocities_8cpp_source.html#l00206">206</a> of file <a class="el" href="_joint_velocities_8cpp_source.html">JointVelocities.cpp</a>.</p>
 
 </div>
 </div>
