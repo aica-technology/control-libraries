@@ -19,9 +19,7 @@ Release Versions
 ## Upcoming changes
 
 - fix(robot-model): improve ik performance (#205)
-- fix(robot-model): kinematics tests (#207)
 - feat: add integrate and differentiate methods to Cartesian and joint types (#193)
-- feat(robot-model): improve inverse kinematics (#208)
 
 ## 9.0.1
 
