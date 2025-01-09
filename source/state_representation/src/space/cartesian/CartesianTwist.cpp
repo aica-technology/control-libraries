@@ -1,5 +1,6 @@
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 
 namespace state_representation {
 
@@ -126,9 +127,18 @@ CartesianPose CartesianTwist::integrate(double dt) const {
   return displacement;
 }
 
+CartesianPose CartesianTwist::integrate(double dt, const CartesianPose& initial_pose) const {
+  return initial_pose + this->integrate(dt);
+}
+
 CartesianPose CartesianTwist::integrate(const std::chrono::nanoseconds& dt) const {
   // convert the dt to a double with the second as reference
   return this->integrate(dt.count() / 1e9);
+}
+
+CartesianPose CartesianTwist::integrate(const std::chrono::nanoseconds& dt, const CartesianPose& initial_pose) const {
+  // convert the dt to a double with the second as reference
+  return this->integrate(dt.count() / 1e9, initial_pose);
 }
 
 CartesianTwist CartesianTwist::inverse() const {

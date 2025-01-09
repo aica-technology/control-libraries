@@ -218,10 +218,30 @@ public:
 
   /**
    * @brief Integrate the Cartesian twist over a time period
+   * @details This method adds the integrated Cartesian twist to the provided initial pose by respecting the
+   * non-commutativity of the Cartesian pose: a_Result_b = a_InitialPose_b + a_Twist_b * dt
+   * @param dt The time period used for integration in seconds
+   * @param initial_pose The initial pose that should be added to the integration result
+   * @return The resulting Cartesian pose after integration
+   */
+  CartesianPose integrate(double dt, const CartesianPose& initial_pose) const;
+
+  /**
+   * @brief Integrate the Cartesian twist over a time period
    * @param dt The time period used for integration
    * @return The resulting Cartesian pose after integration
    */
   CartesianPose integrate(const std::chrono::nanoseconds& dt) const;
+
+  /**
+   * @brief Integrate the Cartesian twist over a time period
+   * @details This method adds the integrated Cartesian twist to the provided initial pose by respecting the
+   * non-commutativity of the Cartesian pose: a_Result_b = a_InitialPose_b + a_Twist_b * dt
+   * @param dt The time period used for integration
+   * @param initial_pose The initial pose that should be added to the integration result
+   * @return The resulting Cartesian pose after integration
+   */
+  CartesianPose integrate(const std::chrono::nanoseconds& dt, const CartesianPose& initial_pose) const;
 
   /**
    * @brief Compute the inverse of the current Cartesian twist
