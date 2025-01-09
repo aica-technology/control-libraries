@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.1.0](#910)
 - [9.0.1](#901)
 - [9.0.0](#900)
 - [8.1.0](#810)
@@ -16,14 +17,20 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes
+## 9.1.0
 
-- fix(robot-model): improve ik performance (#205)
+Version 9.1.0 adds `integrate` and `differentiate` methods to relevant Cartesian and joint states to allow integration
+and differentiation with double types as well as `chrono` types. Additionally, this version improves the performance of
+the Inverse Kinematics algorithm in the `robot_model` library.
+
+### Full changelog
+
 - feat: add integrate and differentiate methods to Cartesian and joint types (#193)
+- fix(robot-model): improve ik performance (#205)
 
 ## 9.0.1
 
-Version 9.0.1 is a minor version update that exposes Cartesian and Joint state utility functions from the 
+Version 9.0.1 is a patch version update that exposes Cartesian and Joint state utility functions from the 
 corresponding `state_representation` classes.
 
 ### Features
