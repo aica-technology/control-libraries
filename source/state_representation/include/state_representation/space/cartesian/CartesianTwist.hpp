@@ -235,8 +235,7 @@ public:
 
   /**
    * @brief Integrate the Cartesian twist over a time period
-   * @details This method adds the integrated Cartesian twist to the provided initial pose by respecting the
-   * non-commutativity of the Cartesian pose: a_Result_b = a_InitialPose_b + a_Twist_b * dt
+   * @copydetails CartesianTwist::integrate(double, const CartesianPose&)
    * @param dt The time period used for integration
    * @param initial_pose The initial pose that should be added to the integration result
    * @return The resulting Cartesian pose after integration
