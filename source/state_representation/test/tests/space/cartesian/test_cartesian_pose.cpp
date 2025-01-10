@@ -49,6 +49,9 @@ TEST(CartesianPoseTest, RandomPoseInitialization) {
   EXPECT_NE(random.get_orientation().y(), 0);
   EXPECT_NE(random.get_orientation().z(), 0);
   expect_only_pose(random);
+
+  auto new_pose = CartesianPose::from_transformation_matrix(random.get_name(), random.get_transformation_matrix());
+  EXPECT_TRUE(random.get_pose().isApprox(new_pose.get_pose()));
 }
 
 TEST(CartesianPoseTest, CopyPose) {

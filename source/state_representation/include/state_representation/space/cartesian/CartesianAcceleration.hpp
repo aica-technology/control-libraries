@@ -39,6 +39,7 @@ public:
   void set_pose(const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation) = delete;
   void set_pose(const Eigen::Matrix<double, 7, 1>& pose) = delete;
   void set_pose(const std::vector<double>& pose) = delete;
+  void set_pose_from_transformation_matrix(const Eigen::Matrix4d& transformation_matrix) = delete;
   void set_linear_velocity(const Eigen::Vector3d& linear_velocity) = delete;
   void set_linear_velocity(const std::vector<double>& linear_velocity) = delete;
   void set_linear_velocity(const double& x, const double& y, const double& z) = delete;

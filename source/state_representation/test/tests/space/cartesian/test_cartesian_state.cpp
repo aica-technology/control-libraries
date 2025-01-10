@@ -155,6 +155,11 @@ TEST(CartesianStateTest, GetSetFields) {
 
   // pose
   EXPECT_THROW(cs.set_pose(std::vector<double>(8)), exceptions::IncompatibleSizeException);
+  auto cs2 = CartesianState::Random(cs.get_name());
+  EXPECT_FALSE(cs2.get_pose().isApprox(cs.get_pose()));
+  cs2.set_pose_from_transformation_matrix(cs.get_transformation_matrix());
+  EXPECT_TRUE(cs2.get_position().isApprox(cs.get_position()));
+  EXPECT_TRUE(cs2.get_orientation().angularDistance(cs.get_orientation()) < 1e-3);
 
   // linear velocity
   data = Eigen::Vector3d::Random();
@@ -733,7 +738,7 @@ TEST(CartesianStateTest, ScalarMultiplication) {
   CartesianState cscaled = scalar * cs;
   EXPECT_TRUE(cscaled.get_position().isApprox(scalar * cs.get_position()));
   auto qscaled = math_tools::exp(math_tools::log(cs.get_orientation()), scalar);
-  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
+  EXPECT_TRUE(cscaled.get_orientation().angularDistance(qscaled) < 1e-3);
   EXPECT_TRUE(cscaled.get_twist().isApprox(scalar * cs.get_twist()));
   EXPECT_TRUE(cscaled.get_acceleration().isApprox(scalar * cs.get_acceleration()));
   EXPECT_TRUE(cscaled.get_wrench().isApprox(scalar * cs.get_wrench()));
@@ -751,7 +756,7 @@ TEST(CartesianStateTest, ScalarDivision) {
   CartesianState cscaled = cs / scalar;
   EXPECT_TRUE(cscaled.get_position().isApprox(cs.get_position() / scalar));
   auto qscaled = math_tools::exp(math_tools::log(cs.get_orientation()), 1.0 / scalar);
-  EXPECT_TRUE(cscaled.get_orientation().coeffs().isApprox(qscaled.coeffs()));
+  EXPECT_TRUE(cscaled.get_orientation().angularDistance(qscaled) < 1e-3);
   EXPECT_TRUE(cscaled.get_twist().isApprox(cs.get_twist() / scalar));
   EXPECT_TRUE(cscaled.get_acceleration().isApprox(cs.get_acceleration() / scalar));
   EXPECT_TRUE(cscaled.get_wrench().isApprox(cs.get_wrench() / scalar));

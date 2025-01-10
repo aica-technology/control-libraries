@@ -330,6 +330,11 @@ void CartesianState::set_pose(const std::vector<double>& pose) {
   this->set_state_variable(pose, CartesianStateVariable::POSE);
 }
 
+void CartesianState::set_pose_from_transformation_matrix(const Eigen::Matrix4d& transformation_matrix) {
+  this->set_position(transformation_matrix.topRightCorner(3, 1));
+  this->set_orientation(Eigen::Quaterniond(Eigen::Matrix3d(transformation_matrix.topLeftCorner(3, 3))));
+}
+
 void CartesianState::set_linear_velocity(const Eigen::Vector3d& linear_velocity) {
   this->set_state_variable(linear_velocity, CartesianStateVariable::LINEAR_VELOCITY);
 }

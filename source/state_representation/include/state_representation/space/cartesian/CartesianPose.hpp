@@ -1,8 +1,8 @@
 #pragma once
 
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
-#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
@@ -67,7 +67,6 @@ public:
   CartesianState operator-(const CartesianAcceleration& acceleration) const = delete;
   CartesianState operator-(const CartesianWrench& wrench) const = delete;
 
-
   /**
    * @brief Empty constructor
    */
@@ -102,8 +101,7 @@ public:
    * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(
-      const std::string& name, const Eigen::Vector3d& position, const std::string& reference = "world"
-  );
+      const std::string& name, const Eigen::Vector3d& position, const std::string& reference = "world");
 
   /**
    * @brief Constructor of a Cartesian pose from a position given as three scalar coordinates
@@ -122,8 +120,7 @@ public:
    * @param reference The name of the reference frame (default is "world")
    */
   explicit CartesianPose(
-      const std::string& name, const Eigen::Quaterniond& orientation, const std::string& reference = "world"
-  );
+      const std::string& name, const Eigen::Quaterniond& orientation, const std::string& reference = "world");
 
   /**
    * @brief Constructor of a Cartesian pose from a position given as a vector of coordinates and a quaternion
@@ -134,8 +131,7 @@ public:
    */
   explicit CartesianPose(
       const std::string& name, const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation,
-      const std::string& reference = "world"
-  );
+      const std::string& reference = "world");
 
   /**
    * @brief Constructor for the identity pose
@@ -152,6 +148,16 @@ public:
    * @return Cartesian random pose
    */
   static CartesianPose Random(const std::string& name, const std::string& reference = "world");
+
+  /**
+   * @brief Constructor of a Cartesian pose from a transformation matrix
+   * @param name The name of the state
+   * @param transformation_matrix The transformation matrix
+   * @param reference The name of the reference frame (default is "world")
+   * @return Cartesian pose
+   */
+  static CartesianPose from_transformation_matrix(
+      const std::string& name, const Eigen::Matrix4d& transformation_matrix, const std::string& reference = "world");
 
   /**
    * @brief Copy assignment operator that has to be defined to the custom assignment operator
