@@ -235,6 +235,12 @@ public:
   void set_pose(const std::vector<double>& pose);
 
   /**
+   * @brief Setter of the pose from a transformation matrix
+   * @param transformation_matrix The pose as a transformation matrix
+   */
+  void set_pose_from_transformation_matrix(const Eigen::Matrix4d& transformation_matrix);
+
+  /**
    * @brief Setter of the linear velocity attribute
    */
   void set_linear_velocity(const Eigen::Vector3d& linear_velocity);
