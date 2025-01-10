@@ -65,9 +65,8 @@ CartesianPose CartesianPose::Random(const std::string& name, const std::string& 
 
 CartesianPose CartesianPose::from_transformation_matrix(
     const std::string& name, const Eigen::Matrix4d& transformation_matrix, const std::string& reference) {
-  auto pose = CartesianState(name, reference);
-  pose.set_position(transformation_matrix.topRightCorner(3, 1));
-  pose.set_orientation(Eigen::Quaterniond(Eigen::Matrix3d(transformation_matrix.topLeftCorner(3, 3))));
+  auto pose = CartesianPose(name, reference);
+  pose.set_pose_from_transformation_matrix(transformation_matrix);
   return pose;
 }
 
