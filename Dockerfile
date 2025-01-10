@@ -89,8 +89,8 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=base-dependencies /tmp/deps /usr
 ARG TARGETPLATFORM
 ARG CACHEID
-ARG PINOCCHIO_TAG=v2.6.20
-ARG HPP_FCL_TAG=v2.4.4
+ARG PINOCCHIO_TAG=v3.3.0
+ARG HPP_FCL_TAG=v2.4.5
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
@@ -114,11 +114,17 @@ if [ ! -f pinocchio/CMakeLists.txt ]; then
   git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio
 fi
 
+# sdf support and openMP
 cmake -B build/pinocchio -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps
 cmake --build build/pinocchio --target all install
 
 # FIXME: pinocchio produces non-portable paths
 find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
+mv /tmp/deps/include/hpp /tmp/deps/hpp
+mv /tmp/deps/include/pinocchio /tmp/deps/pinocchio
+cp -r /tmp/deps/include/* /tmp/deps/pinocchio && rm -r /tmp/deps/include
+mkdir -p /tmp/deps/include/pinocchio && mv /tmp/deps/pinocchio /tmp/deps/include/
+mkdir -p /tmp/deps/include/hpp && mv /tmp/deps/hpp /tmp/deps/include/
 EOF
 
 FROM base AS dependencies

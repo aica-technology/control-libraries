@@ -2,6 +2,8 @@
 #include <set>
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
+#include <pinocchio/collision/collision.hpp>
+#include <pinocchio/collision/distance.hpp>
 #include "robot_model/Model.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
@@ -110,7 +112,7 @@ void Model::init_model() {
     frames.push_back(f.name);
   }
   // remove universe and root_joint frame added by Pinocchio
-  this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
+  this->frames_ = std::vector<std::string>(frames.begin() + 1, frames.end());
 
   // define the QP solver
   this->qp_solver_ = std::make_unique<QPSolver>(

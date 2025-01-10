@@ -21,7 +21,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   cppzmq
   GIT_REPOSITORY https://github.com/zeromq/cppzmq/
-  GIT_TAG        v4.7.1
+  GIT_TAG        v4.10.0
 )
 FetchContent_MakeAvailable(cppzmq)
 
