@@ -27,6 +27,9 @@ class TestCartesianPose(unittest.TestCase):
         self.assert_np_array_equal(A.get_position(), [1, 2, 3])
         self.assert_np_array_equal(A.get_orientation().elements, [1, 2, 3, 4] / np.linalg.norm([1, 2, 3, 4]))
 
+        B = CartesianPose().from_transformation_matrix(A.get_name(), A.get_transformation_matrix())
+        self.assert_np_array_equal(B.get_pose(), A.get_pose())
+
     def test_copy(self):
         state = CartesianPose().Random("test")
         for state_copy in [copy.copy(state), copy.deepcopy(state)]:

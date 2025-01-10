@@ -103,6 +103,7 @@ void cartesian_state(py::module_& m) {
   }, "Setter of the orientation attribute from a pyquaternion.Quaternion, numpy.array(w, x, y, z), or list(w, x, y, z)");
   c.def("set_pose", py::overload_cast<const Eigen::Matrix<double, 7, 1>&>(&CartesianState::set_pose), "Setter of the pose from a 7d vector of position and orientation coefficients (x, y, z, qw, qx, qy, qz)");
   c.def("set_pose", py::overload_cast<const std::vector<double>&>(&CartesianState::set_pose), "Setter of the pose from a 7d list of position and orientation coefficients (x, y, z, qw, qx, qy, qz)");
+  c.def("set_pose_from_transformation_matrix", &CartesianState::set_pose_from_transformation_matrix, "Setter of the pose from a transformation matrix");
 
   c.def("set_linear_velocity", py::overload_cast<const Eigen::Vector3d&>(&CartesianState::set_linear_velocity), "Setter of the linear velocity attribute");
   c.def("set_linear_velocity", py::overload_cast<const std::vector<double>&>(&CartesianState::set_linear_velocity), "Setter of the linear velocity from a list");
@@ -204,6 +205,7 @@ void cartesian_pose(py::module_& m) {
 
   c.def_static("Identity", &CartesianPose::Identity, "Constructor for the identity pose", "name"_a, "reference_frame"_a=std::string("world"));
   c.def_static("Random", &CartesianPose::Random, "Constructor for a random pose", "name"_a, "reference_frame"_a=std::string("world"));
+  c.def_static("from_transformation_matrix", &CartesianPose::from_transformation_matrix, "Constructor of a Cartesian pose from a transformation matrix", "name"_a, "transformation_matrix"_a, "reference_frame"_a=std::string("world"));
 
   std::vector<std::string> deleted_attributes = {
       "linear_velocity",
@@ -326,6 +328,7 @@ void cartesian_twist(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const CartesianTwist& twist) -> CartesianTwist { return twist; }, "Deleted method from parent class.");
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
+  c.def(std::string("set_pose_from_transformation_matrix").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
   c.def(py::self *= double());
   c.def(py::self * double());
@@ -436,6 +439,7 @@ void cartesian_acceleration(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const CartesianAcceleration& acceleration) -> CartesianAcceleration { return acceleration; }, "Deleted method from parent class.");
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianAcceleration&) -> void {}, "Deleted method from parent class.");
+  c.def(std::string("set_pose_from_transformation_matrix").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
   c.def(py::self *= double());
   c.def(py::self * double());
@@ -532,6 +536,7 @@ void cartesian_wrench(py::module_& m) {
     c.def(std::string("set_" + attr).c_str(), [](const CartesianWrench& wrench) -> CartesianWrench { return wrench; }, "Deleted method from parent class.");
   }
   c.def(std::string("get_orientation_coefficients").c_str(), [](const CartesianWrench&) -> void {}, "Deleted method from parent class.");
+  c.def(std::string("set_pose_from_transformation_matrix").c_str(), [](const CartesianTwist&) -> void {}, "Deleted method from parent class.");
 
   c.def(py::self *= double());
   c.def(py::self * double());

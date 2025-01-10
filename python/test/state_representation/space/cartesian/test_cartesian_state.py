@@ -58,6 +58,7 @@ CARTESIAN_STATE_METHOD_EXPECTS = [
     'set_name',
     'set_orientation',
     'set_pose',
+    'set_pose_from_transformation_matrix',
     'set_position',
     'set_reference_frame',
     'set_torque',
@@ -228,6 +229,9 @@ class TestCartesianState(unittest.TestCase):
         assert_array_almost_equal(np.hstack((position, orientation_vec)), cs.get_pose())
         with self.assertRaises(IncompatibleSizeError):
             cs.set_pose(position)
+        cs2 = CartesianState().Identity(cs.get_name())
+        cs2.set_pose_from_transformation_matrix(cs.get_transformation_matrix())
+        assert_array_almost_equal(cs2.get_pose(), cs.get_pose())
 
         # twist
         linear_velocity = np.random.rand(3)
