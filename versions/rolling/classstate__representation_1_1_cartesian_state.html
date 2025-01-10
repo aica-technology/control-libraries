@@ -197,6 +197,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c159904638a33d635f2c17219b09b11" id="r_a1c159904638a33d635f2c17219b09b11"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#a1c159904638a33d635f2c17219b09b11">set_pose</a> (const std::vector&lt; double &gt; &amp;pose)</td></tr>
 <tr class="memdesc:a1c159904638a33d635f2c17219b09b11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the pose from both position and orientation as std vector.  <br /></td></tr>
 <tr class="separator:a1c159904638a33d635f2c17219b09b11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf629ba2674242d4318e5206b6890876" id="r_acf629ba2674242d4318e5206b6890876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#acf629ba2674242d4318e5206b6890876">set_pose_from_transformation_matrix</a> (const Eigen::Matrix4d &amp;transformation_matrix)</td></tr>
+<tr class="memdesc:acf629ba2674242d4318e5206b6890876"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the pose from a transformation matrix.  <br /></td></tr>
+<tr class="separator:acf629ba2674242d4318e5206b6890876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf24d03d87a69a7dd0a87080fa098a6a" id="r_adf24d03d87a69a7dd0a87080fa098a6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_cartesian_state.html#adf24d03d87a69a7dd0a87080fa098a6a">set_linear_velocity</a> (const Eigen::Vector3d &amp;linear_velocity)</td></tr>
 <tr class="memdesc:adf24d03d87a69a7dd0a87080fa098a6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter of the linear velocity attribute.  <br /></td></tr>
 <tr class="separator:adf24d03d87a69a7dd0a87080fa098a6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -617,7 +620,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00449">449</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00454">454</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -638,7 +641,7 @@ Friends</h2></td></tr>
 
 <p>Return a copy of the Cartesian state. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00467">467</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00472">472</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -709,7 +712,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>dist The distance value as a double </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00472">472</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00477">477</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1100,7 @@ Friends</h2></td></tr>
 <p>The spatial properties of a <a class="el" href="classstate__representation_1_1_cartesian_state.html" title="Class to represent a state in Cartesian space.">CartesianState</a> are measured at the frame and expressed in the reference frame coordinate system. The inverse operation yields the spatial properties of the reference frame as measured from the previous frame. For a state A expressed in reference frame B, the result will be frame B expressed in reference frame A. </p><dl class="section warning"><dt>Warning</dt><dd>The wrench is not supported by this operation will be set to zero </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The inverse state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00524">524</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00529">529</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1125,7 +1128,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00558">558</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00563">563</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1157,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The normalized state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00598">598</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00603">603</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1193,7 +1196,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#aca5f7d0c31657d086a10998bb55e0017">state_representation::CartesianAcceleration</a>, <a class="el" href="classstate__representation_1_1_cartesian_pose.html#a4c5b28151f22e6346be702b3d884219d">state_representation::CartesianPose</a>, <a class="el" href="classstate__representation_1_1_cartesian_twist.html#a3e33c54e1665325e51cf9c73c42fba14">state_representation::CartesianTwist</a>, and <a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a5584c6d706a3773df0cb292ea78e8af8">state_representation::CartesianWrench</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00604">604</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00609">609</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1225,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed state expressed in the left operand reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00694">694</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00699">699</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1251,7 +1254,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed vector expressed in the state reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00726">726</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00731">731</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1290,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian pose </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00716">716</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00721">721</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1316,7 +1319,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The transformed state expressed in the original reference frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00644">644</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00649">649</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1345,7 +1348,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00700">700</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00705">705</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1374,7 +1377,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00765">765</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00770">770</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +1406,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the combined Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00744">744</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00749">749</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1425,7 +1428,7 @@ Friends</h2></td></tr>
 <p>Negate a Cartesian state. </p>
 <dl class="section return"><dt>Returns</dt><dd>The negative value of the Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00771">771</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00776">776</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1454,7 +1457,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00791">791</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00796">796</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1483,7 +1486,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the difference in all the state variables </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00786">786</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00791">791</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1519,7 +1522,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00738">738</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00743">743</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1555,7 +1558,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reference to the scaled Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00730">730</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00735">735</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1655,7 +1658,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a7f9a5e1768cb538f34eea6ad82766dd6">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00519">519</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00524">524</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1677,7 +1680,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear and angular acceleration from a 6d acceleration vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00389">389</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00394">394</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1699,7 +1702,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear and angular acceleration from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00393">393</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00398">398</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1737,7 +1740,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular acceleration from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00385">385</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00390">390</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1759,7 +1762,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular velocity attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00377">377</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00382">382</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1781,7 +1784,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular acceleration from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00381">381</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00386">386</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1819,7 +1822,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular velocity from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00353">353</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00358">358</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1841,7 +1844,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular velocity attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00345">345</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00350">350</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1863,7 +1866,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the angular velocity from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00349">349</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00354">354</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1897,7 +1900,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#aefc82a51f9c4bf9c1a12ea2bf370c5a9">state_representation::CartesianAcceleration</a>, <a class="el" href="classstate__representation_1_1_cartesian_pose.html#a129ba5ab6c8a50e36c0f35ba0ea9a4cf">state_representation::CartesianPose</a>, <a class="el" href="classstate__representation_1_1_cartesian_twist.html#a9446402fd9fbd54f58ef63d21cf54d00">state_representation::CartesianTwist</a>, and <a class="el" href="classstate__representation_1_1_cartesian_wrench.html#a4943b17e26c414913427afcc103699f8">state_representation::CartesianWrench</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00429">429</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00434">434</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1931,7 +1934,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classstate__representation_1_1_cartesian_acceleration.html#ab0d8ef14c214764e3c385877a24d856a">state_representation::CartesianAcceleration</a>, <a class="el" href="classstate__representation_1_1_cartesian_pose.html#acb25ae383fa33e2cd17dfd81f3e2dfef">state_representation::CartesianPose</a>, <a class="el" href="classstate__representation_1_1_cartesian_twist.html#a861b50cb560c73775637e1a2a29df823">state_representation::CartesianTwist</a>, and <a class="el" href="classstate__representation_1_1_cartesian_wrench.html#ace183de9d68dbe66f881414a95b468ce">state_representation::CartesianWrench</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00433">433</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00438">438</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1969,7 +1972,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the force from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00405">405</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00410">410</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -1991,7 +1994,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the force attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00397">397</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00402">402</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2013,7 +2016,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the force from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00401">401</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00406">406</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2051,7 +2054,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear acceleration from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00373">373</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00378">378</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2073,7 +2076,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear acceleration attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00365">365</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00370">370</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2095,7 +2098,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear acceleration from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00369">369</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00374">374</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2133,7 +2136,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear velocity from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00341">341</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00346">346</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2155,7 +2158,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear velocity attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00333">333</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00338">338</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2177,7 +2180,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear velocity from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00337">337</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00342">342</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2391,6 +2394,34 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="acf629ba2674242d4318e5206b6890876" name="acf629ba2674242d4318e5206b6890876"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf629ba2674242d4318e5206b6890876">&#9670;&#160;</a></span>set_pose_from_transformation_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::CartesianState::set_pose_from_transformation_matrix </td>
+          <td>(</td>
+          <td class="paramtype">const Eigen::Matrix4d &amp;&#160;</td>
+          <td class="paramname"><em>transformation_matrix</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter of the pose from a transformation matrix. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">transformation_matrix</td><td>The pose as a transformation matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00333">333</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a3173f2dd7fa8957b85bed53a2c02d4ff" name="a3173f2dd7fa8957b85bed53a2c02d4ff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3173f2dd7fa8957b85bed53a2c02d4ff">&#9670;&#160;</a></span>set_position() <span class="overload">[1/3]</span></h2>
 
@@ -2585,7 +2616,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the torque from three scalar coordinates. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00417">417</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00422">422</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2607,7 +2638,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the torque attribute. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00409">409</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00414">414</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2629,7 +2660,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the torque from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00413">413</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00418">418</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2651,7 +2682,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear and angular velocities from a 6d twist vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00357">357</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00362">362</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2673,7 +2704,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the linear and angular velocities from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00361">361</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00366">366</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2695,7 +2726,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the force and torque from a 6d wrench vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00421">421</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00426">426</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2717,7 +2748,7 @@ Friends</h2></td></tr>
 
 <p>Setter of the force and torque from a std vector. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00425">425</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00430">430</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2738,7 +2769,7 @@ Friends</h2></td></tr>
 
 <p>Set the <a class="el" href="classstate__representation_1_1_state.html" title="Abstract class to represent a state.">State</a> to a zero value. </p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00437">437</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00442">442</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2790,7 +2821,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classstate__representation_1_1_state.html#a5337896f96dd7cc23c945aa4142b6161">state_representation::State</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00802">802</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00807">807</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2855,7 +2886,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The distance between the two states </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00515">515</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00520">520</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2910,7 +2941,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The scaled Cartesian state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00722">722</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00727">727</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -2958,7 +2989,7 @@ Friends</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The appended ostream </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00833">833</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8cpp_source.html#l00838">838</a> of file <a class="el" href="_cartesian_state_8cpp_source.html">CartesianState.cpp</a>.</p>
 
 </div>
 </div>
@@ -3005,7 +3036,7 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00591">591</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00597">597</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
 
 </div>
 </div>
