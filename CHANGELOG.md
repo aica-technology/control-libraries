@@ -17,6 +17,10 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- feat: improve support for transformation matrices (#146)
+
 ## 9.1.0
 
 Version 9.1.0 adds `integrate` and `differentiate` methods to relevant Cartesian and joint states to allow integration
