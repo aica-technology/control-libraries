@@ -65,16 +65,6 @@ protected:
   void insert_point(const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos);
 
   /**
-   * @brief Delete last point and corresponding time from trajectory
-   */
-  void delete_point();
-
-  /**
-   * @brief Clear trajectory
-   */
-  void clear();
-
-  /**
    * @brief Get attribute list of trajectory points
    */
   const std::deque<TrajectoryT>& get_points() const;
@@ -92,16 +82,6 @@ protected:
   TrajectoryT& get_point(unsigned int index);
 
   /**
-   * @brief Get attribute list of trajectory times
-   */
-  const std::deque<std::chrono::nanoseconds> &get_times() const;
-
-  /**
-   * @brief Get attribute number of point in trajectory
-   */
-  int get_size() const;
-
-  /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
    */
@@ -116,12 +96,12 @@ protected:
 
 template<typename TrajectoryT>
 TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
-  this->set_type(StateType::TRAJECTORY);
+  this->set_type(StateType::NONE);
   this->reset();
 }
 
-template<typename TrajectoryT>
-TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
+template <typename TrajectoryT>
+TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string &name) : State(name) {
   this->set_type(StateType::NONE);
   this->reset();
 }
