@@ -20,6 +20,7 @@ Release Versions
 ## Upcoming changes
 
 - feat: improve support for transformation matrices (#146)
+- feat: feat: split trajectory classes and implement Cartesian/JointState specializations (#216)
 
 ## 9.1.0
 
