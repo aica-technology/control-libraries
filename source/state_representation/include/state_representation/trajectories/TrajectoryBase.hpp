@@ -82,6 +82,27 @@ protected:
   TrajectoryT& get_point(unsigned int index);
 
   /**
+   * @brief Set the trajectory point at given index
+   * @param index the index
+   * @param point the new point
+   * @param new_time the new time
+   * @return Success of the operation
+   */
+  template<typename DurationT>
+  bool
+  set_point(unsigned int index, const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time);
+
+  /**
+   * @brief Set the trajectory point at given index
+   * @param points vector of new points
+   * @param new_time vector of new times
+   * @return Success of the operation
+   */
+  template<typename DurationT>
+  bool set_points(
+      const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
+
+  /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
    */
@@ -95,19 +116,19 @@ protected:
 };
 
 template<typename TrajectoryT>
-TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
+inline TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
   this->set_type(StateType::NONE);
   this->reset();
 }
 
 template<typename TrajectoryT>
-TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
+inline TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
   this->set_type(StateType::NONE);
   this->reset();
 }
 
 template<typename TrajectoryT>
-void TrajectoryBase<TrajectoryT>::reset() {
+inline void TrajectoryBase<TrajectoryT>::reset() {
   this->State::reset();
   this->points_.clear();
   this->times_.clear();
@@ -115,7 +136,7 @@ void TrajectoryBase<TrajectoryT>::reset() {
 
 template<typename TrajectoryT>
 template<typename DurationT>
-void TrajectoryBase<TrajectoryT>::add_point(
+inline void TrajectoryBase<TrajectoryT>::add_point(
     const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time) {
   this->set_empty(false);
   this->points_.push_back(new_point);
@@ -130,7 +151,7 @@ void TrajectoryBase<TrajectoryT>::add_point(
 
 template<typename TrajectoryT>
 template<typename DurationT>
-void TrajectoryBase<TrajectoryT>::insert_point(
+inline void TrajectoryBase<TrajectoryT>::insert_point(
     const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos) {
   this->set_empty(false);
 
@@ -150,7 +171,7 @@ void TrajectoryBase<TrajectoryT>::insert_point(
 }
 
 template<typename TrajectoryT>
-void TrajectoryBase<TrajectoryT>::delete_point() {
+inline void TrajectoryBase<TrajectoryT>::delete_point() {
   this->set_empty(false);
   if (!this->points_.empty()) {
     this->points_.pop_back();
@@ -161,7 +182,7 @@ void TrajectoryBase<TrajectoryT>::delete_point() {
 }
 
 template<typename TrajectoryT>
-void TrajectoryBase<TrajectoryT>::clear() {
+inline void TrajectoryBase<TrajectoryT>::clear() {
   this->points_.clear();
   this->times_.clear();
 }
@@ -172,13 +193,46 @@ inline const std::deque<TrajectoryT>& TrajectoryBase<TrajectoryT>::get_points() 
 }
 
 template<typename TrajectoryT>
-const TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) const {
+inline const TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) const {
   return this->points_[index];
 }
 
 template<typename TrajectoryT>
-TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
+inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
   return this->points_[index];
+}
+
+template<typename TrajectoryT>
+template<typename DurationT>
+inline bool TrajectoryBase<TrajectoryT>::set_point(
+    unsigned int index, const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time) {
+  if (index < this->points_.size()) {
+    this->points_[index] = point;
+    if (index == 0) {
+      this->times_[index] = new_time;
+    } else {
+      this->times_[index] = this->times_[index - 1] + new_time;
+    }
+    for (unsigned int i = index + 1; i < this->points_.size(); ++i) {
+      this->times_[i] += this->times_[index - 1];
+    }
+    return true;
+  }
+  return false;
+}
+
+template<typename TrajectoryT>
+template<typename DurationT>
+inline bool TrajectoryBase<TrajectoryT>::set_points(
+    const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
+  if (points.size() != new_times.size()) {
+    return false;
+  }
+  this->clear();
+  for (unsigned int i = 0; i < points.size(); ++i) {
+    this->add_point(points[i], new_times[i]);
+  }
+  return true;
 }
 
 template<typename TrajectoryT>
@@ -187,17 +241,18 @@ inline const std::deque<std::chrono::nanoseconds>& TrajectoryBase<TrajectoryT>::
 }
 
 template<typename TrajectoryT>
-int TrajectoryBase<TrajectoryT>::get_size() const {
+inline int TrajectoryBase<TrajectoryT>::get_size() const {
   return this->points_.size();
 }
 
 template<typename TrajectoryT>
-const std::pair<TrajectoryT, std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
+inline const std::pair<TrajectoryT, std::chrono::nanoseconds>
+TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
   return std::make_pair(this->points_[idx], this->times_[idx]);
 }
 
 template<typename TrajectoryT>
-std::pair<TrajectoryT, std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) {
+inline std::pair<TrajectoryT, std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) {
   this->set_empty(false);
   return std::make_pair(this->points_[idx], this->times_[idx]);
 }
