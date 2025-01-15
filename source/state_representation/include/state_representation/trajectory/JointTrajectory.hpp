@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/trajectories/TrajectoryBase.hpp"
+#include "state_representation/trajectory/TrajectoryBase.hpp"
 
 namespace state_representation {
 class JointTrajectory : public TrajectoryBase<Eigen::VectorXd> {

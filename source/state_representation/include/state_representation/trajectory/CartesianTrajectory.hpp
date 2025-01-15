@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/trajectories/TrajectoryBase.hpp"
+#include "state_representation/trajectory/TrajectoryBase.hpp"
 
 namespace state_representation {
 class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {

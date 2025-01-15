@@ -1,4 +1,4 @@
-#include "state_representation/trajectories/JointTrajectory.hpp"
+#include "state_representation/trajectory/JointTrajectory.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 
 namespace state_representation {

@@ -1,4 +1,4 @@
-#include "state_representation/trajectories/CartesianTrajectory.hpp"
+#include "state_representation/trajectory/CartesianTrajectory.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 
 #include <eigen3/Eigen/src/Core/Matrix.h>
