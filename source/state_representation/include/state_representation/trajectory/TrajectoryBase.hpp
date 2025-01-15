@@ -26,6 +26,17 @@ public:
   explicit TrajectoryBase(const std::string& name);
 
   /**
+   * @brief Get attribute list of trajectory points
+   */
+  const std::deque<TrajectoryT>& get_points() const;
+
+  /**
+   * @brief Get the trajectory point at given index
+   * @param index the index
+   */
+  const TrajectoryT& get_point(unsigned int index) const;
+
+  /**
    * @brief Reset trajectory
    */
   virtual void reset();
@@ -63,17 +74,6 @@ protected:
    */
   template<typename DurationT>
   void insert_point(const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos);
-
-  /**
-   * @brief Get attribute list of trajectory points
-   */
-  const std::deque<TrajectoryT>& get_points() const;
-
-  /**
-   * @brief Get the trajectory point at given index
-   * @param index the index
-   */
-  const TrajectoryT& get_point(unsigned int index) const;
 
   /**
    * @brief Get the trajectory point at given index
