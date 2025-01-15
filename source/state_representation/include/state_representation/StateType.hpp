@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 /**
  * @namespace state_representation
  * @brief Core state variables and objects
@@ -11,30 +13,31 @@ namespace state_representation {
  * @brief The class types inheriting from State
  */
 enum class StateType {
-  NONE,
-  STATE,
-  SPATIAL_STATE,
-  CARTESIAN_STATE,
-  CARTESIAN_POSE,
-  CARTESIAN_TWIST,
-  CARTESIAN_ACCELERATION,
-  CARTESIAN_WRENCH,
-  JOINT_STATE,
-  JOINT_POSITIONS,
-  JOINT_VELOCITIES,
-  JOINT_ACCELERATIONS,
-  JOINT_TORQUES,
-  JACOBIAN,
-  PARAMETER,
-  GEOMETRY_SHAPE,
-  GEOMETRY_ELLIPSOID,
-  TRAJECTORY,
-  DIGITAL_IO_STATE,
-  ANALOG_IO_STATE,
+  NONE = 0,
+  STATE = 1,
+  SPATIAL_STATE = 2,
+  CARTESIAN_STATE = 3,
+  CARTESIAN_POSE = 4,
+  CARTESIAN_TWIST = 5,
+  CARTESIAN_ACCELERATION = 6,
+  CARTESIAN_WRENCH = 7,
+  JOINT_STATE = 8,
+  JOINT_POSITIONS = 9,
+  JOINT_VELOCITIES = 10,
+  JOINT_ACCELERATIONS = 11,
+  JOINT_TORQUES = 12,
+  JACOBIAN = 13,
+  PARAMETER = 14,
+  GEOMETRY_SHAPE = 15,
+  GEOMETRY_ELLIPSOID = 16,
+  CARTESIAN_TRAJECTORY = 17,
+  JOINT_TRAJECTORY = 18,
+  DIGITAL_IO_STATE = 19,
+  ANALOG_IO_STATE = 20,
 #ifdef EXPERIMENTAL_FEATURES
-  DUAL_QUATERNION_STATE,
-  DUAL_QUATERNION_POSE,
-  DUAL_QUATERNION_TWIST
+  DUAL_QUATERNION_STATE = 21,
+  DUAL_QUATERNION_POSE = 22,
+  DUAL_QUATERNION_TWIST = 23
 #endif
 };
 
@@ -75,8 +78,10 @@ enum class StateType {
       return "Shape";
     case StateType::GEOMETRY_ELLIPSOID:
       return "Ellipsoid";
-    case StateType::TRAJECTORY:
-      return "Trajectory";
+    case StateType::CARTESIAN_TRAJECTORY:
+      return "CartesianTrajectory";
+    case StateType::JOINT_TRAJECTORY:
+      return "JointTrajectory";
     case StateType::DIGITAL_IO_STATE:
       return "DigitalIOState";
     case StateType::ANALOG_IO_STATE:

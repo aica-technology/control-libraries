@@ -1,129 +1,253 @@
-#include <gtest/gtest.h>
-#include <fstream>
-#include <unistd.h>
-#include "state_representation/trajectories/Trajectory.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/trajectory/CartesianTrajectory.hpp"
+#include "state_representation/trajectory/JointTrajectory.hpp"
+
+#include <eigen3/Eigen/src/Core/Matrix.h>
+
+#include <gtest/gtest.h>
+#include <unistd.h>
 
 TEST(TrajectoryTest, CreateTrajectory) {
-  state_representation::Trajectory<state_representation::JointState> trajectory;
-  std::deque<state_representation::JointState> points = trajectory.get_points();
+  state_representation::TrajectoryBase<Eigen::VectorXd> trajectory;
   std::deque<std::chrono::nanoseconds> times = trajectory.get_times();
-  EXPECT_TRUE(points.empty());
+  EXPECT_EQ(trajectory.get_size(), 0);
   EXPECT_TRUE(times.empty());
 }
 
 TEST(TrajectoryTest, AddPoint) {
-  state_representation::Trajectory<state_representation::JointState> trajectory;
-  state_representation::JointState point("robot", 1);
+  {
+    state_representation::CartesianTrajectory trajectory("world");
+    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world");
 
-  std::deque<state_representation::JointState> points = trajectory.get_points();
-  std::deque<std::chrono::nanoseconds> times = trajectory.get_times();
+    auto point1 = state_representation::CartesianState::Random("point1");
+    EXPECT_TRUE(trajectory.add_point(point1, std::chrono::nanoseconds(100)));
 
-  unsigned int prev_size_points = points.size();
-  unsigned int prev_size_times = times.size();
+    auto point2 = state_representation::CartesianState::Random("point2", "foo_reference_frame");
+    EXPECT_FALSE(trajectory.add_point(point2, std::chrono::nanoseconds(200)));
 
-  std::chrono::nanoseconds period(100);
-  Eigen::ArrayXd positions(1);
-  positions << 0.2;
-  point.set_positions(positions);
-  trajectory.add_point(point, period);
+    auto point3 = state_representation::CartesianState::Random("point3", "world");
+    EXPECT_TRUE(trajectory.add_point(point3, std::chrono::nanoseconds(300)));
+  }
 
-  points = trajectory.get_points();
-  times = trajectory.get_times();
+  {
+    state_representation::JointTrajectory trajectory("joint_trajectory");
 
-  unsigned int new_size_points = points.size();
-  unsigned int new_size_times = times.size();
+    auto point1 = state_representation::JointState::Random("foo", 25);
+    EXPECT_TRUE(trajectory.add_point(point1, std::chrono::nanoseconds(100)));
 
-  EXPECT_TRUE(new_size_points == prev_size_points + 1);
-  EXPECT_TRUE(new_size_times == prev_size_times + 1);
+    auto point2 = state_representation::JointState::Random("foo", 1);
+    EXPECT_FALSE(trajectory.add_point(point2, std::chrono::nanoseconds(200)));
+
+    auto point3 = state_representation::JointState::Random("foo", 25);
+    EXPECT_TRUE(trajectory.add_point(point3, std::chrono::nanoseconds(300)));
+  }
 }
 
 TEST(TrajectoryTest, ClearPoint) {
-  state_representation::Trajectory<state_representation::JointState> trajectory;
-  state_representation::JointState point("robot", 1);
+  {
+    state_representation::CartesianTrajectory trajectory("world");
+    auto point1 = state_representation::CartesianState::Random("point1");
+    auto point2 = state_representation::CartesianState::Random("point2");
+    auto point3 = state_representation::CartesianState::Random("point3");
+    trajectory.add_point(point1, std::chrono::nanoseconds(100));
+    trajectory.add_point(point2, std::chrono::nanoseconds(300));
+    trajectory.add_point(point3, std::chrono::nanoseconds(300));
+    EXPECT_EQ(trajectory.get_size(), 3);
+    EXPECT_EQ(trajectory.get_times().size(), 3);
+    trajectory.delete_point();
+    EXPECT_EQ(trajectory.get_size(), 2);
+    EXPECT_EQ(trajectory.get_times().size(), 2);
+    trajectory.clear();
+    EXPECT_EQ(trajectory.get_size(), 0);
+    EXPECT_EQ(trajectory.get_times().size(), 0);
+  }
 
-  std::chrono::nanoseconds period(100);
-  Eigen::ArrayXd positions(1);
-  positions << 0.2;
-  point.set_positions(positions);
-  trajectory.add_point(point, period);
-
-  std::deque<state_representation::JointState> points = trajectory.get_points();
-  std::deque<std::chrono::nanoseconds> times = trajectory.get_times();
-
-  unsigned int size_points = points.size();
-  unsigned int size_times = times.size();
-
-  EXPECT_TRUE(size_points == 1);
-  EXPECT_TRUE(size_times == 1);
-
-  trajectory.clear();
-  points = trajectory.get_points();
-  times = trajectory.get_times();
-
-  EXPECT_TRUE(points.empty());
-  EXPECT_TRUE(times.empty());
+  {
+    state_representation::JointTrajectory trajectory;
+    auto point1 = state_representation::JointState::Random("point1", 25);
+    auto point2 = state_representation::JointState::Random("point2", 25);
+    auto point3 = state_representation::JointState::Random("point3", 25);
+    trajectory.add_point(point1, std::chrono::nanoseconds(100));
+    trajectory.add_point(point2, std::chrono::nanoseconds(300));
+    trajectory.add_point(point3, std::chrono::nanoseconds(300));
+    EXPECT_EQ(trajectory.get_size(), 3);
+    EXPECT_EQ(trajectory.get_times().size(), 3);
+    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
+    trajectory.delete_point();
+    EXPECT_EQ(trajectory.get_size(), 2);
+    EXPECT_EQ(trajectory.get_times().size(), 2);
+    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
+    trajectory.clear();
+    EXPECT_EQ(trajectory.get_size(), 0);
+    EXPECT_EQ(trajectory.get_times().size(), 0);
+    EXPECT_EQ(trajectory.get_joint_names().size(), 0);
+  }
 }
 
 TEST(TrajectoryTest, OverloadIndex) {
-  state_representation::Trajectory<state_representation::JointState> trajectory;
-  state_representation::JointState point("robot", 1);
+  {
+    state_representation::CartesianTrajectory trajectory;
+    auto point1 = state_representation::CartesianState::Random("point1");
+    auto point2 = state_representation::CartesianState::Random("point2");
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
+    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(800));
+    EXPECT_TRUE(trajectory[1].first.data() == point2.data());
+  }
 
-  std::chrono::nanoseconds period(100);
-  Eigen::ArrayXd positions(1);
-  positions << 0.2;
-  point.set_positions(positions);
-  trajectory.add_point(point, period);
-  positions << 0.7;
-  point.set_positions(positions);
-  trajectory.add_point(point, period);
-
-  std::pair<state_representation::JointState, std::chrono::nanoseconds> point0 = trajectory[0];
-  std::pair<state_representation::JointState, std::chrono::nanoseconds> point1 = trajectory[1];
-
-  EXPECT_TRUE(point0.first.get_positions()[0] == 0.2);
-  EXPECT_TRUE(point1.first.get_positions()[0] == 0.7);
-  EXPECT_TRUE(point0.second == period);
-  EXPECT_TRUE(point1.second == 2 * period);
+  {
+    state_representation::JointTrajectory trajectory;
+    auto point1 = state_representation::JointState::Random("foo", 25);
+    auto point2 = state_representation::JointState::Random("foo", 25);
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
+    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(800));
+    EXPECT_TRUE(trajectory[1].first.data() == point2.data());
+  }
 }
 
-// TEST(TrajectoryTest, InsertPoint)
-// {
-// 	state_representation::Trajectory<state_representation::JointState> trajectory;
-// 	state_representation::JointState point("robot", 1);
+TEST(TrajectoryTest, InsertPoint) {
+  {
+    state_representation::CartesianTrajectory trajectory;
+    auto point1 = state_representation::CartesianState::Random("point1");
+    auto point2 = state_representation::CartesianState::Random("point2");
+    auto point3 = state_representation::CartesianState::Random("point3");
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
 
-// 	std::chrono::nanoseconds period(100);
-// 	Eigen::ArrayXd positions(1);
-// 	positions << 0.2;
-// 	point.set_positions(positions);
-// 	trajectory.add_point(point, period);
-// 	positions << 0.7;
-// 	point.set_positions(positions);
-// 	trajectory.add_point(point, period);
+    trajectory.insert_point(point3, std::chrono::nanoseconds(100), 1);
+    EXPECT_EQ(trajectory.get_size(), 3);
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(400));
+    EXPECT_TRUE(trajectory[1].first.data() == point3.data());
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
+    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
+    EXPECT_TRUE(trajectory[2].second == std::chrono::nanoseconds(900));
+    EXPECT_TRUE(trajectory[2].first.data() == point2.data());
+  }
 
-// 	std::pair<state_representation::JointState, std::chrono::nanoseconds> last_point = trajectory[1];
-// 	std::deque<state_representation::JointState> points = trajectory.get_points();
-// 	std::deque<std::chrono::nanoseconds> times = trajectory.get_times();
+  {
+    state_representation::JointTrajectory trajectory;
+    auto point1 = state_representation::JointState::Random("point1", 25);
+    auto point2 = state_representation::JointState::Random("point2", 25);
+    auto point3 = state_representation::JointState::Random("point3", 25);
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
 
-// 	EXPECT_TRUE(points.size() == 2);
-// 	EXPECT_TRUE(times.size() == 2);
-// 	EXPECT_TRUE(last_point.first.get_positions()[0] == 0.7);
-// 	EXPECT_TRUE(last_point.second == 2*period);
+    trajectory.insert_point(point3, std::chrono::nanoseconds(100), 1);
+    EXPECT_EQ(trajectory.get_size(), 3);
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(400));
+    EXPECT_TRUE(trajectory[1].first.data() == point3.data());
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
+    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
+    EXPECT_TRUE(trajectory[2].second == std::chrono::nanoseconds(900));
+    EXPECT_TRUE(trajectory[2].first.data() == point2.data());
+  }
+}
 
-// 	positions << 0.8;
-// 	point.set_positions(positions);
-// 	trajectory.insert_point(point, period, 1);
+TEST(TrajectoryTest, GetPoints) {
+  {
+    state_representation::CartesianTrajectory trajectory;
+    auto point1 = state_representation::CartesianState::Random("point1");
+    auto point2 = state_representation::CartesianState::Random("point2");
+    auto point3 = state_representation::CartesianState::Random("point3");
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    trajectory.add_point(point3, std::chrono::nanoseconds(100));
 
-// 	std::pair<state_representation::JointState, std::chrono::nanoseconds> inserted_point = trajectory[1];
-// 	last_point = trajectory[2];
-// 	points = trajectory.get_points();
-// 	times = trajectory.get_times();
+    auto points = trajectory.get_points();
+    EXPECT_EQ(points.size(), 3);
+    EXPECT_TRUE(points[0].data() == point1.data());
+    EXPECT_TRUE(points[1].data() == point2.data());
+    EXPECT_TRUE(points[2].data() == point3.data());
 
-// 	EXPECT_TRUE(points.size() == 3);
-// 	EXPECT_TRUE(times.size() == 3);
-// 	EXPECT_TRUE(inserted_point.first.get_positions()[0] == 0.8);
-// 	EXPECT_TRUE(inserted_point.second == 2*period);
-// 	EXPECT_TRUE(last_point.first.get_positions()[0] == 0.7);
-// 	EXPECT_TRUE(last_point.second == 3*period);
-// }
+    EXPECT_TRUE(trajectory.get_point(0).data() == point1.data());
+    EXPECT_TRUE(trajectory.get_point(1).data() == point2.data());
+    EXPECT_TRUE(trajectory.get_point(2).data() == point3.data());
+  }
+
+  {
+    state_representation::JointTrajectory trajectory;
+    auto point1 = state_representation::JointState::Random("point1", 25);
+    auto point2 = state_representation::JointState::Random("point2", 25);
+    auto point3 = state_representation::JointState::Random("point3", 25);
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    trajectory.add_point(point3, std::chrono::nanoseconds(100));
+
+    auto points = trajectory.get_points();
+    EXPECT_EQ(points.size(), 3);
+    EXPECT_TRUE(points[0].data() == point1.data());
+    EXPECT_TRUE(points[1].data() == point2.data());
+    EXPECT_TRUE(points[2].data() == point3.data());
+
+    EXPECT_TRUE(trajectory.get_point(0).data() == point1.data());
+    EXPECT_TRUE(trajectory.get_point(1).data() == point2.data());
+    EXPECT_TRUE(trajectory.get_point(2).data() == point3.data());
+  }
+}
+
+TEST(TrajectoryTest, SetPoints) {
+  {
+    state_representation::CartesianTrajectory trajectory;
+    auto point1 = state_representation::CartesianState::Random("point1");
+    auto point2 = state_representation::CartesianState::Random("point2");
+    auto point3 = state_representation::CartesianState::Random("point3");
+
+    auto replacement1 = state_representation::CartesianState::Random("replacement1");
+    auto replacement2 = state_representation::CartesianState::Random("replacement2");
+    std::vector<state_representation::CartesianState> replacement_points = {replacement1, replacement2};
+    std::vector<std::chrono::nanoseconds> replacement_times = {
+        std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
+
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    trajectory.add_point(point3, std::chrono::nanoseconds(100));
+
+    trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50));
+    EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
+
+    EXPECT_TRUE(trajectory.set_points(replacement_points, replacement_times));
+    EXPECT_EQ(trajectory.get_size(), 2);
+    EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
+    EXPECT_TRUE(trajectory[1].first.data() == replacement2.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(300));
+  }
+
+  {
+    state_representation::JointTrajectory trajectory;
+    auto point1 = state_representation::JointState::Random("foo", 25);
+    auto point2 = state_representation::JointState::Random("foo", 25);
+    auto point3 = state_representation::JointState::Random("foo", 25);
+
+    auto replacement1 = state_representation::JointState::Random("foo", 25);
+    auto replacement2 = state_representation::JointState::Random("foo", 25);
+    std::vector<state_representation::JointState> replacement_points = {replacement1, replacement2};
+    std::vector<std::chrono::nanoseconds> replacement_times = {
+        std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
+
+    trajectory.add_point(point1, std::chrono::nanoseconds(300));
+    trajectory.add_point(point2, std::chrono::nanoseconds(500));
+    trajectory.add_point(point3, std::chrono::nanoseconds(100));
+
+    trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50));
+    EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
+
+    EXPECT_TRUE(trajectory.set_points(replacement_points, replacement_times));
+    EXPECT_EQ(trajectory.get_size(), 2);
+    EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
+    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
+    EXPECT_TRUE(trajectory[1].first.data() == replacement2.data());
+    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(300));
+
+    replacement1.set_name("bar");
+    EXPECT_FALSE(trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50)));
+  }
+}
