@@ -29,6 +29,7 @@ set(CORE_SOURCES
   src/parameters/Predicate.cpp
   src/geometry/Shape.cpp
   src/geometry/Ellipsoid.cpp
+  src/trajectories/CartesianTrajectory.cpp
 )
 
 if (EXPERIMENTAL_FEATURES)

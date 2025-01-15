@@ -100,8 +100,8 @@ TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
   this->reset();
 }
 
-template <typename TrajectoryT>
-TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string &name) : State(name) {
+template<typename TrajectoryT>
+TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
   this->set_type(StateType::NONE);
   this->reset();
 }
@@ -116,8 +116,7 @@ void TrajectoryBase<TrajectoryT>::reset() {
 template<typename TrajectoryT>
 template<typename DurationT>
 void TrajectoryBase<TrajectoryT>::add_point(
-    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time
-) {
+    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time) {
   this->set_empty(false);
   this->points_.push_back(new_point);
 
@@ -132,8 +131,7 @@ void TrajectoryBase<TrajectoryT>::add_point(
 template<typename TrajectoryT>
 template<typename DurationT>
 void TrajectoryBase<TrajectoryT>::insert_point(
-    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos
-) {
+    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos) {
   this->set_empty(false);
 
   auto it_points = this->points_.begin();
