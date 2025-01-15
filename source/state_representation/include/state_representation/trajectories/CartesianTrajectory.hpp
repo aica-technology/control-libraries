@@ -3,10 +3,6 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/trajectories/TrajectoryBase.hpp"
 
-#include <chrono>
-#include <deque>
-#include <eigen3/Eigen/src/Core/Matrix.h>
-
 namespace state_representation {
 class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {
 private:

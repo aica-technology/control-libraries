@@ -30,6 +30,7 @@ set(CORE_SOURCES
   src/geometry/Shape.cpp
   src/geometry/Ellipsoid.cpp
   src/trajectories/CartesianTrajectory.cpp
+  src/trajectories/JointTrajectory.cpp
 )
 
 if (EXPERIMENTAL_FEATURES)
