@@ -40,4 +40,22 @@ std::pair<JointState, std::chrono::nanoseconds> JointTrajectory::operator[](unsi
   state.set_data(pair.first);
   return std::make_pair(state, pair.second);
 }
+
+void JointTrajectory::reset() {
+  this->TrajectoryBase<Eigen::VectorXd>::reset();
+  this->robot_name_ = "";
+  this->joint_names_.clear();
+}
+
+void JointTrajectory::delete_point() {
+  this->TrajectoryBase<Eigen::VectorXd>::delete_point();
+  if (this->get_size() == 0) {
+    this->joint_names_.clear();
+  }
+}
+
+void JointTrajectory::clear() {
+  this->TrajectoryBase<Eigen::VectorXd>::clear();
+  this->joint_names_.clear();
+}
 }// namespace state_representation

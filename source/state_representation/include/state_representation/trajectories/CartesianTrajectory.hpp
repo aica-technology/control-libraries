@@ -53,6 +53,21 @@ public:
    * corresponding time
    */
   std::pair<CartesianState, std::chrono::nanoseconds> operator[](unsigned int idx);
+
+  /**
+   * @brief Reset trajectory
+   */
+  virtual void reset() override;
+
+  /**
+   * @brief Delete last point and corresponding time from trajectory
+   */
+  virtual void delete_point() override;
+
+  /**
+   * @brief Clear trajectory
+   */
+  virtual void clear() override;
 };
 
 template<typename DurationT>

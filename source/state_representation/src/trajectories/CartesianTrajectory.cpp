@@ -37,4 +37,21 @@ std::pair<CartesianState, std::chrono::nanoseconds> CartesianTrajectory::operato
   state.set_data(pair.first);
   return std::make_pair(state, pair.second);
 }
+
+void CartesianTrajectory::reset() {
+  this->TrajectoryBase<Eigen::VectorXd>::reset();
+  this->reference_frame_ = "world";
+}
+
+void CartesianTrajectory::delete_point() {
+  this->TrajectoryBase<Eigen::VectorXd>::delete_point();
+  if (this->get_size() == 0) {
+    this->reference_frame_ = "";
+  }
+}
+
+void CartesianTrajectory::clear() {
+  this->TrajectoryBase<Eigen::VectorXd>::clear();
+  this->reference_frame_ = "";
+}
 }// namespace state_representation

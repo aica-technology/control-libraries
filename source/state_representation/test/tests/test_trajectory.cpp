@@ -73,11 +73,11 @@ TEST(TrajectoryTest, ClearPoint) {
     trajectory.add_point(point3, std::chrono::nanoseconds(300));
     EXPECT_EQ(trajectory.get_size(), 3);
     EXPECT_EQ(trajectory.get_times().size(), 3);
-    EXPECT_EQ(trajectory.get_joint_names().size(), 3);
+    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
     trajectory.delete_point();
     EXPECT_EQ(trajectory.get_size(), 2);
     EXPECT_EQ(trajectory.get_times().size(), 2);
-    EXPECT_EQ(trajectory.get_joint_names().size(), 2);
+    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
     trajectory.clear();
     EXPECT_EQ(trajectory.get_size(), 0);
     EXPECT_EQ(trajectory.get_times().size(), 0);

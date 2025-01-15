@@ -28,17 +28,17 @@ public:
   /**
    * @brief Reset trajectory
    */
-  void reset();
+  virtual void reset();
 
   /**
    * @brief Delete last point and corresponding time from trajectory
    */
-  void delete_point();
+  virtual void delete_point();
 
   /**
    * @brief Clear trajectory
    */
-  void clear();
+  virtual void clear();
 
   /**
    * @brief Get attribute list of trajectory times
