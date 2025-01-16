@@ -22,6 +22,16 @@ public:
   const TrajectoryT& get_point(unsigned int index) const;
 
   /**
+   * @brief Get attribute list of trajectory times
+   */
+  const std::deque<std::chrono::nanoseconds>& get_times() const;
+
+  /**
+   * @brief Get attribute number of point in trajectory
+   */
+  int get_size() const;
+
+  /**
    * @brief Reset trajectory
    */
   virtual void reset();
@@ -35,16 +45,6 @@ public:
    * @brief Clear trajectory
    */
   virtual void clear();
-
-  /**
-   * @brief Get attribute list of trajectory times
-   */
-  const std::deque<std::chrono::nanoseconds>& get_times() const;
-
-  /**
-   * @brief Get attribute number of point in trajectory
-   */
-  int get_size() const;
 
 protected:
   /**
@@ -89,7 +89,7 @@ protected:
   set_point(unsigned int index, const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time);
 
   /**
-   * @brief Set the trajectory point at given index
+   * @brief Set the trajectory points from a vector of points
    * @param points vector of new points
    * @param new_time vector of new times
    * @return Success of the operation
