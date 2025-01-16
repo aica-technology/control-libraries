@@ -5,9 +5,6 @@
 
 namespace state_representation {
 class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {
-private:
-  std::string reference_frame_;///< name of the reference frame
-
 public:
   /**
    * @brief Constructor with name and reference frame provided
@@ -90,6 +87,9 @@ public:
    * @brief Clear trajectory
    */
   virtual void clear() override;
+
+private:
+  std::string reference_frame_;///< name of the reference frame
 };
 
 template<typename DurationT>

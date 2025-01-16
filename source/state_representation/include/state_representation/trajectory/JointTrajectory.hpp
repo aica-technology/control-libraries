@@ -5,10 +5,6 @@
 
 namespace state_representation {
 class JointTrajectory : public TrajectoryBase<Eigen::VectorXd> {
-private:
-  std::vector<std::string> joint_names_;///< names of the joints
-  std::string robot_name_;              ///< name of the robot
-
 public:
   /**
    * @brief Empty constructor
@@ -93,6 +89,10 @@ public:
    * @brief Clear trajectory
    */
   virtual void clear() override;
+
+private:
+  std::vector<std::string> joint_names_;///< names of the joints
+  std::string robot_name_;              ///< name of the robot
 };
 
 template<typename DurationT>

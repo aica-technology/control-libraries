@@ -9,10 +9,6 @@
 namespace state_representation {
 template<typename TrajectoryT>
 class TrajectoryBase : public State {
-private:
-  std::deque<TrajectoryT> points_;
-  std::deque<std::chrono::nanoseconds> times_;
-
 public:
   /**
    * @brief Empty constructor
@@ -113,6 +109,10 @@ protected:
    * corresponding time
    */
   std::pair<TrajectoryT, std::chrono::nanoseconds> operator[](unsigned int idx);
+
+private:
+  std::deque<TrajectoryT> points_;
+  std::deque<std::chrono::nanoseconds> times_;
 };
 
 template<typename TrajectoryT>
