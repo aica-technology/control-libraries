@@ -3,11 +3,6 @@
 
 namespace state_representation {
 
-JointTrajectory::JointTrajectory() : TrajectoryBase<Eigen::VectorXd>() {
-  this->set_type(StateType::JOINT_TRAJECTORY);
-  this->reset();
-}
-
 JointTrajectory::JointTrajectory(const std::string& name) : TrajectoryBase<Eigen::VectorXd>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
   this->reset();

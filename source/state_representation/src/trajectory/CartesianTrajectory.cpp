@@ -4,7 +4,7 @@
 #include <eigen3/Eigen/src/Core/Matrix.h>
 
 namespace state_representation {
-CartesianTrajectory::CartesianTrajectory(const std::string& reference_frame, const std::string& name)
+CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::string& reference_frame)
     : TrajectoryBase<Eigen::VectorXd>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
   this->reset();

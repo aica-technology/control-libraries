@@ -4,18 +4,35 @@
 #include "state_representation/trajectory/TrajectoryBase.hpp"
 
 namespace state_representation {
+
 class JointTrajectory : public TrajectoryBase<Eigen::VectorXd> {
 public:
-  /**
-   * @brief Empty constructor
-   */
-  explicit JointTrajectory();
-
   /**
    * @brief Constructor with name and reference frame provided
    * @brief name the name of the state
    */
-  explicit JointTrajectory(const std::string& name);
+  explicit JointTrajectory(const std::string& name = "");
+
+  /**
+   * @brief Constructor with name and reference frame provided
+   * @param point the initial point
+   * @param time the initial time
+   * @param name the name of the state
+   */
+  template<typename DurationT>
+  explicit JointTrajectory(
+      const JointState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name = "");
+
+  /**
+   * @brief Constructor with name and reference frame provided
+   * @param points vector of initial points
+   * @param times vector of initial times
+   * @param name the name of the state
+   */
+  template<typename DurationT>
+  explicit JointTrajectory(
+      const std::vector<JointState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
+      const std::string& name = "");
 
   /**
    * @brief Getter of the names attribute
@@ -94,6 +111,25 @@ private:
   std::vector<std::string> joint_names_;///< names of the joints
   std::string robot_name_;              ///< name of the robot
 };
+
+template<typename DurationT>
+JointTrajectory::JointTrajectory(
+    const JointState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name)
+    : TrajectoryBase<Eigen::VectorXd>(name) {
+  this->set_type(StateType::JOINT_TRAJECTORY);
+  this->reset();
+  this->add_point(point, time);
+}
+
+template<typename DurationT>
+JointTrajectory::JointTrajectory(
+    const std::vector<JointState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
+    const std::string& name)
+    : TrajectoryBase<Eigen::VectorXd>(name) {
+  this->set_type(StateType::JOINT_TRAJECTORY);
+  this->reset();
+  this->set_points(points, times);
+}
 
 template<typename DurationT>
 inline bool

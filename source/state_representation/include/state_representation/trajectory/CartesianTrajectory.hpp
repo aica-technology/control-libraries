@@ -8,10 +8,34 @@ class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {
 public:
   /**
    * @brief Constructor with name and reference frame provided
-   * @param reference_frame reference frame of the trajectory points
    * @param name the name of the state
+   * @param reference_frame reference frame of the trajectory points
    */
-  explicit CartesianTrajectory(const std::string& reference_frame = "world", const std::string& name = "");
+  explicit CartesianTrajectory(const std::string& name = "", const std::string& reference_frame = "world");
+
+  /**
+   * @brief Constructor with name and reference frame provided
+   * @param point the initial point
+   * @param time the initial time
+   * @param name the name of the state
+   * @param reference_frame reference frame of the trajectory points
+   */
+  template<typename DurationT>
+  explicit CartesianTrajectory(
+      const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name = "",
+      const std::string& reference_frame = "world");
+
+  /**
+   * @brief Constructor with name and reference frame provided
+   * @param points vector of initial points
+   * @param times vector of initial times
+   * @param name the name of the state
+   * @param reference_frame reference frame of the trajectory points
+   */
+  template<typename DurationT>
+  explicit CartesianTrajectory(
+      const std::vector<CartesianState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
+      const std::string& name = "", const std::string& reference_frame = "world");
 
   /**
    * @brief Getter of the reference frame as const reference
@@ -91,6 +115,26 @@ public:
 private:
   std::string reference_frame_;///< name of the reference frame
 };
+
+template<typename DurationT>
+CartesianTrajectory::CartesianTrajectory(
+    const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name,
+    const std::string& reference_frame)
+    : TrajectoryBase<Eigen::VectorXd>(name), reference_frame_(reference_frame) {
+  this->set_type(StateType::CARTESIAN_TRAJECTORY);
+  this->reset();
+  this->add_point(point, time);
+}
+
+template<typename DurationT>
+CartesianTrajectory::CartesianTrajectory(
+    const std::vector<CartesianState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
+    const std::string& name, const std::string& reference_frame)
+    : TrajectoryBase<Eigen::VectorXd>(name), reference_frame_(reference_frame) {
+  this->set_type(StateType::CARTESIAN_TRAJECTORY);
+  this->reset();
+  this->set_points(points, times);
+}
 
 template<typename DurationT>
 inline bool CartesianTrajectory::add_point(
