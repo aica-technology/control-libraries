@@ -117,13 +117,11 @@ private:
 
 template<typename TrajectoryT>
 inline TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
-  this->set_type(StateType::NONE);
   this->reset();
 }
 
 template<typename TrajectoryT>
 inline TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
-  this->set_type(StateType::NONE);
   this->reset();
 }
 
@@ -253,7 +251,6 @@ TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
 
 template<typename TrajectoryT>
 inline std::pair<TrajectoryT, std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) {
-  this->set_empty(false);
   return std::make_pair(this->points_[idx], this->times_[idx]);
 }
 }// namespace state_representation
