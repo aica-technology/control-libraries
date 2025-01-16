@@ -11,17 +11,6 @@ template<typename TrajectoryT>
 class TrajectoryBase : public State {
 public:
   /**
-   * @brief Empty constructor
-   */
-  explicit TrajectoryBase();
-
-  /**
-   * @brief Constructor with name provided
-   * @brief name the name of the state
-   */
-  explicit TrajectoryBase(const std::string& name);
-
-  /**
    * @brief Get attribute list of trajectory points
    */
   const std::deque<TrajectoryT>& get_points() const;
@@ -58,6 +47,17 @@ public:
   int get_size() const;
 
 protected:
+  /**
+   * @brief Empty constructor
+   */
+  explicit TrajectoryBase();
+
+  /**
+   * @brief Constructor with name provided
+   * @brief name the name of the state
+   */
+  explicit TrajectoryBase(const std::string& name);
+
   /**
    * @brief Add new point and corresponding time to trajectory
    */
