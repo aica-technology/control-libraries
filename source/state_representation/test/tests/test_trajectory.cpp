@@ -8,13 +8,6 @@
 #include <gtest/gtest.h>
 #include <unistd.h>
 
-TEST(TrajectoryTest, CreateTrajectory) {
-  state_representation::TrajectoryBase<Eigen::VectorXd> trajectory;
-  std::deque<std::chrono::nanoseconds> times = trajectory.get_times();
-  EXPECT_EQ(trajectory.get_size(), 0);
-  EXPECT_TRUE(times.empty());
-}
-
 TEST(TrajectoryTest, AddPoint) {
   {
     state_representation::CartesianTrajectory trajectory("world");
@@ -208,11 +201,11 @@ TEST(TrajectoryTest, SetPoints) {
     trajectory.add_point(point2, std::chrono::nanoseconds(500));
     trajectory.add_point(point3, std::chrono::nanoseconds(100));
 
-    trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50));
+    trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1);
     EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
     EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
 
-    EXPECT_TRUE(trajectory.set_points(replacement_points, replacement_times));
+    EXPECT_NO_THROW(trajectory.set_points(replacement_points, replacement_times));
     EXPECT_EQ(trajectory.get_size(), 2);
     EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
     EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
@@ -236,11 +229,11 @@ TEST(TrajectoryTest, SetPoints) {
     trajectory.add_point(point2, std::chrono::nanoseconds(500));
     trajectory.add_point(point3, std::chrono::nanoseconds(100));
 
-    trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50));
+    trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1);
     EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
     EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
 
-    EXPECT_TRUE(trajectory.set_points(replacement_points, replacement_times));
+    EXPECT_NO_THROW(trajectory.set_points(replacement_points, replacement_times));
     EXPECT_EQ(trajectory.get_size(), 2);
     EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
     EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
@@ -248,6 +241,8 @@ TEST(TrajectoryTest, SetPoints) {
     EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(300));
 
     replacement1.set_name("bar");
-    EXPECT_FALSE(trajectory.set_point(1, replacement1, std::chrono::nanoseconds(50)));
+    EXPECT_THROW(
+        trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1),
+        state_representation::exceptions::IncompatibleStatesException);
   }
 }
