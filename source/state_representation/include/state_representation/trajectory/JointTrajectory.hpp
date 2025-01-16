@@ -3,6 +3,9 @@
 #include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/trajectory/TrajectoryBase.hpp"
 
+#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleStatesException.hpp"
+
 namespace state_representation {
 
 class JointTrajectory : public TrajectoryBase<Eigen::VectorXd> {
@@ -70,20 +73,24 @@ public:
    * @param point the new point
    * @param new_time the new time
    * @param index the index
-   * @return Success of the operation
+   * @throw std::out_of_range if index is out of range
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   template<typename DurationT>
-  bool
+  void
   set_point(const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
    * @param points vector of new points
    * @param new_time vector of new times
-   * @return Success of the operation
+   * @throw IncompatibleSizeException if points and new_times have different sizes
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   template<typename DurationT>
-  bool set_points(
+  void set_points(
       const std::vector<JointState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
 
   /**
@@ -164,37 +171,54 @@ inline bool JointTrajectory::insert_point(
 }
 
 template<typename DurationT>
-inline bool JointTrajectory::set_point(
+inline void JointTrajectory::set_point(
     const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
-  if (point.is_empty() || (point.get_names() != this->joint_names_) || (point.get_name() != this->robot_name_)) {
-    return false;
+  if (point.is_empty()) {
+    throw exceptions::EmptyStateException("Point is empty");
+  } else if (point.get_names() != this->joint_names_) {
+    throw exceptions::IncompatibleStatesException(
+        "Incompatible joint names between the new point and current trajectory");
+  } else if (point.get_name() != this->robot_name_) {
+    throw exceptions::IncompatibleStatesException(
+        "Incompatible robot name between the new point and current trajectory");
   }
-  return this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
+  try {
+    this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
+  } catch (...) {
+    throw;
+  }
 }
 
 template<typename DurationT>
-inline bool JointTrajectory::set_points(
+inline void JointTrajectory::set_points(
     const std::vector<JointState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
-  if (points.empty() || points[0].is_empty()) {
-    return false;
+  if (points.empty()) {
+    throw exceptions::EmptyStateException("Points vector is empty");
+  } else if (points[0].is_empty()) {
+    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
   }
   auto candidate_robot_name = points[0].get_name();
   auto candidate_joint_names = points[0].get_names();
 
   std::vector<Eigen::VectorXd> data;
   for (const auto& point : points) {
-    if (point.is_empty() || (point.get_names() != candidate_joint_names)
-        || (point.get_name() != candidate_robot_name)) {
-      return false;
+    if (point.is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (point.get_names() != candidate_joint_names) {
+      throw exceptions::IncompatibleStatesException(
+          "Incompatible joint names between the new point and current trajectory");
+    } else if (point.get_name() != candidate_robot_name) {
+      throw exceptions::IncompatibleStatesException(
+          "Incompatible robot name between the new point and current trajectory");
     }
     data.push_back(point.data());
   }
-  if (this->TrajectoryBase<Eigen::VectorXd>::set_points(data, new_times)) {
+  try {
+    this->TrajectoryBase<Eigen::VectorXd>::set_points(data, new_times);
     this->joint_names_ = candidate_joint_names;
     this->robot_name_ = candidate_robot_name;
-    return true;
-  } else {
-    return false;
+  } catch (...) {
+    throw;
   }
 }
 }// namespace state_representation

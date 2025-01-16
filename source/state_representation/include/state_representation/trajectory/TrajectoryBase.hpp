@@ -1,7 +1,7 @@
 #pragma once
 
 #include "state_representation/State.hpp"
-#include "state_representation/StateType.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 #include <chrono>
 #include <deque>
@@ -82,20 +82,20 @@ protected:
    * @param point the new point
    * @param new_time the new time
    * @param index the index
-   * @return Success of the operation
+   * @throw std::out_of_range if index is out of range
    */
   template<typename DurationT>
-  bool
+  void
   set_point(const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory points from a vector of points
    * @param points vector of new points
    * @param new_time vector of new times
-   * @return Success of the operation
+   * @throw IncompatibleSizeException if points and new_times have different sizes
    */
   template<typename DurationT>
-  bool set_points(
+  void set_points(
       const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
 
   /**
@@ -202,7 +202,7 @@ inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
 
 template<typename TrajectoryT>
 template<typename DurationT>
-inline bool TrajectoryBase<TrajectoryT>::set_point(
+inline void TrajectoryBase<TrajectoryT>::set_point(
     const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
   if (index < this->points_.size()) {
     this->points_[index] = point;
@@ -214,23 +214,24 @@ inline bool TrajectoryBase<TrajectoryT>::set_point(
     for (unsigned int i = index + 1; i < this->points_.size(); ++i) {
       this->times_[i] += this->times_[index - 1];
     }
-    return true;
+  } else {
+    throw std::out_of_range("Index out of range");
   }
-  return false;
 }
 
 template<typename TrajectoryT>
 template<typename DurationT>
-inline bool TrajectoryBase<TrajectoryT>::set_points(
+inline void TrajectoryBase<TrajectoryT>::set_points(
     const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
   if (points.size() != new_times.size()) {
-    return false;
+    throw exceptions::IncompatibleSizeException(
+        "The point and time vectors provided have different sizes " + std::to_string(points.size()) + " and "
+        + std::to_string(new_times.size()));
   }
   this->clear();
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->add_point(points[i], new_times[i]);
   }
-  return true;
 }
 
 template<typename TrajectoryT>

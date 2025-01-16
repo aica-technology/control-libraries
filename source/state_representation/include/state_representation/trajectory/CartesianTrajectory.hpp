@@ -3,6 +3,9 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/trajectory/TrajectoryBase.hpp"
 
+#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+
 namespace state_representation {
 class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {
 public:
@@ -74,20 +77,24 @@ public:
    * @param point the new point
    * @param new_time the new time
    * @param index the index
-   * @return Success of the operation
+   * @throw std::out_of_range if index is out of range
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   template<typename DurationT>
-  bool
+  void
   set_point(const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
    * @param points vector of new points
    * @param new_time vector of new times
-   * @return Success of the operation
+   * @throw IncompatibleSizeException if points and new_times have different sizes
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   template<typename DurationT>
-  bool set_points(
+  void set_points(
       const std::vector<CartesianState>& points,
       const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
 
@@ -171,38 +178,46 @@ inline bool CartesianTrajectory::insert_point(
 }
 
 template<typename DurationT>
-inline bool CartesianTrajectory::set_point(
+inline void CartesianTrajectory::set_point(
     const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
   if (point.is_empty()) {
-    return false;
+    throw exceptions::EmptyStateException("Point is empty");
   }
   if (point.get_reference_frame() != reference_frame_) {
-    return false;
+    throw exceptions::IncompatibleReferenceFramesException(
+        "Incompatible reference frames: " + point.get_reference_frame() + " and " + reference_frame_);
   }
-  return this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
+  try {
+    this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
+  } catch (...) {
+    throw;
+  }
 }
 
 template<typename DurationT>
-inline bool CartesianTrajectory::set_points(
+inline void CartesianTrajectory::set_points(
     const std::vector<CartesianState>& points,
     const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
   if (points.empty()) {
-    return false;
+    throw exceptions::IncompatibleSizeException("Points vector is empty");
   }
   std::string candidate_reference_frame = points[0].get_reference_frame();
 
   std::vector<Eigen::VectorXd> data;
   for (const auto& point : points) {
-    if (point.is_empty() || (point.get_reference_frame() != candidate_reference_frame)) {
-      return false;
+    if (point.is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (point.get_reference_frame() != candidate_reference_frame) {
+      throw exceptions::IncompatibleReferenceFramesException(
+          "Incompatible reference frames: " + point.get_reference_frame() + " and " + candidate_reference_frame);
     }
     data.push_back(point.data());
   }
-  if (this->TrajectoryBase<Eigen::VectorXd>::set_points(data, new_times)) {
+  try {
+    this->TrajectoryBase<Eigen::VectorXd>::set_points(data, new_times);
     reference_frame_ = candidate_reference_frame;
-    return true;
-  } else {
-    return false;
+  } catch (...) {
+    throw;
   }
 }
 
