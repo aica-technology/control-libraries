@@ -47,14 +47,14 @@ public:
 
   /**
    * @brief Set the trajectory point at given index
-   * @param index the index
    * @param point the new point
    * @param new_time the new time
+   * @param index the index
    * @return Success of the operation
    */
   template<typename DurationT>
   bool
-  set_point(unsigned int index, const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time);
+  set_point(const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
@@ -128,14 +128,14 @@ inline bool CartesianTrajectory::insert_point(
 
 template<typename DurationT>
 inline bool CartesianTrajectory::set_point(
-    unsigned int index, const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time) {
+    const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
   if (point.is_empty()) {
     return false;
   }
   if (point.get_reference_frame() != reference_frame_) {
     return false;
   }
-  return this->TrajectoryBase<Eigen::VectorXd>::set_point(index, point.data(), new_time);
+  return this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
 }
 
 template<typename DurationT>

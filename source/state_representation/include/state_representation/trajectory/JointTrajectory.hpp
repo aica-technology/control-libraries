@@ -50,14 +50,14 @@ public:
 
   /**
    * @brief Set the trajectory point at given index
-   * @param index the index
    * @param point the new point
    * @param new_time the new time
+   * @param index the index
    * @return Success of the operation
    */
   template<typename DurationT>
   bool
-  set_point(unsigned int index, const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time);
+  set_point(const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
@@ -129,11 +129,11 @@ inline bool JointTrajectory::insert_point(
 
 template<typename DurationT>
 inline bool JointTrajectory::set_point(
-    unsigned int index, const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time) {
+    const JointState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
   if (point.is_empty() || (point.get_names() != this->joint_names_) || (point.get_name() != this->robot_name_)) {
     return false;
   }
-  return this->TrajectoryBase<Eigen::VectorXd>::set_point(index, point.data(), new_time);
+  return this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
 }
 
 template<typename DurationT>

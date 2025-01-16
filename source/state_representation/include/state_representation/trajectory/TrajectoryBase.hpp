@@ -79,14 +79,14 @@ protected:
 
   /**
    * @brief Set the trajectory point at given index
-   * @param index the index
    * @param point the new point
    * @param new_time the new time
+   * @param index the index
    * @return Success of the operation
    */
   template<typename DurationT>
   bool
-  set_point(unsigned int index, const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time);
+  set_point(const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
 
   /**
    * @brief Set the trajectory points from a vector of points
@@ -205,7 +205,7 @@ inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
 template<typename TrajectoryT>
 template<typename DurationT>
 inline bool TrajectoryBase<TrajectoryT>::set_point(
-    unsigned int index, const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time) {
+    const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
   if (index < this->points_.size()) {
     this->points_[index] = point;
     if (index == 0) {
