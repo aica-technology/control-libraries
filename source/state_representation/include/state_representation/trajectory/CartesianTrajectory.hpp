@@ -3,11 +3,13 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/trajectory/TrajectoryBase.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-
 namespace state_representation {
-class CartesianTrajectory : public TrajectoryBase<Eigen::VectorXd> {
+
+struct CartesianTrajectoryPoint : public TrajectoryPoint {
+  std::string name;
+};
+
+class CartesianTrajectory : public TrajectoryBase<CartesianTrajectoryPoint> {
 public:
   /**
    * @brief Constructor with name and reference frame provided
@@ -19,90 +21,87 @@ public:
   /**
    * @brief Constructor with name and reference frame provided
    * @param point the initial point
-   * @param time the initial time
+   * @param duration the initial duration
    * @param name the name of the state
    * @param reference_frame reference frame of the trajectory points
    */
-  template<typename DurationT>
   explicit CartesianTrajectory(
-      const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name = "",
+      const CartesianState& point, const std::chrono::nanoseconds& duration, const std::string& name = "",
       const std::string& reference_frame = "world");
 
   /**
    * @brief Constructor with name and reference frame provided
    * @param points vector of initial points
-   * @param times vector of initial times
+   * @param durations vector of initial durations
    * @param name the name of the state
    * @param reference_frame reference frame of the trajectory points
    */
-  template<typename DurationT>
   explicit CartesianTrajectory(
-      const std::vector<CartesianState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
+      const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations,
       const std::string& name = "", const std::string& reference_frame = "world");
 
   /**
    * @brief Getter of the reference frame as const reference
+   * @return the reference frame associated with the trajectory
    */
   const std::string get_reference_frame() const;
 
   /**
    * @brief Add new point and corresponding time to trajectory
-   * @return Success of the operation
+   * @param new_point the new trajectory point
+   * @param duration the duration for the new point
    */
-  template<typename DurationT>
-  bool add_point(const CartesianState& new_point, const std::chrono::duration<int64_t, DurationT>& new_time);
+  void add_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration);
 
   /**
    * @brief Insert new point and corresponding time to trajectory between two
    * already existing points
-   * @return Success of the operation
+   * @param new_point the new trajectory point
+   * @param duration the duration for the new point
+   * @param pos the desired position of the new point in the queue
    */
-  template<typename DurationT>
-  bool
-  insert_point(const CartesianState& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos);
+  void insert_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos);
 
   /**
    * @brief Get attribute list of trajectory points
+   * @return queue of the Cartesian states of the trajectory
    */
   const std::deque<CartesianState> get_points() const;
 
   /**
    * @brief Get the trajectory point at given index
    * @param index the index
+   * @return the Cartesian state that corresponds to the index
    */
   CartesianState get_point(unsigned int index) const;
 
   /**
    * @brief Set the trajectory point at given index
    * @param point the new point
-   * @param new_time the new time
+   * @param duration the new time
    * @param index the index
    * @throw std::out_of_range if index is out of range
    * @throw EmptyStateException if point is empty
    * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
-  template<typename DurationT>
-  void
-  set_point(const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
+  void set_point(const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
    * @param points vector of new points
-   * @param new_time vector of new times
-   * @throw IncompatibleSizeException if points and new_times have different sizes
+   * @param durations vector of new durations
+   * @throw IncompatibleSizeException if points and durations have different sizes
    * @throw EmptyStateException if point is empty
    * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
-  template<typename DurationT>
-  void set_points(
-      const std::vector<CartesianState>& points,
-      const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
+  void set_points(const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations);
 
   /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
+   * @return the Cartesian state and duration pair that corresponds to the index
    */
-  std::pair<CartesianState, std::chrono::nanoseconds> operator[](unsigned int idx);
+  std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
 
   /**
    * @brief Reset trajectory
@@ -122,103 +121,4 @@ public:
 private:
   std::string reference_frame_;///< name of the reference frame
 };
-
-template<typename DurationT>
-CartesianTrajectory::CartesianTrajectory(
-    const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& time, const std::string& name,
-    const std::string& reference_frame)
-    : TrajectoryBase<Eigen::VectorXd>(name), reference_frame_(reference_frame) {
-  this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->reset();
-  this->add_point(point, time);
-}
-
-template<typename DurationT>
-CartesianTrajectory::CartesianTrajectory(
-    const std::vector<CartesianState>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& times,
-    const std::string& name, const std::string& reference_frame)
-    : TrajectoryBase<Eigen::VectorXd>(name), reference_frame_(reference_frame) {
-  this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->reset();
-  this->set_points(points, times);
-}
-
-template<typename DurationT>
-inline bool CartesianTrajectory::add_point(
-    const CartesianState& new_point, const std::chrono::duration<int64_t, DurationT>& new_time) {
-  if (new_point.is_empty()) {
-    return false;
-  }
-  if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != reference_frame_) {
-      return false;
-    }
-  } else if (reference_frame_.empty()) {
-    reference_frame_ = new_point.get_reference_frame();
-  }
-  this->TrajectoryBase<Eigen::VectorXd>::add_point(new_point.data(), new_time);
-  return true;
-}
-
-template<typename DurationT>
-inline bool CartesianTrajectory::insert_point(
-    const CartesianState& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos) {
-  if (new_point.is_empty()) {
-    return false;
-  }
-  if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != reference_frame_) {
-      return false;
-    }
-  } else if (reference_frame_.empty()) {
-    reference_frame_ = new_point.get_reference_frame();
-  }
-  this->TrajectoryBase<Eigen::VectorXd>::insert_point(new_point.data(), new_time, pos);
-  return true;
-}
-
-template<typename DurationT>
-inline void CartesianTrajectory::set_point(
-    const CartesianState& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
-  if (point.is_empty()) {
-    throw exceptions::EmptyStateException("Point is empty");
-  }
-  if (point.get_reference_frame() != reference_frame_) {
-    throw exceptions::IncompatibleReferenceFramesException(
-        "Incompatible reference frames: " + point.get_reference_frame() + " and " + reference_frame_);
-  }
-  try {
-    this->TrajectoryBase<Eigen::VectorXd>::set_point(point.data(), new_time, index);
-  } catch (...) {
-    throw;
-  }
-}
-
-template<typename DurationT>
-inline void CartesianTrajectory::set_points(
-    const std::vector<CartesianState>& points,
-    const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
-  if (points.empty()) {
-    throw exceptions::IncompatibleSizeException("Points vector is empty");
-  }
-  std::string candidate_reference_frame = points[0].get_reference_frame();
-
-  std::vector<Eigen::VectorXd> data;
-  for (const auto& point : points) {
-    if (point.is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (point.get_reference_frame() != candidate_reference_frame) {
-      throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + point.get_reference_frame() + " and " + candidate_reference_frame);
-    }
-    data.push_back(point.data());
-  }
-  try {
-    this->TrajectoryBase<Eigen::VectorXd>::set_points(data, new_times);
-    reference_frame_ = candidate_reference_frame;
-  } catch (...) {
-    throw;
-  }
-}
-
 }// namespace state_representation

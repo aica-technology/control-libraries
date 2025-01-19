@@ -1,248 +1,233 @@
-#include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/trajectory/CartesianTrajectory.hpp"
 #include "state_representation/trajectory/JointTrajectory.hpp"
 
+#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
+
+#include <chrono>
 #include <eigen3/Eigen/src/Core/Matrix.h>
 
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include <unistd.h>
+#include <vector>
 
-TEST(TrajectoryTest, AddPoint) {
-  {
-    state_representation::CartesianTrajectory trajectory("world");
-    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world");
+using namespace state_representation;
 
-    auto point1 = state_representation::CartesianState::Random("point1");
-    EXPECT_TRUE(trajectory.add_point(point1, std::chrono::nanoseconds(100)));
+class TrajectoryBaseInterface : public TrajectoryBase<TrajectoryPoint> {
+public:
+  using TrajectoryBase<TrajectoryPoint>::TrajectoryBase;
+  using TrajectoryBase<TrajectoryPoint>::add_point;
+  using TrajectoryBase<TrajectoryPoint>::get_point;
+  using TrajectoryBase<TrajectoryPoint>::insert_point;
+  using TrajectoryBase<TrajectoryPoint>::operator[];
+};
 
-    auto point2 = state_representation::CartesianState::Random("point2", "foo_reference_frame");
-    EXPECT_FALSE(trajectory.add_point(point2, std::chrono::nanoseconds(200)));
+TEST(TrajectoryTest, TestTrajectoryBase) {
+  TrajectoryBaseInterface trajectory;
+  EXPECT_EQ(trajectory.get_size(), 0);
 
-    auto point3 = state_representation::CartesianState::Random("point3", "world");
-    EXPECT_TRUE(trajectory.add_point(point3, std::chrono::nanoseconds(300)));
-  }
+  TrajectoryPoint point0;
+  TrajectoryPoint point1;
+  TrajectoryPoint point2;
+  point0.data = Eigen::VectorXd::Random(3);
+  point0.duration = std::chrono::nanoseconds(100);
+  point1.data = Eigen::VectorXd::Random(3);
+  point1.duration = std::chrono::nanoseconds(200);
+  point2.data = Eigen::VectorXd::Random(3);
+  point2.duration = std::chrono::nanoseconds(300);
 
-  {
-    state_representation::JointTrajectory trajectory("joint_trajectory");
+  trajectory.add_point(point0);
+  trajectory.add_point(point1);
+  EXPECT_EQ(trajectory.get_size(), 2);
+  EXPECT_EQ(trajectory.get_durations().size(), 2);
+  EXPECT_EQ(trajectory.get_times_from_start().size(), 2);
+  EXPECT_EQ(trajectory.get_point(0).data, point0.data);
+  EXPECT_EQ(trajectory.get_point(1).data, point1.data);
+  EXPECT_EQ(trajectory.get_times_from_start()[1], point0.duration + point1.duration);
 
-    auto point1 = state_representation::JointState::Random("foo", 25);
-    EXPECT_TRUE(trajectory.add_point(point1, std::chrono::nanoseconds(100)));
+  auto points = trajectory.get_points();
+  EXPECT_EQ(points.size(), 2);
+  EXPECT_EQ(points[0].data, point0.data);
+  EXPECT_EQ(points[1].data, point1.data);
 
-    auto point2 = state_representation::JointState::Random("foo", 1);
-    EXPECT_FALSE(trajectory.add_point(point2, std::chrono::nanoseconds(200)));
+  EXPECT_THROW(trajectory.insert_point(point2, 10), std::out_of_range);
+  EXPECT_NO_THROW(trajectory.insert_point(point2, 1));
+  EXPECT_EQ(trajectory.get_size(), 3);
+  EXPECT_EQ(trajectory[1].data, point2.data);
+  EXPECT_EQ(trajectory.get_times_from_start()[1], point0.duration + point2.duration);
+  EXPECT_EQ(trajectory.get_times_from_start()[2], point0.duration + point2.duration + point1.duration);
 
-    auto point3 = state_representation::JointState::Random("foo", 25);
-    EXPECT_TRUE(trajectory.add_point(point3, std::chrono::nanoseconds(300)));
-  }
+  trajectory.clear();
+  EXPECT_EQ(trajectory.get_size(), 0);
+  trajectory.reset();
+  EXPECT_TRUE(trajectory.is_empty());
 }
 
-TEST(TrajectoryTest, ClearPoint) {
+TEST(TrajectoryTest, CartesianTrajectory) {
   {
-    state_representation::CartesianTrajectory trajectory("world");
-    auto point1 = state_representation::CartesianState::Random("point1");
-    auto point2 = state_representation::CartesianState::Random("point2");
-    auto point3 = state_representation::CartesianState::Random("point3");
-    trajectory.add_point(point1, std::chrono::nanoseconds(100));
-    trajectory.add_point(point2, std::chrono::nanoseconds(300));
-    trajectory.add_point(point3, std::chrono::nanoseconds(300));
-    EXPECT_EQ(trajectory.get_size(), 3);
-    EXPECT_EQ(trajectory.get_times().size(), 3);
-    trajectory.delete_point();
+    CartesianTrajectory trajectory(CartesianState::Random("foo"), std::chrono::nanoseconds(100));
+    EXPECT_EQ(trajectory.get_size(), 1);
+  }
+
+  {
+    auto points = {
+        CartesianState::Random("foo"),
+        CartesianState::Random("bar"),
+    };
+    auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
+    CartesianTrajectory trajectory(points, durations);
     EXPECT_EQ(trajectory.get_size(), 2);
-    EXPECT_EQ(trajectory.get_times().size(), 2);
-    trajectory.clear();
+  }
+
+  CartesianTrajectory trajectory;
+  EXPECT_EQ(trajectory.get_size(), 0);
+
+  {// incompatible sizes
+    CartesianState state;
+    EXPECT_THROW(trajectory.add_point(state, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
     EXPECT_EQ(trajectory.get_size(), 0);
-    EXPECT_EQ(trajectory.get_times().size(), 0);
-  }
 
-  {
-    state_representation::JointTrajectory trajectory;
-    auto point1 = state_representation::JointState::Random("point1", 25);
-    auto point2 = state_representation::JointState::Random("point2", 25);
-    auto point3 = state_representation::JointState::Random("point3", 25);
-    trajectory.add_point(point1, std::chrono::nanoseconds(100));
-    trajectory.add_point(point2, std::chrono::nanoseconds(300));
-    trajectory.add_point(point3, std::chrono::nanoseconds(300));
-    EXPECT_EQ(trajectory.get_size(), 3);
-    EXPECT_EQ(trajectory.get_times().size(), 3);
-    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
-    trajectory.delete_point();
-    EXPECT_EQ(trajectory.get_size(), 2);
-    EXPECT_EQ(trajectory.get_times().size(), 2);
-    EXPECT_EQ(trajectory.get_joint_names().size(), 25);
-    trajectory.clear();
+    auto points = {
+        CartesianState::Random("foo"),
+        CartesianState::Random("bar"),
+    };
+    auto durations = {std::chrono::nanoseconds(100)};
+    EXPECT_THROW(trajectory.set_points(points, durations), exceptions::IncompatibleSizeException);
     EXPECT_EQ(trajectory.get_size(), 0);
-    EXPECT_EQ(trajectory.get_times().size(), 0);
-    EXPECT_EQ(trajectory.get_joint_names().size(), 0);
-  }
-}
-
-TEST(TrajectoryTest, OverloadIndex) {
-  {
-    state_representation::CartesianTrajectory trajectory;
-    auto point1 = state_representation::CartesianState::Random("point1");
-    auto point2 = state_representation::CartesianState::Random("point2");
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
-    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(800));
-    EXPECT_TRUE(trajectory[1].first.data() == point2.data());
   }
 
-  {
-    state_representation::JointTrajectory trajectory;
-    auto point1 = state_representation::JointState::Random("foo", 25);
-    auto point2 = state_representation::JointState::Random("foo", 25);
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
-    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(800));
-    EXPECT_TRUE(trajectory[1].first.data() == point2.data());
-  }
-}
-
-TEST(TrajectoryTest, InsertPoint) {
-  {
-    state_representation::CartesianTrajectory trajectory;
-    auto point1 = state_representation::CartesianState::Random("point1");
-    auto point2 = state_representation::CartesianState::Random("point2");
-    auto point3 = state_representation::CartesianState::Random("point3");
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-
-    trajectory.insert_point(point3, std::chrono::nanoseconds(100), 1);
-    EXPECT_EQ(trajectory.get_size(), 3);
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(400));
-    EXPECT_TRUE(trajectory[1].first.data() == point3.data());
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
-    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
-    EXPECT_TRUE(trajectory[2].second == std::chrono::nanoseconds(900));
-    EXPECT_TRUE(trajectory[2].first.data() == point2.data());
-  }
-
-  {
-    state_representation::JointTrajectory trajectory;
-    auto point1 = state_representation::JointState::Random("point1", 25);
-    auto point2 = state_representation::JointState::Random("point2", 25);
-    auto point3 = state_representation::JointState::Random("point3", 25);
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-
-    trajectory.insert_point(point3, std::chrono::nanoseconds(100), 1);
-    EXPECT_EQ(trajectory.get_size(), 3);
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(400));
-    EXPECT_TRUE(trajectory[1].first.data() == point3.data());
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(300));
-    EXPECT_TRUE(trajectory[0].first.data() == point1.data());
-    EXPECT_TRUE(trajectory[2].second == std::chrono::nanoseconds(900));
-    EXPECT_TRUE(trajectory[2].first.data() == point2.data());
-  }
-}
-
-TEST(TrajectoryTest, GetPoints) {
-  {
-    state_representation::CartesianTrajectory trajectory;
-    auto point1 = state_representation::CartesianState::Random("point1");
-    auto point2 = state_representation::CartesianState::Random("point2");
-    auto point3 = state_representation::CartesianState::Random("point3");
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    trajectory.add_point(point3, std::chrono::nanoseconds(100));
-
-    auto points = trajectory.get_points();
-    EXPECT_EQ(points.size(), 3);
-    EXPECT_TRUE(points[0].data() == point1.data());
-    EXPECT_TRUE(points[1].data() == point2.data());
-    EXPECT_TRUE(points[2].data() == point3.data());
-
-    EXPECT_TRUE(trajectory.get_point(0).data() == point1.data());
-    EXPECT_TRUE(trajectory.get_point(1).data() == point2.data());
-    EXPECT_TRUE(trajectory.get_point(2).data() == point3.data());
-  }
-
-  {
-    state_representation::JointTrajectory trajectory;
-    auto point1 = state_representation::JointState::Random("point1", 25);
-    auto point2 = state_representation::JointState::Random("point2", 25);
-    auto point3 = state_representation::JointState::Random("point3", 25);
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    trajectory.add_point(point3, std::chrono::nanoseconds(100));
-
-    auto points = trajectory.get_points();
-    EXPECT_EQ(points.size(), 3);
-    EXPECT_TRUE(points[0].data() == point1.data());
-    EXPECT_TRUE(points[1].data() == point2.data());
-    EXPECT_TRUE(points[2].data() == point3.data());
-
-    EXPECT_TRUE(trajectory.get_point(0).data() == point1.data());
-    EXPECT_TRUE(trajectory.get_point(1).data() == point2.data());
-    EXPECT_TRUE(trajectory.get_point(2).data() == point3.data());
-  }
-}
-
-TEST(TrajectoryTest, SetPoints) {
-  {
-    state_representation::CartesianTrajectory trajectory;
-    auto point1 = state_representation::CartesianState::Random("point1");
-    auto point2 = state_representation::CartesianState::Random("point2");
-    auto point3 = state_representation::CartesianState::Random("point3");
-
-    auto replacement1 = state_representation::CartesianState::Random("replacement1");
-    auto replacement2 = state_representation::CartesianState::Random("replacement2");
-    std::vector<state_representation::CartesianState> replacement_points = {replacement1, replacement2};
-    std::vector<std::chrono::nanoseconds> replacement_times = {
-        std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
-
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    trajectory.add_point(point3, std::chrono::nanoseconds(100));
-
-    trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1);
-    EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
-
-    EXPECT_NO_THROW(trajectory.set_points(replacement_points, replacement_times));
-    EXPECT_EQ(trajectory.get_size(), 2);
-    EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
-    EXPECT_TRUE(trajectory[1].first.data() == replacement2.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(300));
-  }
-
-  {
-    state_representation::JointTrajectory trajectory;
-    auto point1 = state_representation::JointState::Random("foo", 25);
-    auto point2 = state_representation::JointState::Random("foo", 25);
-    auto point3 = state_representation::JointState::Random("foo", 25);
-
-    auto replacement1 = state_representation::JointState::Random("foo", 25);
-    auto replacement2 = state_representation::JointState::Random("foo", 25);
-    std::vector<state_representation::JointState> replacement_points = {replacement1, replacement2};
-    std::vector<std::chrono::nanoseconds> replacement_times = {
-        std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
-
-    trajectory.add_point(point1, std::chrono::nanoseconds(300));
-    trajectory.add_point(point2, std::chrono::nanoseconds(500));
-    trajectory.add_point(point3, std::chrono::nanoseconds(100));
-
-    trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1);
-    EXPECT_TRUE(trajectory[1].first.data() == replacement1.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(350));
-
-    EXPECT_NO_THROW(trajectory.set_points(replacement_points, replacement_times));
-    EXPECT_EQ(trajectory.get_size(), 2);
-    EXPECT_TRUE(trajectory[0].first.data() == replacement1.data());
-    EXPECT_TRUE(trajectory[0].second == std::chrono::nanoseconds(100));
-    EXPECT_TRUE(trajectory[1].first.data() == replacement2.data());
-    EXPECT_TRUE(trajectory[1].second == std::chrono::nanoseconds(300));
-
-    replacement1.set_name("bar");
+  {// incompatible reference frames
+    CartesianState point0("empty", "world1");
+    auto point1 = CartesianState::Random("foo", "world2");
+    auto point2 = CartesianState::Random("bar", "world3");
+    EXPECT_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
+    EXPECT_NO_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)));
     EXPECT_THROW(
-        trajectory.set_point(replacement1, std::chrono::nanoseconds(50), 1),
-        state_representation::exceptions::IncompatibleStatesException);
+        trajectory.add_point(point2, std::chrono::nanoseconds(200)), exceptions::IncompatibleReferenceFramesException);
+    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world2");
+    trajectory.clear();
+    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "");
+  }
+
+  auto point0 = CartesianState::Random("foo");
+  auto point1 = CartesianState::Random("bar");
+  auto point2 = CartesianState::Random("baz");
+
+  trajectory.add_point(point0, std::chrono::nanoseconds(100));
+  EXPECT_EQ(trajectory[0].first.data(), point0.data());
+  EXPECT_EQ(trajectory[0].first.get_name(), point0.get_name());
+  EXPECT_EQ(trajectory[0].first.get_reference_frame(), point0.get_reference_frame());
+  trajectory.add_point(point2, std::chrono::nanoseconds(200));
+
+  EXPECT_NO_THROW(trajectory.insert_point(point2, std::chrono::nanoseconds(300), 1));
+  EXPECT_EQ(trajectory.get_size(), 3);
+
+  point0.set_name("foofoo");
+  EXPECT_NO_THROW(trajectory.set_point(point0, std::chrono::nanoseconds(50), 0));
+  EXPECT_EQ(trajectory[0].first.get_name(), point0.get_name());
+
+  std::vector<CartesianState> points = {point0, point1, point2};
+  std::vector<std::chrono::nanoseconds> durations = {
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
+  trajectory.set_points(points, durations);
+  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
+    EXPECT_EQ(trajectory[i].first.data(), points[i].data());
+    EXPECT_EQ(trajectory[i].first.get_name(), points[i].get_name());
+    EXPECT_EQ(trajectory[i].first.get_reference_frame(), points[i].get_reference_frame());
+    EXPECT_EQ(trajectory[i].second, durations[i]);
+  }
+}
+
+TEST(TrajectoryTest, JointTrajectory) {
+  {
+    JointTrajectory trajectory(JointState::Random("foo", 25), std::chrono::nanoseconds(100));
+    EXPECT_EQ(trajectory.get_size(), 1);
+  }
+
+  {
+    auto points = {
+        JointState::Random("foo", 25),
+        JointState::Random("foo", 25),
+    };
+    auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
+    JointTrajectory trajectory(points, durations);
+    EXPECT_EQ(trajectory.get_size(), 2);
+  }
+
+  JointTrajectory trajectory("foo");
+  EXPECT_EQ(trajectory.get_size(), 0);
+
+  {// incompatible name
+    auto point0 = JointState::Random("foo", 25);
+    auto point1 = JointState::Random("bar", 25);
+    EXPECT_NO_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)));
+    EXPECT_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)), exceptions::IncompatibleStatesException);
+    trajectory.clear();
+  }
+
+  {// incompatible sizes
+    JointState state;
+    EXPECT_THROW(trajectory.add_point(state, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
+    EXPECT_EQ(trajectory.get_size(), 0);
+
+    auto points = {
+        JointState::Random("foo", 25),
+        JointState::Random("foo", 25),
+    };
+    auto durations = {std::chrono::nanoseconds(100)};
+    EXPECT_THROW(trajectory.set_points(points, durations), exceptions::IncompatibleSizeException);
+    EXPECT_EQ(trajectory.get_size(), 0);
+  }
+
+  {// incompatible joint names
+    auto states = {
+        JointState::Random("foo", {"j_foo_1", "j_foo_2"}), JointState::Random("foo", {"j_bar_1", "j_bar_2"})};
+    auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
+    EXPECT_THROW(trajectory.set_points(states, durations), exceptions::IncompatibleStatesException);
+  }
+
+  {// check joint names
+    std::vector<std::string> joint_names = {"j_foo_1", "j_foo_2", "j_foo_3"};
+    trajectory.add_point(JointState::Random("foo", joint_names), std::chrono::nanoseconds(100));
+    EXPECT_EQ(trajectory.get_joint_names(), joint_names);
+    trajectory.clear();
+    EXPECT_EQ(trajectory.get_size(), 0);
+  }
+
+  auto point0 = JointState::Random("foo", 25);
+  auto point1 = JointState::Random("foo", 25);
+  auto point2 = JointState::Random("foo", 25);
+
+  trajectory.add_point(point0, std::chrono::nanoseconds(100));
+
+  EXPECT_EQ(trajectory[0].first.data(), point0.data());
+  EXPECT_EQ(trajectory[0].first.get_name(), point0.get_name());
+  EXPECT_EQ(trajectory[0].first.get_names(), trajectory.get_joint_names());
+  EXPECT_EQ(trajectory[0].first.get_names(), point0.get_names());
+  trajectory.add_point(point2, std::chrono::nanoseconds(200));
+
+  EXPECT_NO_THROW(trajectory.insert_point(point2, std::chrono::nanoseconds(300), 1));
+  EXPECT_EQ(trajectory.get_size(), 3);
+
+  point0.set_name("foofoo");
+  EXPECT_THROW(trajectory.set_point(point0, std::chrono::nanoseconds(50), 0), exceptions::IncompatibleStatesException);
+  EXPECT_NE(trajectory[0].first.get_name(), point0.get_name());
+  point0.set_name("foo");
+
+  std::vector<JointState> points = {point0, point1, point2};
+  std::vector<std::chrono::nanoseconds> durations = {
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
+  trajectory.set_points(points, durations);
+  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
+    EXPECT_EQ(trajectory[i].first.data(), points[i].data());
+    EXPECT_EQ(trajectory[i].first.get_name(), points[i].get_name());
+    EXPECT_EQ(trajectory[i].first.get_names(), points[i].get_names());
+    EXPECT_EQ(trajectory[i].first.get_name(), points[i].get_name());
+    EXPECT_EQ(trajectory[i].second, durations[i]);
   }
 }

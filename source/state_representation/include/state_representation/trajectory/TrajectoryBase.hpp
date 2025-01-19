@@ -1,35 +1,52 @@
 #pragma once
 
 #include "state_representation/State.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 #include <chrono>
 #include <deque>
+#include <eigen3/Eigen/src/Core/Matrix.h>
 
 namespace state_representation {
+
+struct TrajectoryPoint {
+  Eigen::VectorXd data;
+  std::chrono::nanoseconds duration;
+};
+
 template<typename TrajectoryT>
 class TrajectoryBase : public State {
 public:
   /**
    * @brief Get attribute list of trajectory points
+   * @return the list of trajectory points
    */
   const std::deque<TrajectoryT>& get_points() const;
 
   /**
    * @brief Get the trajectory point at given index
    * @param index the index
+   * @return the trajectory point
+   * @throw std::out_of_range if pos is out of range
    */
   const TrajectoryT& get_point(unsigned int index) const;
 
   /**
-   * @brief Get attribute list of trajectory times
+   * @brief Get attribute list of trajectory point durations
+   * @return the list of trajectory point durations
    */
-  const std::deque<std::chrono::nanoseconds>& get_times() const;
+  const std::deque<std::chrono::nanoseconds> get_durations() const;
+
+  /**
+   * @brief Get attribute list of trajectory point times from start
+   * @return the list of trajectory point times from start
+   */
+  const std::deque<std::chrono::nanoseconds> get_times_from_start() const;
 
   /**
    * @brief Get attribute number of point in trajectory
+   * @return the number of points in trajectory
    */
-  int get_size() const;
+  unsigned int get_size() const;
 
   /**
    * @brief Reset trajectory
@@ -54,65 +71,56 @@ protected:
 
   /**
    * @brief Constructor with name provided
-   * @brief name the name of the state
+   * @param name the name of the state
    */
   explicit TrajectoryBase(const std::string& name);
 
   /**
-   * @brief Add new point and corresponding time to trajectory
+   * @brief Add new point to trajectory
+   * @param new_point the new point
    */
-  template<typename DurationT>
-  void add_point(const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time);
+  void add_point(const TrajectoryT& new_point);
 
   /**
-   * @brief Insert new point and corresponding time to trajectory between two
-   * already existing points
+   * @brief Insert new trajectory point between two already existing points
+   * @param new_point the new point
+   * @param pos the desired position of the new point in the queue
+   * @throw std::out_of_range if pos is out of range
    */
-  template<typename DurationT>
-  void insert_point(const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos);
+  void insert_point(const TrajectoryT& new_point, unsigned int pos);
 
   /**
    * @brief Get the trajectory point at given index
    * @param index the index
+   * @return the trajectory point
    */
   TrajectoryT& get_point(unsigned int index);
 
   /**
    * @brief Set the trajectory point at given index
    * @param point the new point
-   * @param new_time the new time
    * @param index the index
    * @throw std::out_of_range if index is out of range
    */
-  template<typename DurationT>
-  void
-  set_point(const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index);
+  void set_point(const TrajectoryT& point, unsigned int index);
 
   /**
    * @brief Set the trajectory points from a vector of points
    * @param points vector of new points
-   * @param new_time vector of new times
-   * @throw IncompatibleSizeException if points and new_times have different sizes
    */
-  template<typename DurationT>
-  void set_points(
-      const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times);
+  void set_points(const std::vector<TrajectoryT>& points);
 
   /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
+   * @param idx the index
+   * @return the trajectory point
+   * @throw std::out_of_range if index is out of range
    */
-  const std::pair<TrajectoryT, std::chrono::nanoseconds> operator[](unsigned int idx) const;
-
-  /**
-   * @brief Operator overload for returning a single trajectory point and
-   * corresponding time
-   */
-  std::pair<TrajectoryT, std::chrono::nanoseconds> operator[](unsigned int idx);
+  const TrajectoryT operator[](unsigned int idx) const;
 
 private:
   std::deque<TrajectoryT> points_;
-  std::deque<std::chrono::nanoseconds> times_;
 };
 
 template<typename TrajectoryT>
@@ -129,43 +137,23 @@ template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::reset() {
   this->State::reset();
   this->points_.clear();
-  this->times_.clear();
 }
 
 template<typename TrajectoryT>
-template<typename DurationT>
-inline void TrajectoryBase<TrajectoryT>::add_point(
-    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time) {
+inline void TrajectoryBase<TrajectoryT>::add_point(const TrajectoryT& new_point) {
   this->set_empty(false);
   this->points_.push_back(new_point);
-
-  if (!this->times_.empty()) {
-    auto const previous_time = this->times_.back();
-    this->times_.push_back(previous_time + new_time);
-  } else {
-    this->times_.push_back(new_time);
-  }
 }
 
 template<typename TrajectoryT>
-template<typename DurationT>
-inline void TrajectoryBase<TrajectoryT>::insert_point(
-    const TrajectoryT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos) {
-  this->set_empty(false);
-
-  auto it_points = this->points_.begin();
-  auto it_times = this->times_.begin();
-  std::advance(it_points, pos);
-  std::advance(it_times, pos);
-
-  this->points_.insert(it_points, new_point);
-
-  auto previous_time = this->times_[pos - 1];
-  this->times_.insert(it_times, previous_time + new_time);
-
-  for (unsigned int i = pos + 1; i <= this->points_.size(); i++) {
-    this->times_[i] += new_time;
+inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_point, unsigned int pos) {
+  if (pos > this->points_.size()) {
+    throw std::out_of_range("Index out of range");
   }
+  this->set_empty(false);
+  auto it_points = this->points_.begin();
+  std::advance(it_points, pos);
+  this->points_.insert(it_points, new_point);
 }
 
 template<typename TrajectoryT>
@@ -174,15 +162,11 @@ inline void TrajectoryBase<TrajectoryT>::delete_point() {
   if (!this->points_.empty()) {
     this->points_.pop_back();
   }
-  if (!this->times_.empty()) {
-    this->times_.pop_back();
-  }
 }
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::clear() {
   this->points_.clear();
-  this->times_.clear();
 }
 
 template<typename TrajectoryT>
@@ -201,57 +185,56 @@ inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
 }
 
 template<typename TrajectoryT>
-template<typename DurationT>
-inline void TrajectoryBase<TrajectoryT>::set_point(
-    const TrajectoryT& point, const std::chrono::duration<int64_t, DurationT>& new_time, unsigned int index) {
-  if (index < this->points_.size()) {
-    this->points_[index] = point;
-    if (index == 0) {
-      this->times_[index] = new_time;
-    } else {
-      this->times_[index] = this->times_[index - 1] + new_time;
-    }
-    for (unsigned int i = index + 1; i < this->points_.size(); ++i) {
-      this->times_[i] += this->times_[index - 1];
-    }
-  } else {
+inline void TrajectoryBase<TrajectoryT>::set_point(const TrajectoryT& point, unsigned int index) {
+  if (index >= this->points_.size()) {
     throw std::out_of_range("Index out of range");
   }
+  this->points_[index] = point;
 }
 
 template<typename TrajectoryT>
-template<typename DurationT>
-inline void TrajectoryBase<TrajectoryT>::set_points(
-    const std::vector<TrajectoryT>& points, const std::vector<std::chrono::duration<int64_t, DurationT>>& new_times) {
-  if (points.size() != new_times.size()) {
-    throw exceptions::IncompatibleSizeException(
-        "The point and time vectors provided have different sizes " + std::to_string(points.size()) + " and "
-        + std::to_string(new_times.size()));
+inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
+  if (points.size() == 0) {
+    return;
   }
   this->clear();
   for (unsigned int i = 0; i < points.size(); ++i) {
-    this->add_point(points[i], new_times[i]);
+    this->add_point(points[i]);
   }
 }
 
 template<typename TrajectoryT>
-inline const std::deque<std::chrono::nanoseconds>& TrajectoryBase<TrajectoryT>::get_times() const {
-  return this->times_;
+inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
+  std::deque<std::chrono::nanoseconds> durations;
+  for (unsigned int i = 0; i < this->points_.size(); ++i) {
+    durations.push_back(this->points_[i].duration);
+  }
+  return durations;
 }
 
 template<typename TrajectoryT>
-inline int TrajectoryBase<TrajectoryT>::get_size() const {
+inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_times_from_start() const {
+  std::deque<std::chrono::nanoseconds> times_from_start;
+  for (unsigned int i = 0; i < this->points_.size(); ++i) {
+    std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
+    for (unsigned int j = 0; j <= i; ++j) {
+      time_from_start += this->points_[j].duration;
+    }
+    times_from_start.push_back(time_from_start);
+  }
+  return times_from_start;
+}
+
+template<typename TrajectoryT>
+inline unsigned int TrajectoryBase<TrajectoryT>::get_size() const {
   return this->points_.size();
 }
 
 template<typename TrajectoryT>
-inline const std::pair<TrajectoryT, std::chrono::nanoseconds>
-TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
-  return std::make_pair(this->points_[idx], this->times_[idx]);
-}
-
-template<typename TrajectoryT>
-inline std::pair<TrajectoryT, std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) {
-  return std::make_pair(this->points_[idx], this->times_[idx]);
+inline const TrajectoryT TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
+  if (idx >= this->points_.size()) {
+    throw std::out_of_range("Index out of range");
+  }
+  return this->points_[idx];
 }
 }// namespace state_representation
