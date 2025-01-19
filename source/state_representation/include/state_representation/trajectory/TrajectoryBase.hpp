@@ -17,20 +17,6 @@ template<typename TrajectoryT>
 class TrajectoryBase : public State {
 public:
   /**
-   * @brief Get attribute list of trajectory points
-   * @return the list of trajectory points
-   */
-  const std::deque<TrajectoryT>& get_points() const;
-
-  /**
-   * @brief Get the trajectory point at given index
-   * @param index the index
-   * @return the trajectory point
-   * @throw std::out_of_range if pos is out of range
-   */
-  const TrajectoryT& get_point(unsigned int index) const;
-
-  /**
    * @brief Get attribute list of trajectory point durations
    * @return the list of trajectory point durations
    */
@@ -74,6 +60,20 @@ protected:
    * @param name the name of the state
    */
   explicit TrajectoryBase(const std::string& name);
+
+  /**
+   * @brief Get attribute list of trajectory points
+   * @return the list of trajectory points
+   */
+  const std::deque<TrajectoryT>& get_points() const;
+
+  /**
+   * @brief Get the trajectory point at given index
+   * @param index the index
+   * @return the trajectory point
+   * @throw std::out_of_range if pos is out of range
+   */
+  const TrajectoryT& get_point(unsigned int index) const;
 
   /**
    * @brief Add new point to trajectory
