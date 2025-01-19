@@ -23,6 +23,7 @@ public:
   using TrajectoryBase<TrajectoryPoint>::TrajectoryBase;
   using TrajectoryBase<TrajectoryPoint>::add_point;
   using TrajectoryBase<TrajectoryPoint>::get_point;
+  using TrajectoryBase<TrajectoryPoint>::get_points;
   using TrajectoryBase<TrajectoryPoint>::insert_point;
   using TrajectoryBase<TrajectoryPoint>::operator[];
 };
