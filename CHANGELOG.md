@@ -20,6 +20,7 @@ Release Versions
 ## Upcoming changes
 
 - feat: improve support for transformation matrices (#146)
+- fix: unstable python test (#221)
 
 ## 9.1.0
 
