@@ -18,6 +18,10 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- feat: move up to C++20 (#220)
+
 ## 9.2.0
 
 Version 9.2.0 brings better support for transformation matrices in `state_representation` and adds a timeout setter for
