@@ -24,6 +24,7 @@ Release Versions
 - feat: improve devcontainer configuration (#230)
 - chore: format code (#235)
 - ci: allow workflow dispatch for rc images (#234)
+- feat: move up to C++20 (#220)
 
 ## 9.1.0
 
