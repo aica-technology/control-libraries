@@ -23,6 +23,7 @@ Release Versions
 ## Upcoming changes
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
+- feat: move up to C++20 (#220)
 
 ## 9.3.1
 
