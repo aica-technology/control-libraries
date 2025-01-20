@@ -71,7 +71,7 @@ ParallelCompile('NPY_NUM_BUILD_JOBS', needs_recompile=naive_recompile).install()
 ext_modules = [
     Pybind11Extension('state_representation',
                       sorted(glob('source/state_representation/*.cpp') + glob('source/common/*.cpp')),
-                      cxx_std=17,
+                      cxx_std=20,
                       include_dirs=__include_dirs__,
                       libraries=['state_representation'],
                       define_macros=[('MODULE_VERSION_INFO', __version__)],
@@ -82,7 +82,7 @@ if __install_clproto_module__:
     ext_modules.append(
         Pybind11Extension('clproto',
                           sorted(glob('source/clproto/*.cpp') + glob('source/common/*.cpp')),
-                          cxx_std=17,
+                          cxx_std=20,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'clproto'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
@@ -93,7 +93,7 @@ if __install_dynamical_systems_module__:
     ext_modules.append(
         Pybind11Extension("dynamical_systems",
                           sorted(glob("source/dynamical_systems/*.cpp") + glob("source/common/*.cpp")),
-                          cxx_std=17,
+                          cxx_std=20,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'dynamical_systems'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
@@ -104,7 +104,7 @@ if __install_robot_model_module__:
     ext_modules.append(
         Pybind11Extension('robot_model',
                           sorted(glob('source/robot_model/*.cpp')),
-                          cxx_std=17,
+                          cxx_std=20,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
@@ -116,7 +116,7 @@ if __install_controllers_module__:
     ext_modules.append(
         Pybind11Extension('controllers',
                           sorted(glob('source/controllers/*.cpp') + glob("source/common/*.cpp")),
-                          cxx_std=17,
+                          cxx_std=20,
                           include_dirs=__include_dirs__,
                           libraries=['state_representation', 'controllers', 'robot_model'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
@@ -127,7 +127,7 @@ if __install_communication_interfaces_module__:
     ext_modules.append(
         Pybind11Extension('communication_interfaces',
                           sorted(glob('source/communication_interfaces/*.cpp')),
-                          cxx_std=17,
+                          cxx_std=20,
                           include_dirs=__include_dirs__,
                           libraries=['communication_interfaces'],
                           define_macros=[('MODULE_VERSION_INFO', __version__)],
