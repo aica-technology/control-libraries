@@ -21,6 +21,11 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- feat!: rename set_parameter_value to set_parameter and add strict parameter map (#259)
+- feat: move up to C++20 (#220)
+
 ## 9.3.2
 
 Version 9.3.2 is a patch that makes an empty parameter object throw when accessing its value in Python to make it behave
@@ -31,7 +36,6 @@ This is the last planned release before control libraries X.
 ### Full changelog
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
-- feat!: rename set_parameter_value to set_parameter and add strict parameter map (#259)
 
 ## 9.3.1
 
