@@ -113,7 +113,7 @@ TEST(TrajectoryTest, CartesianTrajectory) {
     );
     EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world2");
     trajectory.reset();
-    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "");
+    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world");
   }
 
   auto point0 = CartesianState::Random("foo");
