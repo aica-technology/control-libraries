@@ -174,10 +174,8 @@ CartesianState CartesianTrajectory::get_point(unsigned int index) const {
 std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::operator[](unsigned int idx) const {
   try {
     auto point = this->TrajectoryBase<CartesianTrajectoryPoint>::operator[](idx);
-    CartesianState state;
+    CartesianState state(point.name, this->reference_frame_);
     state.set_data(point.data);
-    state.set_name(point.name);
-    state.set_reference_frame(this->reference_frame_);
     auto duration = point.duration;
     return std::make_pair(state, duration);
   } catch (...) {

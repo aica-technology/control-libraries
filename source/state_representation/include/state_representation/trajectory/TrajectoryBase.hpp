@@ -188,7 +188,8 @@ template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::delete_point() {
   if (!this->points_.empty()) {
     this->points_.pop_back();
-  } else {
+  }
+  if (this->points_.empty()) {
     this->set_empty(false);
   }
 }
