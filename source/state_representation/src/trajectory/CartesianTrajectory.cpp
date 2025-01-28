@@ -49,13 +49,13 @@ void CartesianTrajectory::add_point(const CartesianState& new_point, const std::
     throw exceptions::EmptyStateException("The Cartesian state provided is empty");
   }
   if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != reference_frame_) {
+    if (new_point.get_reference_frame() != this->reference_frame_) {
       throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + reference_frame_
+          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
       );
     }
   } else {
-    reference_frame_ = new_point.get_reference_frame();
+    this->reference_frame_ = new_point.get_reference_frame();
   }
   CartesianTrajectoryPoint trajectory_point;
   trajectory_point.data = new_point.data();
@@ -82,13 +82,13 @@ void CartesianTrajectory::insert_point(
     throw exceptions::EmptyStateException("Point is empty");
   }
   if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != reference_frame_) {
+    if (new_point.get_reference_frame() != this->reference_frame_) {
       throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + reference_frame_
+          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
       );
     }
-  } else if (reference_frame_.empty()) {
-    reference_frame_ = new_point.get_reference_frame();
+  } else if (this->reference_frame_.empty()) {
+    this->reference_frame_ = new_point.get_reference_frame();
   }
   CartesianTrajectoryPoint trajectory_point;
   trajectory_point.data = new_point.data();
@@ -107,9 +107,9 @@ void CartesianTrajectory::set_point(
   if (point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
   }
-  if (point.get_reference_frame() != reference_frame_) {
+  if (point.get_reference_frame() != this->reference_frame_) {
     throw exceptions::IncompatibleReferenceFramesException(
-        "Incompatible reference frames: " + point.get_reference_frame() + " and " + reference_frame_
+        "Incompatible reference frames: " + point.get_reference_frame() + " and " + this->reference_frame_
     );
   }
   CartesianTrajectoryPoint trajectory_point;
@@ -152,7 +152,7 @@ void CartesianTrajectory::set_points(
   }
   try {
     this->TrajectoryBase<CartesianTrajectoryPoint>::set_points(trajectory_points);
-    reference_frame_ = candidate_reference_frame;
+    this->reference_frame_ = candidate_reference_frame;
   } catch (...) {
     throw;
   }
