@@ -52,11 +52,6 @@ public:
    */
   virtual void delete_point();
 
-  /**
-   * @brief Clear trajectory
-   */
-  virtual void clear();
-
 protected:
   /**
    * @brief Empty constructor
@@ -166,15 +161,11 @@ inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_poi
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::delete_point() {
-  this->set_empty(false);
   if (!this->points_.empty()) {
     this->points_.pop_back();
+  } else {
+    this->set_empty(false);
   }
-}
-
-template<typename TrajectoryT>
-inline void TrajectoryBase<TrajectoryT>::clear() {
-  this->points_.clear();
 }
 
 template<typename TrajectoryT>
@@ -205,7 +196,7 @@ inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<Trajectory
   if (points.size() == 0) {
     return;
   }
-  this->clear();
+  this->reset();
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->add_point(points[i]);
   }

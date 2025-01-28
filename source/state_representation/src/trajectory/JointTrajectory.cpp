@@ -176,17 +176,4 @@ void JointTrajectory::reset() {
   this->robot_name_ = "";
   this->joint_names_.clear();
 }
-
-void JointTrajectory::delete_point() {
-  this->TrajectoryBase<JointTrajectoryPoint>::delete_point();
-  if (this->get_size() == 0) {
-    this->clear();
-  }
-}
-
-void JointTrajectory::clear() {
-  this->TrajectoryBase<JointTrajectoryPoint>::clear();
-  this->joint_names_.clear();
-  this->robot_name_ = "";
-}
 }// namespace state_representation

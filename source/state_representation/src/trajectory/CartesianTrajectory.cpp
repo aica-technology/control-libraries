@@ -182,16 +182,4 @@ void CartesianTrajectory::reset() {
   this->TrajectoryBase<CartesianTrajectoryPoint>::reset();
   this->reference_frame_ = "world";
 }
-
-void CartesianTrajectory::delete_point() {
-  this->TrajectoryBase<CartesianTrajectoryPoint>::delete_point();
-  if (this->get_size() == 0) {
-    this->clear();
-  }
-}
-
-void CartesianTrajectory::clear() {
-  this->TrajectoryBase<CartesianTrajectoryPoint>::clear();
-  this->reference_frame_ = "";
-}
 }// namespace state_representation

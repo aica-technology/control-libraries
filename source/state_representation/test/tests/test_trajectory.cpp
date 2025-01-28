@@ -63,7 +63,7 @@ TEST(TrajectoryTest, TestTrajectoryBase) {
   EXPECT_EQ(trajectory.get_times_from_start()[1], point0.duration + point2.duration);
   EXPECT_EQ(trajectory.get_times_from_start()[2], point0.duration + point2.duration + point1.duration);
 
-  trajectory.clear();
+  trajectory.reset();
   EXPECT_EQ(trajectory.get_size(), 0);
   trajectory.reset();
   EXPECT_TRUE(trajectory.is_empty());
@@ -109,9 +109,10 @@ TEST(TrajectoryTest, CartesianTrajectory) {
     EXPECT_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
     EXPECT_NO_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)));
     EXPECT_THROW(
-        trajectory.add_point(point2, std::chrono::nanoseconds(200)), exceptions::IncompatibleReferenceFramesException);
+        trajectory.add_point(point2, std::chrono::nanoseconds(200)), exceptions::IncompatibleReferenceFramesException
+    );
     EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world2");
-    trajectory.clear();
+    trajectory.reset();
     EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "");
   }
 
@@ -134,7 +135,8 @@ TEST(TrajectoryTest, CartesianTrajectory) {
 
   std::vector<CartesianState> points = {point0, point1, point2};
   std::vector<std::chrono::nanoseconds> durations = {
-      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)
+  };
   trajectory.set_points(points, durations);
   for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
     EXPECT_EQ(trajectory[i].first.data(), points[i].data());
@@ -168,7 +170,7 @@ TEST(TrajectoryTest, JointTrajectory) {
     auto point1 = JointState::Random("bar", 25);
     EXPECT_NO_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)));
     EXPECT_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)), exceptions::IncompatibleStatesException);
-    trajectory.clear();
+    trajectory.reset();
   }
 
   {// incompatible sizes
@@ -187,7 +189,8 @@ TEST(TrajectoryTest, JointTrajectory) {
 
   {// incompatible joint names
     auto states = {
-        JointState::Random("foo", {"j_foo_1", "j_foo_2"}), JointState::Random("foo", {"j_bar_1", "j_bar_2"})};
+        JointState::Random("foo", {"j_foo_1", "j_foo_2"}), JointState::Random("foo", {"j_bar_1", "j_bar_2"})
+    };
     auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
     EXPECT_THROW(trajectory.set_points(states, durations), exceptions::IncompatibleStatesException);
   }
@@ -196,7 +199,7 @@ TEST(TrajectoryTest, JointTrajectory) {
     std::vector<std::string> joint_names = {"j_foo_1", "j_foo_2", "j_foo_3"};
     trajectory.add_point(JointState::Random("foo", joint_names), std::chrono::nanoseconds(100));
     EXPECT_EQ(trajectory.get_joint_names(), joint_names);
-    trajectory.clear();
+    trajectory.reset();
     EXPECT_EQ(trajectory.get_size(), 0);
   }
 
@@ -222,7 +225,8 @@ TEST(TrajectoryTest, JointTrajectory) {
 
   std::vector<JointState> points = {point0, point1, point2};
   std::vector<std::chrono::nanoseconds> durations = {
-      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)
+  };
   trajectory.set_points(points, durations);
   for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
     EXPECT_EQ(trajectory[i].first.data(), points[i].data());

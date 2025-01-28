@@ -112,16 +112,6 @@ public:
    */
   virtual void reset() override;
 
-  /**
-   * @brief Delete last point and corresponding duration from trajectory
-   */
-  virtual void delete_point() override;
-
-  /**
-   * @brief Clear trajectory
-   */
-  virtual void clear() override;
-
 private:
   std::vector<std::string> joint_names_;///< names of the joints
   std::string robot_name_;              ///< name of the robot
