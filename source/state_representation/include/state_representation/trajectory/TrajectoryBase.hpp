@@ -126,7 +126,16 @@ protected:
    * @return the trajectory point
    * @throw std::out_of_range if index is out of range
    */
-  const TrajectoryT operator[](unsigned int idx) const;
+  const TrajectoryT& operator[](unsigned int idx) const;
+
+  /**
+   * @brief Operator overload for returning a single trajectory point and
+   * corresponding time
+   * @param idx the index
+   * @return the trajectory point
+   * @throw std::out_of_range if index is out of range
+   */
+  TrajectoryT& operator[](unsigned int idx);
 
 private:
   std::deque<TrajectoryT> points_;
@@ -191,11 +200,17 @@ inline const std::deque<TrajectoryT>& TrajectoryBase<TrajectoryT>::get_points() 
 
 template<typename TrajectoryT>
 inline const TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) const {
+  if (index >= this->points_.size()) {
+    throw std::out_of_range("Index out of range");
+  }
   return this->points_[index];
 }
 
 template<typename TrajectoryT>
 inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
+  if (index >= this->points_.size()) {
+    throw std::out_of_range("Index out of range");
+  }
   return this->points_[index];
 }
 
@@ -244,10 +259,18 @@ inline unsigned int TrajectoryBase<TrajectoryT>::get_size() const {
 }
 
 template<typename TrajectoryT>
-inline const TrajectoryT TrajectoryBase<TrajectoryT>::operator[](unsigned int idx) const {
-  if (idx >= this->points_.size()) {
+inline const TrajectoryT& TrajectoryBase<TrajectoryT>::operator[](unsigned int index) const {
+  if (index >= this->points_.size()) {
     throw std::out_of_range("Index out of range");
   }
-  return this->points_[idx];
+  return this->points_[index];
+}
+
+template<typename TrajectoryT>
+inline TrajectoryT& TrajectoryBase<TrajectoryT>::operator[](unsigned int index) {
+  if (index >= this->points_.size()) {
+    throw std::out_of_range("Index out of range");
+  }
+  return this->points_[index];
 }
 }// namespace state_representation
