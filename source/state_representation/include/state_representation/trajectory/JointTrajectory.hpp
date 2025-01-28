@@ -54,8 +54,20 @@ public:
    * @brief Add new point and corresponding duration to trajectory
    * @param new_point the new trajectory point
    * @param duration the duration for the new point
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleStatesException if point has different robot name
    */
   void add_point(const JointState& new_point, const std::chrono::nanoseconds& duration);
+
+  /**
+   * @brief Add new points and corresponding durations to trajectory
+   * @param new_points the new trajectory point
+   * @param durations the duration for the new point
+   * @throw IncompatibleSizeException if points and durations have different sizes
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleStatesException if point has different robot name
+   */
+  void add_points(const std::vector<JointState>& new_points, const std::vector<std::chrono::nanoseconds>& durations);
 
   /**
    * @brief Insert new point and corresponding duration to trajectory between two
@@ -86,7 +98,7 @@ public:
    * @param index the index
    * @throw std::out_of_range if index is out of range
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleReferenceFramesException if point has different reference frame
+   * @throw IncompatibleStatesException if point has different robot name
    */
   void set_point(const JointState& point, const std::chrono::nanoseconds& duration, unsigned int index);
 
@@ -96,7 +108,7 @@ public:
    * @param duration vector of new durations
    * @throw IncompatibleSizeException if points and durations have different sizes
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleReferenceFramesException if point has different reference frame
+   * @throw IncompatibleStatesException if point has different robot name
    */
   void set_points(const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations);
 

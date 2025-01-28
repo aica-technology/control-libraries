@@ -51,6 +51,17 @@ void JointTrajectory::add_point(const JointState& new_point, const std::chrono::
   this->TrajectoryBase<JointTrajectoryPoint>::add_point(trajectory_point);
 }
 
+void JointTrajectory::add_points(
+    const std::vector<JointState>& new_points, const std::vector<std::chrono::nanoseconds>& durations
+) {
+  if (new_points.size() != durations.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
+  }
+  for (unsigned int i = 0; i < new_points.size(); ++i) {
+    add_point(new_points[i], durations[i]);
+  }
+}
+
 void JointTrajectory::insert_point(
     const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos
 ) {

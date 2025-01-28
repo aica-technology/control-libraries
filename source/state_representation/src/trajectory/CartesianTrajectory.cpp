@@ -64,6 +64,17 @@ void CartesianTrajectory::add_point(const CartesianState& new_point, const std::
   this->TrajectoryBase<CartesianTrajectoryPoint>::add_point(trajectory_point);
 }
 
+void CartesianTrajectory::add_points(
+    const std::vector<CartesianState>& new_points, const std::vector<std::chrono::nanoseconds>& durations
+) {
+  if (new_points.size() != durations.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
+  }
+  for (unsigned int i = 0; i < new_points.size(); ++i) {
+    add_point(new_points[i], durations[i]);
+  }
+}
+
 void CartesianTrajectory::insert_point(
     const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos
 ) {

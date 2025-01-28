@@ -57,14 +57,27 @@ public:
   const std::string get_reference_frame() const;
 
   /**
-   * @brief Add new point and corresponding time to trajectory
+   * @brief Add new point and corresponding duration to trajectory
    * @param new_point the new trajectory point
    * @param duration the duration for the new point
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   void add_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration);
 
   /**
-   * @brief Insert new point and corresponding time to trajectory between two
+   * @brief Add new points and corresponding durations to trajectory
+   * @param new_points the new trajectory point
+   * @param durations the duration for the new point
+   * @throw IncompatibleSizeException if points and durations have different sizes
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
+   */
+  void
+  add_points(const std::vector<CartesianState>& new_points, const std::vector<std::chrono::nanoseconds>& durations);
+
+  /**
+   * @brief Insert new point and corresponding duration to trajectory between two
    * already existing points
    * @param new_point the new trajectory point
    * @param duration the duration for the new point
@@ -88,7 +101,7 @@ public:
   /**
    * @brief Set the trajectory point at given index
    * @param point the new point
-   * @param duration the new time
+   * @param duration the new duration
    * @param index the index
    * @throw std::out_of_range if index is out of range
    * @throw EmptyStateException if point is empty
@@ -108,7 +121,7 @@ public:
 
   /**
    * @brief Operator overload for returning a single trajectory point and
-   * corresponding time
+   * corresponding duration
    * @return the Cartesian state and duration pair that corresponds to the index
    */
   std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
