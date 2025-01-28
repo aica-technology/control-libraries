@@ -5,8 +5,16 @@
 
 namespace state_representation {
 
+/**
+ * @class JointTrajectoryPoint
+ * @brief Struct to represent a joint trajectory point
+ */
 struct JointTrajectoryPoint : public TrajectoryPoint {};
 
+/**
+ * @class JointTrajectory
+ * @brief Class to represent a trajectory of joint points and corresponding durations
+ */
 class JointTrajectory : public TrajectoryBase<JointTrajectoryPoint> {
 public:
   /**
@@ -16,26 +24,28 @@ public:
   explicit JointTrajectory(const std::string& name = "");
 
   /**
-   * @brief Constructor with name and reference frame provided
+   * @brief Constructor with initial point, duration, name, and reference frame provided
    * @param point the initial point
    * @param duration the initial duration
    * @param name the name of the state
    */
   explicit JointTrajectory(
-      const JointState& point, const std::chrono::nanoseconds& duration, const std::string& name = "");
+      const JointState& point, const std::chrono::nanoseconds& duration, const std::string& name = ""
+  );
 
   /**
-   * @brief Constructor with name and reference frame provided
+   * @brief Constructor with initial points, durations, name, and reference frame provided
    * @param points vector of initial points
    * @param durations vector of initial durations
    * @param name the name of the state
    */
   explicit JointTrajectory(
       const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-      const std::string& name = "");
+      const std::string& name = ""
+  );
 
   /**
-   * @brief Getter of the names attribute
+   * @brief Getter of the names
    * @return vector of joint names associated with the trajectory
    */
   const std::vector<std::string>& get_joint_names() const;
@@ -57,7 +67,7 @@ public:
   void insert_point(const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos);
 
   /**
-   * @brief Get attribute list of trajectory points
+   * @brief Get list of trajectory points
    * @return queue of the Joint states of the trajectory
    */
   const std::deque<JointState> get_points() const;

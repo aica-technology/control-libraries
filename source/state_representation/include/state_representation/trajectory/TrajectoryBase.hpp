@@ -8,28 +8,36 @@
 
 namespace state_representation {
 
+/**
+ * @class TrajectoryPoint
+ * @brief Struct to represent the base characteristics of a trajectory point
+ */
 struct TrajectoryPoint {
   Eigen::VectorXd data;
   std::chrono::nanoseconds duration;
 };
 
+/**
+ * @class TrajectoryBase
+ * @brief Base class that offers common functionalities for trajectory classes
+ */
 template<typename TrajectoryT>
 class TrajectoryBase : public State {
 public:
   /**
-   * @brief Get attribute list of trajectory point durations
+   * @brief Get list of trajectory point durations
    * @return the list of trajectory point durations
    */
   const std::deque<std::chrono::nanoseconds> get_durations() const;
 
   /**
-   * @brief Get attribute list of trajectory point times from start
+   * @brief Get list of trajectory point times from start
    * @return the list of trajectory point times from start
    */
   const std::deque<std::chrono::nanoseconds> get_times_from_start() const;
 
   /**
-   * @brief Get attribute number of point in trajectory
+   * @brief Get number of points in trajectory
    * @return the number of points in trajectory
    */
   unsigned int get_size() const;
@@ -40,7 +48,7 @@ public:
   virtual void reset();
 
   /**
-   * @brief Delete last point and corresponding time from trajectory
+   * @brief Delete the last point from trajectory
    */
   virtual void delete_point();
 
@@ -62,7 +70,7 @@ protected:
   explicit TrajectoryBase(const std::string& name);
 
   /**
-   * @brief Get attribute list of trajectory points
+   * @brief Get list of trajectory points
    * @return the list of trajectory points
    */
   const std::deque<TrajectoryT>& get_points() const;

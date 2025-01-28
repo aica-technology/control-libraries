@@ -5,10 +5,18 @@
 
 namespace state_representation {
 
+/**
+ * @class CartesianTrajectoryPoint
+ * @brief Struct to represent a Cartesian trajectory point
+ */
 struct CartesianTrajectoryPoint : public TrajectoryPoint {
   std::string name;
 };
 
+/**
+ * @class CartesianTrajectory
+ * @brief Class to represent a trajectory of Cartesian points and corresponding durations
+ */
 class CartesianTrajectory : public TrajectoryBase<CartesianTrajectoryPoint> {
 public:
   /**
@@ -19,7 +27,7 @@ public:
   explicit CartesianTrajectory(const std::string& name = "", const std::string& reference_frame = "world");
 
   /**
-   * @brief Constructor with name and reference frame provided
+   * @brief Constructor with initial point, duration, name, and reference frame provided
    * @param point the initial point
    * @param duration the initial duration
    * @param name the name of the state
@@ -27,10 +35,11 @@ public:
    */
   explicit CartesianTrajectory(
       const CartesianState& point, const std::chrono::nanoseconds& duration, const std::string& name = "",
-      const std::string& reference_frame = "world");
+      const std::string& reference_frame = "world"
+  );
 
   /**
-   * @brief Constructor with name and reference frame provided
+   * @brief Constructor with intial points, durations, name and reference frame provided
    * @param points vector of initial points
    * @param durations vector of initial durations
    * @param name the name of the state
@@ -38,7 +47,8 @@ public:
    */
   explicit CartesianTrajectory(
       const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-      const std::string& name = "", const std::string& reference_frame = "world");
+      const std::string& name = "", const std::string& reference_frame = "world"
+  );
 
   /**
    * @brief Getter of the reference frame as const reference
@@ -63,7 +73,7 @@ public:
   void insert_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos);
 
   /**
-   * @brief Get attribute list of trajectory points
+   * @brief Get list of trajectory points
    * @return queue of the Cartesian states of the trajectory
    */
   const std::deque<CartesianState> get_points() const;
