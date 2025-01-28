@@ -1,10 +1,10 @@
 #pragma once
 
-#include "state_representation/State.hpp"
-
 #include <chrono>
 #include <deque>
 #include <eigen3/Eigen/src/Core/Matrix.h>
+
+#include "state_representation/State.hpp"
 
 namespace state_representation {
 
