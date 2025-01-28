@@ -213,8 +213,8 @@ inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<Trajectory
     return;
   }
   this->reset();
-  for (unsigned int i = 0; i < points.size(); ++i) {
-    this->add_point(points[i]);
+  for (auto point : points) {
+    this->add_point(point);
   }
 }
 
@@ -230,11 +230,9 @@ inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::g
 template<typename TrajectoryT>
 inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_times_from_start() const {
   std::deque<std::chrono::nanoseconds> times_from_start;
+  std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
-    std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
-    for (unsigned int j = 0; j <= i; ++j) {
-      time_from_start += this->points_[j].duration;
-    }
+    time_from_start += this->points_[i].duration;
     times_from_start.push_back(time_from_start);
   }
   return times_from_start;
