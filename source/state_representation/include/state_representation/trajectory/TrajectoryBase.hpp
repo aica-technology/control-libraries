@@ -85,6 +85,12 @@ protected:
   void add_point(const TrajectoryT& new_point);
 
   /**
+   * @brief Add new points to trajectory
+   * @param new_point the new point
+   */
+  void add_points(const std::vector<TrajectoryT>& new_points);
+
+  /**
    * @brief Insert new trajectory point between two already existing points
    * @param new_point the new point
    * @param pos the desired position of the new point in the queue
@@ -146,6 +152,16 @@ template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::add_point(const TrajectoryT& new_point) {
   this->set_empty(false);
   this->points_.push_back(new_point);
+}
+
+template<typename TrajectoryT>
+inline void TrajectoryBase<TrajectoryT>::add_points(const std::vector<TrajectoryT>& new_points) {
+  if (new_points.size() == 0) {
+    return;
+  }
+  for (auto point : new_points) {
+    points_.push_back(point);
+  }
 }
 
 template<typename TrajectoryT>
