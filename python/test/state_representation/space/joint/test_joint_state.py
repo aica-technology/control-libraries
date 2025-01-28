@@ -481,19 +481,19 @@ class TestJointState(unittest.TestCase):
         with self.assertRaises(IncompatibleSizeError):
             state.set_state_variable([1.0, 2.0, 3.0, 4.0], JointStateVariable.POSITIONS)
         state.set_state_variable([1.0, 2.0, 3.0], JointStateVariable.POSITIONS)
-        self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [1.0, 2.0, 3.0]).all())
-        self.assertTrue((state.get_state_variable(state_variable_type) == [1.0, 2.0, 3.0]).all())
+        self.assert_np_array_equal(state.get_state_variable(JointStateVariable.POSITIONS), [1.0, 2.0, 3.0])
+        self.assert_np_array_equal(state.get_state_variable(state_variable_type), [1.0, 2.0, 3.0])
 
         matrix = np.random.rand(3, 3)
         expected = matrix @ np.array([1.0, 2.0, 3.0])
         state.multiply_state_variable(matrix, JointStateVariable.POSITIONS)
-        self.assertTrue((state.get_positions() == expected).all())
+        self.assert_np_array_equal(state.get_positions(), expected)
 
         state.set_state_variable([4.0, 5.0, 6.0], JointStateVariable.POSITIONS)
-        self.assertTrue((state.get_state_variable(JointStateVariable.POSITIONS) == [4.0, 5.0, 6.0]).all())
+        self.assert_np_array_equal(state.get_state_variable(JointStateVariable.POSITIONS), [4.0, 5.0, 6.0])
 
         state.set_state_variable(np.array([7.0, 8.0, 9.0]), JointStateVariable.POSITIONS)
-        self.assertTrue((state.get_positions() == [7.0, 8.0, 9.0]).all())
+        self.assert_np_array_equal(state.get_positions(), [7.0, 8.0, 9.0])
 
 if __name__ == '__main__':
     unittest.main()
