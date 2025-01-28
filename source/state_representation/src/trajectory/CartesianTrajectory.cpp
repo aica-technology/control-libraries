@@ -23,11 +23,7 @@ CartesianTrajectory::CartesianTrajectory(
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
   this->reset();
-  CartesianTrajectoryPoint trajectory_point;
-  trajectory_point.data = point.data();
-  trajectory_point.duration = duration;
-  trajectory_point.name = point.get_name();
-  this->TrajectoryBase<CartesianTrajectoryPoint>::add_point(trajectory_point);
+  this->add_point(point, duration);
 }
 
 CartesianTrajectory::CartesianTrajectory(
