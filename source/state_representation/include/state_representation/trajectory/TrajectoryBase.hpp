@@ -43,14 +43,21 @@ public:
   unsigned int get_size() const;
 
   /**
-   * @brief Reset trajectory
+   * @brief Delete the last point from trajectory
    */
-  virtual void reset();
+  void delete_point();
 
   /**
    * @brief Delete the last point from trajectory
+   * @param index the index of the point to delete
+   * @throw std::out_of_range if index is out of range
    */
-  virtual void delete_point();
+  void delete_point(unsigned int index);
+
+  /**
+   * @brief Reset trajectory
+   */
+  virtual void reset();
 
 protected:
   /**
@@ -74,7 +81,7 @@ protected:
    * @brief Get the trajectory point at given index
    * @param index the index
    * @return the trajectory point
-   * @throw std::out_of_range if pos is out of range
+   * @throw std::out_of_range if index is out of range
    */
   const TrajectoryT& get_point(unsigned int index) const;
 
@@ -93,10 +100,10 @@ protected:
   /**
    * @brief Insert new trajectory point between two already existing points
    * @param new_point the new point
-   * @param pos the desired position of the new point in the queue
-   * @throw std::out_of_range if pos is out of range
+   * @param index the desired position of the new point in the queue
+   * @throw std::out_of_range if index is out of range
    */
-  void insert_point(const TrajectoryT& new_point, unsigned int pos);
+  void insert_point(const TrajectoryT& new_point, unsigned int index);
 
   /**
    * @brief Get the trajectory point at given index
@@ -174,13 +181,13 @@ inline void TrajectoryBase<TrajectoryT>::add_points(const std::vector<Trajectory
 }
 
 template<typename TrajectoryT>
-inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_point, unsigned int pos) {
-  if (pos > this->points_.size()) {
+inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_point, unsigned int index) {
+  if (index > this->points_.size()) {
     throw std::out_of_range("Index out of range");
   }
   this->set_empty(false);
   auto it_points = this->points_.begin();
-  std::advance(it_points, pos);
+  std::advance(it_points, index);
   this->points_.insert(it_points, new_point);
 }
 
@@ -189,6 +196,17 @@ inline void TrajectoryBase<TrajectoryT>::delete_point() {
   if (!this->points_.empty()) {
     this->points_.pop_back();
   }
+  if (this->points_.empty()) {
+    this->set_empty(false);
+  }
+}
+
+template<typename TrajectoryT>
+inline void TrajectoryBase<TrajectoryT>::delete_point(unsigned int index) {
+  if (index >= this->points_.size()) {
+    throw std::out_of_range("Index out of range");
+  }
+  this->points_.erase(this->points_.begin() + index);
   if (this->points_.empty()) {
     this->set_empty(false);
   }

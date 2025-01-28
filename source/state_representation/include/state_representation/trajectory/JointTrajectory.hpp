@@ -74,9 +74,9 @@ public:
    * already existing points
    * @param new_point the new trajectory point
    * @param duration the duration for the new point
-   * @param pos the desired position of the new point in the queue
+   * @param index the desired position of the new point in the queue
    */
-  void insert_point(const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos);
+  void insert_point(const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int index);
 
   /**
    * @brief Get list of trajectory points

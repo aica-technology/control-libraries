@@ -72,7 +72,7 @@ void CartesianTrajectory::add_points(
 }
 
 void CartesianTrajectory::insert_point(
-    const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos
+    const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int index
 ) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
@@ -91,7 +91,7 @@ void CartesianTrajectory::insert_point(
   trajectory_point.duration = duration;
   trajectory_point.name = new_point.get_name();
   try {
-    this->TrajectoryBase<CartesianTrajectoryPoint>::insert_point(trajectory_point, pos);
+    this->TrajectoryBase<CartesianTrajectoryPoint>::insert_point(trajectory_point, index);
   } catch (...) {
     throw;
   }

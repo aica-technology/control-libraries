@@ -63,7 +63,7 @@ void JointTrajectory::add_points(
 }
 
 void JointTrajectory::insert_point(
-    const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int pos
+    const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int index
 ) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
@@ -83,7 +83,7 @@ void JointTrajectory::insert_point(
     JointTrajectoryPoint trajectory_point;
     trajectory_point.data = new_point.data();
     trajectory_point.duration = duration;
-    this->TrajectoryBase<JointTrajectoryPoint>::insert_point(trajectory_point, pos);
+    this->TrajectoryBase<JointTrajectoryPoint>::insert_point(trajectory_point, index);
   } catch (...) {
     throw;
   }
