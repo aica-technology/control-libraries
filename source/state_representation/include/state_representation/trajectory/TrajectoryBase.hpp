@@ -199,7 +199,7 @@ inline void TrajectoryBase<TrajectoryT>::delete_point() {
     this->points_.pop_back();
   }
   if (this->points_.empty()) {
-    this->set_empty(false);
+    this->set_empty(true);
   }
 }
 
@@ -210,7 +210,7 @@ inline void TrajectoryBase<TrajectoryT>::delete_point(unsigned int index) {
   }
   this->points_.erase(this->points_.begin() + index);
   if (this->points_.empty()) {
-    this->set_empty(false);
+    this->set_empty(true);
   }
 }
 
