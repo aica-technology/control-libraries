@@ -71,7 +71,7 @@ TEST(TrajectoryTest, TestTrajectoryBase) {
 
 TEST(TrajectoryTest, CartesianTrajectory) {
   {
-    CartesianTrajectory trajectory(CartesianState::Random("foo"), std::chrono::nanoseconds(100));
+    CartesianTrajectory trajectory("foo_trajectory", CartesianState::Random("foo"), std::chrono::nanoseconds(100));
     EXPECT_EQ(trajectory.get_size(), 1);
   }
 
@@ -81,7 +81,7 @@ TEST(TrajectoryTest, CartesianTrajectory) {
         CartesianState::Random("bar"),
     };
     auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
-    CartesianTrajectory trajectory(points, durations);
+    CartesianTrajectory trajectory("foo_trajectory", points, durations);
     EXPECT_EQ(trajectory.get_size(), 2);
   }
 
@@ -148,7 +148,7 @@ TEST(TrajectoryTest, CartesianTrajectory) {
 
 TEST(TrajectoryTest, JointTrajectory) {
   {
-    JointTrajectory trajectory(JointState::Random("foo", 25), std::chrono::nanoseconds(100));
+    JointTrajectory trajectory("foo_trajectory", JointState::Random("foo", 25), std::chrono::nanoseconds(100));
     EXPECT_EQ(trajectory.get_size(), 1);
   }
 
@@ -158,7 +158,7 @@ TEST(TrajectoryTest, JointTrajectory) {
         JointState::Random("foo", 25),
     };
     auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
-    JointTrajectory trajectory(points, durations);
+    JointTrajectory trajectory("foo_trajectory", points, durations);
     EXPECT_EQ(trajectory.get_size(), 2);
   }
 

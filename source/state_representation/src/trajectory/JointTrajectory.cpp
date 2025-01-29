@@ -8,25 +8,22 @@ namespace state_representation {
 
 JointTrajectory::JointTrajectory(const std::string& name) : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  this->reset();
 }
 
 JointTrajectory::JointTrajectory(
-    const JointState& point, const std::chrono::nanoseconds& duration, const std::string& name
+    const std::string& name, const JointState& point, const std::chrono::nanoseconds& duration
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  this->reset();
   this->add_point(point, duration);
 }
 
 JointTrajectory::JointTrajectory(
-    const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-    const std::string& name
+    const std::string& name, const std::vector<JointState>& points,
+    const std::vector<std::chrono::nanoseconds>& durations
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  this->reset();
   this->set_points(points, durations);
 }
 

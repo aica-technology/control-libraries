@@ -25,23 +25,21 @@ public:
 
   /**
    * @brief Constructor with initial point, duration, name, and reference frame provided
+   * @param name the name of the state
    * @param point the initial point
    * @param duration the initial duration
-   * @param name the name of the state
    */
-  explicit JointTrajectory(
-      const JointState& point, const std::chrono::nanoseconds& duration, const std::string& name = ""
-  );
+  explicit JointTrajectory(const std::string& name, const JointState& point, const std::chrono::nanoseconds& duration);
 
   /**
    * @brief Constructor with initial points, durations, name, and reference frame provided
+   * @param name the name of the state
    * @param points vector of initial points
    * @param durations vector of initial durations
-   * @param name the name of the state
    */
   explicit JointTrajectory(
-      const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-      const std::string& name = ""
+      const std::string& name, const std::vector<JointState>& points,
+      const std::vector<std::chrono::nanoseconds>& durations
   );
 
   /**

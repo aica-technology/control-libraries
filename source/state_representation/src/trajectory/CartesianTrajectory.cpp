@@ -9,7 +9,6 @@ namespace state_representation {
 CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::string& reference_frame)
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->reset();
 }
 
 const std::string CartesianTrajectory::get_reference_frame() const {
@@ -17,22 +16,20 @@ const std::string CartesianTrajectory::get_reference_frame() const {
 }
 
 CartesianTrajectory::CartesianTrajectory(
-    const CartesianState& point, const std::chrono::nanoseconds& duration, const std::string& name,
+    const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration,
     const std::string& reference_frame
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->reset();
   this->add_point(point, duration);
 }
 
 CartesianTrajectory::CartesianTrajectory(
-    const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-    const std::string& name, const std::string& reference_frame
+    const std::string& name, const std::vector<CartesianState>& points,
+    const std::vector<std::chrono::nanoseconds>& durations, const std::string& reference_frame
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->reset();
   try {
     this->set_points(points, durations);
   } catch (...) {

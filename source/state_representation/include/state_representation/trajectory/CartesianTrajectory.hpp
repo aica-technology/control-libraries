@@ -34,7 +34,7 @@ public:
    * @param reference_frame reference frame of the trajectory points
    */
   explicit CartesianTrajectory(
-      const CartesianState& point, const std::chrono::nanoseconds& duration, const std::string& name = "",
+      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration,
       const std::string& reference_frame = "world"
   );
 
@@ -46,8 +46,8 @@ public:
    * @param reference_frame reference frame of the trajectory points
    */
   explicit CartesianTrajectory(
-      const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations,
-      const std::string& name = "", const std::string& reference_frame = "world"
+      const std::string& name, const std::vector<CartesianState>& points,
+      const std::vector<std::chrono::nanoseconds>& durations, const std::string& reference_frame = "world"
   );
 
   /**
