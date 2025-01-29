@@ -28,13 +28,13 @@ public:
    * @brief Get list of trajectory point durations
    * @return the list of trajectory point durations
    */
-  const std::deque<std::chrono::nanoseconds> get_durations() const;
+  const std::vector<std::chrono::nanoseconds> get_durations() const;
 
   /**
    * @brief Get list of trajectory point times from start
    * @return the list of trajectory point times from start
    */
-  const std::deque<std::chrono::nanoseconds> get_times_from_start() const;
+  const std::vector<std::chrono::nanoseconds> get_times_from_start() const;
 
   /**
    * @brief Get number of points in trajectory
@@ -75,7 +75,7 @@ protected:
    * @brief Get list of trajectory points
    * @return the list of trajectory points
    */
-  const std::deque<TrajectoryT>& get_points() const;
+  const std::vector<TrajectoryT> get_points() const;
 
   /**
    * @brief Get the trajectory point at given index
@@ -213,8 +213,8 @@ inline void TrajectoryBase<TrajectoryT>::delete_point(unsigned int index) {
 }
 
 template<typename TrajectoryT>
-inline const std::deque<TrajectoryT>& TrajectoryBase<TrajectoryT>::get_points() const {
-  return this->points_;
+inline const std::vector<TrajectoryT> TrajectoryBase<TrajectoryT>::get_points() const {
+  return std::vector<TrajectoryT>(this->points_.begin(), this->points_.end());
 }
 
 template<typename TrajectoryT>
@@ -253,8 +253,8 @@ inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<Trajectory
 }
 
 template<typename TrajectoryT>
-inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
-  std::deque<std::chrono::nanoseconds> durations;
+inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
+  std::vector<std::chrono::nanoseconds> durations;
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
     durations.push_back(this->points_[i].duration);
   }
@@ -262,8 +262,8 @@ inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::g
 }
 
 template<typename TrajectoryT>
-inline const std::deque<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_times_from_start() const {
-  std::deque<std::chrono::nanoseconds> times_from_start;
+inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_times_from_start() const {
+  std::vector<std::chrono::nanoseconds> times_from_start;
   std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
     time_from_start += this->points_[i].duration;

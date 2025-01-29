@@ -153,8 +153,8 @@ const std::vector<std::string>& JointTrajectory::get_joint_names() const {
   return this->joint_names_;
 }
 
-const std::deque<JointState> JointTrajectory::get_points() const {
-  std::deque<JointState> points;
+const std::vector<JointState> JointTrajectory::get_points() const {
+  std::vector<JointState> points;
   for (unsigned int i = 0; i < this->get_size(); ++i) {
     auto state = this->operator[](i);
     points.push_back(state.first);

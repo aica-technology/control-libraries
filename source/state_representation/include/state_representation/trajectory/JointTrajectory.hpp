@@ -80,9 +80,9 @@ public:
 
   /**
    * @brief Get list of trajectory points
-   * @return queue of the Joint states of the trajectory
+   * @return vector of the Joint states of the trajectory
    */
-  const std::deque<JointState> get_points() const;
+  const std::vector<JointState> get_points() const;
 
   /**
    * @brief Get the trajectory point at given index

@@ -89,7 +89,7 @@ public:
    * @brief Get list of trajectory points
    * @return queue of the Cartesian states of the trajectory
    */
-  const std::deque<CartesianState> get_points() const;
+  const std::vector<CartesianState> get_points() const;
 
   /**
    * @brief Get the trajectory point at given index

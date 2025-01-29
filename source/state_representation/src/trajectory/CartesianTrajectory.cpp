@@ -154,8 +154,8 @@ void CartesianTrajectory::set_points(
   }
 }
 
-const std::deque<CartesianState> CartesianTrajectory::get_points() const {
-  std::deque<CartesianState> points;
+const std::vector<CartesianState> CartesianTrajectory::get_points() const {
+  std::vector<CartesianState> points;
   for (unsigned int i = 0; i < this->get_size(); ++i) {
     auto state = this->operator[](i);
     points.push_back(state.first);
