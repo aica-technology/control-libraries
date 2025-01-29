@@ -92,28 +92,29 @@ TEST(TrajectoryTest, CartesianTrajectory) {
     CartesianState state;
     EXPECT_THROW(trajectory.add_point(state, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
     EXPECT_EQ(trajectory.get_size(), 0);
+    EXPECT_NO_THROW(trajectory.add_point(CartesianState::Random("foo"), std::chrono::nanoseconds(100)));
 
-    auto points = {
-        CartesianState::Random("foo"),
-        CartesianState::Random("bar"),
-    };
+    auto points = {CartesianState::Random("bar")};
     auto durations = {std::chrono::nanoseconds(100)};
+    EXPECT_NO_THROW(trajectory.set_points(points, durations));
+
+    EXPECT_NO_THROW(trajectory.add_point(CartesianState::Random("foo"), std::chrono::nanoseconds(100)));
     EXPECT_THROW(trajectory.set_points(points, durations), exceptions::IncompatibleSizeException);
-    EXPECT_EQ(trajectory.get_size(), 0);
+    EXPECT_EQ(trajectory.get_size(), 2);
   }
 
   {// incompatible reference frames
     CartesianState point0("empty", "world1");
-    auto point1 = CartesianState::Random("foo", "world2");
+    auto point1 = CartesianState::Random("foo", "world");
     auto point2 = CartesianState::Random("bar", "world3");
     EXPECT_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
     EXPECT_NO_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)));
     EXPECT_THROW(
         trajectory.add_point(point2, std::chrono::nanoseconds(200)), exceptions::IncompatibleReferenceFramesException
     );
-    EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world2");
-    trajectory.reset();
     EXPECT_STREQ(trajectory.get_reference_frame().c_str(), "world");
+    trajectory.reset();
+    EXPECT_EQ(trajectory.get_size(), 0);
   }
 
   auto point0 = CartesianState::Random("foo");
@@ -168,6 +169,8 @@ TEST(TrajectoryTest, JointTrajectory) {
   {// incompatible name
     auto point0 = JointState::Random("foo", 25);
     auto point1 = JointState::Random("bar", 25);
+    trajectory.set_joint_names(point0.get_names());
+    trajectory.set_robot_name(point0.get_name());
     EXPECT_NO_THROW(trajectory.add_point(point0, std::chrono::nanoseconds(100)));
     EXPECT_THROW(trajectory.add_point(point1, std::chrono::nanoseconds(200)), exceptions::IncompatibleStatesException);
     trajectory.reset();
@@ -192,11 +195,13 @@ TEST(TrajectoryTest, JointTrajectory) {
         JointState::Random("foo", {"j_foo_1", "j_foo_2"}), JointState::Random("foo", {"j_bar_1", "j_bar_2"})
     };
     auto durations = {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)};
-    EXPECT_THROW(trajectory.set_points(states, durations), exceptions::IncompatibleStatesException);
+    EXPECT_THROW(trajectory.set_points(states, durations), exceptions::IncompatibleSizeException);
   }
 
   {// check joint names
     std::vector<std::string> joint_names = {"j_foo_1", "j_foo_2", "j_foo_3"};
+    trajectory.reset();
+    trajectory.set_joint_names(joint_names);
     trajectory.add_point(JointState::Random("foo", joint_names), std::chrono::nanoseconds(100));
     EXPECT_EQ(trajectory.get_joint_names(), joint_names);
     trajectory.reset();
@@ -206,6 +211,7 @@ TEST(TrajectoryTest, JointTrajectory) {
   auto point0 = JointState::Random("foo", 25);
   auto point1 = JointState::Random("foo", 25);
   auto point2 = JointState::Random("foo", 25);
+  trajectory.set_joint_names(point0.get_names());
 
   trajectory.add_point(point0, std::chrono::nanoseconds(100));
 

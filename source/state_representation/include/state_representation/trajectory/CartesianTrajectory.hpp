@@ -1,5 +1,6 @@
 #pragma once
 
+#include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/trajectory/TrajectoryBase.hpp"
 
@@ -54,7 +55,14 @@ public:
    * @brief Getter of the reference frame as const reference
    * @return the reference frame associated with the trajectory
    */
-  const std::string get_reference_frame() const;
+  const std::string& get_reference_frame() const;
+
+  /**
+   * @brief Getter of the reference frame as const reference
+   * @param the reference frame associated with the trajectory
+   * @throws EmptyStateException if pose is empty
+   */
+  void set_reference_frame(const CartesianPose& pose);
 
   /**
    * @brief Add new point and corresponding duration to trajectory
@@ -125,11 +133,6 @@ public:
    * @return the Cartesian state and duration pair that corresponds to the index
    */
   std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
-
-  /**
-   * @brief Reset trajectory
-   */
-  virtual void reset() override;
 
 private:
   std::string reference_frame_;///< name of the reference frame

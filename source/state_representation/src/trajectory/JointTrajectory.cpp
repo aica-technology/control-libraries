@@ -15,6 +15,11 @@ JointTrajectory::JointTrajectory(
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
+  if (point.is_empty()) {
+    throw exceptions::EmptyStateException("Point is empty");
+  }
+  this->joint_names_ = point.get_names();
+  this->robot_name_ = point.get_name();
   this->add_point(point, duration);
 }
 
@@ -24,16 +29,25 @@ JointTrajectory::JointTrajectory(
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  this->set_points(points, durations);
+  for (unsigned int i = 1; i < points.size(); ++i) {
+    if (points[i - 1].is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (points[i - 1].get_names() != points[i].get_names()) {
+      throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
+    } else if (points[i - 1].get_name() != points[i].get_name()) {
+      throw exceptions::IncompatibleStatesException("Incompatible robot name within the new points vector");
+    }
+  }
+  if (points.size() > 0) {
+    this->joint_names_ = points[0].get_names();
+    this->robot_name_ = points[0].get_name();
+  }
+  this->add_points(points, durations);
 }
 
 void JointTrajectory::add_point(const JointState& new_point, const std::chrono::nanoseconds& duration) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
-  }
-  if (this->get_size() == 0) {
-    this->joint_names_ = new_point.get_names();
-    this->robot_name_ = new_point.get_name();
   } else if (this->joint_names_ != new_point.get_names()) {
     throw exceptions::IncompatibleStatesException(
         "Incompatible joint names between the new point and current trajectory"
@@ -54,6 +68,15 @@ void JointTrajectory::add_points(
   if (new_points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
   }
+  for (unsigned int i = 1; i < new_points.size(); ++i) {
+    if (new_points[i - 1].is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (new_points[i - 1].get_names() != new_points[i].get_names()) {
+      throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
+    } else if (new_points[i - 1].get_name() != new_points[i].get_name()) {
+      throw exceptions::IncompatibleStatesException("Incompatible robot name within the new points vector");
+    }
+  }
   for (unsigned int i = 0; i < new_points.size(); ++i) {
     add_point(new_points[i], durations[i]);
   }
@@ -64,10 +87,6 @@ void JointTrajectory::insert_point(
 ) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
-  }
-  if (this->get_size() == 0) {
-    this->joint_names_ = new_point.get_names();
-    this->robot_name_ = new_point.get_name();
   } else if (this->joint_names_ != new_point.get_names()) {
     throw exceptions::IncompatibleStatesException(
         "Incompatible joint names between the new point and current trajectory"
@@ -110,24 +129,23 @@ void JointTrajectory::set_point(const JointState& point, const std::chrono::nano
 void JointTrajectory::set_points(
     const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  if (points.size() != durations.size()) {
-    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
-  }
   if (points.empty()) {
     throw exceptions::EmptyStateException("Points vector is empty");
+  } else if (points.size() != this->get_size()) {
+    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
+  } else if (points.size() != durations.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
   }
-  auto candidate_robot_name = points[0].get_name();
-  auto candidate_joint_names = points[0].get_names();
 
   std::vector<JointTrajectoryPoint> trajectory_points;
   for (unsigned int i = 0; i < points.size(); ++i) {
     if (points[i].is_empty()) {
       throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (points[i].get_names() != candidate_joint_names) {
+    } else if (points[i].get_names() != this->joint_names_) {
       throw exceptions::IncompatibleStatesException(
           "Incompatible joint names between the new point and current trajectory"
       );
-    } else if (points[i].get_name() != candidate_robot_name) {
+    } else if (points[i].get_name() != this->robot_name_) {
       throw exceptions::IncompatibleStatesException(
           "Incompatible robot name between the new point and current trajectory"
       );
@@ -139,8 +157,6 @@ void JointTrajectory::set_points(
   }
   try {
     this->TrajectoryBase<JointTrajectoryPoint>::set_points(trajectory_points);
-    this->joint_names_ = candidate_joint_names;
-    this->robot_name_ = candidate_robot_name;
   } catch (...) {
     throw;
   }
@@ -148,6 +164,18 @@ void JointTrajectory::set_points(
 
 const std::vector<std::string>& JointTrajectory::get_joint_names() const {
   return this->joint_names_;
+}
+
+void JointTrajectory::set_joint_names(const std::vector<std::string>& joint_names) {
+  this->joint_names_ = joint_names;
+}
+
+const std::string& JointTrajectory::get_robot_name() const {
+  return this->robot_name_;
+}
+
+void JointTrajectory::set_robot_name(const std::string& robot_name) {
+  this->robot_name_ = robot_name;
 }
 
 const std::vector<JointState> JointTrajectory::get_points() const {
@@ -177,11 +205,5 @@ std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[
   } catch (...) {
     throw;
   }
-}
-
-void JointTrajectory::reset() {
-  this->TrajectoryBase<JointTrajectoryPoint>::reset();
-  this->robot_name_ = "";
-  this->joint_names_.clear();
 }
 }// namespace state_representation

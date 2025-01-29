@@ -43,10 +43,28 @@ public:
   );
 
   /**
-   * @brief Getter of the names
+   * @brief Getter of the joint names
    * @return vector of joint names associated with the trajectory
    */
   const std::vector<std::string>& get_joint_names() const;
+
+  /**
+   * @brief Setter of the joint names
+   * @param joint_names vector of joint names associated with the trajectory
+   */
+  void set_joint_names(const std::vector<std::string>& joint_names);
+
+  /**
+   * @brief Getter of the robot name
+   * @return the robot name associated with the trajectory
+   */
+  const std::string& get_robot_name() const;
+
+  /**
+   * @brief Setter of the robot name
+   * @param the robot name associated with the trajectory
+   */
+  void set_robot_name(const std::string& robot_name);
 
   /**
    * @brief Add new point and corresponding duration to trajectory
@@ -116,11 +134,6 @@ public:
    * @return the Joint state and duration pair that corresponds to the index
    */
   std::pair<JointState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
-
-  /**
-   * @brief Reset trajectory
-   */
-  virtual void reset() override;
 
 private:
   std::vector<std::string> joint_names_;///< names of the joints

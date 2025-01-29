@@ -5,6 +5,7 @@
 #include <eigen3/Eigen/src/Core/Matrix.h>
 
 #include "state_representation/State.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 namespace state_representation {
 
@@ -123,6 +124,7 @@ protected:
   /**
    * @brief Set the trajectory points from a vector of points
    * @param points vector of new points
+   * @throw IncompatibleSizeException if points vector is empty
    */
   void set_points(const std::vector<TrajectoryT>& points);
 
@@ -244,11 +246,13 @@ inline void TrajectoryBase<TrajectoryT>::set_point(const TrajectoryT& point, uns
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
   if (points.size() == 0) {
-    return;
+    throw exceptions::IncompatibleSizeException("No points provided");
   }
-  this->reset();
-  for (auto point : points) {
-    this->add_point(point);
+  if (points.size() != this->points_.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
+  }
+  for (unsigned int i = 0; i < points.size(); ++i) {
+    this->points_[i] = points[i];
   }
 }
 

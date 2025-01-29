@@ -3,7 +3,6 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 namespace state_representation {
 CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::string& reference_frame)
@@ -11,8 +10,24 @@ CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::str
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
 }
 
-const std::string CartesianTrajectory::get_reference_frame() const {
+const std::string& CartesianTrajectory::get_reference_frame() const {
   return this->reference_frame_;
+}
+
+void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
+  if (pose.is_empty()) {
+    throw exceptions::EmptyStateException("Pose is empty");
+  }
+  this->reference_frame_ = pose.get_reference_frame();
+  auto points = this->get_points();
+  for (auto& point : points) {
+    point *= pose;
+  }
+  try {
+    this->set_points(points, this->get_durations());
+  } catch (...) {
+    throw;
+  }
 }
 
 CartesianTrajectory::CartesianTrajectory(
@@ -21,6 +36,14 @@ CartesianTrajectory::CartesianTrajectory(
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
+  if (point.is_empty()) {
+    throw exceptions::EmptyStateException("The Cartesian state provided is empty");
+  } else if (point.get_reference_frame() != reference_frame) {
+    throw exceptions::IncompatibleReferenceFramesException(
+        "Incompatible reference frames: " + point.get_reference_frame() + " and " + reference_frame
+    );
+  }
+  this->reference_frame_ = reference_frame;
   this->add_point(point, duration);
 }
 
@@ -30,8 +53,20 @@ CartesianTrajectory::CartesianTrajectory(
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name), reference_frame_(reference_frame) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
+  for (unsigned int i = 1; i < points.size(); ++i) {
+    if (points[i - 1].is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (points[i - 1].get_reference_frame() != points[i].get_reference_frame()) {
+      throw exceptions::IncompatibleReferenceFramesException(
+          "Incompatible reference frames within the new points vector"
+      );
+    }
+  }
+  if (points.size() > 0) {
+    this->reference_frame_ = points[0].get_reference_frame();
+  }
   try {
-    this->set_points(points, durations);
+    this->add_points(points, durations);
   } catch (...) {
     throw;
   }
@@ -40,15 +75,10 @@ CartesianTrajectory::CartesianTrajectory(
 void CartesianTrajectory::add_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("The Cartesian state provided is empty");
-  }
-  if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != this->reference_frame_) {
-      throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
-      );
-    }
-  } else {
-    this->reference_frame_ = new_point.get_reference_frame();
+  } else if (new_point.get_reference_frame() != this->reference_frame_) {
+    throw exceptions::IncompatibleReferenceFramesException(
+        "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
+    );
   }
   CartesianTrajectoryPoint trajectory_point;
   trajectory_point.data = new_point.data();
@@ -63,6 +93,15 @@ void CartesianTrajectory::add_points(
   if (new_points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
   }
+  for (unsigned int i = 1; i < new_points.size(); ++i) {
+    if (new_points[i - 1].is_empty()) {
+      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+    } else if (new_points[i - 1].get_reference_frame() != new_points[i].get_reference_frame()) {
+      throw exceptions::IncompatibleReferenceFramesException(
+          "Incompatible reference frames within the new points vector"
+      );
+    }
+  }
   for (unsigned int i = 0; i < new_points.size(); ++i) {
     add_point(new_points[i], durations[i]);
   }
@@ -73,15 +112,10 @@ void CartesianTrajectory::insert_point(
 ) {
   if (new_point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
-  }
-  if (this->get_size() > 0) {
-    if (new_point.get_reference_frame() != this->reference_frame_) {
-      throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
-      );
-    }
-  } else if (this->reference_frame_.empty()) {
-    this->reference_frame_ = new_point.get_reference_frame();
+  } else if (new_point.get_reference_frame() != this->reference_frame_) {
+    throw exceptions::IncompatibleReferenceFramesException(
+        "Incompatible reference frames: " + new_point.get_reference_frame() + " and " + this->reference_frame_
+    );
   }
   CartesianTrajectoryPoint trajectory_point;
   trajectory_point.data = new_point.data();
@@ -99,8 +133,7 @@ void CartesianTrajectory::set_point(
 ) {
   if (point.is_empty()) {
     throw exceptions::EmptyStateException("Point is empty");
-  }
-  if (point.get_reference_frame() != this->reference_frame_) {
+  } else if (point.get_reference_frame() != this->reference_frame_) {
     throw exceptions::IncompatibleReferenceFramesException(
         "Incompatible reference frames: " + point.get_reference_frame() + " and " + this->reference_frame_
     );
@@ -119,22 +152,21 @@ void CartesianTrajectory::set_point(
 void CartesianTrajectory::set_points(
     const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  if (points.size() != durations.size()) {
+  if (points.empty()) {
+    throw exceptions::IncompatibleSizeException("No points provided");
+  } else if (points.size() != this->get_size()) {
+    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
+  } else if (points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
   }
-  if (points.empty()) {
-    this->reset();
-    return;
-  }
-  std::string candidate_reference_frame = points[0].get_reference_frame();
 
   std::vector<CartesianTrajectoryPoint> trajectory_points;
   for (unsigned int i = 0; i < points.size(); ++i) {
     if (points[i].is_empty()) {
       throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (points[i].get_reference_frame() != candidate_reference_frame) {
+    } else if (points[i].get_reference_frame() != this->reference_frame_) {
       throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames: " + points[i].get_reference_frame() + " and " + candidate_reference_frame
+          "Incompatible reference frames: " + points[i].get_reference_frame() + " and " + this->reference_frame_
       );
     }
     CartesianTrajectoryPoint trajectory_point;
@@ -145,7 +177,6 @@ void CartesianTrajectory::set_points(
   }
   try {
     this->TrajectoryBase<CartesianTrajectoryPoint>::set_points(trajectory_points);
-    this->reference_frame_ = candidate_reference_frame;
   } catch (...) {
     throw;
   }
@@ -178,10 +209,5 @@ std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::o
   } catch (...) {
     throw;
   }
-}
-
-void CartesianTrajectory::reset() {
-  this->TrajectoryBase<CartesianTrajectoryPoint>::reset();
-  this->reference_frame_ = "world";
 }
 }// namespace state_representation
