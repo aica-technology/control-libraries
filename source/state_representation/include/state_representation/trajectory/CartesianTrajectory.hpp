@@ -10,9 +10,7 @@ namespace state_representation {
  * @class CartesianTrajectoryPoint
  * @brief Struct to represent a Cartesian trajectory point
  */
-struct CartesianTrajectoryPoint : public TrajectoryPoint {
-  std::string name;
-};
+struct CartesianTrajectoryPoint : public TrajectoryPoint {};
 
 /**
  * @class CartesianTrajectory
@@ -21,22 +19,27 @@ struct CartesianTrajectoryPoint : public TrajectoryPoint {
 class CartesianTrajectory : public TrajectoryBase<CartesianTrajectoryPoint> {
 public:
   /**
+   * @brief Empty constructor
+   */
+  explicit CartesianTrajectory();
+
+  /**
    * @brief Constructor with name and reference frame provided
    * @param name the name of the state
    * @param reference_frame reference frame of the trajectory points
    */
-  explicit CartesianTrajectory(const std::string& name = "", const std::string& reference_frame = "world");
+  explicit CartesianTrajectory(const std::string& name, const std::string& reference_frame = "world");
 
   /**
    * @brief Constructor with initial point, duration, name, and reference frame provided
    * @param point the initial point
    * @param duration the initial duration
    * @param name the name of the state
-   * @param reference_frame reference frame of the trajectory points
+   * @throw EmptyStateException if point is empty
+   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   explicit CartesianTrajectory(
-      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration,
-      const std::string& reference_frame = "world"
+      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
   );
 
   /**
@@ -44,11 +47,13 @@ public:
    * @param points vector of initial points
    * @param durations vector of initial durations
    * @param name the name of the state
-   * @param reference_frame reference frame of the trajectory points
+   * @throw EmptyStateException if any point is empty
+   * @throw IncompatibleReferenceFramesException if any point has different reference frame from others
+   * @throw IncompatibleSizeException if points and durations have different sizes
    */
   explicit CartesianTrajectory(
       const std::string& name, const std::vector<CartesianState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations, const std::string& reference_frame = "world"
+      const std::vector<std::chrono::nanoseconds>& durations
   );
 
   /**

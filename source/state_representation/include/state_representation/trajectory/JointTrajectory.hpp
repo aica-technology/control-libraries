@@ -55,18 +55,6 @@ public:
   void set_joint_names(const std::vector<std::string>& joint_names);
 
   /**
-   * @brief Getter of the robot name
-   * @return the robot name associated with the trajectory
-   */
-  const std::string& get_robot_name() const;
-
-  /**
-   * @brief Setter of the robot name
-   * @param the robot name associated with the trajectory
-   */
-  void set_robot_name(const std::string& robot_name);
-
-  /**
    * @brief Add new point and corresponding duration to trajectory
    * @param new_point the new trajectory point
    * @param duration the duration for the new point
@@ -137,6 +125,5 @@ public:
 
 private:
   std::vector<std::string> joint_names_;///< names of the joints
-  std::string robot_name_;              ///< name of the robot
 };
 }// namespace state_representation

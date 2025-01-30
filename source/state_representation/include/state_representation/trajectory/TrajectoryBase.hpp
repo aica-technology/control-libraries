@@ -14,6 +14,7 @@ namespace state_representation {
  * @brief Struct to represent the base characteristics of a trajectory point
  */
 struct TrajectoryPoint {
+  std::string name;
   Eigen::VectorXd data;
   std::chrono::nanoseconds duration;
 };
