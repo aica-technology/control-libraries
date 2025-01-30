@@ -1,9 +1,10 @@
-#include "state_representation/trajectory/JointTrajectory.hpp"
+#include <algorithm>
+
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/trajectory/JointTrajectory.hpp"
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
-#include <algorithm>
 
 namespace state_representation {
 
