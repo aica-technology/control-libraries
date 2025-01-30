@@ -32,16 +32,16 @@ CartesianTrajectory::CartesianTrajectory(
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  if (std::ranges::any_of(points, [&](const auto& p) { return p.is_empty(); })) {
+  if (points.empty()) {
+    throw exceptions::IncompatibleSizeException("No points provided");
+  } else if (std::ranges::any_of(points, [&](const auto& p) { return p.is_empty(); })) {
     throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
   } else if (!std::ranges::all_of(points, [&](const auto& p) {
                return p.get_reference_frame() == points.front().get_reference_frame();
              })) {
     throw exceptions::IncompatibleReferenceFramesException("Incompatible reference frames within the points vector");
   }
-  if (points.size() > 0) {
-    this->reference_frame_ = points[0].get_reference_frame();
-  }
+  this->reference_frame_ = points[0].get_reference_frame();
   try {
     this->add_points(points, durations);
   } catch (...) {
@@ -89,10 +89,11 @@ void CartesianTrajectory::add_point(const CartesianState& new_point, const std::
 void CartesianTrajectory::add_points(
     const std::vector<CartesianState>& new_points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  if (new_points.size() != durations.size()) {
+  if (new_points.empty()) {
+    throw exceptions::IncompatibleSizeException("No points provided");
+  } else if (new_points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
-  }
-  if (std::ranges::any_of(new_points, [&](const auto& p) { return p.is_empty(); })) {
+  } else if (std::ranges::any_of(new_points, [&](const auto& p) { return p.is_empty(); })) {
     throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
   } else if (!std::ranges::all_of(new_points, [&](const auto& p) {
                return p.get_reference_frame() == this->reference_frame_;

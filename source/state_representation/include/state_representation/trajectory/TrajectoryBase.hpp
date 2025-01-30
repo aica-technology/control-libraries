@@ -96,6 +96,7 @@ protected:
   /**
    * @brief Add new points to trajectory
    * @param new_point the new point
+   * @throw IncompatibleSizeException if points vector is empty
    */
   void add_points(const std::vector<TrajectoryT>& new_points);
 
@@ -134,6 +135,7 @@ protected:
    * corresponding time
    * @param idx the index
    * @return the trajectory point
+   * @throw IncompatibleSizeException if points vector is empty or different size than current points
    * @throw std::out_of_range if index is out of range
    */
   const TrajectoryT& operator[](unsigned int idx) const;
@@ -175,8 +177,8 @@ inline void TrajectoryBase<TrajectoryT>::add_point(const TrajectoryT& new_point)
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::add_points(const std::vector<TrajectoryT>& new_points) {
-  if (new_points.size() == 0) {
-    return;
+  if (new_points.empty()) {
+    throw exceptions::IncompatibleSizeException("No points provided");
   }
   for (auto point : new_points) {
     points_.push_back(point);
@@ -246,10 +248,9 @@ inline void TrajectoryBase<TrajectoryT>::set_point(const TrajectoryT& point, uns
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
-  if (points.size() == 0) {
+  if (points.empty()) {
     throw exceptions::IncompatibleSizeException("No points provided");
-  }
-  if (points.size() != this->points_.size()) {
+  } else if (points.size() != this->points_.size()) {
     throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
   }
   for (unsigned int i = 0; i < points.size(); ++i) {
