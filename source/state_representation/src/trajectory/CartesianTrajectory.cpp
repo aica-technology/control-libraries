@@ -32,14 +32,12 @@ CartesianTrajectory::CartesianTrajectory(
 )
     : TrajectoryBase<CartesianTrajectoryPoint>(name) {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  for (unsigned int i = 1; i < points.size(); ++i) {
-    if (points[i - 1].is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (points[i - 1].get_reference_frame() != points[i].get_reference_frame()) {
-      throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames within the new points vector"
-      );
-    }
+  if (std::ranges::any_of(points, [&](const auto& p) { return p.is_empty(); })) {
+    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+  } else if (!std::ranges::all_of(points, [&](const auto& p) {
+               return p.get_reference_frame() == points.front().get_reference_frame();
+             })) {
+    throw exceptions::IncompatibleReferenceFramesException("Incompatible reference frames within the points vector");
   }
   if (points.size() > 0) {
     this->reference_frame_ = points[0].get_reference_frame();
@@ -94,14 +92,12 @@ void CartesianTrajectory::add_points(
   if (new_points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
   }
-  for (unsigned int i = 1; i < new_points.size(); ++i) {
-    if (new_points[i - 1].is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (new_points[i - 1].get_reference_frame() != new_points[i].get_reference_frame()) {
-      throw exceptions::IncompatibleReferenceFramesException(
-          "Incompatible reference frames within the new points vector"
-      );
-    }
+  if (std::ranges::any_of(new_points, [&](const auto& p) { return p.is_empty(); })) {
+    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+  } else if (!std::ranges::all_of(new_points, [&](const auto& p) {
+               return p.get_reference_frame() == this->reference_frame_;
+             })) {
+    throw exceptions::IncompatibleReferenceFramesException("Incompatible reference frames within the points vector");
   }
   for (unsigned int i = 0; i < new_points.size(); ++i) {
     add_point(new_points[i], durations[i]);

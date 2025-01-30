@@ -3,6 +3,7 @@
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include <algorithm>
 
 namespace state_representation {
 
@@ -28,12 +29,10 @@ JointTrajectory::JointTrajectory(
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  for (unsigned int i = 1; i < points.size(); ++i) {
-    if (points[i - 1].is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (points[i - 1].get_names() != points[i].get_names()) {
-      throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
-    }
+  if (std::ranges::any_of(points, [&](const auto& p) { return p.is_empty(); })) {
+    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+  } else if (!std::ranges::all_of(points, [&](const auto& p) { return p.get_names() == points.front().get_names(); })) {
+    throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
   }
   if (points.size() > 0) {
     this->joint_names_ = points[0].get_names();
@@ -61,13 +60,10 @@ void JointTrajectory::add_points(
 ) {
   if (new_points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
-  }
-  for (unsigned int i = 1; i < new_points.size(); ++i) {
-    if (new_points[i - 1].is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (new_points[i - 1].get_names() != new_points[i].get_names()) {
-      throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
-    }
+  } else if (std::ranges::any_of(new_points, [&](const auto& p) { return p.is_empty(); })) {
+    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
+  } else if (!std::ranges::all_of(new_points, [&](const auto& p) { return p.get_names() == this->joint_names_; })) {
+    throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
   }
   for (unsigned int i = 0; i < new_points.size(); ++i) {
     add_point(new_points[i], durations[i]);
