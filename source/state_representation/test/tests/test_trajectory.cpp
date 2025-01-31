@@ -357,6 +357,7 @@ TYPED_TEST_P(TrajectoryTest, Getters) {
     EXPECT_EQ(this->trajectory->get_time_from_start(i), time_from_start);
     EXPECT_EQ(this->trajectory->get_duration(i), durations[i]);
   }
+  EXPECT_EQ(this->trajectory->get_trajectory_duration(), time_from_start);
 
   this->trajectory->reset();
   EXPECT_EQ(this->trajectory->get_size(), 0);

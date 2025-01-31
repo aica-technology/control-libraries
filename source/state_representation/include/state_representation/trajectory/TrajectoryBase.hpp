@@ -70,6 +70,12 @@ public:
   const std::vector<std::chrono::nanoseconds> get_times_from_start() const;
 
   /**
+   * @brief Get the total duration of the trajectory
+   * @return the total duration of the trajectory
+   */
+  const std::chrono::nanoseconds get_trajectory_duration() const;
+
+  /**
    * @brief Get number of points in trajectory
    * @return the number of points in trajectory
    */
@@ -365,6 +371,11 @@ inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::
     times_from_start.push_back(time_from_start);
   }
   return times_from_start;
+}
+
+template<typename TrajectoryT>
+inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_trajectory_duration() const {
+  return this->get_size() ? this->get_times_from_start().back() : std::chrono::nanoseconds(0);
 }
 
 template<typename TrajectoryT>
