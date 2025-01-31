@@ -33,12 +33,11 @@ class JointTrajectory : public TrajectoryBase<JointTrajectoryPoint> {
 public:
   /**
    * @brief Constructor with name and reference frame provided
-   * @param name the name of the state
    */
   explicit JointTrajectory(const std::string& name = "");
 
   /**
-   * @brief Constructor with initial point, duration, name, and reference frame provided
+   * @brief Constructor with name, initial point, and duration provided
    * @param name the name of the state
    * @param point the initial point
    * @param duration the initial duration
@@ -46,7 +45,7 @@ public:
   explicit JointTrajectory(const std::string& name, const JointState& point, const std::chrono::nanoseconds& duration);
 
   /**
-   * @brief Constructor with initial points, durations, name, and reference frame provided
+   * @brief Constructor with name, initial points, and durations provided
    * @param name the name of the state
    * @param points vector of initial points
    * @param durations vector of initial durations
@@ -73,7 +72,7 @@ public:
    * @param point the new trajectory point
    * @param duration the duration for the new point
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleStatesException if point has different robot name
+   * @throw IncompatibleStatesException if point has different joint names
    */
   void add_point(const JointState& point, const std::chrono::nanoseconds& duration);
 
@@ -83,7 +82,7 @@ public:
    * @param durations the duration for the new point
    * @throw IncompatibleSizeException if points and durations have different sizes
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleStatesException if point has different robot name
+   * @throw IncompatibleStatesException if any of the points has different joint names
    */
   void add_points(const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations);
 

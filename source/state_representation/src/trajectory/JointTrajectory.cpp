@@ -14,8 +14,7 @@ JointTrajectory::JointTrajectory(const std::string& name) : TrajectoryBase<Joint
 JointTrajectory::JointTrajectory(
     const std::string& name, const JointState& point, const std::chrono::nanoseconds& duration
 )
-    : TrajectoryBase<JointTrajectoryPoint>(name) {
-  this->set_type(StateType::JOINT_TRAJECTORY);
+    : JointTrajectory(name) {
   this->assert_points_empty<JointState>({point});
   this->joint_names_ = point.get_names();
   this->add_point(point, duration);
@@ -25,11 +24,8 @@ JointTrajectory::JointTrajectory(
     const std::string& name, const std::vector<JointState>& points,
     const std::vector<std::chrono::nanoseconds>& durations
 )
-    : TrajectoryBase<JointTrajectoryPoint>(name) {
-  this->set_type(StateType::JOINT_TRAJECTORY);
+    : JointTrajectory(name) {
   this->assert_points_empty(points);
-  this->assert_contains_empty_state(points);
-  this->assert_incompatible_joint_names(points);
   this->joint_names_ = points[0].get_names();
   this->add_points(points, durations);
 }

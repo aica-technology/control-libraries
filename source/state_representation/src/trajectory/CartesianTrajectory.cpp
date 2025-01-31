@@ -16,10 +16,7 @@ CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::str
 CartesianTrajectory::CartesianTrajectory(
     const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
 )
-    : TrajectoryBase<CartesianTrajectoryPoint>(name) {
-  this->set_type(StateType::CARTESIAN_TRAJECTORY);
-  this->assert_points_empty<CartesianState>({point});
-  this->reference_frame_ = point.get_reference_frame();
+    : CartesianTrajectory(name, point.get_reference_frame()) {
   this->add_point(point, duration);
 }
 
@@ -27,11 +24,8 @@ CartesianTrajectory::CartesianTrajectory(
     const std::string& name, const std::vector<CartesianState>& points,
     const std::vector<std::chrono::nanoseconds>& durations
 )
-    : TrajectoryBase<CartesianTrajectoryPoint>(name) {
-  this->set_type(StateType::CARTESIAN_TRAJECTORY);
+    : CartesianTrajectory(name) {
   this->assert_points_empty(points);
-  this->assert_contains_empty_state(points);
-  this->assert_same_reference_frame(points);
   this->reference_frame_ = points[0].get_reference_frame();
   this->add_points(points, durations);
 }

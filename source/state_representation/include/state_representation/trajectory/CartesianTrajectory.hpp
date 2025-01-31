@@ -47,19 +47,18 @@ public:
   explicit CartesianTrajectory(const std::string& name, const std::string& reference_frame = "world");
 
   /**
-   * @brief Constructor with initial point, duration, name, and reference frame provided
+   * @brief Constructor with name, initial point, and duration provided
    * @param point the initial point
    * @param duration the initial duration
    * @param name the name of the state
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
   explicit CartesianTrajectory(
       const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
   );
 
   /**
-   * @brief Constructor with intial points, durations, name and reference frame provided
+   * @brief Constructor with name, intial points, and durations provided
    * @param points vector of initial points
    * @param durations vector of initial durations
    * @param name the name of the state
@@ -73,14 +72,14 @@ public:
   );
 
   /**
-   * @brief Getter of the reference frame as const reference
+   * @brief Getter of the reference frame
    * @return the reference frame associated with the trajectory
    */
   const std::string& get_reference_frame() const;
 
   /**
-   * @brief Getter of the reference frame as const reference
-   * @param the reference frame associated with the trajectory
+   * @brief Setter of the reference frame that applies a transformation to all existing points to change the reference frame
+   * @param pose the new pose that needs to be applied to existing points to change the reference frame
    * @throws EmptyStateException if pose is empty
    */
   void set_reference_frame(const CartesianPose& pose);
