@@ -3,7 +3,6 @@
 #include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/trajectory/JointTrajectory.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 
 namespace state_representation {
@@ -17,9 +16,7 @@ JointTrajectory::JointTrajectory(
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  if (point.is_empty()) {
-    throw exceptions::EmptyStateException("Point is empty");
-  }
+  this->assert_points_empty<JointState>({point});
   this->joint_names_ = point.get_names();
   this->add_point(point, duration);
 }
@@ -30,119 +27,57 @@ JointTrajectory::JointTrajectory(
 )
     : TrajectoryBase<JointTrajectoryPoint>(name) {
   this->set_type(StateType::JOINT_TRAJECTORY);
-  if (points.empty()) {
-    throw exceptions::IncompatibleSizeException("No points provided");
-  } else if (std::ranges::any_of(points, [&](const auto& p) { return p.is_empty(); })) {
-    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-  } else if (!std::ranges::all_of(points, [&](const auto& p) { return p.get_names() == points.front().get_names(); })) {
-    throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
-  }
+  this->assert_points_empty(points);
+  this->assert_contains_empty_state(points);
+  this->assert_incompatible_joint_names(points);
   this->joint_names_ = points[0].get_names();
   this->add_points(points, durations);
 }
 
-void JointTrajectory::add_point(const JointState& new_point, const std::chrono::nanoseconds& duration) {
-  if (new_point.is_empty()) {
-    throw exceptions::EmptyStateException("Point is empty");
-  } else if (this->joint_names_ != new_point.get_names()) {
-    throw exceptions::IncompatibleStatesException(
-        "Incompatible joint names between the new point and current trajectory"
-    );
-  }
-  JointTrajectoryPoint trajectory_point;
-  trajectory_point.data = new_point.data();
-  trajectory_point.duration = duration;
-  trajectory_point.name = new_point.get_name();
-  this->TrajectoryBase<JointTrajectoryPoint>::add_point(trajectory_point);
+void JointTrajectory::add_point(const JointState& point, const std::chrono::nanoseconds& duration) {
+  this->add_points({point}, {duration});
 }
 
 void JointTrajectory::add_points(
-    const std::vector<JointState>& new_points, const std::vector<std::chrono::nanoseconds>& durations
+    const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  if (new_points.empty()) {
-    throw exceptions::IncompatibleSizeException("No points provided");
-  } else if (new_points.size() != durations.size()) {
-    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
-  } else if (std::ranges::any_of(new_points, [&](const auto& p) { return p.is_empty(); })) {
-    throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-  } else if (!std::ranges::all_of(new_points, [&](const auto& p) { return p.get_names() == this->joint_names_; })) {
-    throw exceptions::IncompatibleStatesException("Incompatible joint names within the new points vector");
-  }
-  for (unsigned int i = 0; i < new_points.size(); ++i) {
-    add_point(new_points[i], durations[i]);
+  this->assert_points_empty(points);
+  this->assert_points_durations_sizes_equal(points, durations);
+  this->assert_contains_empty_state(points);
+  this->assert_incompatible_joint_names(points, this->joint_names_);
+  for (unsigned int i = 0; i < points.size(); ++i) {
+    this->TrajectoryBase<JointTrajectoryPoint>::add_point(
+        JointTrajectoryPoint(points[i].get_name(), points[i].data(), durations[i])
+    );
   }
 }
 
 void JointTrajectory::insert_point(
-    const JointState& new_point, const std::chrono::nanoseconds& duration, unsigned int index
+    const JointState& point, const std::chrono::nanoseconds& duration, unsigned int index
 ) {
-  if (new_point.is_empty()) {
-    throw exceptions::EmptyStateException("Point is empty");
-  } else if (this->joint_names_ != new_point.get_names()) {
-    throw exceptions::IncompatibleStatesException(
-        "Incompatible joint names between the new point and current trajectory"
-    );
-  }
-  try {
-    JointTrajectoryPoint trajectory_point;
-    trajectory_point.data = new_point.data();
-    trajectory_point.duration = duration;
-    trajectory_point.name = new_point.get_name();
-    this->TrajectoryBase<JointTrajectoryPoint>::insert_point(trajectory_point, index);
-  } catch (...) {
-    throw;
-  }
+  this->assert_contains_empty_state<JointState>({point});
+  this->assert_incompatible_joint_names({point}, this->joint_names_);
+  this->TrajectoryBase<JointTrajectoryPoint>::insert_point(
+      JointTrajectoryPoint(point.get_name(), point.data(), duration), index
+  );
 }
 
 void JointTrajectory::set_point(const JointState& point, const std::chrono::nanoseconds& duration, unsigned int index) {
-  if (point.is_empty()) {
-    throw exceptions::EmptyStateException("Point is empty");
-  } else if (point.get_names() != this->joint_names_) {
-    throw exceptions::IncompatibleStatesException(
-        "Incompatible joint names between the new point and current trajectory"
-    );
-  }
-  JointTrajectoryPoint trajectory_point;
-  trajectory_point.data = point.data();
-  trajectory_point.duration = duration;
-  trajectory_point.name = point.get_name();
-  try {
-    this->TrajectoryBase<JointTrajectoryPoint>::set_point(trajectory_point, index);
-  } catch (...) {
-    throw;
-  }
+  this->assert_contains_empty_state<JointState>({point});
+  this->assert_incompatible_joint_names({point}, this->joint_names_);
+  this->TrajectoryBase<JointTrajectoryPoint>::set_point(
+      JointTrajectoryPoint(point.get_name(), point.data(), duration), index
+  );
 }
 
 void JointTrajectory::set_points(
     const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  if (points.empty()) {
-    throw exceptions::EmptyStateException("Points vector is empty");
-  } else if (points.size() != this->get_size()) {
-    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
-  } else if (points.size() != durations.size()) {
-    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
-  }
-
-  std::vector<JointTrajectoryPoint> trajectory_points;
+  this->assert_points_empty(points);
+  this->assert_points_size(points);
+  this->assert_points_durations_sizes_equal(points, durations);
   for (unsigned int i = 0; i < points.size(); ++i) {
-    if (points[i].is_empty()) {
-      throw exceptions::EmptyStateException("Vector contains at least one point that is empty");
-    } else if (points[i].get_names() != this->joint_names_) {
-      throw exceptions::IncompatibleStatesException(
-          "Incompatible joint names between the new point and current trajectory"
-      );
-    }
-    JointTrajectoryPoint trajectory_point;
-    trajectory_point.data = points[i].data();
-    trajectory_point.duration = durations[i];
-    trajectory_point.name = points[i].get_name();
-    trajectory_points.push_back(trajectory_point);
-  }
-  try {
-    this->TrajectoryBase<JointTrajectoryPoint>::set_points(trajectory_points);
-  } catch (...) {
-    throw;
+    this->set_point(points[i], durations[i], i);
   }
 }
 
@@ -163,22 +98,28 @@ const std::vector<JointState> JointTrajectory::get_points() const {
 }
 
 const JointState JointTrajectory::get_point(unsigned int index) const {
-  try {
-    return this->operator[](index).first;
-  } catch (...) {
-    throw;
-  }
+  return this->operator[](index).first;
 }
 
 std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[](unsigned int idx) const {
-  try {
-    auto point = this->TrajectoryBase<JointTrajectoryPoint>::operator[](idx);
-    JointState state(point.name, this->joint_names_);
-    state.set_data(point.data);
-    auto duration = point.duration;
-    return std::make_pair(state, duration);
-  } catch (...) {
-    throw;
+  auto point = this->TrajectoryBase<JointTrajectoryPoint>::operator[](idx);
+  JointState state(point.name, this->joint_names_);
+  state.set_data(point.data);
+  auto duration = point.duration;
+  return std::make_pair(state, duration);
+}
+
+void JointTrajectory::assert_incompatible_joint_names(const std::vector<JointState>& states) const {
+  if (!states.empty()) {
+    this->assert_incompatible_joint_names(states, states[0].get_names());
+  }
+}
+
+void JointTrajectory::assert_incompatible_joint_names(
+    const std::vector<JointState>& states, const std::vector<std::string>& joint_names
+) const {
+  if (!std::ranges::all_of(states, [&](const auto& state) { return state.get_names() == joint_names; })) {
+    throw exceptions::IncompatibleStatesException("Incompatible joint names");
   }
 }
 }// namespace state_representation

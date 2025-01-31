@@ -10,7 +10,23 @@ namespace state_representation {
  * @class CartesianTrajectoryPoint
  * @brief Struct to represent a Cartesian trajectory point
  */
-struct CartesianTrajectoryPoint : public TrajectoryPoint {};
+struct CartesianTrajectoryPoint : public TrajectoryPoint {
+  /**
+   * @brief Empty constructor
+   */
+  CartesianTrajectoryPoint() = default;
+
+  /**
+   * @brief Constructor with name, data, and duration
+   * @param name the trajectory point name
+   * @param data the (flattened) trajectory data
+   * @param duration the intended duration for the trajectory point 
+   */
+  CartesianTrajectoryPoint(
+      const std::string& name, const Eigen::VectorXd& data, const std::chrono::nanoseconds& duration
+  )
+      : TrajectoryPoint(name, data, duration) {}
+};
 
 /**
  * @class CartesianTrajectory
@@ -71,32 +87,31 @@ public:
 
   /**
    * @brief Add new point and corresponding duration to trajectory
-   * @param new_point the new trajectory point
+   * @param point the new trajectory point
    * @param duration the duration for the new point
    * @throw EmptyStateException if point is empty
    * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
-  void add_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration);
+  void add_point(const CartesianState& point, const std::chrono::nanoseconds& duration);
 
   /**
    * @brief Add new points and corresponding durations to trajectory
-   * @param new_points the new trajectory point
+   * @param points the new trajectory point
    * @param durations the duration for the new point
    * @throw IncompatibleSizeException if points and durations have different sizes
    * @throw EmptyStateException if point is empty
    * @throw IncompatibleReferenceFramesException if point has different reference frame
    */
-  void
-  add_points(const std::vector<CartesianState>& new_points, const std::vector<std::chrono::nanoseconds>& durations);
+  void add_points(const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations);
 
   /**
    * @brief Insert new point and corresponding duration to trajectory between two
    * already existing points
-   * @param new_point the new trajectory point
+   * @param point the new trajectory point
    * @param duration the duration for the new point
    * @param index the desired position of the new point in the queue
    */
-  void insert_point(const CartesianState& new_point, const std::chrono::nanoseconds& duration, unsigned int index);
+  void insert_point(const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index);
 
   /**
    * @brief Get list of trajectory points
@@ -140,6 +155,21 @@ public:
   std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
 
 private:
+  /**
+   * @brief Assert that all states of a vector carry the same reference frame
+   * @param states the states to check
+   * @throw IncompatibleReferenceFramesException if a state has a different reference frame
+   */
+  void assert_same_reference_frame(const std::vector<CartesianState>& states) const;
+
+  /**
+   * @brief Assert that all states of a vector carry the same reference frame as the one provided
+   * @param states the states to check
+   * @param reference_frame the reference frame to check against
+   * @throw IncompatibleReferenceFramesException if a state has a different reference frame
+   */
+  void assert_same_reference_frame(const std::vector<CartesianState>& states, const std::string& reference_frame) const;
+
   std::string reference_frame_;///< name of the reference frame
 };
 }// namespace state_representation

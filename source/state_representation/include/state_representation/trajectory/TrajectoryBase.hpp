@@ -1,10 +1,13 @@
 #pragma once
 
 #include <chrono>
+#include <concepts>
 #include <deque>
 #include <eigen3/Eigen/src/Core/Matrix.h>
+#include <stdexcept>
 
 #include "state_representation/State.hpp"
+#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 namespace state_representation {
@@ -14,6 +17,20 @@ namespace state_representation {
  * @brief Struct to represent the base characteristics of a trajectory point
  */
 struct TrajectoryPoint {
+  /**
+   * @brief Empty constructor
+   */
+  TrajectoryPoint() = default;
+
+  /**
+   * @brief Constructor with name, data, and duration
+   * @param name the trajectory point name
+   * @param data the (flattened) trajectory data
+   * @param duration the intended duration for the trajectory point 
+   */
+  TrajectoryPoint(const std::string& name, const Eigen::VectorXd& data, const std::chrono::nanoseconds& duration)
+      : name(name), data(data), duration(duration) {}
+
   std::string name;
   Eigen::VectorXd data;
   std::chrono::nanoseconds duration;
@@ -65,7 +82,7 @@ protected:
   /**
    * @brief Empty constructor
    */
-  explicit TrajectoryBase();
+  explicit TrajectoryBase() = default;
 
   /**
    * @brief Constructor with name provided
@@ -133,35 +150,90 @@ protected:
   /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
-   * @param idx the index
+   * @param index the index
    * @return the trajectory point
    * @throw IncompatibleSizeException if points vector is empty or different size than current points
    * @throw std::out_of_range if index is out of range
    */
-  const TrajectoryT& operator[](unsigned int idx) const;
+  const TrajectoryT& operator[](unsigned int index) const;
 
   /**
    * @brief Operator overload for returning a single trajectory point and
    * corresponding time
-   * @param idx the index
+   * @param index the index
    * @return the trajectory point
    * @throw std::out_of_range if index is out of range
    */
-  TrajectoryT& operator[](unsigned int idx);
+  TrajectoryT& operator[](unsigned int index);
+
+  /**
+   * @brief Assert the index provided is in range of the current points list
+   * @param index the index
+   * @throw std::out_of_range if index is out of range
+   */
+  void assert_index_in_range(unsigned int index) const;
+
+  /**
+   * @brief Assert the points vector provided is not empty 
+   * @param points the vector of points to check
+   * @throw IncompatibleSizeException if points empty
+   */
+  template<typename T>
+  void assert_points_empty(const std::vector<T>& points) const;
+
+  /**
+   * @brief Assert the points vector provided is of the same size as the current points 
+   * @param points the vector of points to check
+   * @throw IncompatibleSizeException if size points provided different to current points
+   */
+  template<typename T>
+  void assert_points_size(const std::vector<T>& points) const;
+
+  /**
+   * @brief Assert the points vector and durations vectors are of equal size 
+   * @param points the vector of points to check
+   * @param durations the vector of durations to check
+   * @throw IncompatibleSizeException if the two vector sizes are not equal
+   */
+  template<typename T>
+  void assert_points_durations_sizes_equal(
+      const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
+  ) const;
+
+  /**
+   * @brief Assert the that 2 vectors are element wise equal
+   * @param lvec the vector of points to check
+   * @param rvec the vector of durations to check
+   * @throws std::runtime-derived exception if vectors differ
+   */
+  template<typename T, typename ExceptionType>
+    requires std::derived_from<ExceptionType, std::runtime_error>
+  void assert_vector_ewise_equal(
+      const std::vector<T>& lvec, const std::vector<T>& rvec,
+      const std::string& msg = "The vectors provided contain elements that differ!"
+  ) const;
+
+  /**
+   * @brief Assert that vector of State type does not contain empty elements
+   * @param states the vector of State-type elements to check 
+   * @throws EmptyStateException if any of the elements is empty
+   */
+  template<typename StateT>
+    requires std::derived_from<StateT, typename state_representation::State>
+  void assert_contains_empty_state(const std::vector<StateT>& states) const;
+
+  /**
+   * @brief Assert that the trajectory is empty
+   * @throws EmptyStateException if any of the elements is empty
+   */
+  void assert_trajectory_empty() const;
 
 private:
   std::deque<TrajectoryT> points_;
 };
 
 template<typename TrajectoryT>
-inline TrajectoryBase<TrajectoryT>::TrajectoryBase() : State() {
-  this->reset();
-}
-
-template<typename TrajectoryT>
-inline TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {
-  this->reset();
-}
+inline TrajectoryBase<TrajectoryT>::TrajectoryBase(const std::string& name) : State(name) {}
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::reset() {
@@ -187,10 +259,8 @@ inline void TrajectoryBase<TrajectoryT>::add_points(const std::vector<Trajectory
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_point, unsigned int index) {
-  if (index > this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
   this->set_empty(false);
+  this->assert_index_in_range(index);
   auto it_points = this->points_.begin();
   std::advance(it_points, index);
   this->points_.insert(it_points, new_point);
@@ -208,9 +278,7 @@ inline void TrajectoryBase<TrajectoryT>::delete_point() {
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::delete_point(unsigned int index) {
-  if (index >= this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
+  this->assert_index_in_range(index);
   this->points_.erase(this->points_.begin() + index);
   if (this->points_.empty()) {
     this->set_empty(true);
@@ -224,35 +292,26 @@ inline const std::vector<TrajectoryT> TrajectoryBase<TrajectoryT>::get_points() 
 
 template<typename TrajectoryT>
 inline const TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) const {
-  if (index >= this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
+  this->assert_index_in_range(index);
   return this->points_[index];
 }
 
 template<typename TrajectoryT>
 inline TrajectoryT& TrajectoryBase<TrajectoryT>::get_point(unsigned int index) {
-  if (index >= this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
+  this->assert_index_in_range(index);
   return this->points_[index];
 }
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_point(const TrajectoryT& point, unsigned int index) {
-  if (index >= this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
+  this->assert_index_in_range(index);
   this->points_[index] = point;
 }
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
-  if (points.empty()) {
-    throw exceptions::IncompatibleSizeException("No points provided");
-  } else if (points.size() != this->points_.size()) {
-    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
-  }
+  this->assert_points_empty(points);
+  this->assert_points_size(points);
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->points_[i] = points[i];
   }
@@ -285,17 +344,73 @@ inline unsigned int TrajectoryBase<TrajectoryT>::get_size() const {
 
 template<typename TrajectoryT>
 inline const TrajectoryT& TrajectoryBase<TrajectoryT>::operator[](unsigned int index) const {
-  if (index >= this->points_.size()) {
-    throw std::out_of_range("Index out of range");
-  }
+  this->assert_index_in_range(index);
   return this->points_[index];
 }
 
 template<typename TrajectoryT>
 inline TrajectoryT& TrajectoryBase<TrajectoryT>::operator[](unsigned int index) {
+  this->assert_index_in_range(index);
+  return this->points_[index];
+}
+
+template<typename TrajectoryT>
+inline void TrajectoryBase<TrajectoryT>::assert_index_in_range(unsigned int index) const {
   if (index >= this->points_.size()) {
     throw std::out_of_range("Index out of range");
   }
-  return this->points_[index];
+}
+
+template<typename TrajectoryT>
+template<typename T>
+inline void TrajectoryBase<TrajectoryT>::assert_points_empty(const std::vector<T>& points) const {
+  if (points.empty()) {
+    throw exceptions::IncompatibleSizeException("Empty points vector provided!");
+  }
+}
+
+template<typename TrajectoryT>
+template<typename T>
+inline void TrajectoryBase<TrajectoryT>::assert_points_size(const std::vector<T>& points) const {
+  if (points.size() != this->points_.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the current vector and the new vector are not equal");
+  }
+}
+
+template<typename TrajectoryT>
+template<typename T>
+inline void TrajectoryBase<TrajectoryT>::assert_points_durations_sizes_equal(
+    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
+) const {
+  if (points.size() != durations.size()) {
+    throw exceptions::IncompatibleSizeException("The size of the points and durations vectors are not equal");
+  }
+}
+
+template<typename TrajectoryT>
+template<typename T, typename ExceptionType>
+  requires std::derived_from<ExceptionType, std::runtime_error>
+inline void TrajectoryBase<TrajectoryT>::assert_vector_ewise_equal(
+    const std::vector<T>& lvec, const std::vector<T>& rvec, const std::string& msg
+) const {
+  if (lvec != rvec) {
+    throw ExceptionType(msg);
+  }
+}
+
+template<typename TrajectoryT>
+template<typename StateT>
+  requires std::derived_from<StateT, typename state_representation::State>
+inline void TrajectoryBase<TrajectoryT>::assert_contains_empty_state(const std::vector<StateT>& states) const {
+  if (std::ranges::any_of(states, [&](const auto& state) { return state.is_empty(); })) {
+    throw exceptions::EmptyStateException("Empty state variable provided");
+  }
+}
+
+template<typename TrajectoryT>
+inline void TrajectoryBase<TrajectoryT>::assert_trajectory_empty() const {
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException("Trajectory is empty");
+  }
 }
 }// namespace state_representation
