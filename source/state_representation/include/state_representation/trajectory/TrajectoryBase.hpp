@@ -44,10 +44,24 @@ template<typename TrajectoryT>
 class TrajectoryBase : public State {
 public:
   /**
+   * @brief Get the duration of the trajectory point at given index
+   * @param index the index
+   * @return the duration of the trajectory point
+   */
+  const std::chrono::nanoseconds& get_duration(unsigned int index) const;
+
+  /**
    * @brief Get list of trajectory point durations
    * @return the list of trajectory point durations
    */
   const std::vector<std::chrono::nanoseconds> get_durations() const;
+
+  /**
+   * @brief Get the time from start of the trajectory point at given index
+   * @param index the index
+   * @return the time from start of the trajectory point
+   */
+  const std::chrono::nanoseconds get_time_from_start(unsigned int index) const;
 
   /**
    * @brief Get list of trajectory point times from start
@@ -318,12 +332,28 @@ inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<Trajectory
 }
 
 template<typename TrajectoryT>
+inline const std::chrono::nanoseconds& TrajectoryBase<TrajectoryT>::get_duration(unsigned int index) const {
+  this->assert_index_in_range(index);
+  return this->points_[index].duration;
+}
+
+template<typename TrajectoryT>
 inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
   std::vector<std::chrono::nanoseconds> durations;
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
     durations.push_back(this->points_[i].duration);
   }
   return durations;
+}
+
+template<typename TrajectoryT>
+inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from_start(unsigned int index) const {
+  this->assert_index_in_range(index);
+  std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
+  for (unsigned int i = 0; i <= index; ++i) {
+    time_from_start += this->points_[i].duration;
+  }
+  return time_from_start;
 }
 
 template<typename TrajectoryT>

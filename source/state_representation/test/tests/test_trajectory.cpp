@@ -354,6 +354,8 @@ TYPED_TEST_P(TrajectoryTest, Getters) {
   for (unsigned int i = 0; i < this->trajectory->get_size(); ++i) {
     time_from_start += durations[i];
     EXPECT_EQ(times_from_start[i], time_from_start);
+    EXPECT_EQ(this->trajectory->get_time_from_start(i), time_from_start);
+    EXPECT_EQ(this->trajectory->get_duration(i), durations[i]);
   }
 
   this->trajectory->reset();
