@@ -8,7 +8,7 @@ namespace state_representation {
 
 /**
  * @class CartesianTrajectoryPoint
- * @brief Struct to represent a Cartesian trajectory point
+ * @brief A Cartesian trajectory point representation
  */
 struct CartesianTrajectoryPoint : public TrajectoryPoint {
   /**
@@ -69,13 +69,13 @@ public:
   );
 
   /**
-   * @brief Getter of the reference frame
+   * @brief Get the reference frame
    * @return the reference frame associated with the trajectory
    */
   const std::string& get_reference_frame() const;
 
   /**
-   * @brief Setter of the reference frame that applies a transformation to all existing points to change the reference frame
+   * @brief Set the reference frame that applies a transformation to all existing points to change the reference frame
    * @param pose the new pose that needs to be applied to existing points to change the reference frame
    * @throws EmptyStateException if pose is empty
    */

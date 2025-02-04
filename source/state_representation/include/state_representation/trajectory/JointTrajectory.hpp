@@ -7,7 +7,7 @@ namespace state_representation {
 
 /**
  * @class JointTrajectoryPoint
- * @brief Struct to represent a joint trajectory point
+ * @brief A joint trajectory point representation
  */
 struct JointTrajectoryPoint : public TrajectoryPoint {
   /**
@@ -55,13 +55,13 @@ public:
   );
 
   /**
-   * @brief Getter of the joint names
+   * @brief Get the joint names
    * @return vector of joint names associated with the trajectory
    */
   const std::vector<std::string>& get_joint_names() const;
 
   /**
-   * @brief Setter of the joint names
+   * @brief Set the joint names
    * @param joint_names vector of joint names associated with the trajectory
    */
   void set_joint_names(const std::vector<std::string>& joint_names);

@@ -38,7 +38,7 @@ struct TrajectoryPoint {
 
 /**
  * @class TrajectoryBase
- * @brief Base class that offers common functionalities for trajectory classes
+ * @brief Core class that contains trajectory-specific operations and data
  */
 template<typename TrajectoryT>
 class TrajectoryBase : public State {
@@ -172,8 +172,7 @@ protected:
   void set_points(const std::vector<TrajectoryT>& points);
 
   /**
-   * @brief Operator overload for returning a single trajectory point and
-   * corresponding time
+   * @brief Get a single trajectory point and corresponding time at given index
    * @param index the index
    * @return the trajectory point
    * @throw IncompatibleSizeException if points vector is empty or different size than current points
@@ -182,8 +181,7 @@ protected:
   const TrajectoryT& operator[](unsigned int index) const;
 
   /**
-   * @brief Operator overload for returning a single trajectory point and
-   * corresponding time
+   * @brief Get a single trajectory point and corresponding time at given index
    * @param index the index
    * @return the trajectory point
    * @throw std::out_of_range if index is out of range
@@ -247,7 +245,7 @@ protected:
   void assert_not_contains_empty_state(const std::vector<StateT>& states) const;
 
   /**
-   * @brief Assert that the trajectory is empty
+   * @brief Assert that the trajectory is not empty
    * @throws EmptyStateException if any of the elements is empty
    */
   void assert_trajectory_not_empty() const;
