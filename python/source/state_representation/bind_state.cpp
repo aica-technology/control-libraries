@@ -22,7 +22,8 @@ void state_type(py::module_& m) {
       .value("PARAMETER", StateType::PARAMETER)
       .value("GEOMETRY_SHAPE", StateType::GEOMETRY_SHAPE)
       .value("GEOMETRY_ELLIPSOID", StateType::GEOMETRY_ELLIPSOID)
-      .value("TRAJECTORY", StateType::TRAJECTORY)
+      .value("CARTESIAN_TRAJECTORY", StateType::CARTESIAN_TRAJECTORY)
+      .value("JOINT_TRAJECTORY", StateType::JOINT_TRAJECTORY)
       .value("DIGITAL_IO_STATE", StateType::DIGITAL_IO_STATE)
       .value("ANALOG_IO_STATE", StateType::ANALOG_IO_STATE)
       .export_values();
