@@ -4,7 +4,7 @@
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 
 namespace state_representation {
-CartesianTrajectory::CartesianTrajectory() {
+CartesianTrajectory::CartesianTrajectory() : TrajectoryBase<CartesianTrajectoryPoint>() {
   this->set_type(StateType::CARTESIAN_TRAJECTORY);
 }
 
