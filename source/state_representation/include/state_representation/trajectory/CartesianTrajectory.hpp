@@ -23,6 +23,17 @@ struct CartesianTrajectoryPoint : public TrajectoryPoint {
    */
   CartesianTrajectoryPoint(const CartesianState& state, const std::chrono::nanoseconds& duration)
       : TrajectoryPoint(state.get_name(), state.data(), duration) {}
+
+  /**
+   * @brief Convert the trajectory point to a Cartesian state
+   * @param reference_frame the underlying reference frame of the trajectory point 
+   * @return the Cartesian state representation of the trajectory point 
+   */
+  CartesianState to_cartesian_state(const std::string& reference_frame) const {
+    CartesianState state(name, reference_frame);
+    state.set_data(data);
+    return state;
+  }
 };
 
 /**

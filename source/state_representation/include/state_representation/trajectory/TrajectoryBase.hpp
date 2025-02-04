@@ -1,9 +1,11 @@
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <concepts>
 #include <deque>
 #include <eigen3/Eigen/src/Core/Matrix.h>
+#include <numeric>
 #include <stdexcept>
 
 #include "state_representation/State.hpp"
@@ -333,9 +335,7 @@ template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
   this->assert_points_not_empty(points);
   this->assert_points_size(points);
-  for (unsigned int i = 0; i < points.size(); ++i) {
-    this->points_[i] = points[i];
-  }
+  std::copy(points.begin(), points.end(), this->points_.begin());
 }
 
 template<typename TrajectoryT>
@@ -349,9 +349,9 @@ template<typename TrajectoryT>
 inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
   this->assert_trajectory_not_empty();
   std::vector<std::chrono::nanoseconds> durations;
-  for (unsigned int i = 0; i < this->points_.size(); ++i) {
-    durations.push_back(this->points_[i].duration);
-  }
+  std::for_each(this->points_.begin(), this->points_.end(), [&](const auto& point) {
+    durations.push_back(point.duration);
+  });
   return durations;
 }
 
@@ -359,11 +359,11 @@ template<typename TrajectoryT>
 inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from_start(unsigned int index) const {
   this->assert_trajectory_not_empty();
   this->assert_index_in_range(index);
-  std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
-  for (unsigned int i = 0; i <= index; ++i) {
-    time_from_start += this->points_[i].duration;
-  }
-  return time_from_start;
+  return std::accumulate(
+      this->points_.begin(), this->points_.begin() + index + 1, std::chrono::nanoseconds(0),
+      [&](auto acc, const auto& point) { return acc + point.duration; }
+  );
+  ;
 }
 
 template<typename TrajectoryT>
@@ -371,10 +371,13 @@ inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::
   this->assert_trajectory_not_empty();
   std::vector<std::chrono::nanoseconds> times_from_start;
   std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
-  for (unsigned int i = 0; i < this->points_.size(); ++i) {
-    time_from_start += this->points_[i].duration;
-    times_from_start.push_back(time_from_start);
-  }
+  std::transform(
+      this->points_.begin(), this->points_.end(), std::back_inserter(times_from_start),
+      [&](const auto& point) {
+        time_from_start += point.duration;
+        return time_from_start;
+      }
+  );
   return times_from_start;
 }
 

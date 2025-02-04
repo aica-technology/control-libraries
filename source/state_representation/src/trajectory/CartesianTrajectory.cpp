@@ -2,6 +2,7 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
 
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include <algorithm>
 
 namespace state_representation {
 CartesianTrajectory::CartesianTrajectory() : TrajectoryBase<CartesianTrajectoryPoint>() {
@@ -38,9 +39,7 @@ void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
   this->assert_trajectory_not_empty();
   this->reference_frame_ = pose.get_reference_frame();
   auto points = this->get_points();
-  for (auto& point : points) {
-    point *= pose;
-  }
+  std::transform(points.begin(), points.end(), points.begin(), [&](const auto& point) { return point * pose; });
   this->set_points(points, this->get_durations());
 }
 
@@ -89,21 +88,20 @@ void CartesianTrajectory::set_points(
 
 const std::vector<CartesianState> CartesianTrajectory::get_points() const {
   std::vector<CartesianState> points;
-  for (unsigned int i = 0; i < this->get_size(); ++i) {
-    points.push_back(this->operator[](i).first);
-  }
+  auto queue = this->TrajectoryBase<CartesianTrajectoryPoint>::get_points();
+  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
+    return point.to_cartesian_state(this->reference_frame_);
+  });
   return points;
 }
 
 CartesianState CartesianTrajectory::get_point(unsigned int index) const {
-  return this->operator[](index).first;
+  return this->TrajectoryBase<CartesianTrajectoryPoint>::get_point(index).to_cartesian_state(this->reference_frame_);
 }
 
 std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::operator[](unsigned int idx) const {
   auto point = this->TrajectoryBase<CartesianTrajectoryPoint>::operator[](idx);
-  CartesianState state(point.name, this->reference_frame_);
-  state.set_data(point.data);
-  return std::make_pair(state, point.duration);
+  return std::make_pair(point.to_cartesian_state(this->reference_frame_), point.duration);
 }
 
 void CartesianTrajectory::assert_same_reference_frame(const std::vector<CartesianState>& states) const {

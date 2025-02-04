@@ -81,21 +81,20 @@ void JointTrajectory::set_joint_names(const std::vector<std::string>& joint_name
 
 const std::vector<JointState> JointTrajectory::get_points() const {
   std::vector<JointState> points;
-  for (unsigned int i = 0; i < this->get_size(); ++i) {
-    points.push_back(this->operator[](i).first);
-  }
+  auto queue = this->TrajectoryBase<JointTrajectoryPoint>::get_points();
+  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
+    return point.to_joint_state(this->joint_names_);
+  });
   return points;
 }
 
 const JointState JointTrajectory::get_point(unsigned int index) const {
-  return this->operator[](index).first;
+  return this->TrajectoryBase<JointTrajectoryPoint>::get_point(index).to_joint_state(this->joint_names_);
 }
 
 std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[](unsigned int idx) const {
   auto point = this->TrajectoryBase<JointTrajectoryPoint>::operator[](idx);
-  JointState state(point.name, this->joint_names_);
-  state.set_data(point.data);
-  return std::make_pair(state, point.duration);
+  return std::make_pair(point.to_joint_state(this->joint_names_), point.duration);
 }
 
 void JointTrajectory::assert_incompatible_joint_names(const std::vector<JointState>& states) const {

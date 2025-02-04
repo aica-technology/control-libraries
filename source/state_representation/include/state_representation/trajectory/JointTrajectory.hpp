@@ -22,6 +22,17 @@ struct JointTrajectoryPoint : public TrajectoryPoint {
    */
   JointTrajectoryPoint(const JointState& state, const std::chrono::nanoseconds& duration)
       : TrajectoryPoint(state.get_name(), state.data(), duration) {}
+
+  /**
+   * @brief Convert the trajectory point to a joint state
+   * @param joint_names the joint names of the trajectory point
+   * @return the joint state representation of the trajectory point 
+   */
+  JointState to_joint_state(const std::vector<std::string>& joint_names) const {
+    JointState state(name, joint_names);
+    state.set_data(data);
+    return state;
+  }
 };
 
 /**
