@@ -17,12 +17,11 @@ struct JointTrajectoryPoint : public TrajectoryPoint {
 
   /**
    * @brief Constructor with name, data, and duration
-   * @param name the trajectory point name
-   * @param data the (flattened) trajectory data
+   * @param state the Joint state used to initialize the trajectory point
    * @param duration the intended duration for the trajectory point 
    */
-  JointTrajectoryPoint(const std::string& name, const Eigen::VectorXd& data, const std::chrono::nanoseconds& duration)
-      : TrajectoryPoint(name, data, duration) {}
+  JointTrajectoryPoint(const JointState& state, const std::chrono::nanoseconds& duration)
+      : TrajectoryPoint(state.get_name(), state.data(), duration) {}
 };
 
 /**

@@ -25,7 +25,7 @@ CartesianTrajectory::CartesianTrajectory(
     const std::vector<std::chrono::nanoseconds>& durations
 )
     : CartesianTrajectory(name) {
-  this->assert_points_empty(points);
+  this->assert_points_not_empty(points);
   this->reference_frame_ = points[0].get_reference_frame();
   this->add_points(points, durations);
 }
@@ -35,7 +35,7 @@ const std::string& CartesianTrajectory::get_reference_frame() const {
 }
 
 void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
-  this->assert_trajectory_empty();
+  this->assert_trajectory_not_empty();
   this->reference_frame_ = pose.get_reference_frame();
   auto points = this->get_points();
   for (auto& point : points) {
@@ -51,41 +51,35 @@ void CartesianTrajectory::add_point(const CartesianState& point, const std::chro
 void CartesianTrajectory::add_points(
     const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  this->assert_points_empty(points);
+  this->assert_points_not_empty(points);
   this->assert_points_durations_sizes_equal(points, durations);
-  this->assert_contains_empty_state(points);
+  this->assert_not_contains_empty_state(points);
   this->assert_same_reference_frame(points, this->reference_frame_);
   for (unsigned int i = 0; i < points.size(); ++i) {
-    this->TrajectoryBase<CartesianTrajectoryPoint>::add_point(
-        CartesianTrajectoryPoint(points[i].get_name(), points[i].data(), durations[i])
-    );
+    this->TrajectoryBase<CartesianTrajectoryPoint>::add_point(CartesianTrajectoryPoint(points[i], durations[i]));
   }
 }
 
 void CartesianTrajectory::insert_point(
     const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index
 ) {
-  this->assert_contains_empty_state<CartesianState>({point});
+  this->assert_not_contains_empty_state<CartesianState>({point});
   this->assert_same_reference_frame({point}, this->reference_frame_);
-  this->TrajectoryBase<CartesianTrajectoryPoint>::insert_point(
-      CartesianTrajectoryPoint(point.get_name(), point.data(), duration), index
-  );
+  this->TrajectoryBase<CartesianTrajectoryPoint>::insert_point(CartesianTrajectoryPoint(point, duration), index);
 }
 
 void CartesianTrajectory::set_point(
     const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index
 ) {
-  this->assert_contains_empty_state<CartesianState>({point});
+  this->assert_not_contains_empty_state<CartesianState>({point});
   this->assert_same_reference_frame({point}, this->reference_frame_);
-  this->TrajectoryBase<CartesianTrajectoryPoint>::set_point(
-      CartesianTrajectoryPoint(point.get_name(), point.data(), duration), index
-  );
+  this->TrajectoryBase<CartesianTrajectoryPoint>::set_point(CartesianTrajectoryPoint(point, duration), index);
 }
 
 void CartesianTrajectory::set_points(
     const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations
 ) {
-  this->assert_points_empty(points);
+  this->assert_points_not_empty(points);
   this->assert_points_size(points);
   this->assert_points_durations_sizes_equal(points, durations);
   for (unsigned int i = 0; i < points.size(); ++i) {
@@ -109,8 +103,7 @@ std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::o
   auto point = this->TrajectoryBase<CartesianTrajectoryPoint>::operator[](idx);
   CartesianState state(point.name, this->reference_frame_);
   state.set_data(point.data);
-  auto duration = point.duration;
-  return std::make_pair(state, duration);
+  return std::make_pair(state, point.duration);
 }
 
 void CartesianTrajectory::assert_same_reference_frame(const std::vector<CartesianState>& states) const {

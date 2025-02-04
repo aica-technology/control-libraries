@@ -53,6 +53,7 @@ public:
   /**
    * @brief Get list of trajectory point durations
    * @return the list of trajectory point durations
+   * @throws EmptyStateException if the trajectory is empty
    */
   const std::vector<std::chrono::nanoseconds> get_durations() const;
 
@@ -60,18 +61,21 @@ public:
    * @brief Get the time from start of the trajectory point at given index
    * @param index the index
    * @return the time from start of the trajectory point
+   * @throws EmptyStateException if the trajectory is empty
    */
   const std::chrono::nanoseconds get_time_from_start(unsigned int index) const;
 
   /**
    * @brief Get list of trajectory point times from start
    * @return the list of trajectory point times from start
+   * @throws EmptyStateException if the trajectory is empty
    */
   const std::vector<std::chrono::nanoseconds> get_times_from_start() const;
 
   /**
    * @brief Get the total duration of the trajectory
    * @return the total duration of the trajectory
+   * @throws EmptyStateException if the trajectory is empty
    */
   const std::chrono::nanoseconds get_trajectory_duration() const;
 
@@ -199,7 +203,7 @@ protected:
    * @throw IncompatibleSizeException if points empty
    */
   template<typename T>
-  void assert_points_empty(const std::vector<T>& points) const;
+  void assert_points_not_empty(const std::vector<T>& points) const;
 
   /**
    * @brief Assert the points vector provided is of the same size as the current points 
@@ -240,13 +244,13 @@ protected:
    */
   template<typename StateT>
     requires std::derived_from<StateT, typename state_representation::State>
-  void assert_contains_empty_state(const std::vector<StateT>& states) const;
+  void assert_not_contains_empty_state(const std::vector<StateT>& states) const;
 
   /**
    * @brief Assert that the trajectory is empty
    * @throws EmptyStateException if any of the elements is empty
    */
-  void assert_trajectory_empty() const;
+  void assert_trajectory_not_empty() const;
 
 private:
   std::deque<TrajectoryT> points_;
@@ -263,27 +267,26 @@ inline void TrajectoryBase<TrajectoryT>::reset() {
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::add_point(const TrajectoryT& new_point) {
-  this->set_empty(false);
   this->points_.push_back(new_point);
+  this->set_empty(false);
 }
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::add_points(const std::vector<TrajectoryT>& new_points) {
-  if (new_points.empty()) {
-    throw exceptions::IncompatibleSizeException("No points provided");
-  }
+  this->assert_points_not_empty(new_points);
   for (auto point : new_points) {
     points_.push_back(point);
   }
+  this->set_empty(false);
 }
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::insert_point(const TrajectoryT& new_point, unsigned int index) {
-  this->set_empty(false);
   this->assert_index_in_range(index);
   auto it_points = this->points_.begin();
   std::advance(it_points, index);
   this->points_.insert(it_points, new_point);
+  this->set_empty(false);
 }
 
 template<typename TrajectoryT>
@@ -330,7 +333,7 @@ inline void TrajectoryBase<TrajectoryT>::set_point(const TrajectoryT& point, uns
 
 template<typename TrajectoryT>
 inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<TrajectoryT>& points) {
-  this->assert_points_empty(points);
+  this->assert_points_not_empty(points);
   this->assert_points_size(points);
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->points_[i] = points[i];
@@ -339,12 +342,14 @@ inline void TrajectoryBase<TrajectoryT>::set_points(const std::vector<Trajectory
 
 template<typename TrajectoryT>
 inline const std::chrono::nanoseconds& TrajectoryBase<TrajectoryT>::get_duration(unsigned int index) const {
+  this->assert_trajectory_not_empty();
   this->assert_index_in_range(index);
   return this->points_[index].duration;
 }
 
 template<typename TrajectoryT>
 inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
+  this->assert_trajectory_not_empty();
   std::vector<std::chrono::nanoseconds> durations;
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
     durations.push_back(this->points_[i].duration);
@@ -354,6 +359,7 @@ inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::
 
 template<typename TrajectoryT>
 inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from_start(unsigned int index) const {
+  this->assert_trajectory_not_empty();
   this->assert_index_in_range(index);
   std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
   for (unsigned int i = 0; i <= index; ++i) {
@@ -364,6 +370,7 @@ inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from
 
 template<typename TrajectoryT>
 inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_times_from_start() const {
+  this->assert_trajectory_not_empty();
   std::vector<std::chrono::nanoseconds> times_from_start;
   std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
   for (unsigned int i = 0; i < this->points_.size(); ++i) {
@@ -375,11 +382,12 @@ inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::
 
 template<typename TrajectoryT>
 inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_trajectory_duration() const {
-  return this->get_size() ? this->get_times_from_start().back() : std::chrono::nanoseconds(0);
+  return this->get_times_from_start().back();
 }
 
 template<typename TrajectoryT>
 inline unsigned int TrajectoryBase<TrajectoryT>::get_size() const {
+  this->assert_trajectory_not_empty();
   return this->points_.size();
 }
 
@@ -404,7 +412,7 @@ inline void TrajectoryBase<TrajectoryT>::assert_index_in_range(unsigned int inde
 
 template<typename TrajectoryT>
 template<typename T>
-inline void TrajectoryBase<TrajectoryT>::assert_points_empty(const std::vector<T>& points) const {
+inline void TrajectoryBase<TrajectoryT>::assert_points_not_empty(const std::vector<T>& points) const {
   if (points.empty()) {
     throw exceptions::IncompatibleSizeException("Empty points vector provided!");
   }
@@ -442,14 +450,14 @@ inline void TrajectoryBase<TrajectoryT>::assert_vector_ewise_equal(
 template<typename TrajectoryT>
 template<typename StateT>
   requires std::derived_from<StateT, typename state_representation::State>
-inline void TrajectoryBase<TrajectoryT>::assert_contains_empty_state(const std::vector<StateT>& states) const {
+inline void TrajectoryBase<TrajectoryT>::assert_not_contains_empty_state(const std::vector<StateT>& states) const {
   if (std::ranges::any_of(states, [&](const auto& state) { return state.is_empty(); })) {
     throw exceptions::EmptyStateException("Empty state variable provided");
   }
 }
 
 template<typename TrajectoryT>
-inline void TrajectoryBase<TrajectoryT>::assert_trajectory_empty() const {
+inline void TrajectoryBase<TrajectoryT>::assert_trajectory_not_empty() const {
   if (this->is_empty()) {
     throw exceptions::EmptyStateException("Trajectory is empty");
   }
