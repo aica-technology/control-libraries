@@ -17,7 +17,7 @@ struct CartesianTrajectoryPoint : public TrajectoryPoint {
   CartesianTrajectoryPoint() = default;
 
   /**
-   * @brief Constructor with name, data, and duration
+   * @brief Constructor from Cartesian state and duration
    * @param state the Cartesian state used to initialize the trajectory point
    * @param duration the intended duration for the trajectory point 
    */

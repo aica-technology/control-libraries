@@ -16,7 +16,7 @@ struct JointTrajectoryPoint : public TrajectoryPoint {
   JointTrajectoryPoint() = default;
 
   /**
-   * @brief Constructor with name, data, and duration
+   * @brief Constructor from joint state and duration
    * @param state the Joint state used to initialize the trajectory point
    * @param duration the intended duration for the trajectory point 
    */
@@ -114,7 +114,7 @@ public:
    * @param index the index
    * @throw std::out_of_range if index is out of range
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleStatesException if point has different robot name
+   * @throw IncompatibleStatesException if point has different joint names to the current ones
    */
   void set_point(const JointState& point, const std::chrono::nanoseconds& duration, unsigned int index);
 
@@ -124,7 +124,7 @@ public:
    * @param duration vector of new durations
    * @throw IncompatibleSizeException if points and durations have different sizes
    * @throw EmptyStateException if point is empty
-   * @throw IncompatibleStatesException if point has different robot name
+   * @throw IncompatibleStatesException if any of the points has different joint names to the current ones
    */
   void set_points(const std::vector<JointState>& points, const std::vector<std::chrono::nanoseconds>& durations);
 

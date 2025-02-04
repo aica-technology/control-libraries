@@ -14,7 +14,7 @@ namespace state_representation {
 
 /**
  * @class TrajectoryPoint
- * @brief Struct to represent the base characteristics of a trajectory point
+ * @brief Struct that contains the basic characteristics of a trajectory point
  */
 struct TrajectoryPoint {
   /**
