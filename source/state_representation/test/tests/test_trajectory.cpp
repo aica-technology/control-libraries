@@ -160,7 +160,7 @@ TEST(TrajectoryTest, ConstructTrajectory) {
 
 TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
   EXPECT_NO_THROW(this->trajectory = std::make_shared<TypeParam>("trajectory"));
-  EXPECT_THROW(this->trajectory->get_size(), exceptions::EmptyStateException);
+  EXPECT_EQ(this->trajectory->get_size(), 0);
 
   using PointType = typename std::conditional<
       std::is_same_v<TypeParam, TrajectoryBaseInterface>, TrajectoryPoint,
@@ -215,7 +215,7 @@ TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
   EXPECT_NO_THROW(this->delete_point());
   this->expect_equal(point0, 0);
   EXPECT_NO_THROW(this->delete_point());
-  EXPECT_THROW(this->trajectory->get_size(), exceptions::EmptyStateException);
+  EXPECT_EQ(this->trajectory->get_size(), 0);
 
   // additons and insertions of multiple points
   std::vector<PointType> points = {point0, point1, point2};
@@ -238,7 +238,7 @@ TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
 
 TYPED_TEST_P(TrajectoryTest, Exceptions) {
   EXPECT_NO_THROW(this->trajectory = std::make_shared<TypeParam>("trajectory"));
-  EXPECT_THROW(this->trajectory->get_size(), exceptions::EmptyStateException);
+  EXPECT_EQ(this->trajectory->get_size(), 0);
 
   using PointType = typename std::conditional<
       std::is_same_v<TypeParam, TrajectoryBaseInterface>, TrajectoryPoint,
@@ -307,7 +307,7 @@ TYPED_TEST_P(TrajectoryTest, Exceptions) {
 
 TYPED_TEST_P(TrajectoryTest, Getters) {
   EXPECT_NO_THROW(this->trajectory = std::make_shared<TypeParam>("trajectory"));
-  EXPECT_THROW(this->trajectory->get_size(), exceptions::EmptyStateException);
+  EXPECT_EQ(this->trajectory->get_size(), 0);
 
   using PointType = typename std::conditional<
       std::is_same_v<TypeParam, TrajectoryBaseInterface>, TrajectoryPoint,
@@ -362,7 +362,7 @@ TYPED_TEST_P(TrajectoryTest, Getters) {
 
   this->trajectory->reset();
   EXPECT_TRUE(this->trajectory->is_empty());
-  EXPECT_THROW(this->trajectory->get_size(), exceptions::EmptyStateException);
+  EXPECT_EQ(this->trajectory->get_size(), 0);
   EXPECT_THROW(this->trajectory->get_durations(), exceptions::EmptyStateException);
   if constexpr (std::is_same_v<PointType, CartesianState>) {
     EXPECT_STREQ(this->trajectory->get_reference_frame().c_str(), "world");
