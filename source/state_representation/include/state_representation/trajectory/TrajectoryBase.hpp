@@ -328,7 +328,6 @@ inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from
   return std::accumulate(
       this->points_.begin(), this->points_.begin() + index + 1, std::chrono::nanoseconds(0),
       [&](auto acc, const auto& point) { return acc + point.duration; });
-  ;
 }
 
 template<typename TrajectoryT>

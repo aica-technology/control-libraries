@@ -56,9 +56,9 @@ public:
 
   /**
    * @brief Constructor with name, initial point, and duration provided
+   * @param name the name of the state
    * @param point the initial point
    * @param duration the initial duration
-   * @param name the name of the state
    * @throw EmptyStateException if point is empty
    */
   explicit CartesianTrajectory(
@@ -67,9 +67,9 @@ public:
 
   /**
    * @brief Constructor with name, intial points, and durations provided
+   * @param name the name of the state
    * @param points vector of initial points
    * @param durations vector of initial durations
-   * @param name the name of the state
    * @throw EmptyStateException if any point is empty
    * @throw IncompatibleReferenceFramesException if any point has different reference frame from others
    * @throw IncompatibleSizeException if points and durations have different sizes
