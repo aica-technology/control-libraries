@@ -42,7 +42,7 @@ struct JointTrajectoryPoint : public TrajectoryPoint {
 class JointTrajectory : public TrajectoryBase<JointTrajectoryPoint> {
 public:
   /**
-   * @brief Constructor with name and reference frame provided
+   * @brief Constructor with optional name
    */
   explicit JointTrajectory(const std::string& name = "");
 
