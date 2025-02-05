@@ -36,9 +36,8 @@ const std::string& CartesianTrajectory::get_reference_frame() const {
 }
 
 void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
-  this->assert_trajectory_not_empty();
-  this->reference_frame_ = pose.get_reference_frame();
   auto points = this->get_points();
+  this->reference_frame_ = pose.get_reference_frame();
   std::transform(points.begin(), points.end(), points.begin(), [&](const auto& point) { return point * pose; });
   this->set_points(points, this->get_durations());
 }

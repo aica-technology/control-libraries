@@ -78,6 +78,19 @@ public:
   void set_joint_names(const std::vector<std::string>& joint_names);
 
   /**
+   * @brief Get list of trajectory points
+   * @return vector of the Joint states of the trajectory
+   */
+  const std::vector<JointState> get_points() const;
+
+  /**
+   * @brief Get the trajectory point at given index
+   * @param index the index
+   * @return the Joint state that corresponds to the index
+   */
+  const JointState get_point(unsigned int index) const;
+
+  /**
    * @brief Add new point and corresponding duration to trajectory
    * @param point the new trajectory point
    * @param duration the duration for the new point
@@ -104,19 +117,6 @@ public:
    * @param index the desired position of the new point in the queue
    */
   void insert_point(const JointState& point, const std::chrono::nanoseconds& duration, unsigned int index);
-
-  /**
-   * @brief Get list of trajectory points
-   * @return vector of the Joint states of the trajectory
-   */
-  const std::vector<JointState> get_points() const;
-
-  /**
-   * @brief Get the trajectory point at given index
-   * @param index the index
-   * @return the Joint state that corresponds to the index
-   */
-  const JointState get_point(unsigned int index) const;
 
   /**
    * @brief Set the trajectory point at given index
@@ -152,7 +152,7 @@ private:
    * @param states the states to check
    * @throw IncompatibleReferenceFramesException if a state has a different joint names
    */
-  void assert_incompatible_joint_names(const std::vector<JointState>& states) const;
+  void assert_compatible_joint_names(const std::vector<JointState>& states) const;
 
   /**
    * @brief Assert that all states of a vector carry the same joint names as the one provided
@@ -160,7 +160,7 @@ private:
    * @param reference_frame the joint names to check against
    * @throw IncompatibleReferenceFramesException if a state has a different joint names
    */
-  void assert_incompatible_joint_names(
+  void assert_compatible_joint_names(
       const std::vector<JointState>& states, const std::vector<std::string>& joint_names
   ) const;
 

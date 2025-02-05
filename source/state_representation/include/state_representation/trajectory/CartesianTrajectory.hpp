@@ -93,6 +93,19 @@ public:
   void set_reference_frame(const CartesianPose& pose);
 
   /**
+   * @brief Get list of trajectory points
+   * @return queue of the Cartesian states of the trajectory
+   */
+  const std::vector<CartesianState> get_points() const;
+
+  /**
+   * @brief Get the trajectory point at given index
+   * @param index the index
+   * @return the Cartesian state that corresponds to the index
+   */
+  CartesianState get_point(unsigned int index) const;
+
+  /**
    * @brief Add new point and corresponding duration to trajectory
    * @param point the new trajectory point
    * @param duration the duration for the new point
@@ -119,19 +132,6 @@ public:
    * @param index the desired position of the new point in the queue
    */
   void insert_point(const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index);
-
-  /**
-   * @brief Get list of trajectory points
-   * @return queue of the Cartesian states of the trajectory
-   */
-  const std::vector<CartesianState> get_points() const;
-
-  /**
-   * @brief Get the trajectory point at given index
-   * @param index the index
-   * @return the Cartesian state that corresponds to the index
-   */
-  CartesianState get_point(unsigned int index) const;
 
   /**
    * @brief Set the trajectory point at given index
