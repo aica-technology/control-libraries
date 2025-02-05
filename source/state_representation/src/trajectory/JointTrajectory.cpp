@@ -38,6 +38,19 @@ void JointTrajectory::set_joint_names(const std::vector<std::string>& joint_name
   this->joint_names_ = joint_names;
 }
 
+const std::vector<JointState> JointTrajectory::get_points() const {
+  std::vector<JointState> points;
+  auto queue = this->TrajectoryBase<JointTrajectoryPoint>::get_points();
+  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
+    return point.to_joint_state(this->joint_names_);
+  });
+  return points;
+}
+
+const JointState JointTrajectory::get_point(unsigned int index) const {
+  return this->TrajectoryBase<JointTrajectoryPoint>::get_point(index).to_joint_state(this->joint_names_);
+}
+
 void JointTrajectory::add_point(const JointState& point, const std::chrono::nanoseconds& duration) {
   this->add_points({point}, {duration});
 }
@@ -77,19 +90,6 @@ void JointTrajectory::set_points(
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->set_point(points[i], durations[i], i);
   }
-}
-
-const std::vector<JointState> JointTrajectory::get_points() const {
-  std::vector<JointState> points;
-  auto queue = this->TrajectoryBase<JointTrajectoryPoint>::get_points();
-  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
-    return point.to_joint_state(this->joint_names_);
-  });
-  return points;
-}
-
-const JointState JointTrajectory::get_point(unsigned int index) const {
-  return this->TrajectoryBase<JointTrajectoryPoint>::get_point(index).to_joint_state(this->joint_names_);
 }
 
 std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[](unsigned int idx) const {

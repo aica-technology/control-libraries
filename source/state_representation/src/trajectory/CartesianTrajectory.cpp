@@ -42,6 +42,19 @@ void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
   this->set_points(points, this->get_durations());
 }
 
+const std::vector<CartesianState> CartesianTrajectory::get_points() const {
+  std::vector<CartesianState> points;
+  auto queue = this->TrajectoryBase<CartesianTrajectoryPoint>::get_points();
+  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
+    return point.to_cartesian_state(this->reference_frame_);
+  });
+  return points;
+}
+
+CartesianState CartesianTrajectory::get_point(unsigned int index) const {
+  return this->TrajectoryBase<CartesianTrajectoryPoint>::get_point(index).to_cartesian_state(this->reference_frame_);
+}
+
 void CartesianTrajectory::add_point(const CartesianState& point, const std::chrono::nanoseconds& duration) {
   this->add_points({point}, {duration});
 }
@@ -83,19 +96,6 @@ void CartesianTrajectory::set_points(
   for (unsigned int i = 0; i < points.size(); ++i) {
     this->set_point(points[i], durations[i], i);
   }
-}
-
-const std::vector<CartesianState> CartesianTrajectory::get_points() const {
-  std::vector<CartesianState> points;
-  auto queue = this->TrajectoryBase<CartesianTrajectoryPoint>::get_points();
-  std::transform(queue.begin(), queue.end(), std::back_inserter(points), [&](const auto& point) {
-    return point.to_cartesian_state(this->reference_frame_);
-  });
-  return points;
-}
-
-CartesianState CartesianTrajectory::get_point(unsigned int index) const {
-  return this->TrajectoryBase<CartesianTrajectoryPoint>::get_point(index).to_cartesian_state(this->reference_frame_);
 }
 
 std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::operator[](unsigned int idx) const {
