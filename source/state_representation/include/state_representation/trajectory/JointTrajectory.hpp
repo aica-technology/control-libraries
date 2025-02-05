@@ -150,7 +150,7 @@ private:
   /**
    * @brief Assert that all states of a vector carry the same joint names
    * @param states the states to check
-   * @throw IncompatibleReferenceFramesException if a state has a different joint names
+   * @throw IncompatibleStatesException if a state has a different joint names
    */
   void assert_compatible_joint_names(const std::vector<JointState>& states) const;
 
@@ -158,11 +158,10 @@ private:
    * @brief Assert that all states of a vector carry the same joint names as the one provided
    * @param states the states to check
    * @param reference_frame the joint names to check against
-   * @throw IncompatibleReferenceFramesException if a state has a different joint names
+   * @throw IncompatibleStatesException if a state has a different joint names
    */
-  void assert_compatible_joint_names(
-      const std::vector<JointState>& states, const std::vector<std::string>& joint_names
-  ) const;
+  void assert_compatible_joint_names(const std::vector<JointState>& states, const std::vector<std::string>& joint_names)
+      const;
 
   std::vector<std::string> joint_names_;///< names of the joints
 };
