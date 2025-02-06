@@ -100,7 +100,7 @@ void trajectory(py::module_& m) {
       "duration"_a
   );
   c.def("set_points", &TrajectoryT::set_points, "Set the trajectory point at given index", "points"_a, "durations"_a);
-  c.def("get_points", &TrajectoryT::get_points, "Get list of trajectory points", py::return_value_policy::reference);
+  c.def("get_points", &TrajectoryT::get_points, "Get list of trajectory points");
   c.def("get_point", &TrajectoryT::get_point, "Get the trajectory point at given index", "index"_a);
   c.def("__getitem__", &TrajectoryT::operator[], "Get the trajectory point at given index", "index"_a);
 }
