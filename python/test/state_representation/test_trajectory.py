@@ -7,9 +7,7 @@ from state_representation import (
     JointState,
     CartesianTrajectory,
     JointTrajectory,
-    CartesianTrajectoryPoint,
-    JointTrajectoryPoint,
-    StateType,
+    StateType
 )
 
 from state_representation.exceptions import (
@@ -110,13 +108,6 @@ class TestState(unittest.TestCase):
 
         with self.assertRaises(EmptyStateError):
             empty6 = JointTrajectory("test", JointState(), datetime.timedelta(seconds=0))
-
-        # trajectory point constructors
-        dummy_cartesian_state = CartesianState.Random("world")
-        CartesianTrajectoryPoint(dummy_cartesian_state, datetime.timedelta(seconds=1))
-
-        dummy_joint_state = JointState.Random("robot", 7)
-        JointTrajectoryPoint(dummy_joint_state, datetime.timedelta(seconds=1))
 
     def test_addremove_points(self):
         for TrajectoryT in [CartesianTrajectory, JointTrajectory]:
