@@ -21,7 +21,7 @@ Release Versions
 ## Upcoming changes
 
 - feat: move up to C++20 (#220)
-- feat: split trajectory classes and implement Cartesian/JointState specializations (#216)
+- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223)
 
 ## 9.2.0
 

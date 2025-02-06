@@ -56,9 +56,9 @@ public:
 
   /**
    * @brief Constructor with name, initial point, and duration provided
+   * @param name the name of the state
    * @param point the initial point
    * @param duration the initial duration
-   * @param name the name of the state
    * @throw EmptyStateException if point is empty
    */
   explicit CartesianTrajectory(
@@ -67,9 +67,9 @@ public:
 
   /**
    * @brief Constructor with name, intial points, and durations provided
+   * @param name the name of the state
    * @param points vector of initial points
    * @param durations vector of initial durations
-   * @param name the name of the state
    * @throw EmptyStateException if any point is empty
    * @throw IncompatibleReferenceFramesException if any point has different reference frame from others
    * @throw IncompatibleSizeException if points and durations have different sizes
@@ -91,6 +91,19 @@ public:
    * @throws EmptyStateException if pose is empty
    */
   void set_reference_frame(const CartesianPose& pose);
+
+  /**
+   * @brief Get list of trajectory points
+   * @return queue of the Cartesian states of the trajectory
+   */
+  const std::vector<CartesianState> get_points() const;
+
+  /**
+   * @brief Get the trajectory point at given index
+   * @param index the index
+   * @return the Cartesian state that corresponds to the index
+   */
+  CartesianState get_point(unsigned int index) const;
 
   /**
    * @brief Add new point and corresponding duration to trajectory
@@ -119,19 +132,6 @@ public:
    * @param index the desired position of the new point in the queue
    */
   void insert_point(const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index);
-
-  /**
-   * @brief Get list of trajectory points
-   * @return queue of the Cartesian states of the trajectory
-   */
-  const std::vector<CartesianState> get_points() const;
-
-  /**
-   * @brief Get the trajectory point at given index
-   * @param index the index
-   * @return the Cartesian state that corresponds to the index
-   */
-  CartesianState get_point(unsigned int index) const;
 
   /**
    * @brief Set the trajectory point at given index
