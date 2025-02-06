@@ -24,7 +24,7 @@ Release Versions
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
 - feat: move up to C++20 (#220)
-- feat: split trajectory classes and implement Cartesian/JointState specializations (#216)
+- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223)
 
 ## 9.3.1
 
