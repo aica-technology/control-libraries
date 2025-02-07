@@ -21,6 +21,7 @@ Release Versions
 
 - feat: improve support for transformation matrices (#146)
 - fix: unstable python test (#221)
+- fix: adapt State copy constructor to initialize type from copy object (#225)
 
 ## 9.1.0
 
