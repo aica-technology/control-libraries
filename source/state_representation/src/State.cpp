@@ -11,7 +11,7 @@ State::State(const std::string& name) :
 
 State::State(const State& state) :
     std::enable_shared_from_this<State>(state),
-    type_(StateType::STATE),
+    type_(state.get_type()),
     name_(state.name_),
     empty_(state.empty_),
     timestamp_(state.timestamp_) {}
