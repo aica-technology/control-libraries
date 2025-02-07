@@ -21,4 +21,5 @@ PYBIND11_MODULE(state_representation, m) {
   bind_parameters(m);
   bind_geometry(m);
   bind_io_state(m);
+  bind_trajectory(m);
 }

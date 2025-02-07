@@ -27,3 +27,4 @@ void bind_jacobian(py::module_& m);
 void bind_parameters(py::module_& m);
 void bind_geometry(py::module_& m);
 void bind_io_state(py::module_& m);
+void bind_trajectory(py::module_& m);
