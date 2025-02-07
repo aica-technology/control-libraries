@@ -31,6 +31,13 @@ CartesianTrajectory::CartesianTrajectory(
   this->add_points(points, durations);
 }
 
+CartesianTrajectory::CartesianTrajectory(const CartesianTrajectory& state)
+    : CartesianTrajectory(state.get_name(), state.get_reference_frame()) {
+  if (state) {
+    this->add_points(state.get_points(), state.get_durations());
+  }
+}
+
 const std::string& CartesianTrajectory::get_reference_frame() const {
   return this->reference_frame_;
 }
@@ -40,6 +47,10 @@ void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
   this->reference_frame_ = pose.get_reference_frame();
   std::transform(points.begin(), points.end(), points.begin(), [&](const auto& point) { return point * pose; });
   this->set_points(points, this->get_durations());
+}
+
+void CartesianTrajectory::set_reference_frame(const std::string& reference_frame) {
+  this->reference_frame_ = reference_frame;
 }
 
 const std::vector<CartesianState> CartesianTrajectory::get_points() const {
@@ -101,6 +112,15 @@ void CartesianTrajectory::set_points(
 std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::operator[](unsigned int idx) const {
   auto point = this->TrajectoryBase<CartesianTrajectoryPoint>::operator[](idx);
   return std::make_pair(point.to_cartesian_state(this->reference_frame_), point.duration);
+}
+
+CartesianTrajectory& CartesianTrajectory::operator=(const CartesianTrajectory& trajectory) {
+  if (this != &trajectory) {
+    this->reset();
+    CartesianTrajectory tmp(trajectory);
+    swap(*this, tmp);
+  }
+  return *this;
 }
 
 void CartesianTrajectory::assert_same_reference_frame(const std::vector<CartesianState>& states) const {

@@ -30,6 +30,13 @@ JointTrajectory::JointTrajectory(
   this->add_points(points, durations);
 }
 
+JointTrajectory::JointTrajectory(const JointTrajectory& state) : JointTrajectory(state.get_name()) {
+  this->joint_names_ = state.get_joint_names();
+  if (state) {
+    this->add_points(state.get_points(), state.get_durations());
+  }
+}
+
 const std::vector<std::string>& JointTrajectory::get_joint_names() const {
   return this->joint_names_;
 }
@@ -95,6 +102,15 @@ void JointTrajectory::set_points(
 std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[](unsigned int idx) const {
   auto point = this->TrajectoryBase<JointTrajectoryPoint>::operator[](idx);
   return std::make_pair(point.to_joint_state(this->joint_names_), point.duration);
+}
+
+JointTrajectory& JointTrajectory::operator=(const JointTrajectory& trajectory) {
+  if (this != &trajectory) {
+    this->reset();
+    JointTrajectory tmp(trajectory);
+    swap(*this, tmp);
+  }
+  return *this;
 }
 
 void JointTrajectory::assert_compatible_joint_names(const std::vector<JointState>& states) const {

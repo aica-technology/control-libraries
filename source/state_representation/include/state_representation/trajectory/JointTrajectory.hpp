@@ -66,6 +66,12 @@ public:
   );
 
   /**
+   * @brief Copy constructor of a JointTrajectory
+   * @param state the joint trajectory to copy from
+   */
+  JointTrajectory(const JointTrajectory& state);
+
+  /**
    * @brief Get the joint names
    * @return vector of joint names associated with the trajectory
    */
@@ -146,6 +152,13 @@ public:
    */
   std::pair<JointState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
 
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param trajectory the trajectory with value to assign
+   * @return reference to the current trajectory with new values
+   */
+  JointTrajectory& operator=(const JointTrajectory& trajectory);
+
 private:
   /**
    * @brief Assert that all states of a vector carry the same joint names
@@ -165,4 +178,14 @@ private:
 
   std::vector<std::string> joint_names_;///< names of the joints
 };
+
+inline void swap(JointTrajectory& trajectory1, JointTrajectory& trajectory2) {
+  swap(
+      static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory1),
+      static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory2));
+  auto tmp = trajectory1.get_joint_names();
+  trajectory1.set_joint_names(trajectory2.get_joint_names());
+  trajectory2.set_joint_names(tmp);
+}
+
 }// namespace state_representation

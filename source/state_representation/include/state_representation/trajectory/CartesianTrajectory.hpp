@@ -80,17 +80,29 @@ public:
   );
 
   /**
+   * @brief Copy constructor of a CartesianTrajectory
+   * @param state the Cartesian trajectory to copy from
+   */
+  CartesianTrajectory(const CartesianTrajectory& state);
+
+  /**
    * @brief Get the reference frame
    * @return the reference frame associated with the trajectory
    */
   const std::string& get_reference_frame() const;
 
   /**
-   * @brief Set the reference frame that applies a transformation to all existing points to change the reference frame
+   * @brief Set the reference frame by applying a transformation to all existing points to change the reference frame
    * @param pose the new pose that needs to be applied to existing points to change the reference frame
    * @throws EmptyStateException if pose is empty
    */
   void set_reference_frame(const CartesianPose& pose);
+
+  /**
+   * @brief Set the reference frame by simply changing the reference frame name
+   * @param reference_frame the new reference frame
+   */
+  void set_reference_frame(const std::string& reference_frame);
 
   /**
    * @brief Get list of trajectory points
@@ -161,6 +173,13 @@ public:
    */
   std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
 
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param trajectory the trajectory with value to assign
+   * @return reference to the current trajectory with new values
+   */
+  CartesianTrajectory& operator=(const CartesianTrajectory& trajectory);
+
 private:
   /**
    * @brief Assert that all states of a vector carry the same reference frame
@@ -179,4 +198,14 @@ private:
 
   std::string reference_frame_;///< name of the reference frame
 };
+
+inline void swap(CartesianTrajectory& trajectory1, CartesianTrajectory& trajectory2) {
+  swap(
+      static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
+      static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
+  auto tmp = trajectory1.get_reference_frame();
+  trajectory1.set_reference_frame(trajectory2.get_reference_frame());
+  trajectory2.set_reference_frame(tmp);
+}
+
 }// namespace state_representation

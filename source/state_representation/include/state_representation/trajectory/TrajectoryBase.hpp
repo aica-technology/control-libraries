@@ -224,6 +224,16 @@ protected:
     requires std::derived_from<StateT, typename state_representation::State>
   void assert_not_contains_empty_state(const std::vector<StateT>& states) const;
 
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend void swap(TrajectoryBase<TrajectoryT>& trajectory1, TrajectoryBase<TrajectoryT>& trajectory2) {
+    swap(static_cast<State&>(trajectory1), static_cast<State&>(trajectory2));
+    std::swap(trajectory1.points_, trajectory2.points_);
+  }
+
 private:
   std::deque<TrajectoryT> points_;
 };
