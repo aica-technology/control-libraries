@@ -403,8 +403,7 @@ inline void TrajectoryBase<TrajectoryT>::assert_points_size(const std::vector<T>
 template<typename TrajectoryT>
 template<typename T>
 inline void TrajectoryBase<TrajectoryT>::assert_points_durations_sizes_equal(
-    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
-) const {
+    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations) const {
   if (points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException(
         "The size of the provided points and durations vectors are not equal (" + std::to_string(points.size())

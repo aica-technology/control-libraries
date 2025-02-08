@@ -62,8 +62,7 @@ public:
    * @throw EmptyStateException if point is empty
    */
   explicit CartesianTrajectory(
-      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
-  );
+      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration);
 
   /**
    * @brief Constructor with name, intial points, and durations provided
@@ -76,8 +75,7 @@ public:
    */
   explicit CartesianTrajectory(
       const std::string& name, const std::vector<CartesianState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations
-  );
+      const std::vector<std::chrono::nanoseconds>& durations);
 
   /**
    * @brief Copy constructor of a CartesianTrajectory

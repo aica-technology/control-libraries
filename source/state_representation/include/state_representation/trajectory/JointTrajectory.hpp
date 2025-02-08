@@ -62,8 +62,7 @@ public:
    */
   explicit JointTrajectory(
       const std::string& name, const std::vector<JointState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations
-  );
+      const std::vector<std::chrono::nanoseconds>& durations);
 
   /**
    * @brief Copy constructor of a JointTrajectory
@@ -173,8 +172,8 @@ private:
    * @param reference_frame the joint names to check against
    * @throw IncompatibleStatesException if a state has a different joint names
    */
-  void assert_compatible_joint_names(const std::vector<JointState>& states, const std::vector<std::string>& joint_names)
-      const;
+  void assert_compatible_joint_names(
+      const std::vector<JointState>& states, const std::vector<std::string>& joint_names) const;
 
   std::vector<std::string> joint_names_;///< names of the joints
 };

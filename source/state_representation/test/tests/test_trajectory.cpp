@@ -114,26 +114,20 @@ TEST(TrajectoryTest, ConstructTrajectory) {
   EXPECT_NO_THROW(CartesianTrajectory trajectory("foo"));
   EXPECT_NO_THROW(CartesianTrajectory trajectory("foo", CartesianState::Random("foo"), std::chrono::nanoseconds(100)));
   EXPECT_NO_THROW(
-      CartesianTrajectory trajectory("foo", {CartesianState::Random("foo")}, {std::chrono::nanoseconds(100)})
-  );
+      CartesianTrajectory trajectory("foo", {CartesianState::Random("foo")}, {std::chrono::nanoseconds(100)}));
 
   EXPECT_THROW(
       CartesianTrajectory trajectory("foo", CartesianState(), std::chrono::nanoseconds(100)),
-      exceptions::EmptyStateException
-  );
+      exceptions::EmptyStateException);
   EXPECT_THROW(
       CartesianTrajectory trajectory(
           "foo", {CartesianState::Random("foo", "some_world"), CartesianState::Random("foo")},
-          {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)}
-      ),
-      exceptions::IncompatibleReferenceFramesException
-  );
+          {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)}),
+      exceptions::IncompatibleReferenceFramesException);
   EXPECT_THROW(
       CartesianTrajectory trajectory(
-          "foo", {CartesianState::Random("foo"), CartesianState::Random("foo")}, {std::chrono::nanoseconds(100)}
-      ),
-      exceptions::IncompatibleSizeException
-  );
+          "foo", {CartesianState::Random("foo"), CartesianState::Random("foo")}, {std::chrono::nanoseconds(100)}),
+      exceptions::IncompatibleSizeException);
 
   // Joint trajectory
   EXPECT_NO_THROW(JointTrajectory trajectory("foo"));
@@ -141,21 +135,16 @@ TEST(TrajectoryTest, ConstructTrajectory) {
   EXPECT_NO_THROW(JointTrajectory trajectory("foo", {JointState::Random("foo", 25)}, {std::chrono::nanoseconds(100)}));
 
   EXPECT_THROW(
-      JointTrajectory trajectory("foo", JointState(), std::chrono::nanoseconds(100)), exceptions::EmptyStateException
-  );
+      JointTrajectory trajectory("foo", JointState(), std::chrono::nanoseconds(100)), exceptions::EmptyStateException);
   EXPECT_THROW(
       JointTrajectory trajectory(
           "foo", {JointState::Random("foo", 25), JointState::Random("foo", 24)},
-          {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)}
-      ),
-      exceptions::IncompatibleStatesException
-  );
+          {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200)}),
+      exceptions::IncompatibleStatesException);
   EXPECT_THROW(
       JointTrajectory trajectory(
-          "foo", {JointState::Random("foo", 25), JointState::Random("foo", 25)}, {std::chrono::nanoseconds(100)}
-      ),
-      exceptions::IncompatibleSizeException
-  );
+          "foo", {JointState::Random("foo", 25), JointState::Random("foo", 25)}, {std::chrono::nanoseconds(100)}),
+      exceptions::IncompatibleSizeException);
 }
 
 TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
@@ -220,16 +209,14 @@ TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
   // additons and insertions of multiple points
   std::vector<PointType> points = {point0, point1, point2};
   std::vector<std::chrono::nanoseconds> durations = {
-      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)
-  };
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
   EXPECT_NO_THROW(this->add_points(points, durations));
   for (unsigned int i = 0; i < this->trajectory->get_size(); ++i) {
     this->expect_equal(points[i], i, durations[i]);
   }
   std::vector<PointType> shuffled_points = {point2, point0, point1};
   std::vector<std::chrono::nanoseconds> shuffled_durations = {
-      std::chrono::nanoseconds(30), std::chrono::nanoseconds(10), std::chrono::nanoseconds(20)
-  };
+      std::chrono::nanoseconds(30), std::chrono::nanoseconds(10), std::chrono::nanoseconds(20)};
   EXPECT_NO_THROW(this->set_points(shuffled_points, shuffled_durations));
   for (unsigned int i = 0; i < this->trajectory->get_size(); ++i) {
     this->expect_equal(shuffled_points[i], i, shuffled_durations[i]);
@@ -274,8 +261,7 @@ TYPED_TEST_P(TrajectoryTest, Exceptions) {
 
   std::vector<PointType> points = {point0, point1, point2};
   std::vector<std::chrono::nanoseconds> durations = {
-      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)
-  };
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
   EXPECT_NO_THROW(this->add_points(points, durations));
 
   EXPECT_THROW(this->delete_point_index(10), std::out_of_range);
@@ -338,8 +324,7 @@ TYPED_TEST_P(TrajectoryTest, Getters) {
 
   std::vector<PointType> points = {point0, point1, point2};
   std::vector<std::chrono::nanoseconds> durations = {
-      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)
-  };
+      std::chrono::nanoseconds(10), std::chrono::nanoseconds(20), std::chrono::nanoseconds(30)};
   EXPECT_NO_THROW(this->add_points(points, durations));
   ASSERT_FALSE(this->trajectory->is_empty());
   auto trajectory_points = this->trajectory->get_points();
