@@ -1,5 +1,14 @@
 {
     "cmake.sourceDirectory": "/src/source",
     "cmake.configureArgs": [ "-DBUILD_TESTING=ON" ],
-    "C_Cpp.clang_format_style": "file:/guidelines/.clang-format"
+    "editor.rulers": [
+        120
+    ],
+    "[cpp]": {
+        "editor.defaultFormatter": "xaver.clang-format",
+        "editor.inlayHints.enabled": "on"
+    },
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "clang-format.language.cpp.style": "file:/guidelines/.clang-format",
+    "clang-format.language.cpp.fallbackStyle": "none"
 }

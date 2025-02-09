@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install -y \
     libgtest-dev \
     python3-pip \
     ssh \
-    sudo \
-    && apt-get clean \
+    sudo
+ARG ADDITIONAL_DEPENDENCIES
+RUN if [ "$ADDITIONAL_DEPENDENCIES" = "development" ]; then sudo apt install -y clangd clang-format; fi
+RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
@@ -158,7 +160,7 @@ COPY ./docker/sshd_entrypoint.sh /sshd_entrypoint.sh
 RUN chmod 744 /sshd_entrypoint.sh
 
 RUN mkdir /guidelines && cd /guidelines \
-  && wget https://raw.githubusercontent.com/aica-technology/.github/v0.9.0/guidelines/.clang-format
+  && wget https://raw.githubusercontent.com/aica-technology/.github/v0.9.0/guidelines/.clang-format # TODO: consider update
 
 USER ${USER}
 WORKDIR /src

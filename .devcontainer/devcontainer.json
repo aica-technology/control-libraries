@@ -2,20 +2,27 @@
     "name": "control libraries",
     "containerUser": "ubuntu",
     "initializeCommand": [
-        "docker",
-        "build",
-        "--target=development",
-        "--tag=control-libraries:development",
-        "."
+      "docker",
+      "build",
+      "--target=development",
+      "--build-arg=ADDITIONAL_DEPENDENCIES=development",
+      "--tag=control-libraries:development",
+      "."
     ],
     "image": "control-libraries:development",
     "workspaceMount": "source=${localWorkspaceFolder},target=/src,type=bind,consistency=cached",
     "workspaceFolder": "/src",
+    "mounts": [
+      "source=${localWorkspaceFolder}/.devcontainer/generate_compile_commands,target=/tmp/generate_compile_commands,type=bind,consistency=cached"
+    ],
     "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-vscode.cpptools-extension-pack"
-            ]
-        }
-    }
+      "vscode": {
+        "extensions": [
+          "ms-vscode.cpptools-extension-pack",
+          "llvm-vs-code-extensions.vscode-clangd",
+          "xaver.clang-format"
+        ]
+      }
+    },
+    "postCreateCommand": "/tmp/generate_compile_commands --build"
 }
