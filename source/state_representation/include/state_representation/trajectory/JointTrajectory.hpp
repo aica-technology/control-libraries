@@ -158,6 +158,20 @@ public:
    */
   JointTrajectory& operator=(const JointTrajectory& trajectory);
 
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend inline void swap(JointTrajectory& trajectory1, JointTrajectory& trajectory2) {
+    swap(
+        static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory1),
+        static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory2));
+    auto tmp = trajectory1.get_joint_names();
+    trajectory1.joint_names_ = trajectory2.joint_names_;
+    trajectory2.joint_names_ = tmp;
+  }
+
 private:
   /**
    * @brief Assert that all states of a vector carry the same joint names
@@ -177,14 +191,4 @@ private:
 
   std::vector<std::string> joint_names_;///< names of the joints
 };
-
-inline void swap(JointTrajectory& trajectory1, JointTrajectory& trajectory2) {
-  swap(
-      static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory1),
-      static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory2));
-  auto tmp = trajectory1.get_joint_names();
-  trajectory1.set_joint_names(trajectory2.get_joint_names());
-  trajectory2.set_joint_names(tmp);
-}
-
 }// namespace state_representation

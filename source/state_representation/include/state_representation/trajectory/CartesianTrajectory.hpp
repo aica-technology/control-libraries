@@ -97,12 +97,6 @@ public:
   void set_reference_frame(const CartesianPose& pose);
 
   /**
-   * @brief Set the reference frame by simply changing the reference frame name
-   * @param reference_frame the new reference frame
-   */
-  void set_reference_frame(const std::string& reference_frame);
-
-  /**
    * @brief Get list of trajectory points
    * @return queue of the Cartesian states of the trajectory
    */
@@ -178,6 +172,20 @@ public:
    */
   CartesianTrajectory& operator=(const CartesianTrajectory& trajectory);
 
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend inline void swap(CartesianTrajectory& trajectory1, CartesianTrajectory& trajectory2) {
+    swap(
+        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
+        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
+    auto tmp = trajectory1.reference_frame_;
+    trajectory1.reference_frame_ = trajectory2.reference_frame_;
+    trajectory2.reference_frame_ = tmp;
+  }
+
 private:
   /**
    * @brief Assert that all states of a vector carry the same reference frame
@@ -196,14 +204,4 @@ private:
 
   std::string reference_frame_;///< name of the reference frame
 };
-
-inline void swap(CartesianTrajectory& trajectory1, CartesianTrajectory& trajectory2) {
-  swap(
-      static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
-      static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
-  auto tmp = trajectory1.get_reference_frame();
-  trajectory1.set_reference_frame(trajectory2.get_reference_frame());
-  trajectory2.set_reference_frame(tmp);
-}
-
 }// namespace state_representation

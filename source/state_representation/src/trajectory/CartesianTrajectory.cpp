@@ -30,7 +30,7 @@ CartesianTrajectory::CartesianTrajectory(
 }
 
 CartesianTrajectory::CartesianTrajectory(const CartesianTrajectory& state)
-    : CartesianTrajectory(state.get_name(), state.get_reference_frame()) {
+    : CartesianTrajectory(state.get_name(), state.reference_frame_) {
   if (state) {
     this->add_points(state.get_points(), state.get_durations());
   }
@@ -45,10 +45,6 @@ void CartesianTrajectory::set_reference_frame(const CartesianPose& pose) {
   this->reference_frame_ = pose.get_reference_frame();
   std::transform(points.begin(), points.end(), points.begin(), [&](const auto& point) { return point * pose; });
   this->set_points(points, this->get_durations());
-}
-
-void CartesianTrajectory::set_reference_frame(const std::string& reference_frame) {
-  this->reference_frame_ = reference_frame;
 }
 
 const std::vector<CartesianState> CartesianTrajectory::get_points() const {
