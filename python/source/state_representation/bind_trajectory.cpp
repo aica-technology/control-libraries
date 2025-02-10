@@ -89,7 +89,7 @@ void trajectory(py::module_& m) {
   c.def("__getitem__", &TrajectoryT::operator[], "Get the trajectory point at given index", "index"_a);
 
   c.def("__copy__", [](const TrajectoryT& state) { return TrajectoryT(state); });
-  c.def("__deepcopy__", [](const TrajectoryT& state, py::dict) { return TrajectoryT(state); }, "state"_a);
+  c.def("__deepcopy__", [](const TrajectoryT& state, py::dict) { return TrajectoryT(state); }, "memo"_a);
 }
 
 void bind_trajectory(py::module_& m) {
