@@ -31,8 +31,10 @@ void trajectory(py::module_& m) {
     c.def(
         py::init<const std::string&, const std::string&>(), "Constructor with name and reference frame provided",
         "name"_a, "reference_frame"_a = "world");
+    c.def(py::init<const CartesianTrajectory&>(), "Copy constructor of a CartesianTrajectory", "state"_a);
   } else if constexpr (std::is_same_v<StateT, JointState>) {
     c.def(py::init<const std::string&>(), "Constructor with optional name", "name"_a = "");
+    c.def(py::init<const JointTrajectory&>(), "Copy constructor of a JointTrajectory", "state"_a);
   }
   c.def(
       py::init<const std::string&, const StateT&, const std::chrono::nanoseconds&>(),
@@ -85,6 +87,9 @@ void trajectory(py::module_& m) {
   c.def("get_points", &TrajectoryT::get_points, "Get list of trajectory points");
   c.def("get_point", &TrajectoryT::get_point, "Get the trajectory point at given index", "index"_a);
   c.def("__getitem__", &TrajectoryT::operator[], "Get the trajectory point at given index", "index"_a);
+
+  c.def("__copy__", [](const TrajectoryT& state) { return TrajectoryT(state); });
+  c.def("__deepcopy__", [](const TrajectoryT& state, py::dict) { return TrajectoryT(state); }, "state"_a);
 }
 
 void bind_trajectory(py::module_& m) {

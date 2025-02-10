@@ -77,6 +77,9 @@ class TestState(unittest.TestCase):
         with self.assertRaises(EmptyStateError):
             CartesianTrajectory("test", CartesianState(), datetime.timedelta(seconds=0))
 
+        with self.assertRaises(EmptyStateError):
+            empty6 = JointTrajectory("test", JointState(), datetime.timedelta(seconds=0))
+
         # trajectory constructors with data
         dummy_cartesian_state = CartesianState.Random("world")
         data1 = CartesianTrajectory("test", dummy_cartesian_state, datetime.timedelta(seconds=1))
@@ -106,8 +109,25 @@ class TestState(unittest.TestCase):
         self.assertFalse(data2.is_empty())
         self.assertEqual(data2.get_size(), 5)
 
-        with self.assertRaises(EmptyStateError):
-            empty6 = JointTrajectory("test", JointState(), datetime.timedelta(seconds=0))
+        ct = CartesianTrajectory("test", 
+            [CartesianState.Random("foo"), CartesianState.Random("bar"), CartesianState.Random("baz")], 
+            [datetime.timedelta(seconds=1), datetime.timedelta(seconds=2), datetime.timedelta(seconds=3)])
+        ct_copy = CartesianTrajectory(ct)
+        self.assertEqual(ct.get_size(), ct_copy.get_size())
+        for i in range(ct.get_size()):
+            self.assert_state_equality(ct.get_point(i), ct_copy.get_point(i))
+            self.assertEqual(ct.get_duration(i), ct_copy.get_duration(i))
+        self.assertEqual(ct.get_reference_frame(), ct_copy.get_reference_frame())
+
+        jt = JointTrajectory("test", 
+            [JointState.Random("foo", 25), JointState.Random("bar", 25), JointState.Random("baz", 25)], 
+            [datetime.timedelta(seconds=1), datetime.timedelta(seconds=2), datetime.timedelta(seconds=3)])
+        ct_copy = JointTrajectory(jt)
+        self.assertEqual(jt.get_size(), ct_copy.get_size())
+        for i in range(jt.get_size()):
+            self.assert_state_equality(jt.get_point(i), ct_copy.get_point(i))
+            self.assertEqual(jt.get_duration(i), ct_copy.get_duration(i))
+        self.assertEqual(jt.get_joint_names(), ct_copy.get_joint_names())
 
     def test_addremove_points(self):
         for TrajectoryT in [CartesianTrajectory, JointTrajectory]:

@@ -1,5 +1,6 @@
 #include <chrono>
 #include <gtest/gtest.h>
+#include <state_representation/space/cartesian/CartesianState.hpp>
 #include <stdexcept>
 #include <type_traits>
 
@@ -129,6 +130,30 @@ TEST(TrajectoryTest, ConstructTrajectory) {
           "foo", {CartesianState::Random("foo"), CartesianState::Random("foo")}, {std::chrono::nanoseconds(100)}),
       exceptions::IncompatibleSizeException);
 
+  CartesianTrajectory ct(
+      "foo", {CartesianState::Random("foo"), CartesianState::Random("bar"), CartesianState::Random("baz")},
+      {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200), std::chrono::nanoseconds(300)});
+  EXPECT_NO_THROW(CartesianTrajectory ct_copy(ct));
+  {
+    CartesianTrajectory ct_copy(ct);
+    EXPECT_EQ(ct.get_size(), ct_copy.get_size());
+    for (unsigned int i = 0; i < ct.get_size(); ++i) {
+      EXPECT_EQ(ct.get_point(i).data(), ct_copy.get_point(i).data());
+      EXPECT_EQ(ct.get_duration(i), ct_copy.get_duration(i));
+    }
+    EXPECT_STREQ(ct.get_reference_frame().c_str(), ct_copy.get_reference_frame().c_str());
+  }
+  {
+    CartesianTrajectory ct_copy;
+    EXPECT_NO_THROW(ct_copy = ct);
+    EXPECT_EQ(ct.get_size(), ct_copy.get_size());
+    for (unsigned int i = 0; i < ct.get_size(); ++i) {
+      EXPECT_EQ(ct.get_point(i).data(), ct_copy.get_point(i).data());
+      EXPECT_EQ(ct.get_duration(i), ct_copy.get_duration(i));
+    }
+    EXPECT_STREQ(ct.get_reference_frame().c_str(), ct_copy.get_reference_frame().c_str());
+  }
+
   // Joint trajectory
   EXPECT_NO_THROW(JointTrajectory trajectory("foo"));
   EXPECT_NO_THROW(JointTrajectory trajectory("foo", JointState::Random("foo", 25), std::chrono::nanoseconds(100)));
@@ -145,6 +170,30 @@ TEST(TrajectoryTest, ConstructTrajectory) {
       JointTrajectory trajectory(
           "foo", {JointState::Random("foo", 25), JointState::Random("foo", 25)}, {std::chrono::nanoseconds(100)}),
       exceptions::IncompatibleSizeException);
+
+  JointTrajectory jt(
+      "foo", {JointState::Random("foo", 25), JointState::Random("bar", 25), JointState::Random("baz", 25)},
+      {std::chrono::nanoseconds(100), std::chrono::nanoseconds(200), std::chrono::nanoseconds(300)});
+  EXPECT_NO_THROW(JointTrajectory ct_copy(jt));
+  {
+    JointTrajectory ct_copy(jt);
+    EXPECT_EQ(jt.get_size(), ct_copy.get_size());
+    for (unsigned int i = 0; i < jt.get_size(); ++i) {
+      EXPECT_EQ(jt.get_point(i).data(), ct_copy.get_point(i).data());
+      EXPECT_EQ(jt.get_duration(i), ct_copy.get_duration(i));
+    }
+    EXPECT_EQ(jt.get_joint_names(), ct_copy.get_joint_names());
+  }
+  {
+    JointTrajectory ct_copy;
+    EXPECT_NO_THROW(ct_copy = jt);
+    EXPECT_EQ(jt.get_size(), ct_copy.get_size());
+    for (unsigned int i = 0; i < jt.get_size(); ++i) {
+      EXPECT_EQ(jt.get_point(i).data(), ct_copy.get_point(i).data());
+      EXPECT_EQ(jt.get_duration(i), ct_copy.get_duration(i));
+    }
+    EXPECT_EQ(jt.get_joint_names(), ct_copy.get_joint_names());
+  }
 }
 
 TYPED_TEST_P(TrajectoryTest, AddRemovePoints) {
