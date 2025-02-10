@@ -15,20 +15,25 @@ CartesianTrajectory::CartesianTrajectory(const std::string& name, const std::str
 }
 
 CartesianTrajectory::CartesianTrajectory(
-    const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
-)
+    const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration)
     : CartesianTrajectory(name, point.get_reference_frame()) {
   this->add_point(point, duration);
 }
 
 CartesianTrajectory::CartesianTrajectory(
     const std::string& name, const std::vector<CartesianState>& points,
-    const std::vector<std::chrono::nanoseconds>& durations
-)
+    const std::vector<std::chrono::nanoseconds>& durations)
     : CartesianTrajectory(name) {
   this->assert_points_not_empty(points);
   this->reference_frame_ = points[0].get_reference_frame();
   this->add_points(points, durations);
+}
+
+CartesianTrajectory::CartesianTrajectory(const CartesianTrajectory& state)
+    : CartesianTrajectory(state.get_name(), state.reference_frame_) {
+  if (state) {
+    this->add_points(state.get_points(), state.get_durations());
+  }
 }
 
 const std::string& CartesianTrajectory::get_reference_frame() const {
@@ -60,8 +65,7 @@ void CartesianTrajectory::add_point(const CartesianState& point, const std::chro
 }
 
 void CartesianTrajectory::add_points(
-    const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations
-) {
+    const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations) {
   this->assert_points_not_empty(points);
   this->assert_points_durations_sizes_equal(points, durations);
   this->assert_not_contains_empty_state(points);
@@ -72,24 +76,21 @@ void CartesianTrajectory::add_points(
 }
 
 void CartesianTrajectory::insert_point(
-    const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index
-) {
+    const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index) {
   this->assert_not_contains_empty_state<CartesianState>({point});
   this->assert_same_reference_frame({point}, this->reference_frame_);
   this->TrajectoryBase<CartesianTrajectoryPoint>::insert_point(CartesianTrajectoryPoint(point, duration), index);
 }
 
 void CartesianTrajectory::set_point(
-    const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index
-) {
+    const CartesianState& point, const std::chrono::nanoseconds& duration, unsigned int index) {
   this->assert_not_contains_empty_state<CartesianState>({point});
   this->assert_same_reference_frame({point}, this->reference_frame_);
   this->TrajectoryBase<CartesianTrajectoryPoint>::set_point(CartesianTrajectoryPoint(point, duration), index);
 }
 
 void CartesianTrajectory::set_points(
-    const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations
-) {
+    const std::vector<CartesianState>& points, const std::vector<std::chrono::nanoseconds>& durations) {
   this->assert_points_not_empty(points);
   this->assert_points_size(points);
   this->assert_points_durations_sizes_equal(points, durations);
@@ -103,6 +104,14 @@ std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::o
   return std::make_pair(point.to_cartesian_state(this->reference_frame_), point.duration);
 }
 
+CartesianTrajectory& CartesianTrajectory::operator=(const CartesianTrajectory& trajectory) {
+  if (this != &trajectory) {
+    CartesianTrajectory tmp(trajectory);
+    swap(*this, tmp);
+  }
+  return *this;
+}
+
 void CartesianTrajectory::assert_same_reference_frame(const std::vector<CartesianState>& states) const {
   if (!states.empty()) {
     assert_same_reference_frame(states, states[0].get_reference_frame());
@@ -110,12 +119,10 @@ void CartesianTrajectory::assert_same_reference_frame(const std::vector<Cartesia
 }
 
 void CartesianTrajectory::assert_same_reference_frame(
-    const std::vector<CartesianState>& states, const std::string& reference_frame
-) const {
+    const std::vector<CartesianState>& states, const std::string& reference_frame) const {
   if (!std::ranges::all_of(states, [&](const auto& state) { return state.get_reference_frame() == reference_frame; })) {
     throw exceptions::IncompatibleReferenceFramesException(
-        "Incompatible reference frame " + states.front().get_reference_frame() + " and " + reference_frame
-    );
+        "Incompatible reference frame " + states.front().get_reference_frame() + " and " + reference_frame);
   }
 }
 }// namespace state_representation

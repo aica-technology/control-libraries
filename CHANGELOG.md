@@ -25,7 +25,7 @@ Release Versions
 - chore: format code (#235)
 - ci: allow workflow dispatch for rc images (#234)
 - feat: move up to C++20 (#220)
-- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223)
+- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223, #226)
 - feat: add trajectory class bindings and python tests (#219)
 
 ## 9.1.0
