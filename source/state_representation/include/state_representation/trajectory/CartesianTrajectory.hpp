@@ -62,8 +62,7 @@ public:
    * @throw EmptyStateException if point is empty
    */
   explicit CartesianTrajectory(
-      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
-  );
+      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration);
 
   /**
    * @brief Constructor with name, intial points, and durations provided
@@ -76,8 +75,13 @@ public:
    */
   explicit CartesianTrajectory(
       const std::string& name, const std::vector<CartesianState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations
-  );
+      const std::vector<std::chrono::nanoseconds>& durations);
+
+  /**
+   * @brief Copy constructor of a CartesianTrajectory
+   * @param state the Cartesian trajectory to copy from
+   */
+  CartesianTrajectory(const CartesianTrajectory& state);
 
   /**
    * @brief Get the reference frame
@@ -86,7 +90,7 @@ public:
   const std::string& get_reference_frame() const;
 
   /**
-   * @brief Set the reference frame that applies a transformation to all existing points to change the reference frame
+   * @brief Set the reference frame by applying a transformation to all existing points to change the reference frame
    * @param pose the new pose that needs to be applied to existing points to change the reference frame
    * @throws EmptyStateException if pose is empty
    */
@@ -160,6 +164,25 @@ public:
    * @return the Cartesian state and duration pair that corresponds to the index
    */
   std::pair<CartesianState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
+
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param trajectory the trajectory with value to assign
+   * @return reference to the current trajectory with new values
+   */
+  CartesianTrajectory& operator=(const CartesianTrajectory& trajectory);
+
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend inline void swap(CartesianTrajectory& trajectory1, CartesianTrajectory& trajectory2) {
+    swap(
+        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
+        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
+    std::swap(trajectory1.reference_frame_, trajectory2.reference_frame_);
+  }
 
 private:
   /**

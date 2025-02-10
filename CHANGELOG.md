@@ -22,7 +22,7 @@ Release Versions
 - feat: improve support for transformation matrices (#146)
 - fix: unstable python test (#221)
 - feat: move up to C++20 (#220)
-- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223)
+- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223, #226)
 - feat: add trajectory class bindings and python tests (#219)
 
 ## 9.1.0
