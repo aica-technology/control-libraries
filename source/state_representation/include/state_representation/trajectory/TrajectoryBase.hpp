@@ -224,6 +224,16 @@ protected:
     requires std::derived_from<StateT, typename state_representation::State>
   void assert_not_contains_empty_state(const std::vector<StateT>& states) const;
 
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend void swap(TrajectoryBase<TrajectoryT>& trajectory1, TrajectoryBase<TrajectoryT>& trajectory2) {
+    swap(static_cast<State&>(trajectory1), static_cast<State&>(trajectory2));
+    std::swap(trajectory1.points_, trajectory2.points_);
+  }
+
 private:
   std::deque<TrajectoryT> points_;
 };
@@ -393,8 +403,7 @@ inline void TrajectoryBase<TrajectoryT>::assert_points_size(const std::vector<T>
 template<typename TrajectoryT>
 template<typename T>
 inline void TrajectoryBase<TrajectoryT>::assert_points_durations_sizes_equal(
-    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
-) const {
+    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations) const {
   if (points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException(
         "The size of the provided points and durations vectors are not equal (" + std::to_string(points.size())
