@@ -106,7 +106,6 @@ std::pair<CartesianState, const std::chrono::nanoseconds> CartesianTrajectory::o
 
 CartesianTrajectory& CartesianTrajectory::operator=(const CartesianTrajectory& trajectory) {
   if (this != &trajectory) {
-    this->reset();
     CartesianTrajectory tmp(trajectory);
     swap(*this, tmp);
   }

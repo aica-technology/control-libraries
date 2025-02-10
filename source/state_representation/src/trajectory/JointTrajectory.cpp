@@ -101,7 +101,6 @@ std::pair<JointState, const std::chrono::nanoseconds> JointTrajectory::operator[
 
 JointTrajectory& JointTrajectory::operator=(const JointTrajectory& trajectory) {
   if (this != &trajectory) {
-    this->reset();
     JointTrajectory tmp(trajectory);
     swap(*this, tmp);
   }
