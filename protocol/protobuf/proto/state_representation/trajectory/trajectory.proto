@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package state_representation.proto;
+
+import "state_representation/state.proto";
+
+message DoubleArray {
+  repeated double values = 1;
+}
+
+message CartesianTrajectory {
+  State state = 1;
+  repeated DoubleArray data = 2;
+  repeated string names = 3;
+  repeated uint64 durations = 4;
+  string reference_frame = 5;
+}
+
+message JointTrajectory {
+  State state = 1;
+  repeated DoubleArray data = 2;
+  repeated string names = 3;
+  repeated uint64 durations = 4;
+  repeated string joint_names = 5;
+}

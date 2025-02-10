@@ -10,9 +10,12 @@
 #include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/parameters/Parameter.hpp>
+#include <state_representation/trajectory/CartesianTrajectory.hpp>
+#include <state_representation/trajectory/JointTrajectory.hpp>
 
 #include "clproto.hpp"
 #include "state_representation/state_message.pb.h"
+#include "state_representation/trajectory/trajectory.pb.h"
 
 namespace clproto {
 
@@ -66,6 +69,8 @@ state_representation::proto::Jacobian encoder(const state_representation::Jacobi
 state_representation::proto::JointState encoder(const state_representation::JointState& joint_state);
 state_representation::proto::AnalogIOState encoder(const state_representation::AnalogIOState& analog_io_state);
 state_representation::proto::DigitalIOState encoder(const state_representation::DigitalIOState& digital_io_state);
+state_representation::proto::CartesianTrajectory encoder(const state_representation::CartesianTrajectory& trajectory);
+state_representation::proto::JointTrajectory encoder(const state_representation::JointTrajectory& trajectory);
 
 /*
  * Definitions for templated RepeatedField methods
