@@ -45,12 +45,9 @@ void trajectory(py::module_& m) {
   if constexpr (std::is_same_v<StateT, CartesianState>) {
     c.def("get_reference_frame", &CartesianTrajectory::get_reference_frame, "Get the reference frame");
     c.def(
-        "set_reference_frame", py::overload_cast<const CartesianPose&>(&CartesianTrajectory::set_reference_frame),
+        "set_reference_frame", &CartesianTrajectory::set_reference_frame,
         "Set the reference frame by applying a transformation to all existing points to change the reference frame",
         "pose"_a);
-    c.def(
-        "set_reference_frame", py::overload_cast<const std::string&>(&CartesianTrajectory::set_reference_frame),
-        "Set the reference frame by simply changing the reference frame name", "reference_frame"_a);
   } else if constexpr (std::is_same_v<StateT, JointState>) {
     c.def("get_joint_names", &JointTrajectory::get_joint_names, "Get the joint names");
     c.def("set_joint_names", &JointTrajectory::set_joint_names, "Set the joint names", "joint_names"_a);
