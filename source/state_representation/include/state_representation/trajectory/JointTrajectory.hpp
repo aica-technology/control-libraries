@@ -167,9 +167,7 @@ public:
     swap(
         static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory1),
         static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory2));
-    auto tmp = trajectory1.get_joint_names();
-    trajectory1.joint_names_ = trajectory2.joint_names_;
-    trajectory2.joint_names_ = tmp;
+    std::swap(trajectory1.joint_names_, trajectory2.joint_names_);
   }
 
 private:

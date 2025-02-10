@@ -181,9 +181,7 @@ public:
     swap(
         static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
         static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
-    auto tmp = trajectory1.reference_frame_;
-    trajectory1.reference_frame_ = trajectory2.reference_frame_;
-    trajectory2.reference_frame_ = tmp;
+    std::swap(trajectory1.reference_frame_, trajectory2.reference_frame_);
   }
 
 private:
