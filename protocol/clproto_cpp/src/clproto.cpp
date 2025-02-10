@@ -853,67 +853,144 @@ bool decode(const std::string& msg, JointTorques& obj) {
   }
 }
 
-/* ----------------------
- *      Trajectory
- * ---------------------- */
-template<typename T>
-concept TrajectoryT = std::is_same_v<T, CartesianTrajectory> || std::is_same_v<T, JointTrajectory>;
+// /* ----------------------
+//  *      Trajectory
+//  * ---------------------- */
+// template<typename T>
+// concept TrajectoryT = std::is_same_v<T, CartesianTrajectory> || std::is_same_v<T, JointTrajectory>;
 
-template<TrajectoryT T>
-std::string encode(const T& obj);
-template<TrajectoryT T>
-T decode(const std::string& msg);
-template<TrajectoryT T>
-bool decode(const std::string& msg, T& obj);
-template<TrajectoryT T>
-std::string encode(const T& obj) {
+// template<TrajectoryT T>
+// std::string encode(const T& obj);
+// template<TrajectoryT T>
+// T decode(const std::string& msg);
+// template<TrajectoryT T>
+// bool decode(const std::string& msg, T& obj);
+// template<TrajectoryT T>
+// std::string encode(const T& obj) {
+//   proto::StateMessage message;
+//   if constexpr (std::is_same_v<T, CartesianTrajectory>) {
+//     *message.mutable_cartesian_trajectory() = encoder(obj);
+//   } else {
+//     *message.mutable_joint_trajectory() = encoder(obj);
+//   }
+//   return message.SerializeAsString();
+// }
+// template<TrajectoryT T>
+// T decode(const std::string& msg) {
+//   T obj;
+//   if (!decode(msg, obj)) {
+//     std::string msg;
+//     if constexpr (std::is_same_v<T, CartesianTrajectory>) {
+//       msg = "Could not decode the message into a CartesianTrajectory";
+//     } else {
+//       msg = "Could not decode the message into a JointTrajectory";
+//     }
+//     throw DecodingException(msg);
+//   }
+//   return obj;
+// }
+// template<TrajectoryT T>
+// bool decode(const std::string& msg, T& obj) {
+//   auto type_case = std::conditional_t<
+//       std::is_same_v<T, CartesianTrajectory>,
+//       std::integral_constant<
+//           proto::StateMessage::MessageTypeCase, proto::StateMessage::MessageTypeCase::kCartesianTrajectory>,
+//       std::integral_constant<
+//           proto::StateMessage::MessageTypeCase, proto::StateMessage::MessageTypeCase::kJointTrajectory>>::value;
+
+//   try {
+//     proto::StateMessage message;
+//     if (!(message.ParseFromString(msg) && message.message_type_case() == type_case)) {
+//       return false;
+//     }
+
+//     if constexpr (std::is_same_v<T, CartesianTrajectory>) {
+//       obj = decoder(message.cartesian_trajectory());
+//     } else {
+//       obj = decoder(message.joint_trajectory());
+//     }
+//     return true;
+//   } catch (...) {
+//     return false;
+//   }
+// }
+
+/* ----------------------
+ *      CartesianTrajectory
+ * ---------------------- */
+template<>
+std::string encode(const CartesianTrajectory& obj);
+template<>
+CartesianTrajectory decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, CartesianTrajectory& obj);
+template<>
+std::string encode(const CartesianTrajectory& obj) {
   proto::StateMessage message;
-  if constexpr (std::is_same_v<T, CartesianTrajectory>) {
-    *message.mutable_cartesian_trajectory() = encoder(obj);
-  } else {
-    *message.mutable_joint_trajectory() = encoder(obj);
-  }
+  *message.mutable_cartesian_trajectory() = encoder(obj);
   return message.SerializeAsString();
 }
-template<TrajectoryT T>
-T decode(const std::string& msg) {
-  T obj;
+template<>
+CartesianTrajectory decode(const std::string& msg) {
+  CartesianTrajectory obj;
   if (!decode(msg, obj)) {
     std::string msg;
-    if constexpr (std::is_same_v<T, CartesianTrajectory>) {
-      msg = "Could not decode the message into a CartesianTrajectory";
-    } else {
-      msg = "Could not decode the message into a JointTrajectory";
-    }
-    throw DecodingException(msg);
+    throw DecodingException("Could not decode the message into a CartesianTrajectory");
   }
   return obj;
 }
-template<TrajectoryT T>
-bool decode(const std::string& msg, T& obj) {
-  auto type_case = std::conditional_t<
-      std::is_same_v<T, CartesianTrajectory>,
-      std::integral_constant<
-          proto::StateMessage::MessageTypeCase, proto::StateMessage::MessageTypeCase::kCartesianTrajectory>,
-      std::integral_constant<
-          proto::StateMessage::MessageTypeCase, proto::StateMessage::MessageTypeCase::kJointTrajectory>>::value;
-
+template<>
+bool decode(const std::string& msg, CartesianTrajectory& obj) {
   try {
     proto::StateMessage message;
-    if (!(message.ParseFromString(msg) && message.message_type_case() == type_case)) {
+    if (!(message.ParseFromString(msg) && message.message_type_case() == proto::StateMessage::MessageTypeCase::kCartesianTrajectory)) {
       return false;
     }
-
-    if constexpr (std::is_same_v<T, CartesianTrajectory>) {
-      obj = decoder(message.cartesian_trajectory());
-    } else {
-      obj = decoder(message.joint_trajectory());
-    }
+    obj = decoder(message.cartesian_trajectory());
     return true;
   } catch (...) {
     return false;
   }
 }
+
+/* ----------------------
+ *      JointTrajectory
+ * ---------------------- */
+template<>
+std::string encode(const JointTrajectory& obj);
+template<>
+JointTrajectory decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, JointTrajectory& obj);
+template<>
+std::string encode(const JointTrajectory& obj) {
+  proto::StateMessage message;
+  *message.mutable_joint_trajectory() = encoder(obj);
+  return message.SerializeAsString();
+}
+template<>
+JointTrajectory decode(const std::string& msg) {
+  JointTrajectory obj;
+  if (!decode(msg, obj)) {
+    std::string msg;
+    throw DecodingException("Could not decode the message into a JointTrajectory");
+  }
+  return obj;
+}
+template<>
+bool decode(const std::string& msg, JointTrajectory& obj) {
+  try {
+    proto::StateMessage message;
+    if (!(message.ParseFromString(msg) && message.message_type_case() == proto::StateMessage::MessageTypeCase::kJointTrajectory)) {
+      return false;
+    }
+    obj = decoder(message.joint_trajectory());
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
 
 /* ----------------------
  *      Parameter<T>
