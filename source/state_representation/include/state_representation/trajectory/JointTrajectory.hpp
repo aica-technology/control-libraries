@@ -62,8 +62,13 @@ public:
    */
   explicit JointTrajectory(
       const std::string& name, const std::vector<JointState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations
-  );
+      const std::vector<std::chrono::nanoseconds>& durations);
+
+  /**
+   * @brief Copy constructor of a JointTrajectory
+   * @param state the joint trajectory to copy from
+   */
+  JointTrajectory(const JointTrajectory& state);
 
   /**
    * @brief Get the joint names
@@ -146,6 +151,25 @@ public:
    */
   std::pair<JointState, const std::chrono::nanoseconds> operator[](unsigned int idx) const;
 
+  /**
+   * @brief Copy assignment operator that has to be defined to the custom assignment operator
+   * @param trajectory the trajectory with value to assign
+   * @return reference to the current trajectory with new values
+   */
+  JointTrajectory& operator=(const JointTrajectory& trajectory);
+
+  /**
+   * @brief Swap the values of trajectories
+   * @param trajectory1 trajectory to be swapped with 2
+   * @param trajectory2 trajectory to be swapped with 1
+   */
+  friend inline void swap(JointTrajectory& trajectory1, JointTrajectory& trajectory2) {
+    swap(
+        static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory1),
+        static_cast<TrajectoryBase<JointTrajectoryPoint>&>(trajectory2));
+    std::swap(trajectory1.joint_names_, trajectory2.joint_names_);
+  }
+
 private:
   /**
    * @brief Assert that all states of a vector carry the same joint names
@@ -160,8 +184,8 @@ private:
    * @param reference_frame the joint names to check against
    * @throw IncompatibleStatesException if a state has a different joint names
    */
-  void assert_compatible_joint_names(const std::vector<JointState>& states, const std::vector<std::string>& joint_names)
-      const;
+  void assert_compatible_joint_names(
+      const std::vector<JointState>& states, const std::vector<std::string>& joint_names) const;
 
   std::vector<std::string> joint_names_;///< names of the joints
 };
