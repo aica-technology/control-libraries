@@ -1,10 +1,6 @@
-#include <algorithm>
 #include <chrono>
-#include <iterator>
 
 #include "clproto/decoders.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/trajectory/CartesianTrajectory.hpp"
 
 using namespace state_representation;
 
@@ -29,17 +25,13 @@ CartesianTrajectory decoder(const proto::CartesianTrajectory& message) {
   if (message.state().empty()) {
     return trajectory;
   }
-  std::vector<CartesianState> points;
-  std::vector<std::chrono::nanoseconds> durations;
   for (int i = 0; i < message.data().size(); ++i) {
     auto array = message.data().at(i);
     std::vector<double> data(array.mutable_values()->begin(), array.mutable_values()->end());
     CartesianState state(message.names().at(i), message.reference_frame());
     state.set_data(data);
-    points.push_back(state);
-    durations.push_back(std::chrono::nanoseconds(static_cast<int64_t>(message.durations().at(i))));
+    trajectory.add_point(state, std::chrono::nanoseconds(static_cast<int64_t>(message.durations().at(i))));
   }
-  trajectory.add_points(points, durations);
   return trajectory;
 }
 
@@ -50,17 +42,13 @@ JointTrajectory decoder(const proto::JointTrajectory& message) {
   if (message.state().empty()) {
     return trajectory;
   }
-  std::vector<JointState> points;
-  std::vector<std::chrono::nanoseconds> durations;
   for (int i = 0; i < message.data().size(); ++i) {
     auto array = message.data().at(i);
     std::vector<double> data(array.mutable_values()->begin(), array.mutable_values()->end());
     JointState state(message.names().at(i), jnames);
     state.set_data(data);
-    points.push_back(state);
-    durations.push_back(std::chrono::nanoseconds(static_cast<int64_t>(message.durations().at(i))));
+    trajectory.add_point(state, std::chrono::nanoseconds(static_cast<int64_t>(message.durations().at(i))));
   }
-  trajectory.add_points(points, durations);
   return trajectory;
 }
 

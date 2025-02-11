@@ -7,8 +7,6 @@
 #include <state_representation/trajectory/CartesianTrajectory.hpp>
 #include <state_representation/trajectory/JointTrajectory.hpp>
 
-#include "state_representation/space/cartesian/cartesian_state.pb.h"
-#include "state_representation/trajectory/trajectory.pb.h"
 #include "state_representation/state_message.pb.h"
 
 namespace clproto {
@@ -64,4 +62,4 @@ std::vector<FieldT> decoder(const google::protobuf::RepeatedPtrField<FieldT>& me
   return {message.begin(), message.end()};
 }
 
-}
+}// namespace clproto

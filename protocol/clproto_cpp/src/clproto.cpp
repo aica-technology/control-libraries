@@ -1,5 +1,3 @@
-#include <type_traits>
-
 #include "clproto.hpp"
 
 #include <google/protobuf/util/json_util.h>
