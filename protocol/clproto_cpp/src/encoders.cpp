@@ -1,8 +1,6 @@
 #include <cstdint>
 
 #include "clproto/encoders.hpp"
-#include "state_representation/trajectory/CartesianTrajectory.hpp"
-#include "state_representation/trajectory/trajectory.pb.h"
 
 using namespace state_representation;
 
@@ -230,19 +228,7 @@ proto::CartesianTrajectory encoder(const CartesianTrajectory& trajectory) {
   if (trajectory.is_empty()) {
     return message;
   }
-  std::vector<std::string> names;
-  std::vector<uint64_t> durations;
-  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
-    auto [point, duration] = trajectory[i];
-    auto vec = point.data();
-    auto data = message.add_data();
-    data->mutable_values()->Assign(vec.data(), vec.data() + vec.size());
-    names.push_back(point.get_name());
-    durations.push_back(duration.count());
-  }
-  message.mutable_names()->Assign(names.begin(), names.end());
-  message.mutable_durations()->Assign(durations.begin(), durations.end());
-  message.set_reference_frame(trajectory.get_reference_frame());
+  *message.mutable_trajectory() = trajectory_encoder(trajectory);
   return message;
 }
 
@@ -253,20 +239,7 @@ proto::JointTrajectory encoder(const JointTrajectory& trajectory) {
   if (trajectory.is_empty()) {
     return message;
   }
-  std::vector<std::string> names;
-  std::vector<uint64_t> durations;
-  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
-    auto [point, duration] = trajectory[i];
-    auto vec = point.data();
-    auto data = message.add_data();
-    data->mutable_values()->Assign(vec.data(), vec.data() + vec.size());
-    names.push_back(point.get_name());
-    durations.push_back(duration.count());
-  }
-  message.mutable_names()->Assign(names.begin(), names.end());
-  message.mutable_durations()->Assign(durations.begin(), durations.end());
-  auto jnames = trajectory.get_joint_names();
-  message.mutable_joint_names()->Assign(jnames.begin(), jnames.end());
+  *message.mutable_trajectory() = trajectory_encoder(trajectory);
   return message;
 }
 }

@@ -852,7 +852,7 @@ bool decode(const std::string& msg, JointTorques& obj) {
 }
 
 /* ----------------------
- *      CartesianTrajectory
+ *  CartesianTrajectory
  * ---------------------- */
 template<>
 std::string encode(const CartesianTrajectory& obj);
@@ -870,7 +870,6 @@ template<>
 CartesianTrajectory decode(const std::string& msg) {
   CartesianTrajectory obj;
   if (!decode(msg, obj)) {
-    std::string msg;
     throw DecodingException("Could not decode the message into a CartesianTrajectory");
   }
   return obj;
@@ -890,7 +889,7 @@ bool decode(const std::string& msg, CartesianTrajectory& obj) {
 }
 
 /* ----------------------
- *      JointTrajectory
+ *    JointTrajectory
  * ---------------------- */
 template<>
 std::string encode(const JointTrajectory& obj);
@@ -908,7 +907,6 @@ template<>
 JointTrajectory decode(const std::string& msg) {
   JointTrajectory obj;
   if (!decode(msg, obj)) {
-    std::string msg;
     throw DecodingException("Could not decode the message into a JointTrajectory");
   }
   return obj;

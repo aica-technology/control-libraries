@@ -15,7 +15,6 @@
 
 #include "clproto.hpp"
 #include "state_representation/state_message.pb.h"
-#include "state_representation/trajectory/trajectory.pb.h"
 
 namespace clproto {
 
@@ -85,5 +84,26 @@ inline state_representation::proto::Parameter encoder(const state_representation
   state_representation::proto::Parameter message;
   *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
   return encoder<ParamT>(message, parameter);
+}
+
+/*
+ * Definitions for templated trajecotry methods
+ */
+template<typename TrajectoryT>
+inline state_representation::proto::Trajectory trajectory_encoder(const TrajectoryT& trajectory) {
+  state_representation::proto::Trajectory message;
+  std::vector<std::string> names;
+  std::vector<uint64_t> durations;
+  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
+    auto [point, duration] = trajectory[i];
+    auto vec = point.data();
+    auto data = message.add_data();
+    *data->mutable_values() = {vec.data(), vec.data() + vec.size()};
+    names.push_back(point.get_name());
+    durations.push_back(duration.count());
+  }
+  *message.mutable_names() = {names.begin(), names.end()};
+  *message.mutable_durations() = {durations.begin(), durations.end()};
+  return message;
 }
 }

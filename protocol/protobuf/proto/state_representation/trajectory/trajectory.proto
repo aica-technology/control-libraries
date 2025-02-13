@@ -8,18 +8,20 @@ message DoubleArray {
   repeated double values = 1;
 }
 
+message Trajectory {
+  repeated DoubleArray data = 1;
+  repeated string names = 2;
+  repeated uint64 durations = 3;
+}
+
 message CartesianTrajectory {
   State state = 1;
-  repeated DoubleArray data = 2;
-  repeated string names = 3;
-  repeated uint64 durations = 4;
-  string reference_frame = 5;
+  string reference_frame = 2;
+  Trajectory trajectory = 3;
 }
 
 message JointTrajectory {
   State state = 1;
-  repeated DoubleArray data = 2;
-  repeated string names = 3;
-  repeated uint64 durations = 4;
-  repeated string joint_names = 5;
+  repeated string joint_names = 2;
+  Trajectory trajectory = 3;
 }
