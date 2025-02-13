@@ -20,7 +20,7 @@ static void test_trajectory_equal(const T& send_state, const T& recv_state) {
   } else {
     EXPECT_EQ(send_state.get_joint_names(), recv_state.get_joint_names());
   }
-  EXPECT_EQ(send_state.get_size(), recv_state.get_size());
+  ASSERT_EQ(send_state.get_size(), recv_state.get_size());
   for (unsigned int i = 0; i < send_state.get_size(); ++i) {
     EXPECT_EQ(send_state.get_point(i).data(), recv_state.get_point(i).data());
     EXPECT_EQ(send_state.get_duration(i), recv_state.get_duration(i));
