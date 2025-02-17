@@ -2,6 +2,7 @@ import pytest
 
 import clproto
 import numpy as np
+import datetime
 import state_representation as sr
 
 states = [(sr.State("test"), clproto.MessageType.STATE_MESSAGE),
@@ -29,7 +30,11 @@ states = [(sr.State("test"), clproto.MessageType.STATE_MESSAGE),
           (sr.JointAccelerations("test", 3), clproto.MessageType.JOINT_ACCELERATIONS_MESSAGE),
           (sr.JointAccelerations().Random("test", 2), clproto.MessageType.JOINT_ACCELERATIONS_MESSAGE),
           (sr.JointTorques("test", 3), clproto.MessageType.JOINT_TORQUES_MESSAGE),
-          (sr.JointTorques().Random("test", 2), clproto.MessageType.JOINT_TORQUES_MESSAGE)]
+          (sr.JointTorques().Random("test", 2), clproto.MessageType.JOINT_TORQUES_MESSAGE),
+          (sr.CartesianTrajectory("trajectory", sr.CartesianState().Random("test"), datetime.timedelta(seconds=1)), 
+            clproto.MessageType.CARTESIAN_TRAJECTORY_MESSAGE),
+          (sr.JointTrajectory("trajectory", sr.JointState().Random("test", 25), datetime.timedelta(seconds=1)), 
+            clproto.MessageType.JOINT_TRAJECTORY_MESSAGE)]
 
 parameters = [("int", 1, sr.ParameterType.INT, clproto.ParameterMessageType.INT),
               ("int", [1, 2, 3], sr.ParameterType.INT_ARRAY, clproto.ParameterMessageType.INT_ARRAY),

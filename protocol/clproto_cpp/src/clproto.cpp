@@ -22,6 +22,8 @@
 #include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/joint/JointTorques.hpp>
 #include <state_representation/space/joint/JointVelocities.hpp>
+#include <state_representation/trajectory/CartesianTrajectory.hpp>
+#include <state_representation/trajectory/JointTrajectory.hpp>
 
 #include "state_representation/state_message.pb.h"
 
@@ -852,6 +854,80 @@ bool decode(const std::string& msg, JointTorques& obj) {
 }
 
 /* ----------------------
+ *  CartesianTrajectory
+ * ---------------------- */
+template<>
+std::string encode(const CartesianTrajectory& obj);
+template<>
+CartesianTrajectory decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, CartesianTrajectory& obj);
+template<>
+std::string encode(const CartesianTrajectory& obj) {
+  proto::StateMessage message;
+  *message.mutable_cartesian_trajectory() = encoder(obj);
+  return message.SerializeAsString();
+}
+template<>
+CartesianTrajectory decode(const std::string& msg) {
+  CartesianTrajectory obj;
+  if (!decode(msg, obj)) {
+    throw DecodingException("Could not decode the message into a CartesianTrajectory");
+  }
+  return obj;
+}
+template<>
+bool decode(const std::string& msg, CartesianTrajectory& obj) {
+  try {
+    proto::StateMessage message;
+    if (!(message.ParseFromString(msg) && message.message_type_case() == proto::StateMessage::MessageTypeCase::kCartesianTrajectory)) {
+      return false;
+    }
+    obj = decoder(message.cartesian_trajectory());
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
+/* ----------------------
+ *    JointTrajectory
+ * ---------------------- */
+template<>
+std::string encode(const JointTrajectory& obj);
+template<>
+JointTrajectory decode(const std::string& msg);
+template<>
+bool decode(const std::string& msg, JointTrajectory& obj);
+template<>
+std::string encode(const JointTrajectory& obj) {
+  proto::StateMessage message;
+  *message.mutable_joint_trajectory() = encoder(obj);
+  return message.SerializeAsString();
+}
+template<>
+JointTrajectory decode(const std::string& msg) {
+  JointTrajectory obj;
+  if (!decode(msg, obj)) {
+    throw DecodingException("Could not decode the message into a JointTrajectory");
+  }
+  return obj;
+}
+template<>
+bool decode(const std::string& msg, JointTrajectory& obj) {
+  try {
+    proto::StateMessage message;
+    if (!(message.ParseFromString(msg) && message.message_type_case() == proto::StateMessage::MessageTypeCase::kJointTrajectory)) {
+      return false;
+    }
+    obj = decoder(message.joint_trajectory());
+    return true;
+  } catch (...) {
+    return false;
+  }
+}
+
+/* ----------------------
  *      Parameter<T>
  * ---------------------- */
 template<typename T>
@@ -1177,6 +1253,12 @@ std::string encode<std::shared_ptr<State>>(const std::shared_ptr<State>& obj) {
     case StateType::JACOBIAN:
       message = encode<Jacobian>(*safe_dynamic_pointer_cast<Jacobian>(obj));
       break;
+    case StateType::CARTESIAN_TRAJECTORY:
+      message = encode<CartesianTrajectory>(*safe_dynamic_pointer_cast<CartesianTrajectory>(obj));
+      break;
+    case StateType::JOINT_TRAJECTORY:
+      message = encode<JointTrajectory>(*safe_dynamic_pointer_cast<JointTrajectory>(obj));
+      break;
     case StateType::PARAMETER: {
       auto param_ptr = safe_dynamic_pointer_cast<ParameterInterface>(obj);
       switch (param_ptr->get_parameter_type()) {
@@ -1281,6 +1363,12 @@ std::shared_ptr<State> decode(const std::string& msg) {
     case MessageType::JACOBIAN_MESSAGE:
       obj = make_shared_state(Jacobian());
       break;
+    case MessageType::CARTESIAN_TRAJECTORY_MESSAGE:
+      obj = make_shared_state(CartesianTrajectory());
+      break;
+    case MessageType::JOINT_TRAJECTORY_MESSAGE:
+      obj = make_shared_state(JointTrajectory());
+      break;
     case MessageType::PARAMETER_MESSAGE: {
       switch (check_parameter_message_type(msg)) {
         case ParameterMessageType::BOOL:
@@ -1376,6 +1464,12 @@ bool decode(const std::string& msg, std::shared_ptr<State>& obj) {
         break;
       case StateType::JACOBIAN:
         obj = make_shared_state(decode<Jacobian>(msg));
+        break;
+      case StateType::CARTESIAN_TRAJECTORY:
+        obj = make_shared_state(decode<CartesianTrajectory>(msg));
+        break;
+      case StateType::JOINT_TRAJECTORY:
+        obj = make_shared_state(decode<JointTrajectory>(msg));
         break;
       case StateType::PARAMETER: {
         auto param_ptr = safe_dynamic_pointer_cast<ParameterInterface>(obj);

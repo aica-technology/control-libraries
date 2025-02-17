@@ -1,3 +1,5 @@
+#include <chrono>
+
 #include "clproto/decoders.hpp"
 
 using namespace state_representation;
@@ -16,6 +18,37 @@ Eigen::Vector3d decoder(const proto::Vector3d& message) {
 
 Eigen::Quaterniond decoder(const proto::Quaterniond& message) {
   return {message.w(), message.vec().x(), message.vec().y(), message.vec().z()};
+}
+
+CartesianTrajectory decoder(const proto::CartesianTrajectory& message) {
+  CartesianTrajectory trajectory(message.state().name(), message.reference_frame());
+  if (message.state().empty()) {
+    return trajectory;
+  }
+  for (int i = 0; i < message.trajectory().data().size(); ++i) {
+    auto array = message.trajectory().data().at(i);
+    std::vector<double> data(array.mutable_values()->begin(), array.mutable_values()->end());
+    CartesianState state(message.trajectory().names().at(i), message.reference_frame());
+    state.set_data(data);
+    trajectory.add_point(state, std::chrono::nanoseconds(static_cast<int64_t>(message.trajectory().durations().at(i))));
+  }
+  return trajectory;
+}
+
+JointTrajectory decoder(const proto::JointTrajectory& message) {
+  JointTrajectory trajectory(message.state().name());
+  trajectory.set_joint_names({message.joint_names().begin(), message.joint_names().end()});
+  if (message.state().empty()) {
+    return trajectory;
+  }
+  for (int i = 0; i < message.trajectory().data().size(); ++i) {
+    auto array = message.trajectory().data().at(i);
+    std::vector<double> data(array.mutable_values()->begin(), array.mutable_values()->end());
+    JointState state(message.trajectory().names().at(i), trajectory.get_joint_names());
+    state.set_data(data);
+    trajectory.add_point(state, std::chrono::nanoseconds(static_cast<int64_t>(message.trajectory().durations().at(i))));
+  }
+  return trajectory;
 }
 
 template<>

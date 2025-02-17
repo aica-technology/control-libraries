@@ -19,6 +19,8 @@
 #include <state_representation/geometry/Ellipsoid.hpp>
 #include <state_representation/DigitalIOState.hpp>
 #include <state_representation/AnalogIOState.hpp>
+#include <state_representation/trajectory/CartesianTrajectory.hpp>
+#include <state_representation/trajectory/JointTrajectory.hpp>
 
 using namespace clproto;
 using namespace state_representation;
@@ -143,6 +145,8 @@ void message_type(py::module_& m) {
       .value("PARAMETER_MESSAGE", MessageType::PARAMETER_MESSAGE)
       .value("DIGITAL_IO_STATE_MESSAGE", MessageType::DIGITAL_IO_STATE_MESSAGE)
       .value("ANALOG_IO_STATE_MESSAGE", MessageType::ANALOG_IO_STATE_MESSAGE)
+      .value("CARTESIAN_TRAJECTORY_MESSAGE", MessageType::CARTESIAN_TRAJECTORY_MESSAGE)
+      .value("JOINT_TRAJECTORY_MESSAGE", MessageType::JOINT_TRAJECTORY_MESSAGE)
       .export_values();
 }
 
@@ -201,6 +205,10 @@ void methods(py::module_& m) {
           return encode_bytes<JointAccelerations>(object.cast<JointAccelerations>());
         case MessageType::JOINT_TORQUES_MESSAGE:
           return encode_bytes<JointTorques>(object.cast<JointTorques>());
+        case MessageType::CARTESIAN_TRAJECTORY_MESSAGE:
+          return encode_bytes<CartesianTrajectory>(object.cast<CartesianTrajectory>());
+        case MessageType::JOINT_TRAJECTORY_MESSAGE:
+          return encode_bytes<JointTrajectory>(object.cast<JointTrajectory>());
         case MessageType::PARAMETER_MESSAGE:
           return encode_parameter_container(object.cast<ParameterContainer>());
         default:
@@ -244,6 +252,10 @@ void methods(py::module_& m) {
           return py::cast(decode<JointAccelerations>(msg));
         case MessageType::JOINT_TORQUES_MESSAGE:
           return py::cast(decode<JointTorques>(msg));
+        case MessageType::CARTESIAN_TRAJECTORY_MESSAGE:
+          return py::cast(decode<CartesianTrajectory>(msg));
+        case MessageType::JOINT_TRAJECTORY_MESSAGE:
+          return py::cast(decode<JointTrajectory>(msg));
         case MessageType::PARAMETER_MESSAGE:
           return decode_parameter(msg);
         default:
