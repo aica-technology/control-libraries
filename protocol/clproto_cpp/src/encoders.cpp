@@ -1,3 +1,5 @@
+#include <cstdint>
+
 #include "clproto/encoders.hpp"
 
 using namespace state_representation;
@@ -215,6 +217,28 @@ proto::AnalogIOState encoder(const AnalogIOState& io_state) {
     return message;
   }
   *message.mutable_values() = matrix_encoder(io_state.data());
+  return message;
+}
+
+proto::CartesianTrajectory encoder(const CartesianTrajectory& trajectory) {
+  proto::CartesianTrajectory message;
+  *message.mutable_state() = encoder(static_cast<State>(trajectory));
+  *message.mutable_reference_frame() = trajectory.get_reference_frame();
+  if (trajectory.is_empty()) {
+    return message;
+  }
+  *message.mutable_trajectory() = trajectory_encoder(trajectory);
+  return message;
+}
+
+proto::JointTrajectory encoder(const JointTrajectory& trajectory) {
+  proto::JointTrajectory message;
+  *message.mutable_state() = encoder(static_cast<State>(trajectory));
+  *message.mutable_joint_names() = {trajectory.get_joint_names().begin(), trajectory.get_joint_names().end()};
+  if (trajectory.is_empty()) {
+    return message;
+  }
+  *message.mutable_trajectory() = trajectory_encoder(trajectory);
   return message;
 }
 }// namespace clproto

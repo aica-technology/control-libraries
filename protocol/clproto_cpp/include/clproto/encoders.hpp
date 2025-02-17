@@ -10,6 +10,8 @@
 #include <state_representation/space/SpatialState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/joint/JointState.hpp>
+#include <state_representation/trajectory/CartesianTrajectory.hpp>
+#include <state_representation/trajectory/JointTrajectory.hpp>
 
 #include "state_representation/state_message.pb.h"
 
@@ -65,6 +67,8 @@ state_representation::proto::Jacobian encoder(const state_representation::Jacobi
 state_representation::proto::JointState encoder(const state_representation::JointState& joint_state);
 state_representation::proto::AnalogIOState encoder(const state_representation::AnalogIOState& analog_io_state);
 state_representation::proto::DigitalIOState encoder(const state_representation::DigitalIOState& digital_io_state);
+state_representation::proto::CartesianTrajectory encoder(const state_representation::CartesianTrajectory& trajectory);
+state_representation::proto::JointTrajectory encoder(const state_representation::JointTrajectory& trajectory);
 
 /*
  * Definitions for templated RepeatedField methods
@@ -79,5 +83,26 @@ inline state_representation::proto::Parameter encoder(const state_representation
   state_representation::proto::Parameter message;
   *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
   return encoder<ParamT>(message, parameter);
+}
+
+/*
+ * Definitions for templated trajecotry methods
+ */
+template<typename TrajectoryT>
+inline state_representation::proto::Trajectory trajectory_encoder(const TrajectoryT& trajectory) {
+  state_representation::proto::Trajectory message;
+  std::vector<std::string> names;
+  std::vector<uint64_t> durations;
+  for (unsigned int i = 0; i < trajectory.get_size(); ++i) {
+    auto [point, duration] = trajectory[i];
+    auto vec = point.data();
+    auto data = message.add_data();
+    *data->mutable_values() = {vec.data(), vec.data() + vec.size()};
+    names.push_back(point.get_name());
+    durations.push_back(duration.count());
+  }
+  *message.mutable_names() = {names.begin(), names.end()};
+  *message.mutable_durations() = {durations.begin(), durations.end()};
+  return message;
 }
 }// namespace clproto
