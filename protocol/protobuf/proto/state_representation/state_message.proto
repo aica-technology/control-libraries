@@ -12,6 +12,7 @@ import "state_representation/space/joint/joint_state.proto";
 import "state_representation/geometry/shape.proto";
 import "state_representation/geometry/ellipsoid.proto";
 import "state_representation/parameters/parameter.proto";
+import "state_representation/trajectory/trajectory.proto";
 
 message StateMessage {
   oneof message_type {
@@ -33,5 +34,7 @@ message StateMessage {
     Parameter parameter = 16;
     DigitalIOState digital_io_state = 17;
     AnalogIOState analog_io_state = 18;
+    CartesianTrajectory cartesian_trajectory = 19;
+    JointTrajectory joint_trajectory = 20;
   }
 }

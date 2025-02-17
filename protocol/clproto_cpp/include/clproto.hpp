@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
 #include <chrono>
+#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -71,7 +71,9 @@ enum MessageType {
   ELLIPSOID_MESSAGE = 15,
   PARAMETER_MESSAGE = 16,
   DIGITAL_IO_STATE_MESSAGE = 17,
-  ANALOG_IO_STATE_MESSAGE = 18
+  ANALOG_IO_STATE_MESSAGE = 18,
+  CARTESIAN_TRAJECTORY_MESSAGE = 19,
+  JOINT_TRAJECTORY_MESSAGE = 20
 };
 
 /**
@@ -227,4 +229,4 @@ template<typename T>
 T from_json(const std::string& json) {
   return decode<T>(from_json(json));
 }
-}
+}// namespace clproto
