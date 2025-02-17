@@ -4,6 +4,8 @@
 
 #include <state_representation/State.hpp>
 #include <state_representation/parameters/Parameter.hpp>
+#include <state_representation/trajectory/CartesianTrajectory.hpp>
+#include <state_representation/trajectory/JointTrajectory.hpp>
 
 #include "state_representation/state_message.pb.h"
 
@@ -44,6 +46,8 @@ state_representation::Parameter<ParamT> decoder(const state_representation::prot
 std::vector<bool> decoder(const google::protobuf::RepeatedField<bool>& message);
 Eigen::Vector3d decoder(const state_representation::proto::Vector3d& message);
 Eigen::Quaterniond decoder(const state_representation::proto::Quaterniond& message);
+state_representation::CartesianTrajectory decoder(const state_representation::proto::CartesianTrajectory& message);
+state_representation::JointTrajectory decoder(const state_representation::proto::JointTrajectory& message);
 
 /*
  * Definitions for templated RepeatedField methods
@@ -58,4 +62,4 @@ std::vector<FieldT> decoder(const google::protobuf::RepeatedPtrField<FieldT>& me
   return {message.begin(), message.end()};
 }
 
-}
+}// namespace clproto

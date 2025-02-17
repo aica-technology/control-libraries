@@ -24,6 +24,7 @@ Release Versions
 - feat: move up to C++20 (#220)
 - feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223, #226)
 - feat: add trajectory class bindings and python tests (#219)
+- feat: implement serialization helpers for trajectory classes (#228)
 
 ## 9.1.0
 

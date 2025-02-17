@@ -10,8 +10,7 @@ namespace clproto {
 template<typename T>
 static void test_encode_decode(
     const T& send_state, clproto::MessageType type, std::function<void(const T&, const T&)> test_func,
-    clproto::ParameterMessageType param_type = clproto::ParameterMessageType::UNKNOWN_PARAMETER
-) {
+    clproto::ParameterMessageType param_type = clproto::ParameterMessageType::UNKNOWN_PARAMETER) {
   std::string msg = clproto::encode(send_state);
   EXPECT_TRUE(clproto::is_valid(msg));
   EXPECT_EQ(clproto::check_message_type(msg), type);
