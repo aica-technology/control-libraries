@@ -1,4 +1,4 @@
-ARG BASE_TAG=24.04
+ARG BASE_TAG=22.04
 FROM ubuntu:${BASE_TAG} AS base
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -92,7 +92,7 @@ COPY --from=base-dependencies /tmp/deps /usr
 ARG TARGETPLATFORM
 ARG CACHEID
 ARG PINOCCHIO_TAG=v2.6.20
-ARG HPP_FCL_TAG=v2.4.4
+ARG HPP_FCL_TAG=v2.4.5
 # FIXME: it would be nicer to have it all in the root CMakelists.txt but:
 #  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
 #  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
@@ -133,6 +133,11 @@ COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
   cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
   && cmake --build build && cmake --install build --prefix /tmp/deps
+
+RUN mkdir -p /tmp/deps/bin
+COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/include/google /tmp/deps/include/google
+COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/lib/libproto* /tmp/deps/lib/
+COPY --from=ghcr.io/epfl-lasa/control-libraries/proto-dependencies:22.04 /usr/local/bin/protoc /tmp/deps/bin
 COPY --from=base-dependencies /tmp/deps /tmp/deps
 COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
@@ -141,9 +146,16 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 
 FROM code AS development
+# create and configure a new user
+ARG UID=1000
+ARG GID=1000
+ENV USER ubuntu
+ENV HOME /home/${USER}
 
-RUN usermod -a -G dialout ubuntu
-RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
+RUN addgroup --gid ${GID} ${USER}
+RUN adduser --gecos "Remote User" --uid ${UID} --gid ${GID} ${USER} && yes | passwd ${USER}
+RUN usermod -a -G dialout ${USER}
+RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
 RUN chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget
 
 # Configure sshd server settings
@@ -200,7 +212,7 @@ RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=10
 RUN mv /tmp/python/local /tmp/python-usr
 
 FROM cpp-test AS python-test
-RUN pip install pytest --break-system-packages
+RUN pip install pytest
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
 COPY ./python/test /test
@@ -211,7 +223,7 @@ ARG TARGETPLATFORM
 ARG CACHEID
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
-RUN pip install pybind11-stubgen --break-system-packages
+RUN pip install pybind11-stubgen
 RUN --mount=type=cache,target=/.cache,id=pip-${TARGETPLATFORM}-${CACHEID},uid=1000 \
 <<HEREDOC
 for PKG in state_representation dynamical_systems robot_model controllers clproto; do
