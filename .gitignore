@@ -49,3 +49,10 @@ source/tmp
 # protobuf generated bindings
 protocol/protobuf/bindings/
 .DS_Store
+
+# clangd generated files
+compile_commands.json
+.cache
+.onCreateCommandMarker
+.postCreateCommandMarker
+.updateContentCommandMarker
