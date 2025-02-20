@@ -9,9 +9,9 @@ RUN apt-get update && apt-get install -y \
     libgtest-dev \
     python3-pip \
     ssh \
-    sudo
-ARG ADDITIONAL_DEPENDENCIES
-RUN if [ "$ADDITIONAL_DEPENDENCIES" = "development" ]; then sudo apt install -y clangd clang-format; fi
+    sudo \ 
+    clangd \
+    clang-format
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -160,7 +160,7 @@ COPY ./docker/sshd_entrypoint.sh /sshd_entrypoint.sh
 RUN chmod 744 /sshd_entrypoint.sh
 
 RUN mkdir /guidelines && cd /guidelines \
-  && wget https://raw.githubusercontent.com/aica-technology/.github/v0.9.0/guidelines/.clang-format # TODO: consider update
+  && wget https://raw.githubusercontent.com/aica-technology/.github/v1.0.4/guidelines/.clang-format
 
 USER ${USER}
 WORKDIR /src

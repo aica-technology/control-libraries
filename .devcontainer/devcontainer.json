@@ -5,7 +5,6 @@
       "docker",
       "build",
       "--target=development",
-      "--build-arg=ADDITIONAL_DEPENDENCIES=development",
       "--tag=control-libraries:development",
       "."
     ],
