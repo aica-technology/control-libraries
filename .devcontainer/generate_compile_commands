@@ -23,6 +23,6 @@ sudo chown ubuntu:ubuntu /ws
 cd /ws && mkdir build
 cmake -B build -S src -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=ON -DBUILD_PROTOCOL=ON
 if [ $BUILD -eq 1 ]; then
-  cmake --build build -j $(( `nproc` > 1 ? `nproc` - 1 : num_cores ))
+  cmake --build build -j $(( `nproc` > 1 ? `nproc` - 1 : 1 ))
 fi
 cp build/compile_commands.json /src
