@@ -1,6 +1,7 @@
 #!/bin/sh
 
 BUILD=0
+CMAKE_ARGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 
 HELP_MESSAGE="
 Usage: ./generate_compile_commands [OPTIONS]
@@ -8,12 +9,20 @@ Usage: ./generate_compile_commands [OPTIONS]
 Generate compile commands for clangd. The following options are supported:
 
   --build                  Build the project to also generate protobuf files.
+  --cmake-args <args>      Additional CMake arguments (space-separated).
   -h|--help                Show this help message.
 "
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --build) BUILD=1; shift 1;;
+    --cmake-args)
+      shift
+      while [ "$#" -gt 0 ] && [ "${1#-}" = "$1" ]; do
+        CMAKE_ARGS="$CMAKE_ARGS -D$1"
+        shift
+      done
+      ;;
     -h|--help) echo "$HELP_MESSAGE"; exit 0;;
   esac
 done
@@ -21,7 +30,7 @@ done
 sudo mkdir /ws && sudo ln -s /src /ws/src
 sudo chown ubuntu:ubuntu /ws
 cd /ws && mkdir build
-cmake -B build -S src -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DBUILD_TESTING=ON -DBUILD_PROTOCOL=ON
+cmake -B build -S src $CMAKE_ARGS
 if [ $BUILD -eq 1 ]; then
   cmake --build build -j $(( `nproc` > 1 ? `nproc` - 1 : 1 ))
 fi

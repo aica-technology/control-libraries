@@ -23,5 +23,5 @@
         ]
       }
     },
-    "postCreateCommand": "/tmp/generate_compile_commands --build"
+    "postCreateCommand": "/tmp/generate_compile_commands --cmake-args BUILD_TESTING=ON BUILD_PROTOCOL=ON --build"
 }
