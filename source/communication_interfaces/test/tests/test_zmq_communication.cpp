@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
 #include "communication_interfaces/sockets/ZMQPublisher.hpp"
 #include "communication_interfaces/sockets/ZMQPublisherSubscriber.hpp"
 #include "communication_interfaces/sockets/ZMQSubscriber.hpp"

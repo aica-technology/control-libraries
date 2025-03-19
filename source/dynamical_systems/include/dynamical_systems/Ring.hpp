@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cmath>
+#include <vector>
+
 #include "dynamical_systems/IDynamicalSystem.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include <cmath>
 
 namespace dynamical_systems {
 

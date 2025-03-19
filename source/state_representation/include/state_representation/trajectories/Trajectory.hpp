@@ -1,8 +1,9 @@
 #pragma once
 
-#include "state_representation/State.hpp"
 #include <chrono>
 #include <deque>
+
+#include "state_representation/State.hpp"
 
 namespace state_representation {
 template<class StateT>

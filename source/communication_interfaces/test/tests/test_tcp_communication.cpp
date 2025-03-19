@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include <thread>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
 #include "communication_interfaces/sockets/TCPClient.hpp"
 #include "communication_interfaces/sockets/TCPServer.hpp"
 
