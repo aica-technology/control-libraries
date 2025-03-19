@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   check-version:
@@ -18,12 +19,17 @@ jobs:
           fetch-depth: 2
       - id: versions
         run: |
-          PREV_VERSION=$(git show HEAD^:VERSION)
+          git show HEAD^:VERSION 2>/dev/null
+            if [[ $? == 0 ]]; then
+              PREV_VERSION=$(git show HEAD^:VERSION)
+            else
+              PREV_VERSION=0.0.0
+            fi
           NEW_VERSION=$(git show HEAD:VERSION)
           echo "prev_version=${PREV_VERSION}" >> $GITHUB_OUTPUT
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
         shell: bash
-      - uses: aica-technology/.github/.github/actions/compare-versions@v0.11.0
+      - uses: aica-technology/.github/.github/actions/compare-versions@v1.0.2
         id: check
         with:
           previous_version: ${{ steps.versions.outputs.prev_version }}
@@ -48,9 +54,13 @@ jobs:
           CREATE_TAG=false
           GIT_TAG=""
           if [ ${{ needs.check-version.outputs.has_changed }} = 'true' ]; then
-            CREATE_TAG=true
-            GIT_TAG="v${{ needs.check-version.outputs.version }}"
-            IMAGE_TAGS=latest,"${GIT_TAG}",rolling
+            if [[ "${{ needs.check-version.outputs.version }}" == *"-rc"* ]]; then
+              IMAGE_TAGS="v${{ needs.check-version.outputs.version }}"
+            else
+              CREATE_TAG=true
+              GIT_TAG="v${{ needs.check-version.outputs.version }}"
+              IMAGE_TAGS=latest,"${GIT_TAG}",rolling
+            fi
           else
             IMAGE_TAGS=rolling
           fi
