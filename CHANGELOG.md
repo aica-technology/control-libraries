@@ -22,6 +22,7 @@ Release Versions
 - feat: improve support for transformation matrices (#146)
 - fix: unstable python test (#221)
 - feat: improve devcontainer configuration (#230)
+- ci: allow workflow dispatch for rc images (#234)
 
 ## 9.1.0
 
