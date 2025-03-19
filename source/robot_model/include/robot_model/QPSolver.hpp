@@ -63,7 +63,8 @@ public:
   explicit QPSolver(
       const unsigned nb_joints, pinocchio::ModelTpl<double>::ConfigVectorType lower_position_limit,
       pinocchio::ModelTpl<double>::ConfigVectorType upper_position_limit,
-      pinocchio::ModelTpl<double>::TangentVectorType velocity_limit);
+      pinocchio::ModelTpl<double>::TangentVectorType velocity_limit
+  );
 
   /**
    * @brief Copy constructor of the QP solver
@@ -88,7 +89,8 @@ public:
       std::vector<Eigen::Triplet<double>> coefficients, const QPInverseVelocityParameters& parameters,
       const state_representation::JointPositions& joint_positions,
       const state_representation::CartesianPose& full_displacement, const Eigen::VectorXd& delta_robot,
-      const Eigen::MatrixXd& jacobian);
+      const Eigen::MatrixXd& jacobian
+  );
 
   /**
    * @brief Helper function to print the qp_problem (for debugging)

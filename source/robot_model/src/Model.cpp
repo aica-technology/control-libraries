@@ -1,44 +1,41 @@
-#include <regex>
-#include <set>
+#include "robot_model/Model.hpp"
+#include "robot_model/exceptions/CollisionGeometryException.hpp"
+#include "robot_model/exceptions/FrameNotFoundException.hpp"
+#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
-#include "robot_model/Model.hpp"
-#include "robot_model/exceptions/FrameNotFoundException.hpp"
-#include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
-#include "robot_model/exceptions/CollisionGeometryException.hpp"
+#include <regex>
+#include <set>
 
 namespace robot_model {
-Model::Model(const std::string& robot_name, 
-             const std::string& urdf_path,
-             const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
-             ):
-    robot_name_(robot_name),
-    urdf_path_(urdf_path),
-    meshloader_callback_(meshloader_callback),
-    load_collision_geometries_(true)
-    {
+Model::Model(
+    const std::string& robot_name, const std::string& urdf_path,
+    const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
+)
+    : robot_name_(robot_name),
+      urdf_path_(urdf_path),
+      meshloader_callback_(meshloader_callback),
+      load_collision_geometries_(true) {
   this->init_model();
 }
 
-Model::Model(const std::string& robot_name, const std::string& urdf_path) :
-    robot_name_(robot_name),
-    urdf_path_(urdf_path)
-    {
+Model::Model(const std::string& robot_name, const std::string& urdf_path)
+    : robot_name_(robot_name), urdf_path_(urdf_path) {
   this->init_model();
 }
 
-Model::Model(const Model& other):
-    robot_name_(other.robot_name_),
-    urdf_path_(other.urdf_path_),
-    frames_(other.frames_),
-    robot_model_(other.robot_model_),
-    robot_data_(other.robot_data_),
-    meshloader_callback_(other.meshloader_callback_),
-    geom_model_(other.geom_model_),
-    geom_data_(other.geom_data_),
-    qp_solver_(std::make_unique<QPSolver>(*other.qp_solver_)),
-    load_collision_geometries_(other.load_collision_geometries_) {}
+Model::Model(const Model& other)
+    : robot_name_(other.robot_name_),
+      urdf_path_(other.urdf_path_),
+      frames_(other.frames_),
+      robot_model_(other.robot_model_),
+      robot_data_(other.robot_data_),
+      meshloader_callback_(other.meshloader_callback_),
+      geom_model_(other.geom_model_),
+      geom_data_(other.geom_data_),
+      qp_solver_(std::make_unique<QPSolver>(*other.qp_solver_)),
+      load_collision_geometries_(other.load_collision_geometries_) {}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);
@@ -115,14 +112,16 @@ void Model::init_model() {
   // define the QP solver
   this->qp_solver_ = std::make_unique<QPSolver>(
       this->get_number_of_joints(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit,
-      this->robot_model_.velocityLimit);
+      this->robot_model_.velocityLimit
+  );
 }
 
 void Model::init_geom_model(std::string urdf) {
   try {
     auto package_paths = this->resolve_package_paths_in_urdf(urdf);
     pinocchio::urdf::buildGeom(
-        this->robot_model_, std::istringstream(urdf), pinocchio::COLLISION, this->geom_model_, package_paths);
+        this->robot_model_, std::istringstream(urdf), pinocchio::COLLISION, this->geom_model_, package_paths
+    );
     this->geom_model_.addAllCollisionPairs();
 
     std::vector<pinocchio::CollisionPair> excluded_pairs = this->generate_joint_exclusion_list();
@@ -135,7 +134,8 @@ void Model::init_geom_model(std::string urdf) {
     this->geom_data_ = pinocchio::GeometryData(this->geom_model_);
   } catch (const std::exception& ex) {
     throw robot_model::exceptions::CollisionGeometryException(
-        "Failed to initialize geometry model for " + this->get_robot_name() + ": " + ex.what());
+        "Failed to initialize geometry model for " + this->get_robot_name() + ": " + ex.what()
+    );
   }
 }
 
@@ -174,13 +174,15 @@ bool Model::is_geometry_model_initialized() {
 bool Model::check_collision(const state_representation::JointPositions& joint_positions) {
   if (!this->is_geometry_model_initialized()) {
     throw robot_model::exceptions::CollisionGeometryException(
-        "Geometry model not loaded for " + this->get_robot_name());
+        "Geometry model not loaded for " + this->get_robot_name()
+    );
   }
 
   Eigen::VectorXd configuration = joint_positions.get_positions();
 
   pinocchio::computeCollisions(
-      this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true);
+      this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration, true
+  );
 
   for (size_t pair_index = 0; pair_index < this->geom_model_.collisionPairs.size(); ++pair_index) {
     const auto& collision_result = this->geom_data_.collisionResults[pair_index];
@@ -191,14 +193,17 @@ bool Model::check_collision(const state_representation::JointPositions& joint_po
   return false;
 }
 
-Eigen::MatrixXd Model::compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions) {
+Eigen::MatrixXd Model::compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions
+) {
   if (!this->is_geometry_model_initialized()) {
     throw robot_model::exceptions::CollisionGeometryException(
-        "Geometry model not loaded for " + this->get_robot_name());
+        "Geometry model not loaded for " + this->get_robot_name()
+    );
   }
   Eigen::VectorXd configuration = joint_positions.get_positions();
   pinocchio::computeDistances(
-      this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration);
+      this->robot_model_, this->robot_data_, this->geom_model_, this->geom_data_, configuration
+  );
 
   // nb_joints is the number of joints in the robot model
   unsigned int nb_joints = this->get_number_of_joints();
@@ -218,7 +223,7 @@ Eigen::MatrixXd Model::compute_minimum_collision_distances(const state_represent
 
   return distances;
 }
-  
+
 std::vector<unsigned int> Model::get_frame_ids(const std::vector<std::string>& frames) {
   std::vector<unsigned int> frame_ids;
   frame_ids.reserve(frames.size());
@@ -242,37 +247,34 @@ unsigned int Model::get_frame_id(const std::string& frame) {
   return get_frame_ids(std::vector<std::string>{frame}).back();
 }
 
-state_representation::Jacobian Model::compute_jacobian(const state_representation::JointPositions& joint_positions,
-                                                       unsigned int frame_id) {
+state_representation::Jacobian
+Model::compute_jacobian(const state_representation::JointPositions& joint_positions, unsigned int frame_id) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   // compute the Jacobian from the joint state
   pinocchio::Data::Matrix6x J(6, this->get_number_of_joints());
   J.setZero();
-  pinocchio::computeFrameJacobian(this->robot_model_,
-                                  this->robot_data_,
-                                  joint_positions.data(),
-                                  frame_id,
-                                  pinocchio::LOCAL_WORLD_ALIGNED,
-                                  J);
+  pinocchio::computeFrameJacobian(
+      this->robot_model_, this->robot_data_, joint_positions.data(), frame_id, pinocchio::LOCAL_WORLD_ALIGNED, J
+  );
   // the model does not have any reference frame
-  return state_representation::Jacobian(this->get_robot_name(),
-                                        this->get_joint_frames(),
-                                        this->robot_model_.frames[frame_id].name,
-                                        J,
-                                        this->get_base_frame());
+  return state_representation::Jacobian(
+      this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, J,
+      this->get_base_frame()
+  );
 }
 
-state_representation::Jacobian Model::compute_jacobian(const state_representation::JointPositions& joint_positions,
-                                                       const std::string& frame) {
+state_representation::Jacobian
+Model::compute_jacobian(const state_representation::JointPositions& joint_positions, const std::string& frame) {
   auto frame_id = get_frame_id(frame);
   return this->compute_jacobian(joint_positions, frame_id);
 }
 
-Eigen::MatrixXd Model::compute_jacobian_time_derivative(const state_representation::JointPositions& joint_positions,
-                                                        const state_representation::JointVelocities& joint_velocities,
-                                                        unsigned int frame_id) {
+Eigen::MatrixXd Model::compute_jacobian_time_derivative(
+    const state_representation::JointPositions& joint_positions,
+    const state_representation::JointVelocities& joint_velocities, unsigned int frame_id
+) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
@@ -281,22 +283,20 @@ Eigen::MatrixXd Model::compute_jacobian_time_derivative(const state_representati
   }
   // compute the Jacobian from the joint state
   pinocchio::Data::Matrix6x dJ = Eigen::MatrixXd::Zero(6, this->get_number_of_joints());
-  pinocchio::computeJointJacobiansTimeVariation(this->robot_model_,
-                                                this->robot_data_,
-                                                joint_positions.data(),
-                                                joint_velocities.data());
-  pinocchio::getFrameJacobianTimeVariation(this->robot_model_,
-                                           this->robot_data_,
-                                           frame_id,
-                                           pinocchio::LOCAL_WORLD_ALIGNED,
-                                           dJ);
+  pinocchio::computeJointJacobiansTimeVariation(
+      this->robot_model_, this->robot_data_, joint_positions.data(), joint_velocities.data()
+  );
+  pinocchio::getFrameJacobianTimeVariation(
+      this->robot_model_, this->robot_data_, frame_id, pinocchio::LOCAL_WORLD_ALIGNED, dJ
+  );
   // the model does not have any reference frame
   return dJ;
 }
 
-Eigen::MatrixXd Model::compute_jacobian_time_derivative(const state_representation::JointPositions& joint_positions,
-                                                        const state_representation::JointVelocities& joint_velocities,
-                                                        const std::string& frame) {
+Eigen::MatrixXd Model::compute_jacobian_time_derivative(
+    const state_representation::JointPositions& joint_positions,
+    const state_representation::JointVelocities& joint_velocities, const std::string& frame
+) {
   auto frame_id = get_frame_id(frame);
   return this->compute_jacobian_time_derivative(joint_positions, joint_velocities, frame_id);
 }
@@ -312,24 +312,23 @@ Eigen::MatrixXd Model::compute_inertia_matrix(const state_representation::JointP
 
 state_representation::JointTorques Model::compute_inertia_torques(const state_representation::JointState& joint_state) {
   Eigen::MatrixXd inertia = this->compute_inertia_matrix(joint_state);
-  return state_representation::JointTorques(joint_state.get_name(),
-                                            joint_state.get_names(),
-                                            inertia * joint_state.get_accelerations());
+  return state_representation::JointTorques(
+      joint_state.get_name(), joint_state.get_names(), inertia * joint_state.get_accelerations()
+  );
 }
 
 Eigen::MatrixXd Model::compute_coriolis_matrix(const state_representation::JointState& joint_state) {
-  return pinocchio::computeCoriolisMatrix(this->robot_model_,
-                                          this->robot_data_,
-                                          joint_state.get_positions(),
-                                          joint_state.get_velocities());
+  return pinocchio::computeCoriolisMatrix(
+      this->robot_model_, this->robot_data_, joint_state.get_positions(), joint_state.get_velocities()
+  );
 }
 
-state_representation::JointTorques
-Model::compute_coriolis_torques(const state_representation::JointState& joint_state) {
+state_representation::JointTorques Model::compute_coriolis_torques(const state_representation::JointState& joint_state
+) {
   Eigen::MatrixXd coriolis_matrix = this->compute_coriolis_matrix(joint_state);
-  return state_representation::JointTorques(joint_state.get_name(),
-                                            joint_state.get_names(),
-                                            coriolis_matrix * joint_state.get_velocities());
+  return state_representation::JointTorques(
+      joint_state.get_name(), joint_state.get_names(), coriolis_matrix * joint_state.get_velocities()
+  );
 }
 
 state_representation::JointTorques
@@ -339,13 +338,14 @@ Model::compute_gravity_torques(const state_representation::JointPositions& joint
   return state_representation::JointTorques(joint_positions.get_name(), joint_positions.get_names(), gravity_torque);
 }
 
-state_representation::CartesianPose Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                              unsigned int frame_id) {
+state_representation::CartesianPose
+Model::forward_kinematics(const state_representation::JointPositions& joint_positions, unsigned int frame_id) {
   return this->forward_kinematics(joint_positions, std::vector<unsigned int>{frame_id}).front();
 }
 
-std::vector<state_representation::CartesianPose> Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                           const std::vector<unsigned int>& frame_ids) {
+std::vector<state_representation::CartesianPose> Model::forward_kinematics(
+    const state_representation::JointPositions& joint_positions, const std::vector<unsigned int>& frame_ids
+) {
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
@@ -360,23 +360,23 @@ std::vector<state_representation::CartesianPose> Model::forward_kinematics(const
     Eigen::Vector3d translation = pose.translation();
     Eigen::Quaterniond quaternion;
     pinocchio::quaternion::assignQuaternion(quaternion, pose.rotation());
-    state_representation::CartesianPose frame_pose(this->robot_model_.frames[id].name,
-                                                   translation,
-                                                   quaternion,
-                                                   this->get_base_frame());
+    state_representation::CartesianPose frame_pose(
+        this->robot_model_.frames[id].name, translation, quaternion, this->get_base_frame()
+    );
     pose_vector.push_back(frame_pose);
   }
   return pose_vector;
 }
 
-state_representation::CartesianPose Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                              const std::string& frame) {
+state_representation::CartesianPose
+Model::forward_kinematics(const state_representation::JointPositions& joint_positions, const std::string& frame) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   return this->forward_kinematics(joint_positions, std::vector<std::string>{actual_frame}).front();
 }
 
-std::vector<state_representation::CartesianPose> Model::forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                           const std::vector<std::string>& frames) {
+std::vector<state_representation::CartesianPose> Model::forward_kinematics(
+    const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames
+) {
   auto frame_ids = get_frame_ids(frames);
   return this->forward_kinematics(joint_positions, frame_ids);
 }
@@ -424,7 +424,8 @@ Model::cwln_repulsive_potential_field(const state_representation::JointPositions
 state_representation::JointPositions Model::inverse_kinematics(
     const state_representation::CartesianPose& cartesian_pose,
     const state_representation::JointPositions& joint_positions, const InverseKinematicsParameters& parameters,
-    const std::string& frame) {
+    const std::string& frame
+) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
   if (!this->robot_model_.existFrame(actual_frame)) {
     throw exceptions::FrameNotFoundException(actual_frame);
@@ -452,7 +453,8 @@ state_representation::JointPositions Model::inverse_kinematics(
       if (err.norm() < parameters.tolerance) {
         if (!this->in_range(q)) {
           throw std::runtime_error(
-              "The inverse kinematics algorithm converged to a configuration that is not within joint limits.");
+              "The inverse kinematics algorithm converged to a configuration that is not within joint limits."
+          );
         }
         return q;
       }
@@ -476,17 +478,16 @@ state_representation::JointPositions Model::inverse_kinematics(
   throw exceptions::InverseKinematicsNotConvergingException(parameters.max_number_of_iterations, err.norm());
 }
 
-state_representation::JointPositions
-Model::inverse_kinematics(const state_representation::CartesianPose& cartesian_pose,
-                          const InverseKinematicsParameters& parameters,
-                          const std::string& frame) {
+state_representation::JointPositions Model::inverse_kinematics(
+    const state_representation::CartesianPose& cartesian_pose, const InverseKinematicsParameters& parameters,
+    const std::string& frame
+) {
   state_representation::JointPositions positions(this->get_robot_name(), this->get_joint_frames());
   return this->inverse_kinematics(cartesian_pose, positions, parameters, frame);
 }
 
 std::vector<state_representation::CartesianTwist>
-Model::forward_velocity(const state_representation::JointState& joint_state,
-                        const std::vector<std::string>& frames) {
+Model::forward_velocity(const state_representation::JointState& joint_state, const std::vector<std::string>& frames) {
   std::vector<state_representation::CartesianTwist> cartesian_twists(frames.size());
   for (std::size_t i = 0; i < frames.size(); ++i) {
     cartesian_twists.at(i) = this->compute_jacobian(joint_state, frames.at(i))
@@ -495,14 +496,15 @@ Model::forward_velocity(const state_representation::JointState& joint_state,
   return cartesian_twists;
 }
 
-state_representation::CartesianTwist Model::forward_velocity(const state_representation::JointState& joint_state,
-                                                             const std::string& frame) {
+state_representation::CartesianTwist
+Model::forward_velocity(const state_representation::JointState& joint_state, const std::string& frame) {
   return this->forward_velocity(joint_state, std::vector<std::string>{frame}).front();
 }
 
-void Model::check_inverse_velocity_arguments(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                                             const state_representation::JointPositions& joint_positions,
-                                             const std::vector<std::string>& frames) {
+void Model::check_inverse_velocity_arguments(
+    const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+    const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames
+) {
   if (cartesian_twists.size() != frames.size()) {
     throw std::invalid_argument("The number of provided twists and frames does not match");
   }
@@ -516,11 +518,11 @@ void Model::check_inverse_velocity_arguments(const std::vector<state_representat
   }
 }
 
-state_representation::JointVelocities
-Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                        const state_representation::JointPositions& joint_positions,
-                        const std::vector<std::string>& frames,
-                        const double dls_lambda) {
+state_representation::JointVelocities Model::inverse_velocity(
+    const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+    const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames,
+    const double dls_lambda
+) {
   // sanity check
   this->check_inverse_velocity_arguments(cartesian_twists, joint_positions, frames);
 
@@ -539,43 +541,45 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   jacobian.bottomRows(6) = this->compute_jacobian(joint_positions, frames.back()).data();
 
   if (dls_lambda == 0.0) {
-    return state_representation::JointVelocities(joint_positions.get_name(),
-                                                 joint_positions.get_names(),
-                                                 jacobian.colPivHouseholderQr().solve(dX));
+    return state_representation::JointVelocities(
+        joint_positions.get_name(), joint_positions.get_names(), jacobian.colPivHouseholderQr().solve(dX)
+    );
   }
 
   // add damped least square term
   if (jacobian.rows() > jacobian.cols()) {
-    Eigen::MatrixXd j_prime = jacobian.transpose() * jacobian + 
-                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols());
-    return state_representation::JointVelocities(joint_positions.get_name(),
-                                                 joint_positions.get_names(),
-                                                 j_prime.colPivHouseholderQr().solve(jacobian.transpose() * dX));
+    Eigen::MatrixXd j_prime = jacobian.transpose() * jacobian
+        + dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.cols(), jacobian.cols());
+    return state_representation::JointVelocities(
+        joint_positions.get_name(), joint_positions.get_names(),
+        j_prime.colPivHouseholderQr().solve(jacobian.transpose() * dX)
+    );
   } else {
-    Eigen::MatrixXd j_prime = jacobian * jacobian.transpose() + 
-                dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows());
-    return state_representation::JointVelocities(joint_positions.get_name(),
-                                                 joint_positions.get_names(),
-                                                 jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX));
+    Eigen::MatrixXd j_prime = jacobian * jacobian.transpose()
+        + dls_lambda * dls_lambda * Eigen::MatrixXd::Identity(jacobian.rows(), jacobian.rows());
+    return state_representation::JointVelocities(
+        joint_positions.get_name(), joint_positions.get_names(),
+        jacobian.transpose() * j_prime.colPivHouseholderQr().solve(dX)
+    );
   }
 }
 
-state_representation::JointVelocities Model::inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
-                                                              const state_representation::JointPositions& joint_positions,
-                                                              const std::string& frame,
-                                                              const double dls_lambda) {
+state_representation::JointVelocities Model::inverse_velocity(
+    const state_representation::CartesianTwist& cartesian_twist,
+    const state_representation::JointPositions& joint_positions, const std::string& frame, const double dls_lambda
+) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
-  return this->inverse_velocity(std::vector<state_representation::CartesianTwist>({cartesian_twist}),
-                                joint_positions,
-                                std::vector<std::string>({actual_frame}),
-                                dls_lambda);
+  return this->inverse_velocity(
+      std::vector<state_representation::CartesianTwist>({cartesian_twist}), joint_positions,
+      std::vector<std::string>({actual_frame}), dls_lambda
+  );
 }
 
-state_representation::JointVelocities
-Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                        const state_representation::JointPositions& joint_positions,
-                        const QPInverseVelocityParameters& parameters,
-                        const std::vector<std::string>& frames) {
+state_representation::JointVelocities Model::inverse_velocity(
+    const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+    const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
+    const std::vector<std::string>& frames
+) {
   using namespace state_representation;
   using namespace std::chrono;
   // sanity check
@@ -608,7 +612,7 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
     }
   }
   coefficients.emplace_back(Eigen::Triplet<double>(nb_joints, nb_joints, parameters.alpha));
-  
+
   // set the matrices
   this->qp_solver_->set_matrices(coefficients, parameters, joint_positions, full_displacement, delta_r, jacobian);
 
@@ -616,40 +620,39 @@ Model::inverse_velocity(const std::vector<state_representation::CartesianTwist>&
   auto solution = this->qp_solver_->solve();
 
   // extract the solution
-  JointPositions joint_displacement(joint_positions.get_name(),
-                                    joint_positions.get_names(),
-                                    solution.head(nb_joints));
+  JointPositions joint_displacement(joint_positions.get_name(), joint_positions.get_names(), solution.head(nb_joints));
   auto dt = solution.tail(1)(0);
   return JointPositions(joint_displacement) / dt;
 }
 
-state_representation::JointVelocities Model::inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
-                                                              const state_representation::JointPositions& joint_positions,
-                                                              const QPInverseVelocityParameters& parameters,
-                                                              const std::string& frame) {
+state_representation::JointVelocities Model::inverse_velocity(
+    const state_representation::CartesianTwist& cartesian_twist,
+    const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
+    const std::string& frame
+) {
   std::string actual_frame = frame.empty() ? this->robot_model_.frames.back().name : frame;
-  return this->inverse_velocity(std::vector<state_representation::CartesianTwist>({cartesian_twist}),
-                                joint_positions,
-                                parameters,
-                                std::vector<std::string>({actual_frame}));
+  return this->inverse_velocity(
+      std::vector<state_representation::CartesianTwist>({cartesian_twist}), joint_positions, parameters,
+      std::vector<std::string>({actual_frame})
+  );
 }
 
-bool Model::in_range(const Eigen::VectorXd& vector,
-                     const Eigen::VectorXd& lower_limits,
-                     const Eigen::VectorXd& upper_limits) {
+bool Model::in_range(
+    const Eigen::VectorXd& vector, const Eigen::VectorXd& lower_limits, const Eigen::VectorXd& upper_limits
+) {
   return ((vector.array() >= lower_limits.array()).all() && (vector.array() <= upper_limits.array()).all());
 }
 
 bool Model::in_range(const state_representation::JointPositions& joint_positions) const {
-  return this->in_range(joint_positions.get_positions(),
-                        this->robot_model_.lowerPositionLimit,
-                        this->robot_model_.upperPositionLimit);
+  return this->in_range(
+      joint_positions.get_positions(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit
+  );
 }
 
 bool Model::in_range(const state_representation::JointVelocities& joint_velocities) const {
-  return this->in_range(joint_velocities.get_velocities(),
-                        -this->robot_model_.velocityLimit,
-                        this->robot_model_.velocityLimit);
+  return this->in_range(
+      joint_velocities.get_velocities(), -this->robot_model_.velocityLimit, this->robot_model_.velocityLimit
+  );
 }
 
 bool Model::in_range(const state_representation::JointTorques& joint_torques) const {
@@ -657,34 +660,40 @@ bool Model::in_range(const state_representation::JointTorques& joint_torques) co
 }
 
 bool Model::in_range(const state_representation::JointState& joint_state) const {
-  return (this->in_range(static_cast<state_representation::JointPositions>(joint_state))
+  return (
+      this->in_range(static_cast<state_representation::JointPositions>(joint_state))
       && this->in_range(static_cast<state_representation::JointVelocities>(joint_state))
-      && this->in_range(static_cast<state_representation::JointTorques>(joint_state)));
+      && this->in_range(static_cast<state_representation::JointTorques>(joint_state))
+  );
 }
 
-Eigen::VectorXd Model::clamp_in_range(const Eigen::VectorXd& vector,
-                                      const Eigen::VectorXd& lower_limits,
-                                      const Eigen::VectorXd& upper_limits) {
+Eigen::VectorXd Model::clamp_in_range(
+    const Eigen::VectorXd& vector, const Eigen::VectorXd& lower_limits, const Eigen::VectorXd& upper_limits
+) {
   return lower_limits.cwiseMax(upper_limits.cwiseMin(vector));
 }
 
 state_representation::JointState Model::clamp_in_range(
     const state_representation::JointState& joint_state,
-    const state_representation::JointStateVariable& state_variable_type) const {
+    const state_representation::JointStateVariable& state_variable_type
+) const {
   using namespace state_representation;
   Eigen::VectorXd clamped_vector;
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
       clamped_vector = this->clamp_in_range(
-          joint_state.get_positions(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit);
+          joint_state.get_positions(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit
+      );
       break;
     case JointStateVariable::VELOCITIES:
       clamped_vector = this->clamp_in_range(
-          joint_state.get_velocities(), -this->robot_model_.velocityLimit, this->robot_model_.velocityLimit);
+          joint_state.get_velocities(), -this->robot_model_.velocityLimit, this->robot_model_.velocityLimit
+      );
       break;
     case JointStateVariable::TORQUES:
       clamped_vector = this->clamp_in_range(
-          joint_state.get_torques(), -this->robot_model_.effortLimit, this->robot_model_.effortLimit);
+          joint_state.get_torques(), -this->robot_model_.effortLimit, this->robot_model_.effortLimit
+      );
       break;
     default:
       return joint_state;
@@ -696,15 +705,15 @@ state_representation::JointState Model::clamp_in_range(
 
 state_representation::JointState Model::clamp_in_range(const state_representation::JointState& joint_state) const {
   state_representation::JointState joint_state_clamped(joint_state);
-  joint_state_clamped.set_positions(this->clamp_in_range(joint_state.get_positions(),
-                                                         this->robot_model_.lowerPositionLimit,
-                                                         this->robot_model_.upperPositionLimit));
-  joint_state_clamped.set_velocities(this->clamp_in_range(joint_state.get_velocities(),
-                                                          -this->robot_model_.velocityLimit,
-                                                          this->robot_model_.velocityLimit));
-  joint_state_clamped.set_torques(this->clamp_in_range(joint_state.get_torques(),
-                                                       -this->robot_model_.effortLimit,
-                                                       this->robot_model_.effortLimit));
+  joint_state_clamped.set_positions(this->clamp_in_range(
+      joint_state.get_positions(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit
+  ));
+  joint_state_clamped.set_velocities(this->clamp_in_range(
+      joint_state.get_velocities(), -this->robot_model_.velocityLimit, this->robot_model_.velocityLimit
+  ));
+  joint_state_clamped.set_torques(
+      this->clamp_in_range(joint_state.get_torques(), -this->robot_model_.effortLimit, this->robot_model_.effortLimit)
+  );
   return joint_state_clamped;
 }
 }// namespace robot_model

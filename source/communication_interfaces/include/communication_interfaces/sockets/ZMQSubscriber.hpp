@@ -25,4 +25,4 @@ public:
    */
   bool on_send_bytes(const std::string& buffer) override;
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

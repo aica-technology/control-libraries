@@ -1,7 +1,7 @@
 #pragma once
 
-#include "controllers/IController.hpp"
 #include "controllers/ControllerType.hpp"
+#include "controllers/IController.hpp"
 #include "robot_model/Model.hpp"
 
 #include "state_representation/space/cartesian/CartesianState.hpp"
@@ -17,7 +17,6 @@ namespace controllers {
 template<class S>
 class ControllerFactory {
 public:
-
   /**
    * @brief Create a controller of the desired type.
    * @param type The type of controller
@@ -45,9 +44,7 @@ public:
    * of the controller and influence controller behaviour depending on the controller type.
    * @return The shared pointer to the controller
    */
-  static std::shared_ptr<IController<S>> create_controller(
-      CONTROLLER_TYPE type, const robot_model::Model& robot_model
-  );
+  static std::shared_ptr<IController<S>> create_controller(CONTROLLER_TYPE type, const robot_model::Model& robot_model);
 
   /**
    * @brief Create a controller of the desired type with initial parameters and an associated robot model.
@@ -77,5 +74,4 @@ ControllerFactory<S>::create_controller(CONTROLLER_TYPE type, const robot_model:
 
 typedef ControllerFactory<state_representation::CartesianState> CartesianControllerFactory;
 typedef ControllerFactory<state_representation::JointState> JointControllerFactory;
-
 }// namespace controllers

@@ -2,6 +2,7 @@
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+
 #include "controllers/impedance/Impedance.hpp"
 
 namespace controllers::impedance {
@@ -14,7 +15,6 @@ namespace controllers::impedance {
 template<class S>
 class VelocityImpedance : public Impedance<S> {
 public:
-
   /**
    * @brief Base constructor.
    * @details This initializes all gain matrices to the identity matrix of the corresponding dimensionality.
@@ -51,9 +51,8 @@ VelocityImpedance<S>::VelocityImpedance(unsigned int dimensions) : Impedance<S>(
 template<class S>
 VelocityImpedance<S>::VelocityImpedance(
     const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters, unsigned int dimensions
-) :
-    VelocityImpedance<S>(dimensions) {
+)
+    : VelocityImpedance<S>(dimensions) {
   this->set_parameters(parameters);
 }
-
-}// namespace controllers
+}// namespace controllers::impedance

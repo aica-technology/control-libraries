@@ -1,11 +1,11 @@
 #include "dynamical_systems/PointAttractor.hpp"
 
-#include "dynamical_systems/exceptions/NotImplementedException.hpp"
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
-#include "state_representation/exceptions/InvalidParameterException.hpp"
 #include "dynamical_systems/exceptions/IncompatibleSizeException.hpp"
+#include "dynamical_systems/exceptions/NotImplementedException.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/exceptions/InvalidParameterException.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
@@ -16,17 +16,17 @@ using namespace state_representation;
 namespace dynamical_systems {
 
 template<>
-PointAttractor<CartesianState>::PointAttractor() :
-    attractor_(make_shared_parameter<CartesianState>("attractor", CartesianState())),
-    gain_(make_shared_parameter<Eigen::MatrixXd>("gain", Eigen::MatrixXd::Identity(6, 6))) {
+PointAttractor<CartesianState>::PointAttractor()
+    : attractor_(make_shared_parameter<CartesianState>("attractor", CartesianState())),
+      gain_(make_shared_parameter<Eigen::MatrixXd>("gain", Eigen::MatrixXd::Identity(6, 6))) {
   this->parameters_.insert(std::make_pair("attractor", attractor_));
   this->parameters_.insert(std::make_pair("gain", gain_));
 }
 
 template<>
-PointAttractor<JointState>::PointAttractor() :
-    attractor_(make_shared_parameter<JointState>("attractor", JointState())),
-    gain_(std::make_shared<Parameter<Eigen::MatrixXd>>("gain")) {
+PointAttractor<JointState>::PointAttractor()
+    : attractor_(make_shared_parameter<JointState>("attractor", JointState())),
+      gain_(std::make_shared<Parameter<Eigen::MatrixXd>>("gain")) {
   this->parameters_.insert(std::make_pair("attractor", attractor_));
   this->parameters_.insert(std::make_pair("gain", gain_));
 }
@@ -62,7 +62,8 @@ void PointAttractor<S>::set_gain(const std::shared_ptr<ParameterInterface>& para
     auto gain = parameter->get_parameter_value<std::vector<double>>();
     if (gain.size() != expected_size) {
       throw exceptions::IncompatibleSizeException(
-          "The provided diagonal coefficients do not correspond to the expected size of the attractor");
+          "The provided diagonal coefficients do not correspond to the expected size of the attractor"
+      );
     }
     Eigen::VectorXd diagonal = Eigen::VectorXd::Map(gain.data(), expected_size);
     this->gain_->set_value(diagonal.asDiagonal());
@@ -71,7 +72,8 @@ void PointAttractor<S>::set_gain(const std::shared_ptr<ParameterInterface>& para
     if (gain.rows() != expected_size && gain.cols() != expected_size) {
       throw exceptions::IncompatibleSizeException(
           "The provided gain matrix do not have the expected size (" + std::to_string(expected_size) + "x"
-              + std::to_string(expected_size) + ")");
+          + std::to_string(expected_size) + ")"
+      );
     }
     this->gain_->set_value(gain);
   } else {
@@ -91,15 +93,17 @@ void PointAttractor<CartesianState>::set_attractor(const CartesianState& attract
   }
   if (this->get_base_frame().is_empty()) {
     IDynamicalSystem<CartesianState>::set_base_frame(
-        CartesianState::Identity(attractor.get_reference_frame(), attractor.get_reference_frame()));
+        CartesianState::Identity(attractor.get_reference_frame(), attractor.get_reference_frame())
+    );
   }
   // validate that the reference frame of the attractor is always compatible with the DS reference frame
   if (attractor.get_reference_frame() != this->get_base_frame().get_name()) {
     if (attractor.get_reference_frame() != this->get_base_frame().get_reference_frame()) {
       throw state_representation::exceptions::IncompatibleReferenceFramesException(
           "The reference frame of the attractor " + attractor.get_name() + " in frame "
-              + attractor.get_reference_frame() + " is incompatible with the base frame of the dynamical system "
-              + this->get_base_frame().get_name() + " in frame " + this->get_base_frame().get_reference_frame() + ".");
+          + attractor.get_reference_frame() + " is incompatible with the base frame of the dynamical system "
+          + this->get_base_frame().get_name() + " in frame " + this->get_base_frame().get_reference_frame() + "."
+      );
     }
     this->attractor_->set_value(this->get_base_frame().inverse() * attractor);
   } else {
@@ -151,7 +155,8 @@ void PointAttractor<CartesianState>::validate_and_set_parameter(const std::share
     this->set_gain(parameter, 6);
   } else {
     throw state_representation::exceptions::InvalidParameterException(
-        "No parameter with name '" + parameter->get_name() + "' found");
+        "No parameter with name '" + parameter->get_name() + "' found"
+    );
   }
 }
 
@@ -159,15 +164,16 @@ template<>
 void PointAttractor<JointState>::validate_and_set_parameter(const std::shared_ptr<ParameterInterface>& parameter) {
   if (parameter->get_name() == "attractor") {
     if (parameter->get_parameter_state_type() == StateType::JOINT_STATE) {
-    this->set_attractor(parameter->get_parameter_value<JointState>());
-  } else if (parameter->get_parameter_state_type() == StateType::JOINT_POSITIONS) {
-    this->set_attractor(parameter->get_parameter_value<JointPositions>());
-  }
+      this->set_attractor(parameter->get_parameter_value<JointState>());
+    } else if (parameter->get_parameter_state_type() == StateType::JOINT_POSITIONS) {
+      this->set_attractor(parameter->get_parameter_value<JointPositions>());
+    }
   } else if (parameter->get_name() == "gain") {
     this->set_gain(parameter, this->attractor_->get_value().get_size());
   } else {
     throw state_representation::exceptions::InvalidParameterException(
-        "No parameter with name '" + parameter->get_name() + "' found");
+        "No parameter with name '" + parameter->get_name() + "' found"
+    );
   }
 }
 

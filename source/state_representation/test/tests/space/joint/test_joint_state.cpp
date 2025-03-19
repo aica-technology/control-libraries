@@ -1,15 +1,14 @@
-#include <fstream>
-#include <gtest/gtest.h>
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointPositions.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
-#include "state_representation/space/joint/JointAccelerations.hpp"
-#include "state_representation/space/joint/JointTorques.hpp"
+#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
-#include "state_representation/exceptions/JointNotFoundException.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/InvalidStateVariableException.hpp"
+#include "state_representation/exceptions/JointNotFoundException.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
+#include <gtest/gtest.h>
 
 using namespace state_representation;
 
@@ -265,7 +264,8 @@ TEST(JointStateTest, ClampVariable) {
   EXPECT_EQ(js2.get_velocities(), max_absolute_values);
 
   js2.clamp_state_variable(
-      50 * Eigen::Array3d::Ones(), JointStateVariable::ACCELERATIONS, 0.5 * Eigen::Array3d::Ones());
+      50 * Eigen::Array3d::Ones(), JointStateVariable::ACCELERATIONS, 0.5 * Eigen::Array3d::Ones()
+  );
   EXPECT_EQ(js2.get_accelerations(), Eigen::VectorXd::Zero(js2.get_size()));
 
   Eigen::VectorXd torques(3), result(3);
@@ -275,14 +275,18 @@ TEST(JointStateTest, ClampVariable) {
   js2.clamp_state_variable(10, JointStateVariable::TORQUES);
   EXPECT_EQ(js2.get_torques(), torques);
   js2.clamp_state_variable(
-      3 * Eigen::ArrayXd::Ones(js2.get_size()), JointStateVariable::TORQUES,
-      0.5 * Eigen::ArrayXd::Ones(js2.get_size()));
+      3 * Eigen::ArrayXd::Ones(js2.get_size()), JointStateVariable::TORQUES, 0.5 * Eigen::ArrayXd::Ones(js2.get_size())
+  );
   EXPECT_EQ(js2.get_torques(), result);
 
-  EXPECT_THROW(js2.clamp_state_variable(Eigen::Array2d::Ones(), JointStateVariable::ALL, Eigen::Array3d::Zero()),
-               exceptions::IncompatibleSizeException);
-  EXPECT_THROW(js2.clamp_state_variable(Eigen::Array3d::Ones(), JointStateVariable::ALL, Eigen::Array2d::Zero()),
-               exceptions::IncompatibleSizeException);
+  EXPECT_THROW(
+      js2.clamp_state_variable(Eigen::Array2d::Ones(), JointStateVariable::ALL, Eigen::Array3d::Zero()),
+      exceptions::IncompatibleSizeException
+  );
+  EXPECT_THROW(
+      js2.clamp_state_variable(Eigen::Array3d::Ones(), JointStateVariable::ALL, Eigen::Array2d::Zero()),
+      exceptions::IncompatibleSizeException
+  );
 }
 
 TEST(JointStateTest, GetSetData) {
@@ -611,7 +615,8 @@ TEST(JointStateTest, TestUtilities) {
   auto state = JointState("foo", 3);
   auto new_values = Eigen::VectorXd(4);
   EXPECT_THROW(
-      state.set_state_variable(new_values, JointStateVariable::POSITIONS), exceptions::IncompatibleSizeException);
+      state.set_state_variable(new_values, JointStateVariable::POSITIONS), exceptions::IncompatibleSizeException
+  );
   new_values = Eigen::VectorXd(3);
   new_values << 1.0, 2.0, 3.0;
   state.set_state_variable(new_values, JointStateVariable::POSITIONS);

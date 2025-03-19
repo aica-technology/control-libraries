@@ -6,6 +6,6 @@
 namespace controllers::exceptions {
 class InvalidControllerException : public std::logic_error {
 public:
-  explicit InvalidControllerException(const std::string& msg) : std::logic_error(msg) {};
+  explicit InvalidControllerException(const std::string& msg) : std::logic_error(msg){};
 };
-}
+}// namespace controllers::exceptions

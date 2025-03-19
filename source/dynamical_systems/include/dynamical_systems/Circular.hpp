@@ -31,8 +31,8 @@ public:
   /**
    * @copydoc IDynamicalSystem::compute_dynamics
    */
-  [[nodiscard]] state_representation::CartesianState
-  compute_dynamics(const state_representation::CartesianState& state) const override;
+  [[nodiscard]] state_representation::CartesianState compute_dynamics(const state_representation::CartesianState& state
+  ) const override;
 
 private:
   /**

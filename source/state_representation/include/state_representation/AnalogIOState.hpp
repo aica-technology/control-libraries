@@ -94,7 +94,6 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const AnalogIOState& state);
 
 protected:
-
   /**
    * @brief Swap the values of the IO states
    * @param state1 IO state to be swapped with 2
@@ -111,5 +110,4 @@ protected:
 inline void swap(AnalogIOState& state1, AnalogIOState& state2) {
   swap(static_cast<IOState<double>&>(state1), static_cast<IOState<double>&>(state2));
 }
-
 }// namespace state_representation

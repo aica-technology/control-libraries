@@ -131,7 +131,7 @@ TEST(CartesianAccelerationTest, TestIntegrate) {
   auto res3 = acc.integrate(dt1);
   EXPECT_EQ(res3.get_type(), StateType::CARTESIAN_TWIST);
   EXPECT_TRUE((dt1 * acc.get_acceleration()).isApprox(res3.get_twist()));
-  
+
   CartesianTwist twist(acc);
   EXPECT_TRUE(acc.get_acceleration().isApprox(twist.get_twist()));
 }

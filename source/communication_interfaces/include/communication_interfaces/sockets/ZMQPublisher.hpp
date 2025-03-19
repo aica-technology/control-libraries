@@ -26,4 +26,4 @@ private:
    */
   bool on_receive_bytes(std::string& buffer) override;
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

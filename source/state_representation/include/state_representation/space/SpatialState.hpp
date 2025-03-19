@@ -68,12 +68,11 @@ protected:
   std::string to_string() const override;
 
 private:
-  std::string reference_frame_; ///< name of the reference frame
+  std::string reference_frame_;///< name of the reference frame
 };
 
 inline void swap(SpatialState& state1, SpatialState& state2) {
   swap(static_cast<State&>(state1), static_cast<State&>(state2));
   std::swap(state1.reference_frame_, state2.reference_frame_);
 }
-
 }// namespace state_representation

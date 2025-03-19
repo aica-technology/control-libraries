@@ -1,5 +1,4 @@
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 
 using namespace state_representation::exceptions;
 
@@ -9,14 +8,15 @@ CartesianAcceleration::CartesianAcceleration() {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
 }
 
-CartesianAcceleration::CartesianAcceleration(const std::string& name, const std::string& reference) :
-    CartesianState(name, reference) {
+CartesianAcceleration::CartesianAcceleration(const std::string& name, const std::string& reference)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
 }
 
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Vector3d& linear_acceleration, const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
   this->set_linear_acceleration(linear_acceleration);
 }
@@ -24,7 +24,8 @@ CartesianAcceleration::CartesianAcceleration(
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Vector3d& linear_acceleration, const Eigen::Vector3d& angular_acceleration,
     const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
   this->set_linear_acceleration(linear_acceleration);
   this->set_angular_acceleration(angular_acceleration);
@@ -32,7 +33,8 @@ CartesianAcceleration::CartesianAcceleration(
 
 CartesianAcceleration::CartesianAcceleration(
     const std::string& name, const Eigen::Matrix<double, 6, 1>& acceleration, const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_ACCELERATION);
   this->set_acceleration(acceleration);
 }
@@ -45,11 +47,11 @@ CartesianAcceleration::CartesianAcceleration(const CartesianState& state) : Cart
   }
 }
 
-CartesianAcceleration::CartesianAcceleration(const CartesianAcceleration& acceleration) :
-    CartesianAcceleration(static_cast<const CartesianState&>(acceleration)) {}
+CartesianAcceleration::CartesianAcceleration(const CartesianAcceleration& acceleration)
+    : CartesianAcceleration(static_cast<const CartesianState&>(acceleration)) {}
 
-CartesianAcceleration::CartesianAcceleration(const CartesianTwist& twist) :
-    CartesianAcceleration(twist.differentiate(1.0)) {}
+CartesianAcceleration::CartesianAcceleration(const CartesianTwist& twist)
+    : CartesianAcceleration(twist.differentiate(1.0)) {}
 
 CartesianAcceleration CartesianAcceleration::Zero(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -67,8 +69,7 @@ Eigen::VectorXd CartesianAcceleration::data() const {
 
 void CartesianAcceleration::set_data(const Eigen::VectorXd& data) {
   if (data.size() != 6) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
+    throw IncompatibleSizeException("Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
   }
   this->set_acceleration(data);
 }
@@ -202,5 +203,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianAcceleration& accelera
   os << acceleration.to_string();
   return os;
 }
-
 }// namespace state_representation

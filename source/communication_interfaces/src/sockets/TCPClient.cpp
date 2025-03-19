@@ -6,7 +6,8 @@
 
 namespace communication_interfaces::sockets {
 
-TCPClient::TCPClient(TCPClientConfiguration configuration) : TCPSocket(configuration.buffer_size), config_(configuration) {}
+TCPClient::TCPClient(TCPClientConfiguration configuration)
+    : TCPSocket(configuration.buffer_size), config_(configuration) {}
 
 void TCPClient::on_open() {
   try {
@@ -29,4 +30,4 @@ void TCPClient::on_open() {
     throw exceptions::SocketConfigurationException("Connecting client failed");
   }
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

@@ -141,20 +141,18 @@ protected:
 
   static void assert_index_in_range(unsigned int io_index, unsigned int size);
 
-  std::vector<std::string> names_;///< names of the IOs
+  std::vector<std::string> names_;       ///< names of the IOs
   Eigen::Vector<T, Eigen::Dynamic> data_;///< IO values
 };
 
 template<typename T>
-IOState<T>::IOState(const std::string& name, unsigned int nb_ios) :
-    State(name),
-    names_(nb_ios) {
+IOState<T>::IOState(const std::string& name, unsigned int nb_ios) : State(name), names_(nb_ios) {
   this->set_names(nb_ios);
 }
 
 template<typename T>
-IOState<T>::IOState(const std::string& name, const std::vector<std::string>& io_names) :
-  IOState<T>(name, io_names.size()) {
+IOState<T>::IOState(const std::string& name, const std::vector<std::string>& io_names)
+    : IOState<T>(name, io_names.size()) {
   this->set_names(io_names);
 }
 
@@ -205,7 +203,8 @@ void IOState<T>::set_names(unsigned int nb_ios) {
   if (this->get_size() != nb_ios) {
     throw exceptions::IncompatibleSizeException(
         "Input number of IOs is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
-            + std::to_string(nb_ios));
+        + std::to_string(nb_ios)
+    );
   }
   for (unsigned int i = 0; i < nb_ios; ++i) {
     this->names_[i] = "io" + std::to_string(i);
@@ -218,7 +217,8 @@ void IOState<T>::set_names(const std::vector<std::string>& names) {
   if (this->get_size() != names.size()) {
     throw exceptions::IncompatibleSizeException(
         "Input number of IOs is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
-            + std::to_string(names.size()));
+        + std::to_string(names.size())
+    );
   }
   this->names_ = names;
   this->reset_timestamp();
@@ -241,7 +241,8 @@ void IOState<T>::set_data(const Eigen::Vector<T, Eigen::Dynamic>& data) {
   if (data.size() != this->get_size()) {
     throw exceptions::IncompatibleSizeException(
         "Input is of incorrect size, expected " + std::to_string(this->get_size()) + ", got "
-            + std::to_string(data.size()));
+        + std::to_string(data.size())
+    );
   }
   this->data_ = data;
   this->set_empty(false);
@@ -269,8 +270,8 @@ template<typename T>
 void IOState<T>::assert_index_in_range(unsigned int io_index, unsigned int size) {
   if (io_index > size) {
     throw exceptions::IONotFoundException(
-        "Index '" + std::to_string(io_index) + "' is out of range for IO state with size" + std::to_string(size));
+        "Index '" + std::to_string(io_index) + "' is out of range for IO state with size" + std::to_string(size)
+    );
   }
 }
-
 }// namespace state_representation

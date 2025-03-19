@@ -9,7 +9,8 @@ namespace controllers::impedance {
 template<class S>
 Eigen::MatrixXd Dissipative<S>::compute_orthonormal_basis(const S&) {
   throw exceptions::NotImplementedException(
-      "compute_orthonormal_basis(desired_velocity) not implemented for this input class");
+      "compute_orthonormal_basis(desired_velocity) not implemented for this input class"
+  );
 }
 
 template<>
@@ -37,8 +38,8 @@ Eigen::MatrixXd Dissipative<CartesianState>::compute_orthonormal_basis(const Car
         return updated_basis;
       }
       // return only the angular block
-      updated_basis.bottomRightCorner<3, 3>() = Dissipative<CartesianState>::orthonormalize_basis(
-          this->basis_.bottomRightCorner<3, 3>(), angular_velocity);
+      updated_basis.bottomRightCorner<3, 3>() =
+          Dissipative<CartesianState>::orthonormalize_basis(this->basis_.bottomRightCorner<3, 3>(), angular_velocity);
       break;
     }
     case ComputationalSpaceType::DECOUPLED_TWIST: {
@@ -52,8 +53,8 @@ Eigen::MatrixXd Dissipative<CartesianState>::compute_orthonormal_basis(const Car
         updated = true;
       }
       if (angular_velocity.norm() > tolerance) {
-        updated_basis.block<3, 3>(3, 3) = Dissipative<CartesianState>::orthonormalize_basis(
-            this->basis_.bottomRightCorner<3, 3>(), angular_velocity);
+        updated_basis.block<3, 3>(3, 3) =
+            Dissipative<CartesianState>::orthonormalize_basis(this->basis_.bottomRightCorner<3, 3>(), angular_velocity);
         updated = true;
       }
       // at least the linear or angular parts have been updated
@@ -80,7 +81,8 @@ Eigen::MatrixXd Dissipative<JointState>::compute_orthonormal_basis(const JointSt
   if (desired_velocity.get_size() != this->dimensions_) {
     throw state_representation::exceptions::IncompatibleSizeException(
         "The input state is of incorrect dimensions, expected " + std::to_string(this->dimensions_) + " got "
-            + std::to_string(desired_velocity.get_size()));
+        + std::to_string(desired_velocity.get_size())
+    );
   }
   double tolerance = 1e-4;
   // only update the damping if the commanded velocity is non-null
@@ -90,4 +92,4 @@ Eigen::MatrixXd Dissipative<JointState>::compute_orthonormal_basis(const JointSt
   // return the full damping matrix
   return Dissipative<JointState>::orthonormalize_basis(this->basis_, desired_velocity.get_velocities());
 }
-}// namespace controllers
+}// namespace controllers::impedance

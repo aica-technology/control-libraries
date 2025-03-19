@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "controllers/ControllerFactory.hpp"
-#include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
 
 using namespace controllers;
@@ -10,8 +10,8 @@ using namespace state_representation;
 
 class CompliantTwistControllerTest : public ::testing::Test {
 protected:
-  CompliantTwistControllerTest() :
-      command_twist_(CartesianTwist::Identity("test")), feedback_twist_(CartesianTwist::Identity("test")) {
+  CompliantTwistControllerTest()
+      : command_twist_(CartesianTwist::Identity("test")), feedback_twist_(CartesianTwist::Identity("test")) {
     controller_ = controllers::CartesianControllerFactory::create_controller(CONTROLLER_TYPE::COMPLIANT_TWIST);
   }
 

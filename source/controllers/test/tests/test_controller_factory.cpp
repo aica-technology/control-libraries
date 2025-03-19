@@ -88,8 +88,10 @@ TEST(ControllerFactoryTest, CreateCartesianController) {
   }
   EXPECT_NO_THROW(ctrl->compute_command(command_state, feedback_state));
 
-  EXPECT_THROW(ctrl->compute_command(command_state, feedback_state, JointState::Zero("robot", 3)),
-               controllers::exceptions::NoRobotModelException);
+  EXPECT_THROW(
+      ctrl->compute_command(command_state, feedback_state, JointState::Zero("robot", 3)),
+      controllers::exceptions::NoRobotModelException
+  );
 }
 
 TEST(ControllerFactoryTest, CreateJointController) {
@@ -136,14 +138,22 @@ TEST(ControllerFactoryTest, CreateJointController) {
   EXPECT_EQ(ctrl->get_parameter_value<Eigen::MatrixXd>("damping").size(), dim * dim);
   EXPECT_NO_THROW(ctrl->compute_command(command_state, feedback_state));
 
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_LINEAR),
-               controllers::exceptions::InvalidControllerException);
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_ANGULAR),
-               controllers::exceptions::InvalidControllerException);
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_DECOUPLED),
-               controllers::exceptions::InvalidControllerException);
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::COMPLIANT_TWIST),
-               controllers::exceptions::InvalidControllerException);
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_LINEAR),
+      controllers::exceptions::InvalidControllerException
+  );
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_ANGULAR),
+      controllers::exceptions::InvalidControllerException
+  );
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::DISSIPATIVE_DECOUPLED),
+      controllers::exceptions::InvalidControllerException
+  );
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::COMPLIANT_TWIST),
+      controllers::exceptions::InvalidControllerException
+  );
 }
 
 TEST(ControllerFactoryTest, CreateControllerWithParams) {
@@ -172,11 +182,15 @@ TEST(ControllerFactoryTest, CreateControllerWithRobot) {
   auto feedback_state = CartesianState::Identity(robot.get_frames().back(), robot.get_base_frame());
   auto joint_state = JointState::Zero(robot_name, robot.get_number_of_joints());
 
-  EXPECT_THROW(CartesianControllerFactory::create_controller(CONTROLLER_TYPE::NONE, robot),
-               controllers::exceptions::InvalidControllerException);
+  EXPECT_THROW(
+      CartesianControllerFactory::create_controller(CONTROLLER_TYPE::NONE, robot),
+      controllers::exceptions::InvalidControllerException
+  );
 
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::NONE, robot),
-               controllers::exceptions::InvalidControllerException);
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::NONE, robot),
+      controllers::exceptions::InvalidControllerException
+  );
 
   auto cart_ctrl = CartesianControllerFactory::create_controller(CONTROLLER_TYPE::IMPEDANCE, robot);
   ASSERT_NE(cart_ctrl, nullptr);
@@ -187,8 +201,10 @@ TEST(ControllerFactoryTest, CreateControllerWithRobot) {
   auto joint_ctrl = JointControllerFactory::create_controller(CONTROLLER_TYPE::IMPEDANCE, robot);
   ASSERT_NE(joint_ctrl, nullptr);
   EXPECT_NO_THROW(joint_ctrl->compute_command(joint_state, joint_state));
-  EXPECT_EQ(joint_ctrl->get_parameter_value<Eigen::MatrixXd>("stiffness").size(),
-            robot.get_number_of_joints() * robot.get_number_of_joints());
+  EXPECT_EQ(
+      joint_ctrl->get_parameter_value<Eigen::MatrixXd>("stiffness").size(),
+      robot.get_number_of_joints() * robot.get_number_of_joints()
+  );
 }
 
 TEST(ControllerFactoryTest, CreateControllerWithRobotAndParams) {
@@ -196,13 +212,17 @@ TEST(ControllerFactoryTest, CreateControllerWithRobotAndParams) {
   parameters.emplace_back(make_shared_parameter("damping", 5.0));
   auto robot = robot_model::Model("robot", std::string(TEST_FIXTURES) + "panda_arm.urdf");
 
-  EXPECT_THROW(JointControllerFactory::create_controller(CONTROLLER_TYPE::NONE, parameters, robot),
-               controllers::exceptions::InvalidControllerException);
+  EXPECT_THROW(
+      JointControllerFactory::create_controller(CONTROLLER_TYPE::NONE, parameters, robot),
+      controllers::exceptions::InvalidControllerException
+  );
 
   auto ctrl = JointControllerFactory::create_controller(CONTROLLER_TYPE::IMPEDANCE, parameters, robot);
   ASSERT_NE(ctrl, nullptr);
-  EXPECT_EQ(ctrl->get_parameter_value<Eigen::MatrixXd>("damping").size(),
-            robot.get_number_of_joints() * robot.get_number_of_joints());
+  EXPECT_EQ(
+      ctrl->get_parameter_value<Eigen::MatrixXd>("damping").size(),
+      robot.get_number_of_joints() * robot.get_number_of_joints()
+  );
 
   EXPECT_EQ(ctrl->get_parameter_value<Eigen::MatrixXd>("damping").sum(), 5.0 * robot.get_number_of_joints());
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "state_representation/State.hpp"
+
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/InvalidStateVariableException.hpp"
 
@@ -13,9 +14,7 @@ class JointState;
  * @brief Enum representing all the fields (positions, velocities, accelerations and torques)
  * of the JointState
  */
-enum class JointStateVariable {
-  POSITIONS, VELOCITIES, ACCELERATIONS, TORQUES, ALL
-};
+enum class JointStateVariable { POSITIONS, VELOCITIES, ACCELERATIONS, TORQUES, ALL };
 
 /**
  * @brief Compute the distance between two joint states

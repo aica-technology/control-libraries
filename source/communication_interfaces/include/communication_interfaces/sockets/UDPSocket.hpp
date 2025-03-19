@@ -63,11 +63,11 @@ protected:
    */
   void on_close() override;
 
-  sockaddr_in server_address_; ///< Address of the UDP server
+  sockaddr_in server_address_;///< Address of the UDP server
 
 private:
-  UDPSocketConfiguration config_; ///< Socket configuration struct
-  int server_fd_; ///< File descriptor of the socket
-  socklen_t addr_len_; ///< Length of the socket address
+  UDPSocketConfiguration config_;///< Socket configuration struct
+  int server_fd_;                ///< File descriptor of the socket
+  socklen_t addr_len_;           ///< Length of the socket address
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

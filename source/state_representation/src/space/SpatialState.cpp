@@ -8,8 +8,8 @@ SpatialState::SpatialState() : State(), reference_frame_("world") {
   this->set_type(StateType::SPATIAL_STATE);
 }
 
-SpatialState::SpatialState(const std::string& name, const std::string& reference_frame) :
-    State(name), reference_frame_(reference_frame) {
+SpatialState::SpatialState(const std::string& name, const std::string& reference_frame)
+    : State(name), reference_frame_(reference_frame) {
   this->set_type(StateType::SPATIAL_STATE);
 }
 
@@ -43,7 +43,8 @@ bool SpatialState::is_incompatible(const State& state) const {
         && (this->get_reference_frame() != other.reference_frame_);
   } catch (const std::bad_cast& ex) {
     throw exceptions::InvalidCastException(
-        std::string("Could not cast the given object to a SpatialState: ") + ex.what());
+        std::string("Could not cast the given object to a SpatialState: ") + ex.what()
+    );
   }
 }
 

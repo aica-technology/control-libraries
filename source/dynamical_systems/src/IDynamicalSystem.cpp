@@ -5,8 +5,8 @@
 
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
-#include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 
 using namespace state_representation;
 
@@ -18,8 +18,10 @@ bool IDynamicalSystem<S>::is_compatible(const S&) const {
 
 template<>
 bool IDynamicalSystem<CartesianState>::is_compatible(const CartesianState& state) const {
-  return !(state.get_reference_frame() != this->get_base_frame().get_name()
-      && state.get_reference_frame() != this->get_base_frame().get_reference_frame());
+  return !(
+      state.get_reference_frame() != this->get_base_frame().get_name()
+      && state.get_reference_frame() != this->get_base_frame().get_reference_frame()
+  );
 }
 
 template<>
@@ -41,8 +43,8 @@ CartesianState IDynamicalSystem<CartesianState>::evaluate(const CartesianState& 
     if (state.get_reference_frame() != this->get_base_frame().get_reference_frame()) {
       throw state_representation::exceptions::IncompatibleReferenceFramesException(
           "The evaluated state " + state.get_name() + " in frame " + state.get_reference_frame()
-              + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
-              + " in frame " + this->get_base_frame().get_reference_frame() + "."
+          + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
+          + " in frame " + this->get_base_frame().get_reference_frame() + "."
       );
     }
     CartesianState result = this->get_base_frame().inverse() * state;
@@ -62,5 +64,4 @@ JointState IDynamicalSystem<JointState>::evaluate(const JointState& state) const
   }
   return this->compute_dynamics(state);
 }
-
 }// namespace dynamical_systems

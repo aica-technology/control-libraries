@@ -1,9 +1,9 @@
 #pragma once
 
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/space/cartesian/CartesianPose.hpp"
-#include "state_representation/space/cartesian/CartesianTwist.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/cartesian/CartesianTwist.hpp"
 
 namespace state_representation {
 
@@ -176,9 +176,8 @@ public:
    * the torque will be set to 0
    * @return The clamped wrench
    */
-  CartesianWrench clamped(
-      double max_force, double max_torque, double force_noise_ratio = 0, double torque_noise_ratio = 0
-  ) const;
+  CartesianWrench
+  clamped(double max_force, double max_torque, double force_noise_ratio = 0, double torque_noise_ratio = 0) const;
 
   /**
    * @brief Return a copy of the Cartesian wrench
@@ -231,8 +230,7 @@ public:
    * @param wrench The Cartesian wrench to be scaled
    * @return The scaled Cartesian wrench
    */
-  friend CartesianWrench
-  operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench);
+  friend CartesianWrench operator*(const Eigen::Matrix<double, 6, 6>& lambda, const CartesianWrench& wrench);
 
   /**
    * @brief Scale inplace by a scalar
@@ -323,5 +321,4 @@ public:
 private:
   using CartesianState::clamp_state_variable;
 };
-
 }// namespace state_representation

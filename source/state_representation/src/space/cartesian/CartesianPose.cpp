@@ -1,5 +1,4 @@
 #include "state_representation/space/cartesian/CartesianPose.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 
 using namespace state_representation::exceptions;
@@ -14,22 +13,22 @@ CartesianPose::CartesianPose(const std::string& name, const std::string& referen
   this->set_type(StateType::CARTESIAN_POSE);
 }
 
-CartesianPose::CartesianPose(const std::string& name, const Eigen::Vector3d& position, const std::string& reference) :
-    CartesianState(name, reference) {
+CartesianPose::CartesianPose(const std::string& name, const Eigen::Vector3d& position, const std::string& reference)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(position);
 }
 
-CartesianPose::CartesianPose(
-    const std::string& name, double x, double y, double z, const std::string& reference
-) : CartesianState(name, reference) {
+CartesianPose::CartesianPose(const std::string& name, double x, double y, double z, const std::string& reference)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(x, y, z);
 }
 
 CartesianPose::CartesianPose(
     const std::string& name, const Eigen::Quaterniond& orientation, const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_POSE);
   this->set_orientation(orientation);
 }
@@ -37,7 +36,8 @@ CartesianPose::CartesianPose(
 CartesianPose::CartesianPose(
     const std::string& name, const Eigen::Vector3d& position, const Eigen::Quaterniond& orientation,
     const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_POSE);
   this->set_position(position);
   this->set_orientation(orientation);
@@ -64,7 +64,8 @@ CartesianPose CartesianPose::Random(const std::string& name, const std::string& 
 }
 
 CartesianPose CartesianPose::from_transformation_matrix(
-    const std::string& name, const Eigen::Matrix4d& transformation_matrix, const std::string& reference) {
+    const std::string& name, const Eigen::Matrix4d& transformation_matrix, const std::string& reference
+) {
   auto pose = CartesianPose(name, reference);
   pose.set_pose_from_transformation_matrix(transformation_matrix);
   return pose;
@@ -76,8 +77,7 @@ Eigen::VectorXd CartesianPose::data() const {
 
 void CartesianPose::set_data(const Eigen::VectorXd& data) {
   if (data.size() != 7) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 7, given " + std::to_string(data.size()));
+    throw IncompatibleSizeException("Input is of incorrect size: expected 7, given " + std::to_string(data.size()));
   }
   this->set_pose(data);
 }
@@ -178,8 +178,8 @@ CartesianPose& CartesianPose::operator+=(const CartesianPose& pose) {
 }
 
 CartesianPose& CartesianPose::operator+=(const CartesianState& state) {
-    this->CartesianState::operator+=(state);
-    return (*this);
+  this->CartesianState::operator+=(state);
+  return (*this);
 }
 
 CartesianPose CartesianPose::operator+(const CartesianPose& pose) const {
@@ -216,5 +216,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianPose& pose) {
   os << pose.to_string();
   return os;
 }
-
 }// namespace state_representation

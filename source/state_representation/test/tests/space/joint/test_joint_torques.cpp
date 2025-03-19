@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
+#include <gtest/gtest.h>
 
 using namespace state_representation;
 

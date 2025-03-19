@@ -41,8 +41,8 @@ protected:
    */
   void open_socket();
 
-  ZMQSocketConfiguration config_; ///< Socket configuration struct
-  std::shared_ptr<zmq::socket_t> socket_; ///< ZMQ socket
+  ZMQSocketConfiguration config_;        ///< Socket configuration struct
+  std::shared_ptr<zmq::socket_t> socket_;///< ZMQ socket
 
 private:
   /**
@@ -60,4 +60,4 @@ private:
    */
   void on_close() override;
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

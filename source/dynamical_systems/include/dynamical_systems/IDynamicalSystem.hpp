@@ -62,7 +62,7 @@ protected:
   [[nodiscard]] virtual S compute_dynamics(const S& state) const = 0;
 
 private:
-  S base_frame_; ///< frame in which the dynamical system is expressed
+  S base_frame_;///< frame in which the dynamical system is expressed
 };
 
 template<class S>
@@ -74,5 +74,4 @@ template<class S>
 void IDynamicalSystem<S>::set_base_frame(const S& base_frame) {
   this->base_frame_ = base_frame;
 }
-
 }// namespace dynamical_systems

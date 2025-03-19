@@ -1,9 +1,9 @@
 #pragma once
 
-#include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
 
 namespace state_representation {
 
@@ -192,9 +192,8 @@ public:
    * the acceleration will be set to 0
    * @return The clamped joint accelerations
    */
-  JointAccelerations clamped(
-      const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
-  ) const;
+  JointAccelerations
+  clamped(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) const;
 
   /**
    * @brief Return a copy of the joint accelerations

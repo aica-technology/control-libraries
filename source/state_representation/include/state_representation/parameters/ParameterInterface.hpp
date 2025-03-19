@@ -2,10 +2,10 @@
 
 #include <memory>
 
-#include "state_representation/parameters/ParameterType.hpp"
+#include "state_representation/State.hpp"
 #include "state_representation/exceptions/InvalidParameterCastException.hpp"
 #include "state_representation/exceptions/InvalidPointerException.hpp"
-#include "state_representation/State.hpp"
+#include "state_representation/parameters/ParameterType.hpp"
 
 namespace state_representation {
 
@@ -110,14 +110,16 @@ inline std::shared_ptr<Parameter<T>> ParameterInterface::get_parameter(bool vali
   } catch (const std::exception&) {
     if (validate_pointer) {
       throw exceptions::InvalidPointerException(
-          "Parameter interface \"" + get_name() + "\" is not managed by a valid pointer");
+          "Parameter interface \"" + get_name() + "\" is not managed by a valid pointer"
+      );
     }
   }
   if (parameter_ptr == nullptr && validate_pointer) {
     std::string type_name(typeid(T).name());
     throw exceptions::InvalidParameterCastException(
         "Unable to cast parameter interface \"" + get_name() + "\" to a parameter pointer of requested type "
-            + type_name);
+        + type_name
+    );
   }
   return parameter_ptr;
 }

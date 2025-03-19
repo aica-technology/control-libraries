@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include <state_representation/State.hpp>
 #include <state_representation/AnalogIOState.hpp>
 #include <state_representation/DigitalIOState.hpp>
+#include <state_representation/State.hpp>
 #include <state_representation/geometry/Ellipsoid.hpp>
-#include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
+#include <state_representation/space/cartesian/CartesianState.hpp>
 
 #include "clproto.hpp"
 #include "test_encode_decode.hpp"
@@ -27,14 +27,10 @@ static void test_io_equal(const IOT& send_state, const IOT& recv_state) {
 
 TEST(MessageProtoTest, EncodeDecodeState) {
   auto send_state = State("A");
-  clproto::test_encode_decode<State>(
-      send_state, clproto::STATE_MESSAGE, [](
-          const State& send, const State& recv
-      ) {
-        EXPECT_EQ(send.get_type(), recv.get_type());
-        EXPECT_STREQ(send.get_name().c_str(), recv.get_name().c_str());
-      }
-  );
+  clproto::test_encode_decode<State>(send_state, clproto::STATE_MESSAGE, [](const State& send, const State& recv) {
+    EXPECT_EQ(send.get_type(), recv.get_type());
+    EXPECT_STREQ(send.get_name().c_str(), recv.get_name().c_str());
+  });
 }
 
 TEST(MessageProtoTest, EncodeDecodeInvalidState) {
@@ -75,18 +71,18 @@ TEST(MessageProtoTest, DecodeParallelTypes) {
 
 TEST(MessageProtoTest, EncodeDecodeRandomIO) {
   auto analog_state = AnalogIOState::Random("test", {"one", "two", "three"});
-  clproto::test_encode_decode<AnalogIOState>(
-      analog_state, clproto::ANALOG_IO_STATE_MESSAGE, test_io_equal<AnalogIOState>);
+  clproto::test_encode_decode<
+      AnalogIOState>(analog_state, clproto::ANALOG_IO_STATE_MESSAGE, test_io_equal<AnalogIOState>);
   analog_state.reset();
-  clproto::test_encode_decode<AnalogIOState>(
-      analog_state, clproto::ANALOG_IO_STATE_MESSAGE, test_io_equal<AnalogIOState>);
+  clproto::test_encode_decode<
+      AnalogIOState>(analog_state, clproto::ANALOG_IO_STATE_MESSAGE, test_io_equal<AnalogIOState>);
 
   auto digital_state = DigitalIOState::Random("test", {"one", "two", "three"});
-  clproto::test_encode_decode<DigitalIOState>(
-      digital_state, clproto::DIGITAL_IO_STATE_MESSAGE, test_io_equal<DigitalIOState>);
+  clproto::test_encode_decode<
+      DigitalIOState>(digital_state, clproto::DIGITAL_IO_STATE_MESSAGE, test_io_equal<DigitalIOState>);
   digital_state.reset();
-  clproto::test_encode_decode<DigitalIOState>(
-      digital_state, clproto::DIGITAL_IO_STATE_MESSAGE, test_io_equal<DigitalIOState>);
+  clproto::test_encode_decode<
+      DigitalIOState>(digital_state, clproto::DIGITAL_IO_STATE_MESSAGE, test_io_equal<DigitalIOState>);
 }
 
 /* If an encode / decode template is invoked that is not implemented in clproto,

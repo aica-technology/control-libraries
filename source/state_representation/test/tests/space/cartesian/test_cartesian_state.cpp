@@ -1,15 +1,15 @@
 #include <functional>
 #include <gtest/gtest.h>
 
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/space/cartesian/CartesianPose.hpp"
-#include "state_representation/space/cartesian/CartesianTwist.hpp"
-#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
-#include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/exceptions/InvalidStateVariableException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
+#include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 using namespace state_representation;
 
@@ -136,8 +136,9 @@ TEST(CartesianStateTest, GetSetFields) {
     EXPECT_FLOAT_EQ(cs.get_orientation_coefficients()(i), orientation_vec(i));
   }
   Eigen::Quaterniond random_orientation = Eigen::Quaterniond::UnitRandom();
-  std::vector<double>
-      orientation{random_orientation.w(), random_orientation.x(), random_orientation.y(), random_orientation.z()};
+  std::vector<double> orientation{
+      random_orientation.w(), random_orientation.x(), random_orientation.y(), random_orientation.z()
+  };
   cs.set_orientation(orientation);
   EXPECT_TRUE(random_orientation.coeffs().isApprox(cs.get_orientation().coeffs()));
   random_orientation = Eigen::Quaterniond::UnitRandom();
@@ -387,12 +388,12 @@ TEST(CartesianStateTest, Normalize) {
   CartesianState cs = CartesianState::Random("test");
   auto normalized = cs.normalized();
   std::vector<double> norms1 = normalized.norms();
-  for (double n: norms1) {
+  for (double n : norms1) {
     EXPECT_FLOAT_EQ(n, 1.0);
   }
   cs.normalize();
   std::vector<double> norms2 = cs.norms();
-  for (double n: norms2) {
+  for (double n : norms2) {
     EXPECT_FLOAT_EQ(n, 1.0);
   }
 }
@@ -539,25 +540,37 @@ TEST(CartesianStateTest, InverseMovingFrame) {
   state.set_position(1, 0, 0);
   inverse = state.inverse();
   EXPECT_EQ(inverse.get_linear_velocity().x(), -state.get_linear_velocity().x());
-  EXPECT_EQ(inverse.get_linear_velocity().y(),
-            -state.get_linear_velocity().y() + state.get_angular_velocity().z() * state.get_position().x());
-  EXPECT_EQ(inverse.get_linear_velocity().z(),
-            -state.get_linear_velocity().z() - state.get_angular_velocity().y() * state.get_position().x());
+  EXPECT_EQ(
+      inverse.get_linear_velocity().y(),
+      -state.get_linear_velocity().y() + state.get_angular_velocity().z() * state.get_position().x()
+  );
+  EXPECT_EQ(
+      inverse.get_linear_velocity().z(),
+      -state.get_linear_velocity().z() - state.get_angular_velocity().y() * state.get_position().x()
+  );
 
   state.set_position(0, 1, 0);
   inverse = state.inverse();
-  EXPECT_EQ(inverse.get_linear_velocity().x(),
-            -state.get_linear_velocity().x() - state.get_angular_velocity().z() * state.get_position().y());
+  EXPECT_EQ(
+      inverse.get_linear_velocity().x(),
+      -state.get_linear_velocity().x() - state.get_angular_velocity().z() * state.get_position().y()
+  );
   EXPECT_EQ(inverse.get_linear_velocity().y(), -state.get_linear_velocity().y());
-  EXPECT_EQ(inverse.get_linear_velocity().z(),
-            -state.get_linear_velocity().z() + state.get_angular_velocity().x() * state.get_position().y());
+  EXPECT_EQ(
+      inverse.get_linear_velocity().z(),
+      -state.get_linear_velocity().z() + state.get_angular_velocity().x() * state.get_position().y()
+  );
 
   state.set_position(0, 0, 1);
   inverse = state.inverse();
-  EXPECT_EQ(inverse.get_linear_velocity().x(),
-            -state.get_linear_velocity().x() + state.get_angular_velocity().y() * state.get_position().z());
-  EXPECT_EQ(inverse.get_linear_velocity().y(),
-            -state.get_linear_velocity().y() - state.get_angular_velocity().x() * state.get_position().z());
+  EXPECT_EQ(
+      inverse.get_linear_velocity().x(),
+      -state.get_linear_velocity().x() + state.get_angular_velocity().y() * state.get_position().z()
+  );
+  EXPECT_EQ(
+      inverse.get_linear_velocity().y(),
+      -state.get_linear_velocity().y() - state.get_angular_velocity().x() * state.get_position().z()
+  );
   EXPECT_EQ(inverse.get_linear_velocity().z(), -state.get_linear_velocity().z());
 
   // general case with any position and no orientation offset
@@ -688,8 +701,9 @@ TEST(CartesianStateTest, InverseAcceleratingFrame) {
   // if there is twist and position offset, the additional inverse linear acceleration is the centrifugal acceleration
   state.set_position(random.get_position());
   inverse = state.inverse();
-  av = 2 * (inverse.get_angular_velocity()).cross(inverse.get_linear_velocity()); // Coriolis
-  av += -inverse.get_angular_velocity().cross(inverse.get_angular_velocity().cross(inverse.get_position())); // centrifugal
+  av = 2 * (inverse.get_angular_velocity()).cross(inverse.get_linear_velocity());// Coriolis
+  av +=
+      -inverse.get_angular_velocity().cross(inverse.get_angular_velocity().cross(inverse.get_position()));// centrifugal
   EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().x(), av.x());
   EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().y(), av.y());
   EXPECT_FLOAT_EQ(inverse.get_linear_acceleration().z(), av.z());
@@ -784,7 +798,7 @@ TEST(CartesianStateTest, OrientationScaling) {
     EXPECT_LT(cscaled.get_orientation().angularDistance(qscaled), 1e-3);
 
     qscaled = Eigen::Quaterniond::Identity();
-    cscaled = - scale * cs;
+    cscaled = -scale * cs;
     for (int j = 0; j < i; ++j) {
       qscaled = qscaled * cs.get_orientation();
     }
@@ -1084,7 +1098,7 @@ TEST(CartesianStateTest, TestSubtractionOperators) {
   wrench -= state;
   EXPECT_EQ(wrench.get_type(), StateType::CARTESIAN_WRENCH);
   wrench -= wrench;
-  EXPECT_EQ(wrench.get_type(),StateType::CARTESIAN_WRENCH);
+  EXPECT_EQ(wrench.get_type(), StateType::CARTESIAN_WRENCH);
   //wrench -= pose;
   //wrench -= twist;
   //wrench -= acc;
