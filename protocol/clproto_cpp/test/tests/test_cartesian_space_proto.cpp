@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include <state_representation/space/SpatialState.hpp>
-#include <state_representation/space/cartesian/CartesianState.hpp>
-#include <state_representation/space/cartesian/CartesianPose.hpp>
-#include <state_representation/space/cartesian/CartesianTwist.hpp>
 #include <state_representation/space/cartesian/CartesianAcceleration.hpp>
+#include <state_representation/space/cartesian/CartesianPose.hpp>
+#include <state_representation/space/cartesian/CartesianState.hpp>
+#include <state_representation/space/cartesian/CartesianTwist.hpp>
 #include <state_representation/space/cartesian/CartesianWrench.hpp>
 
 #include "clproto.hpp"
@@ -32,9 +32,8 @@ static void encode_decode_cartesian(T send_state, clproto::MessageType type) {
 TEST(CartesianProtoTest, EncodeDecodeSpatialState) {
   auto send_state = SpatialState("A", "B");
   clproto::test_encode_decode<SpatialState>(
-      send_state, clproto::SPATIAL_STATE_MESSAGE, [](
-          const SpatialState& send, const SpatialState& recv
-      ) {
+      send_state, clproto::SPATIAL_STATE_MESSAGE,
+      [](const SpatialState& send, const SpatialState& recv) {
         EXPECT_EQ(send.get_type(), recv.get_type());
         EXPECT_STREQ(send.get_name().c_str(), recv.get_name().c_str());
         EXPECT_STREQ(send.get_reference_frame().c_str(), recv.get_reference_frame().c_str());

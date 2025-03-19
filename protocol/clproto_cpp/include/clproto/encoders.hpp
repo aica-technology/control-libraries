@@ -2,16 +2,15 @@
 
 #include <google/protobuf/repeated_field.h>
 
-#include <state_representation/State.hpp>
 #include <state_representation/AnalogIOState.hpp>
 #include <state_representation/DigitalIOState.hpp>
+#include <state_representation/State.hpp>
+#include <state_representation/parameters/Parameter.hpp>
+#include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/SpatialState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
-#include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/joint/JointState.hpp>
-#include <state_representation/parameters/Parameter.hpp>
 
-#include "clproto.hpp"
 #include "state_representation/state_message.pb.h"
 
 namespace clproto {
@@ -81,4 +80,4 @@ inline state_representation::proto::Parameter encoder(const state_representation
   *message.mutable_state() = encoder(static_cast<state_representation::State>(parameter));
   return encoder<ParamT>(message, parameter);
 }
-}
+}// namespace clproto

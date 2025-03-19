@@ -96,8 +96,8 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<int>& parame
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<int>>& parameter) {
   if (parameter) {
-    *message.mutable_parameter_value()->mutable_int_array()->mutable_value() =
-        {parameter.get_value().begin(), parameter.get_value().end()};
+    *message.mutable_parameter_value()->mutable_int_array()->mutable_value(
+    ) = {parameter.get_value().begin(), parameter.get_value().end()};
   } else {
     *message.mutable_parameter_value()->mutable_int_array()->mutable_value() = {};
   }
@@ -117,8 +117,8 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<double>& par
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<double>>& parameter) {
   if (parameter) {
-    *message.mutable_parameter_value()->mutable_double_array()->mutable_value() =
-        {parameter.get_value().begin(), parameter.get_value().end()};
+    *message.mutable_parameter_value()->mutable_double_array()->mutable_value(
+    ) = {parameter.get_value().begin(), parameter.get_value().end()};
   } else {
     *message.mutable_parameter_value()->mutable_double_array()->mutable_value() = {};
   }
@@ -138,8 +138,8 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<bool>& param
 template<>
 proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<bool>>& parameter) {
   if (parameter) {
-    *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() =
-        {parameter.get_value().begin(), parameter.get_value().end()};
+    *message.mutable_parameter_value()->mutable_bool_array()->mutable_value(
+    ) = {parameter.get_value().begin(), parameter.get_value().end()};
   } else {
     *message.mutable_parameter_value()->mutable_bool_array()->mutable_value() = {};
   }
@@ -151,17 +151,16 @@ proto::Parameter encoder(proto::Parameter& message, const Parameter<std::string>
   if (parameter) {
     message.mutable_parameter_value()->mutable_string()->set_value(parameter.get_value());
   } else {
-    message.mutable_parameter_value()->mutable_string()->set_value(std::string ());
+    message.mutable_parameter_value()->mutable_string()->set_value(std::string());
   }
   return message;
 }
 
 template<>
-proto::Parameter
-encoder(proto::Parameter& message, const Parameter<std::vector<std::string>>& parameter) {
+proto::Parameter encoder(proto::Parameter& message, const Parameter<std::vector<std::string>>& parameter) {
   if (parameter) {
-    *message.mutable_parameter_value()->mutable_string_array()->mutable_value() =
-        {parameter.get_value().begin(), parameter.get_value().end()};
+    *message.mutable_parameter_value()->mutable_string_array()->mutable_value(
+    ) = {parameter.get_value().begin(), parameter.get_value().end()};
   } else {
     *message.mutable_parameter_value()->mutable_string_array()->mutable_value() = {};
   }
@@ -218,4 +217,4 @@ proto::AnalogIOState encoder(const AnalogIOState& io_state) {
   *message.mutable_values() = matrix_encoder(io_state.data());
   return message;
 }
-}
+}// namespace clproto

@@ -57,5 +57,4 @@ template<typename FieldT>
 std::vector<FieldT> decoder(const google::protobuf::RepeatedPtrField<FieldT>& message) {
   return {message.begin(), message.end()};
 }
-
-}
+}// namespace clproto
