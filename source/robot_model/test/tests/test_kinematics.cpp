@@ -1,13 +1,12 @@
 #include "robot_model/Model.hpp"
 
-#include <stdexcept>
-#include <memory>
 #include <gtest/gtest.h>
+#include <memory>
 
 #include <pinocchio/algorithm/joint-configuration.hpp>
 
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
+#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
 
 using namespace robot_model;
@@ -155,8 +154,10 @@ TEST_F(RobotModelKinematicsTest, TestForwardKinematicsJointStateSize) {
 
 TEST_F(RobotModelKinematicsTest, TestForwardKinematicsEE) {
   joint_state.set_zero();
-  EXPECT_EQ(franka->forward_kinematics(joint_state).get_position(),
-            franka->forward_kinematics(joint_state, "panda_link8").get_position());
+  EXPECT_EQ(
+      franka->forward_kinematics(joint_state).get_position(),
+      franka->forward_kinematics(joint_state, "panda_link8").get_position()
+  );
 }
 
 TEST_F(RobotModelKinematicsTest, TestForwardKinematicsInvalidFrameName) {
@@ -182,8 +183,8 @@ TEST_F(RobotModelKinematicsTest, TestForwardVelocity) {
 TEST_F(RobotModelKinematicsTest, TestInverseVelocity) {
   std::string eef_frame = franka->get_frames().back();
   for (auto& config : test_configs) {
-    state_representation::CartesianTwist des_ee_twist = state_representation::CartesianTwist::Random(eef_frame,
-                                                                                                     franka->get_base_frame());
+    state_representation::CartesianTwist des_ee_twist =
+        state_representation::CartesianTwist::Random(eef_frame, franka->get_base_frame());
     state_representation::JointVelocities joint_velocities = franka->inverse_velocity(des_ee_twist, config);
 
     state_representation::JointState state(config);
@@ -193,9 +194,8 @@ TEST_F(RobotModelKinematicsTest, TestInverseVelocity) {
     EXPECT_LT(des_ee_twist.dist(act_ee_twist), 1e-3);
 
     // second method call the QP based inverse velocity
-    state_representation::JointVelocities joint_velocities2 = franka->inverse_velocity(des_ee_twist,
-                                                                                       config,
-                                                                                       QPInverseVelocityParameters());
+    state_representation::JointVelocities joint_velocities2 =
+        franka->inverse_velocity(des_ee_twist, config, QPInverseVelocityParameters());
 
     state_representation::JointState state2(config);
     state.set_velocities(joint_velocities2.data());
@@ -209,10 +209,9 @@ TEST_F(RobotModelKinematicsTest, TestInverseVelocityConstraints) {
   parameters.linear_velocity_limit = 0.1;
   parameters.angular_velocity_limit = 0.2;
   for (auto& config : test_configs) {
-    state_representation::CartesianTwist des_ee_twist(eef_frame,
-                                                      Eigen::Vector3d::Identity(),
-                                                      Eigen::Vector3d::Identity(),
-                                                      franka->get_base_frame());
+    state_representation::CartesianTwist des_ee_twist(
+        eef_frame, Eigen::Vector3d::Identity(), Eigen::Vector3d::Identity(), franka->get_base_frame()
+    );
 
     state_representation::JointVelocities joint_velocities = franka->inverse_velocity(des_ee_twist, config, parameters);
 
@@ -332,9 +331,9 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
       total_time += diff.count();
     }
     std::cout << urdf << ": found " << success << " solutions (" << 100.0 * success / num_samples
-            << "%) with an average of " << total_time / num_samples << " secs per sample" << std::endl;
+              << "%) with an average of " << total_time / num_samples << " secs per sample" << std::endl;
     EXPECT_GT(success, 0.95 * num_samples);
-  }  
+  }
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseKinematicsIKDoesNotConverge) {
@@ -345,8 +344,9 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematicsIKDoesNotConverge) {
   param.max_number_of_iterations = 1;
 
   state_representation::CartesianPose reference = franka->forward_kinematics(config, "panda_link8");
-  EXPECT_THROW(franka->inverse_kinematics(reference, param, "panda_link8"),
-               exceptions::InverseKinematicsNotConvergingException);
+  EXPECT_THROW(
+      franka->inverse_kinematics(reference, param, "panda_link8"), exceptions::InverseKinematicsNotConvergingException
+  );
 }
 
 TEST_F(RobotModelKinematicsTest, ComputeJacobian) {
@@ -380,16 +380,17 @@ TEST_F(RobotModelKinematicsTest, ComputeJacobianTimeDerivative) {
   }
 }
 
-TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity){
-  for (std::size_t config = 0; config < test_configs.size(); ++config){
-    state_representation::JointVelocities joint_velocities_damped = franka->inverse_velocity(test_ee_velocities[config], test_configs[config], "", test_dls_lambdas[config]);
+TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity) {
+  for (std::size_t config = 0; config < test_configs.size(); ++config) {
+    state_representation::JointVelocities joint_velocities_damped =
+        franka->inverse_velocity(test_ee_velocities[config], test_configs[config], "", test_dls_lambdas[config]);
     EXPECT_LT(joint_velocities_damped.data().norm() - test_velocity_damped_ik_expects[config].data().norm(), 1e-3);
   }
-    // additional 6 dof robot test
+  // additional 6 dof robot test
   std::string robot_name_6_dof = "ur5e";
   std::string urdf_path_6_dof = std::string(TEST_FIXTURES) + "ur5e.urdf";
   std::unique_ptr<Model> ur5e = std::make_unique<Model>(robot_name_6_dof, urdf_path_6_dof);
-  
+
   Eigen::VectorXd q(6);
   q << -1.957518, 1.037530, -1.093933, -1.485144, -0.037432, 0.051972;
   state_representation::JointPositions q_6dof("ur5e", q);
@@ -400,7 +401,8 @@ TEST_F(RobotModelKinematicsTest, ComputeDampedVelocity){
   twist_6_dof << -0.305471, 0.217658, 0.120671, 0.321962, 0.265064, 0.352931;
   state_representation::CartesianTwist test_velocity_fk_expects_6_dof("6dof", twist_6_dof);
 
-  state_representation::JointVelocities joint_velocities_damped_6_dof = ur5e->inverse_velocity(v_ee_6_dof, q_6dof, "", dls_lambda_6_dof);
+  state_representation::JointVelocities joint_velocities_damped_6_dof =
+      ur5e->inverse_velocity(v_ee_6_dof, q_6dof, "", dls_lambda_6_dof);
 
   EXPECT_LT(joint_velocities_damped_6_dof.data().norm() - test_velocity_fk_expects_6_dof.data().norm(), 1e-3);
 }

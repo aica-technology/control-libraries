@@ -1,11 +1,11 @@
 #include "robot_model/Model.hpp"
 
-#include <stdexcept>
-#include <memory>
 #include <gtest/gtest.h>
+#include <memory>
+#include <stdexcept>
 
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
+#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 
 using namespace robot_model;
 
@@ -20,9 +20,7 @@ protected:
     create_urdf_test_path = std::string(TEST_FIXTURES) + "urdf_test.urdf";
   }
 
-  void TearDown() override {
-    std::remove(create_urdf_test_path.c_str());
-  }
+  void TearDown() override { std::remove(create_urdf_test_path.c_str()); }
 
   std::unique_ptr<Model> franka;
   std::string robot_name;
@@ -60,7 +58,6 @@ TEST_F(RobotModelTest, TestEqualityConstructor) {
 TEST_F(RobotModelTest, TestNumberOfJoints) {
   EXPECT_EQ(franka->get_number_of_joints(), 7);
 }
-
 
 TEST_F(RobotModelTest, TestJacobianJointNames) {
   state_representation::JointState dummy = state_representation::JointState::Zero(robot_name, 7);

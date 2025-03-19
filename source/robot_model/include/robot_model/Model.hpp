@@ -1,21 +1,21 @@
 #pragma once
 
+#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
 
 #include <OsqpEigen/OsqpEigen.h>
 #include <pinocchio/algorithm/crba.hpp>
+#include <pinocchio/algorithm/geometry.hpp>
 #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/parsers/urdf.hpp>
-#include <pinocchio/algorithm/geometry.hpp>
 
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/parameters/ParameterInterface.hpp>
 #include <state_representation/space/Jacobian.hpp>
-#include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
+#include <state_representation/space/joint/JointState.hpp>
 
 #include "robot_model/QPSolver.hpp"
 
@@ -100,8 +100,8 @@ private:
    * @param joint_id id of the frame at which to compute the Jacobian
    * @return the Jacobian matrix
    */
-  state_representation::Jacobian compute_jacobian(const state_representation::JointPositions& joint_positions,
-                                                  unsigned int frame_id);
+  state_representation::Jacobian
+  compute_jacobian(const state_representation::JointPositions& joint_positions, unsigned int frame_id);
 
   /**
    * @brief Compute the time derivative of the Jacobian from given joint positions and velocities at the frame in parameter
@@ -110,9 +110,10 @@ private:
    * @param joint_id id of the frame at which to compute the Jacobian
    * @return the time derivative of Jacobian matrix
    */
-  Eigen::MatrixXd compute_jacobian_time_derivative(const state_representation::JointPositions& joint_positions,
-                                                   const state_representation::JointVelocities& joint_velocities,
-                                                   unsigned int frame_id);
+  Eigen::MatrixXd compute_jacobian_time_derivative(
+      const state_representation::JointPositions& joint_positions,
+      const state_representation::JointVelocities& joint_velocities, unsigned int frame_id
+  );
 
   /**
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions
@@ -120,8 +121,9 @@ private:
    * @param frame_ids ids of the frames at which to extract the pose
    * @return the desired poses
    */
-  std::vector<state_representation::CartesianPose> forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                      const std::vector<unsigned int>& frame_ids);
+  std::vector<state_representation::CartesianPose> forward_kinematics(
+      const state_representation::JointPositions& joint_positions, const std::vector<unsigned int>& frame_ids
+  );
 
   /**
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions for a single frame
@@ -129,8 +131,8 @@ private:
    * @param frame_id id of the frames at which to extract the pose
    * @return the desired pose
    */
-  state_representation::CartesianPose forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                         unsigned int frame_id);
+  state_representation::CartesianPose
+  forward_kinematics(const state_representation::JointPositions& joint_positions, unsigned int frame_id);
 
   /**
    * @brief Check if the vector's elements are inside the parameter limits
@@ -139,9 +141,8 @@ private:
    * @param upper_limits the upper bounds of the limits
    * @return true if all the elements are inside at their limits, false otherwise.
    */
-  static bool in_range(const Eigen::VectorXd& vector,
-                       const Eigen::VectorXd& lower_limits,
-                       const Eigen::VectorXd& upper_limits);
+  static bool
+  in_range(const Eigen::VectorXd& vector, const Eigen::VectorXd& lower_limits, const Eigen::VectorXd& upper_limits);
 
   /**
    * @brief Clamp the vector's elements according to the parameter limits
@@ -150,9 +151,9 @@ private:
    * @param upper_limits the upper bounds of the limits
    * @return the clamped vector
    */
-  static Eigen::VectorXd clamp_in_range(const Eigen::VectorXd& vector,
-                                        const Eigen::VectorXd& lower_limits,
-                                        const Eigen::VectorXd& upper_limits);
+  static Eigen::VectorXd clamp_in_range(
+      const Eigen::VectorXd& vector, const Eigen::VectorXd& lower_limits, const Eigen::VectorXd& upper_limits
+  );
 
   /**
    * @brief Compute the weighted matrix of the algorithm "Clamping Weighted Least-Norm"
@@ -168,8 +169,8 @@ private:
    * @param margin the distance from the joint limit at which the joint positions should be penalized
    * @return the repulsive potential field
    */
-  Eigen::VectorXd cwln_repulsive_potential_field(const state_representation::JointPositions& joint_positions,
-                                                 double margin);
+  Eigen::VectorXd
+  cwln_repulsive_potential_field(const state_representation::JointPositions& joint_positions, double margin);
 
   /**
    * @brief Check the arguments of the inverse_velocity function and throw exceptions if they are not correct
@@ -177,9 +178,10 @@ private:
    * @param joint_positions current joint positions, used to compute the Jacobian matrix
    * @param frames names of the frames at which to compute the twists
    */
-  void check_inverse_velocity_arguments(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                                        const state_representation::JointPositions& joint_positions,
-                                        const std::vector<std::string>& frames);
+  void check_inverse_velocity_arguments(
+      const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+      const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames
+  );
 
   /**
    * @brief Generates a list of collision pairs to exclude based on the kinematic tree of the model
@@ -208,9 +210,10 @@ public:
    * @param urdf_path the path to the URDF file
    * @param meshloader_callback optional callback to resolve the absolute package path from a package name
    */
-  explicit Model(const std::string& robot_name, 
-                   const std::string& urdf_path,
-                   const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback);
+  explicit Model(
+      const std::string& robot_name, const std::string& urdf_path,
+      const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
+  );
 
   /**
    * @brief Copy constructor
@@ -248,7 +251,7 @@ public:
    * @param joint_positions state_representation object containing the joint positions of the robot
    * @return the matrix containing the minimum distance between the robot links
    */
-  Eigen::MatrixXd compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions); 
+  Eigen::MatrixXd compute_minimum_collision_distances(const state_representation::JointPositions& joint_positions);
 
   /**
    * @brief Check if the links of the robot are in collision
@@ -336,8 +339,8 @@ public:
    * @param frame name of the frame at which to compute the Jacobian, if empty computed for the last frame
    * @return the Jacobian matrix
    */
-  state_representation::Jacobian compute_jacobian(const state_representation::JointPositions& joint_positions,
-                                                  const std::string& frame = "");
+  state_representation::Jacobian
+  compute_jacobian(const state_representation::JointPositions& joint_positions, const std::string& frame = "");
 
   /**
    * @brief Compute the time derivative of the Jacobian from given joint positions and velocities at the frame in parameter
@@ -346,9 +349,10 @@ public:
    * @param frame name of the frame at which to compute the Jacobian, if empty computed for the last frame
    * @return the time derivative of Jacobian matrix
    */
-  Eigen::MatrixXd compute_jacobian_time_derivative(const state_representation::JointPositions& joint_positions,
-                                                   const state_representation::JointVelocities& joint_velocities,
-                                                   const std::string& frame = "");
+  Eigen::MatrixXd compute_jacobian_time_derivative(
+      const state_representation::JointPositions& joint_positions,
+      const state_representation::JointVelocities& joint_velocities, const std::string& frame = ""
+  );
 
   /**
    * @brief Compute the Inertia matrix from a given joint positions
@@ -385,7 +389,8 @@ public:
    * @param joint_positions containing the joint positions of the robot
    * @return the gravity torque as a JointTorques
    */
-  state_representation::JointTorques compute_gravity_torques(const state_representation::JointPositions& joint_positions);
+  state_representation::JointTorques compute_gravity_torques(const state_representation::JointPositions& joint_positions
+  );
 
   /**
    * @brief Compute the forward kinematics, i.e. the pose of certain frames from the joint positions
@@ -393,8 +398,9 @@ public:
    * @param frames names of the frames at which to extract the poses
    * @return the pose of desired frames
    */
-  std::vector<state_representation::CartesianPose> forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                                      const std::vector<std::string>& frames);
+  std::vector<state_representation::CartesianPose> forward_kinematics(
+      const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames
+  );
 
   /**
    * @brief Compute the forward kinematics, i.e. the pose of the frame from the joint positions
@@ -402,8 +408,8 @@ public:
    * @param frame name of the frame at which to extract the pose
    * @return the pose of the desired frame
    */
-  state_representation::CartesianPose forward_kinematics(const state_representation::JointPositions& joint_positions,
-                                                         const std::string& frame = "");
+  state_representation::CartesianPose
+  forward_kinematics(const state_representation::JointPositions& joint_positions, const std::string& frame = "");
 
   /**
    * @brief Compute the inverse kinematics, i.e. joint positions from the pose of the end-effector in an iterative manner
@@ -413,9 +419,10 @@ public:
    * @param frame name of the frame at which to extract the pose
    * @return the joint positions of the robot
    */
-  state_representation::JointPositions inverse_kinematics(const state_representation::CartesianPose& cartesian_pose,
-                                                          const InverseKinematicsParameters& parameters = InverseKinematicsParameters(),
-                                                          const std::string& frame = "");
+  state_representation::JointPositions inverse_kinematics(
+      const state_representation::CartesianPose& cartesian_pose,
+      const InverseKinematicsParameters& parameters = InverseKinematicsParameters(), const std::string& frame = ""
+  );
 
   /**
    * @brief Compute the inverse kinematics, i.e. joint positions from the pose of the end-effector
@@ -426,10 +433,11 @@ public:
    * @param frame name of the frame at which to extract the pose
    * @return the joint positions of the robot
    */
-  state_representation::JointPositions inverse_kinematics(const state_representation::CartesianPose& cartesian_pose,
-                                                          const state_representation::JointPositions& joint_positions,
-                                                          const InverseKinematicsParameters& parameters = InverseKinematicsParameters(),
-                                                          const std::string& frame = "");
+  state_representation::JointPositions inverse_kinematics(
+      const state_representation::CartesianPose& cartesian_pose,
+      const state_representation::JointPositions& joint_positions,
+      const InverseKinematicsParameters& parameters = InverseKinematicsParameters(), const std::string& frame = ""
+  );
 
   /**
    * @brief Compute the forward velocity kinematics, i.e. the twist of certain frames from the joint states
@@ -437,8 +445,8 @@ public:
    * @param frames name of the frames at which to compute the twist
    * @return the twists of the frames in parameter
    */
-  std::vector<state_representation::CartesianTwist> forward_velocity(const state_representation::JointState& joint_state,
-                                                                     const std::vector<std::string>& frames);
+  std::vector<state_representation::CartesianTwist>
+  forward_velocity(const state_representation::JointState& joint_state, const std::vector<std::string>& frames);
 
   /**
    * @brief Compute the forward velocity kinematics, i.e. the twist of the end-effector from the joint velocities
@@ -446,8 +454,8 @@ public:
    * @param frame name of the frame at which to compute the twist
    * @return the twist of the frame in parameter
    */
-  state_representation::CartesianTwist forward_velocity(const state_representation::JointState& joint_state,
-                                                        const std::string& frame = "");
+  state_representation::CartesianTwist
+  forward_velocity(const state_representation::JointState& joint_state, const std::string& frame = "");
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter
@@ -458,10 +466,11 @@ public:
    * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
-  state_representation::JointVelocities inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                                                         const state_representation::JointPositions& joint_positions,
-                                                         const std::vector<std::string>& frames,
-                                                         const double dls_lambda = 0.0);
+  state_representation::JointVelocities inverse_velocity(
+      const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+      const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames,
+      const double dls_lambda = 0.0
+  );
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the
@@ -474,10 +483,11 @@ public:
    * @param dls_lambda damped least square term
    * @return the joint velocities of the robot
    */
-  state_representation::JointVelocities inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
-                                                         const state_representation::JointPositions& joint_positions,
-                                                         const std::string& frame = "",
-                                                         const double dls_lambda = 0.0);
+  state_representation::JointVelocities inverse_velocity(
+      const state_representation::CartesianTwist& cartesian_twist,
+      const state_representation::JointPositions& joint_positions, const std::string& frame = "",
+      const double dls_lambda = 0.0
+  );
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the velocities of the frames in parameter
@@ -489,10 +499,11 @@ public:
    * @param frames names of the frames at which to compute the twists
    * @return the joint velocities of the robot
    */
-  state_representation::JointVelocities inverse_velocity(const std::vector<state_representation::CartesianTwist>& cartesian_twists,
-                                                         const state_representation::JointPositions& joint_positions,
-                                                         const QPInverseVelocityParameters& parameters,
-                                                         const std::vector<std::string>& frames);
+  state_representation::JointVelocities inverse_velocity(
+      const std::vector<state_representation::CartesianTwist>& cartesian_twists,
+      const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
+      const std::vector<std::string>& frames
+  );
 
   /**
    * @brief Compute the inverse velocity kinematics, i.e. joint velocities from the twist of the end-effector using the
@@ -505,10 +516,11 @@ public:
    * @param frame name of the frame at which to compute the twist
    * @return the joint velocities of the robot
    */
-  state_representation::JointVelocities inverse_velocity(const state_representation::CartesianTwist& cartesian_twist,
-                                                         const state_representation::JointPositions& joint_positions,
-                                                         const QPInverseVelocityParameters& parameters,
-                                                         const std::string& frame = "");
+  state_representation::JointVelocities inverse_velocity(
+      const state_representation::CartesianTwist& cartesian_twist,
+      const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
+      const std::string& frame = ""
+  );
 
   /**
    * @brief Check if the joint positions are inside the limits provided by the model
@@ -545,7 +557,10 @@ public:
    * @param state_variable_type the type of the joint state variable to be clamped
    * @return the clamped joint states
    */
-  state_representation::JointState clamp_in_range(const state_representation::JointState& joint_state, const state_representation::JointStateVariable& state_variable_type) const;
+  state_representation::JointState clamp_in_range(
+      const state_representation::JointState& joint_state,
+      const state_representation::JointStateVariable& state_variable_type
+  ) const;
 
   /**
    * @brief Clamp the joint state variables (positions, velocities & torques) according to the limits provided by

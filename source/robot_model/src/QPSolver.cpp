@@ -5,13 +5,14 @@ namespace robot_model {
 QPSolver::QPSolver(
     const unsigned int nb_joints, pinocchio::ModelTpl<double>::ConfigVectorType lower_position_limit,
     pinocchio::ModelTpl<double>::ConfigVectorType upper_position_limit,
-    pinocchio::ModelTpl<double>::TangentVectorType velocity_limit)
+    pinocchio::ModelTpl<double>::TangentVectorType velocity_limit
+)
     : nb_joints_(nb_joints),
       lower_position_limit_(lower_position_limit),
       upper_position_limit_(upper_position_limit),
       velocity_limit_(velocity_limit) {
 
-  if(!this->init_solver()){
+  if (!this->init_solver()) {
     throw std::runtime_error("QP solver initialization failed");
   }
 }
@@ -27,7 +28,7 @@ QPSolver::QPSolver(const QPSolver& other)
       lower_bound_constraints_(other.lower_bound_constraints_),
       upper_bound_constraints_(other.upper_bound_constraints_) {
 
-  if(!this->init_solver()){
+  if (!this->init_solver()) {
     throw std::runtime_error("QP solver initialization failed");
   }
 }
@@ -48,7 +49,8 @@ bool QPSolver::init_solver() {
   // reserve the size of the matrices
   this->hessian_.reserve(this->nb_joints_ * this->nb_joints_ + 1);
   this->constraint_matrix_.reserve(
-      5 * this->nb_joints_ + 2 * (this->nb_joints_ * this->nb_joints_ + this->nb_joints_) + 4 * this->nb_joints_ + 3);
+      5 * this->nb_joints_ + 2 * (this->nb_joints_ * this->nb_joints_ + this->nb_joints_) + 4 * this->nb_joints_ + 3
+  );
 
   // configure the QP problem
   this->solver_.settings()->setVerbosity(false);
@@ -118,7 +120,8 @@ void QPSolver::set_matrices(
     std::vector<Eigen::Triplet<double>> coefficients, const QPInverseVelocityParameters& parameters,
     const state_representation::JointPositions& joint_positions,
     const state_representation::CartesianPose& full_displacement, const Eigen::VectorXd& delta_robot,
-    const Eigen::MatrixXd& jacobian) {
+    const Eigen::MatrixXd& jacobian
+) {
   using namespace std::chrono;
 
   // update the hessian matrix

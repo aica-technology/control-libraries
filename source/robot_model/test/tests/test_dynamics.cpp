@@ -1,7 +1,7 @@
 #include "robot_model/Model.hpp"
 
-#include <memory>
 #include <gtest/gtest.h>
+#include <memory>
 
 using namespace robot_model;
 
