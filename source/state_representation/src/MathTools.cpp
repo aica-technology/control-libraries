@@ -42,4 +42,4 @@ const std::vector<double> linspace(double start, double end, unsigned int number
   pts.push_back(end);
   return pts;
 }
-}
+}// namespace state_representation::math_tools

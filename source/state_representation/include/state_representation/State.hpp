@@ -4,13 +4,11 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
-#include <typeinfo>
 
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
 #include "state_representation/StateType.hpp"
-#include "state_representation/MathTools.hpp"
 
 /**
  * @namespace state_representation

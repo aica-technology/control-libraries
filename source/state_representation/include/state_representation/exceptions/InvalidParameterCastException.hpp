@@ -5,6 +5,6 @@
 namespace state_representation::exceptions {
 class InvalidParameterCastException : public InvalidParameterException {
 public:
-  explicit InvalidParameterCastException(const std::string& msg) : InvalidParameterException(msg) {};
+  explicit InvalidParameterCastException(const std::string& msg) : InvalidParameterException(msg){};
 };
-}
+}// namespace state_representation::exceptions

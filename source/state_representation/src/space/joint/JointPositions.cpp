@@ -1,7 +1,5 @@
 #include "state_representation/space/joint/JointPositions.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-
 namespace state_representation {
 
 using namespace exceptions;
@@ -10,25 +8,26 @@ JointPositions::JointPositions() {
   this->set_type(StateType::JOINT_POSITIONS);
 }
 
-JointPositions::JointPositions(const std::string& robot_name, unsigned int nb_joints) :
-    JointState(robot_name, nb_joints) {
+JointPositions::JointPositions(const std::string& robot_name, unsigned int nb_joints)
+    : JointState(robot_name, nb_joints) {
   this->set_type(StateType::JOINT_POSITIONS);
 }
 
-JointPositions::JointPositions(const std::string& robot_name, const Eigen::VectorXd& positions) :
-    JointState(robot_name, positions.size()) {
+JointPositions::JointPositions(const std::string& robot_name, const Eigen::VectorXd& positions)
+    : JointState(robot_name, positions.size()) {
   this->set_type(StateType::JOINT_POSITIONS);
   this->set_positions(positions);
 }
 
-JointPositions::JointPositions(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names) {
+JointPositions::JointPositions(const std::string& robot_name, const std::vector<std::string>& joint_names)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_POSITIONS);
 }
 
 JointPositions::JointPositions(
     const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& positions
-) : JointState(robot_name, joint_names) {
+)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_POSITIONS);
   this->set_positions(positions);
 }
@@ -41,8 +40,8 @@ JointPositions::JointPositions(const JointState& state) : JointState(state) {
   }
 }
 
-JointPositions::JointPositions(const JointPositions& positions) :
-    JointPositions(static_cast<const JointState&>(positions)) {}
+JointPositions::JointPositions(const JointPositions& positions)
+    : JointPositions(static_cast<const JointState&>(positions)) {}
 
 JointPositions::JointPositions(const JointVelocities& velocities) : JointPositions(velocities.integrate(1.0)) {}
 
@@ -88,9 +87,8 @@ JointPositions JointPositions::clamped(double max_absolute_value, double noise_r
   return result;
 }
 
-JointPositions JointPositions::clamped(
-    const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array
-) const {
+JointPositions
+JointPositions::clamped(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) const {
   JointPositions result(*this);
   result.clamp(max_absolute_value_array, noise_ratio_array);
   return result;

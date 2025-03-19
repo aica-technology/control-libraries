@@ -111,10 +111,9 @@ public:
    * Fitzgibbon, A., et al. (1999). "Direct least square fitting of ellipses."
     * IEEE Transactions on pattern analysis and machine intelligence 21(5)
    */
-  static const Ellipsoid fit(
-      const std::string& name, const std::list<CartesianPose>& points, const std::string& reference_frame = "world",
-      double noise_level = 0.01
-  );
+  static const Ellipsoid
+  fit(const std::string& name, const std::list<CartesianPose>& points, const std::string& reference_frame = "world",
+      double noise_level = 0.01);
 
   /**
    * @brief Compute an Ellipsoid from its algebraic equation ax2 + bxy + cy2 + cx + ey + f
@@ -146,8 +145,8 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const Ellipsoid& ellipsoid);
 
 private:
-  std::vector<double> axis_lengths_; ///< axis lengths in x,y directions
-  double rotation_angle_; ///< angle of rotation around z axis of the reference frame
+  std::vector<double> axis_lengths_;///< axis lengths in x,y directions
+  double rotation_angle_;           ///< angle of rotation around z axis of the reference frame
 };
 
 inline void swap(Ellipsoid& state1, Ellipsoid& state2) {

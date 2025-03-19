@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include "state_representation/space/joint/JointPositions.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include <gtest/gtest.h>
 
 using namespace state_representation;
 
@@ -178,7 +178,7 @@ TEST(JointPositionsTest, TestDifferentiate) {
   auto res2 = jp.differentiate(dt1);
   EXPECT_EQ(res2.get_type(), StateType::JOINT_VELOCITIES);
   EXPECT_TRUE(jp.get_positions().isApprox(dt1 * res2.get_velocities()));
-  
+
   JointVelocities jv(jp);
   EXPECT_TRUE(jp.get_positions().isApprox(jv.get_velocities()));
 }

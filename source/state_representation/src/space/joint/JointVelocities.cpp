@@ -1,5 +1,4 @@
 #include "state_representation/space/joint/JointVelocities.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 
 namespace state_representation {
 
@@ -9,25 +8,26 @@ JointVelocities::JointVelocities() {
   this->set_type(StateType::JOINT_VELOCITIES);
 }
 
-JointVelocities::JointVelocities(const std::string& robot_name, unsigned int nb_joints) :
-    JointState(robot_name, nb_joints) {
+JointVelocities::JointVelocities(const std::string& robot_name, unsigned int nb_joints)
+    : JointState(robot_name, nb_joints) {
   this->set_type(StateType::JOINT_VELOCITIES);
 }
 
-JointVelocities::JointVelocities(const std::string& robot_name, const Eigen::VectorXd& velocities) :
-    JointState(robot_name, velocities.size()) {
+JointVelocities::JointVelocities(const std::string& robot_name, const Eigen::VectorXd& velocities)
+    : JointState(robot_name, velocities.size()) {
   this->set_type(StateType::JOINT_VELOCITIES);
   this->set_velocities(velocities);
 }
 
-JointVelocities::JointVelocities(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names) {
+JointVelocities::JointVelocities(const std::string& robot_name, const std::vector<std::string>& joint_names)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_VELOCITIES);
 }
 
 JointVelocities::JointVelocities(
     const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& velocities
-) : JointState(robot_name, joint_names) {
+)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_VELOCITIES);
   this->set_velocities(velocities);
 }
@@ -40,11 +40,11 @@ JointVelocities::JointVelocities(const JointState& state) : JointState(state) {
   }
 }
 
-JointVelocities::JointVelocities(const JointVelocities& velocities) :
-    JointVelocities(static_cast<const JointState&>(velocities)) {}
+JointVelocities::JointVelocities(const JointVelocities& velocities)
+    : JointVelocities(static_cast<const JointState&>(velocities)) {}
 
-JointVelocities::JointVelocities(const JointAccelerations& accelerations) :
-    JointVelocities(accelerations.integrate(1.0)) {}
+JointVelocities::JointVelocities(const JointAccelerations& accelerations)
+    : JointVelocities(accelerations.integrate(1.0)) {}
 
 JointVelocities::JointVelocities(const JointPositions& positions) : JointVelocities(positions.differentiate(1.0)) {}
 
@@ -118,7 +118,7 @@ JointPositions JointVelocities::integrate(double dt) const {
 
 JointPositions JointVelocities::integrate(const std::chrono::nanoseconds& dt) const {
   // convert the period to a double with the second as reference
-  return this->integrate(dt.count() / 1e9);  
+  return this->integrate(dt.count() / 1e9);
 }
 
 JointVelocities& JointVelocities::operator*=(double lambda) {

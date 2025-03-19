@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
+#include "state_representation/exceptions/InvalidParameterException.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/parameters/ParameterMap.hpp"
-#include "state_representation/exceptions/InvalidParameterException.hpp"
 
 using namespace state_representation;
 
@@ -51,6 +51,8 @@ TEST(ParameterMapTest, AssertParameterValid) {
   // Parameter has incorrect parameter type
   EXPECT_THROW(map.assert_parameter_valid(make_shared_parameter("string", 1)), exceptions::InvalidParameterException);
   // Parameter has incorrect parameter state type
-  EXPECT_THROW(map.assert_parameter_valid(make_shared_parameter("joint", CartesianState::Random("test"))),
-               exceptions::InvalidParameterException);
+  EXPECT_THROW(
+      map.assert_parameter_valid(make_shared_parameter("joint", CartesianState::Random("test"))),
+      exceptions::InvalidParameterException
+  );
 }

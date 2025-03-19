@@ -6,15 +6,15 @@ namespace state_representation {
 
 State::State() : type_(StateType::STATE), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
-State::State(const std::string& name) :
-    type_(StateType::STATE), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
+State::State(const std::string& name)
+    : type_(StateType::STATE), name_(name), empty_(true), timestamp_(std::chrono::steady_clock::now()) {}
 
-State::State(const State& state) :
-    std::enable_shared_from_this<State>(state),
-    type_(StateType::STATE),
-    name_(state.name_),
-    empty_(state.empty_),
-    timestamp_(state.timestamp_) {}
+State::State(const State& state)
+    : std::enable_shared_from_this<State>(state),
+      type_(StateType::STATE),
+      name_(state.name_),
+      empty_(state.empty_),
+      timestamp_(state.timestamp_) {}
 
 State& State::operator=(const State& state) {
   State tmp(state);
@@ -79,9 +79,11 @@ void State::reset() {
 }
 
 double State::get_age() const {
-  return static_cast<double>(std::chrono::duration_cast<std::chrono::nanoseconds>(
-      std::chrono::steady_clock::now() - this->timestamp_
-  ).count()) / 1e9;
+  return static_cast<double>(
+             std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - this->timestamp_)
+                 .count()
+         )
+      / 1e9;
 }
 
 bool State::is_deprecated(double time_delay) const {

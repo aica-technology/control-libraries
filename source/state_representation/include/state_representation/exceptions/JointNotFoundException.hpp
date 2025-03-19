@@ -1,7 +1,7 @@
 #pragma once
 
-#include <exception>
-#include <iostream>
+#include <stdexcept>
+#include <string>
 
 namespace state_representation::exceptions {
 
@@ -11,6 +11,6 @@ namespace state_representation::exceptions {
  */
 class JointNotFoundException : public std::logic_error {
 public:
-  explicit JointNotFoundException(const std::string& msg) : logic_error(msg) {};
+  explicit JointNotFoundException(const std::string& msg) : logic_error(msg){};
 };
 }// namespace state_representation::exceptions

@@ -29,7 +29,8 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
     {"Double", ParameterType::DOUBLE}, {"DoubleArray", ParameterType::DOUBLE_ARRAY},
     {"String", ParameterType::STRING}, {"StringArray", ParameterType::STRING_ARRAY},
     {"State", ParameterType::STATE},   {"Vector", ParameterType::VECTOR},
-    {"Matrix", ParameterType::MATRIX}};
+    {"Matrix", ParameterType::MATRIX}
+};
 
 /**
  * @brief Return the parameter type map, containing mappings of human-friendly strings for the type to their corresponding enum type

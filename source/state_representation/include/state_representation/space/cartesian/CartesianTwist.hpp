@@ -1,8 +1,8 @@
 #pragma once
 
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 
 namespace state_representation {
@@ -187,9 +187,8 @@ public:
    * the angular velocity will be set to 0
    * @return The clamped twist
    */
-  CartesianTwist clamped(
-      double max_linear, double max_angular, double noise_ratio = 0, double angular_noise_ratio = 0
-  ) const;
+  CartesianTwist
+  clamped(double max_linear, double max_angular, double noise_ratio = 0, double angular_noise_ratio = 0) const;
 
   /**
    * @brief Return a copy of the Cartesian twist
@@ -407,5 +406,4 @@ public:
 private:
   using CartesianState::clamp_state_variable;
 };
-
 }// namespace state_representation

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "state_representation/State.hpp"
 #include <chrono>
 #include <deque>
-#include "state_representation/State.hpp"
 
 namespace state_representation {
 template<class StateT>
@@ -10,8 +10,8 @@ class Trajectory : public State {
 private:
   std::deque<StateT> points_;
   std::deque<std::chrono::nanoseconds> times_;
-  std::string reference_frame_; ///< name of the reference frame
-  std::vector<std::string> joint_names_; ///< names of the joints
+  std::string reference_frame_;         ///< name of the reference frame
+  std::vector<std::string> joint_names_;///< names of the joints
 
 public:
   /**
@@ -113,20 +113,16 @@ public:
    * @brief Operator overload for returning a single trajectory point and corresponding time
    */
   std::pair<StateT, std::chrono::nanoseconds> operator[](unsigned int idx);
-
 };
 
 template<class StateT>
-Trajectory<StateT>::Trajectory():
-    State() {
+Trajectory<StateT>::Trajectory() : State() {
   this->set_type(StateType::TRAJECTORY);
   this->reset();
 }
 
 template<class StateT>
-Trajectory<StateT>::Trajectory(const std::string& name):
-    State(name),
-    reference_frame_("") {
+Trajectory<StateT>::Trajectory(const std::string& name) : State(name), reference_frame_("") {
   this->set_type(StateType::TRAJECTORY);
   this->reset();
 }
@@ -182,9 +178,9 @@ void Trajectory<StateT>::add_point(const StateT& new_point, const std::chrono::d
 
 template<class StateT>
 template<typename DurationT>
-void Trajectory<StateT>::insert_point(const StateT& new_point,
-                                      const std::chrono::duration<int64_t, DurationT>& new_time,
-                                      int pos) {
+void Trajectory<StateT>::insert_point(
+    const StateT& new_point, const std::chrono::duration<int64_t, DurationT>& new_time, int pos
+) {
   this->set_empty(false);
 
   auto it_points = this->points_.begin();
@@ -254,4 +250,4 @@ std::pair<StateT, std::chrono::nanoseconds> Trajectory<StateT>::operator[](unsig
   this->set_empty(false);
   return std::make_pair(this->points_[idx], this->times_[idx]);
 }
-}
+}// namespace state_representation

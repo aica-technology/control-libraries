@@ -1,7 +1,5 @@
 #include "state_representation/AnalogIOState.hpp"
 
-#include "state_representation/exceptions/IONotFoundException.hpp"
-
 using namespace state_representation::exceptions;
 
 namespace state_representation {
@@ -15,8 +13,8 @@ AnalogIOState::AnalogIOState(const std::string& name, unsigned int nb_ios) : IOS
   this->data_ = Eigen::VectorXd::Zero(nb_ios);
 }
 
-AnalogIOState::AnalogIOState(const std::string& name, const std::vector<std::string>& io_names) :
-  AnalogIOState(name, io_names.size()) {
+AnalogIOState::AnalogIOState(const std::string& name, const std::vector<std::string>& io_names)
+    : AnalogIOState(name, io_names.size()) {
   this->set_names(io_names);
 }
 
@@ -81,13 +79,17 @@ std::string AnalogIOState::to_string() const {
   std::stringstream s;
   s << this->State::to_string();
   s << std::endl << "analog io names: [";
-  for (auto& n : this->get_names()) { s << n << ", "; }
+  for (auto& n : this->get_names()) {
+    s << n << ", ";
+  }
   s << "]";
   if (this->is_empty()) {
     return s.str();
   }
   s << std::endl << "values: [";
-  for (auto& p : this->data()) { s << p << ", "; }
+  for (auto& p : this->data()) {
+    s << p << ", ";
+  }
   s << "]";
   return s.str();
 }

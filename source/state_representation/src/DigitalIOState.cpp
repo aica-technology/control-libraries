@@ -1,7 +1,5 @@
 #include "state_representation/DigitalIOState.hpp"
 
-#include "state_representation/exceptions/IONotFoundException.hpp"
-
 using namespace state_representation::exceptions;
 
 namespace state_representation {
@@ -15,8 +13,8 @@ DigitalIOState::DigitalIOState(const std::string& name, unsigned int nb_ios) : I
   this->data_ = Eigen::Vector<bool, Eigen::Dynamic>::Zero(nb_ios);
 }
 
-DigitalIOState::DigitalIOState(const std::string& name, const std::vector<std::string>& io_names) :
-  DigitalIOState(name, io_names.size()) {
+DigitalIOState::DigitalIOState(const std::string& name, const std::vector<std::string>& io_names)
+    : DigitalIOState(name, io_names.size()) {
   this->set_names(io_names);
 }
 
@@ -115,13 +113,17 @@ std::string DigitalIOState::to_string() const {
   std::stringstream s;
   s << this->State::to_string();
   s << std::endl << "digital io names: [";
-  for (auto& n : this->get_names()) { s << n << ", "; }
+  for (auto& n : this->get_names()) {
+    s << n << ", ";
+  }
   s << "]";
   if (this->is_empty()) {
     return s.str();
   }
   s << std::endl << "values: [";
-  for (auto& p : this->data()) { s << p << ", "; }
+  for (auto& p : this->data()) {
+    s << p << ", ";
+  }
   s << "]";
   return s.str();
 }

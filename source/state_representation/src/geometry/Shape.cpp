@@ -9,8 +9,8 @@ Shape::Shape() : State(), center_state_(CartesianState::Identity("")) {
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
-Shape::Shape(const std::string& name, const std::string& reference_frame) :
-    State(name), center_state_(CartesianState::Identity(name, reference_frame)) {
+Shape::Shape(const std::string& name, const std::string& reference_frame)
+    : State(name), center_state_(CartesianState::Identity(name, reference_frame)) {
   this->set_type(StateType::GEOMETRY_SHAPE);
 }
 
@@ -68,7 +68,8 @@ void Shape::set_center_state(const CartesianState& state) {
 void Shape::set_center_pose(const CartesianPose& pose) {
   if (this->center_state_.get_reference_frame() != pose.get_reference_frame()) {
     throw exceptions::IncompatibleReferenceFramesException(
-        "The shape state and the given pose are not expressed in the same reference frame");
+        "The shape state and the given pose are not expressed in the same reference frame"
+    );
   }
   this->center_state_.set_pose(pose.get_position(), pose.get_orientation());
   this->set_empty(false);

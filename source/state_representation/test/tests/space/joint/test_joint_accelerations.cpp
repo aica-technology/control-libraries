@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include "state_representation/space/joint/JointAccelerations.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
+#include <gtest/gtest.h>
 
 using namespace state_representation;
 
@@ -183,7 +183,7 @@ TEST(JointAccelerationTest, TestIntegrate) {
   auto res3 = ja.integrate(dt1);
   EXPECT_EQ(res3.get_type(), StateType::JOINT_VELOCITIES);
   EXPECT_TRUE((dt1 * ja.get_accelerations()).isApprox(res3.get_velocities()));
-  
+
   JointVelocities jv(ja);
   EXPECT_TRUE(ja.get_accelerations().isApprox(jv.get_velocities()));
 }

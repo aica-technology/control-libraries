@@ -1,9 +1,7 @@
-#include <gtest/gtest.h>
-#include <fstream>
-#include <unistd.h>
-#include "state_representation/trajectories/Trajectory.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/trajectories/Trajectory.hpp"
+#include <gtest/gtest.h>
+#include <unistd.h>
 
 TEST(TrajectoryTest, CreateTrajectory) {
   state_representation::Trajectory<state_representation::JointState> trajectory;
