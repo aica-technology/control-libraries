@@ -23,6 +23,7 @@ Release Versions
 - fix: unstable python test (#221)
 - feat: improve devcontainer configuration (#230)
 - chore: format code (#235)
+- ci: allow workflow dispatch for rc images (#234)
 
 ## 9.1.0
 
