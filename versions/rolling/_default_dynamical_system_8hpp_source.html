@@ -93,15 +93,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classdynamical__systems_1_1_default_dynamical_system.html">   14</a></span><span class="keyword">class </span><a class="code hl_class" href="classdynamical__systems_1_1_default_dynamical_system.html">DefaultDynamicalSystem</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdynamical__systems_1_1_i_dynamical_system.html">IDynamicalSystem</a>&lt;S&gt; {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  [[nodiscard]] S <a class="code hl_function" href="classdynamical__systems_1_1_default_dynamical_system.html#a0f3a59afbba9394a82912faf4a753c54">compute_dynamics</a>(<span class="keyword">const</span> S&amp; state) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordtype">void</span> validate_and_set_parameter(<span class="keyword">const</span> std::shared_ptr&lt;state_representation::ParameterInterface&gt;&amp; parameter) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordtype">void</span> validate_and_set_parameter(<span class="keyword">const</span> std::shared_ptr&lt;state_representation::ParameterInterface&gt;&amp; parameter) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>};</div>
 </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> S&gt;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keywordtype">void</span> <a class="code hl_class" href="classdynamical__systems_1_1_default_dynamical_system.html">DefaultDynamicalSystem&lt;S&gt;::validate_and_set_parameter</a>(</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">const</span> std::shared_ptr&lt;state_representation::ParameterInterface&gt;&amp;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>) {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> S&gt;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keywordtype">void</span> <a class="code hl_class" href="classdynamical__systems_1_1_default_dynamical_system.html">DefaultDynamicalSystem</a>&lt;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    S&gt;::validate_and_set_parameter(<span class="keyword">const</span> std::shared_ptr&lt;state_representation::ParameterInterface&gt;&amp;) {</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordflow">throw</span> <a class="code hl_class" href="classstate__representation_1_1exceptions_1_1_invalid_parameter_exception.html">state_representation::exceptions::InvalidParameterException</a>(<span class="stringliteral">&quot;No parameter to be set on this type of DS.&quot;</span>);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
