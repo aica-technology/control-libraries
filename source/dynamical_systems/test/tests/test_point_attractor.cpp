@@ -1,17 +1,17 @@
-#include <vector>
-#include <gtest/gtest.h>
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
-#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
+#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
+#include <gtest/gtest.h>
+#include <vector>
 
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/space/cartesian/CartesianPose.hpp"
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointPositions.hpp"
-#include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/parameters/Parameter.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 
 using namespace state_representation;
 using namespace dynamical_systems;
@@ -193,8 +193,9 @@ TEST_F(PointAttractorTest, UpdateBaseReferenceFrames) {
 
   // since the base frame is set to frame A in frame world, evaluating a state with a reference frame that is neither
   // should give an error
-  EXPECT_THROW(ds->evaluate(BinWorld.inverse()),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->evaluate(BinWorld.inverse()), state_representation::exceptions::IncompatibleReferenceFramesException
+  );
 }
 
 TEST_F(PointAttractorTest, StackedMovingReferenceFrames) {
@@ -230,7 +231,6 @@ TEST_F(PointAttractorTest, StackedMovingReferenceFrames) {
   EXPECT_STREQ(twist.get_reference_frame().c_str(), AinWorld.get_reference_frame().c_str());
   EXPECT_STREQ(twist.get_reference_frame().c_str(), twist2.get_reference_frame().c_str());
   EXPECT_NEAR(twist.data().norm(), twist2.data().norm(), 1e-5);
-
 }
 
 TEST_F(PointAttractorTest, UpdateAttractorFrame) {
@@ -249,17 +249,21 @@ TEST_F(PointAttractorTest, UpdateAttractorFrame) {
   // setting the attractor to another point in the same base frame should be fine,
   // but setting it with a different base frame should give an error
   EXPECT_NO_THROW(ds->set_parameter_value("attractor", B));
-  EXPECT_THROW(ds->set_parameter_value("attractor", C),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->set_parameter_value("attractor", C), state_representation::exceptions::IncompatibleReferenceFramesException
+  );
 
   // after updating the base frame, the attractor reference frame should also be updated
   ds->set_base_frame(CartesianState::Identity(C.get_reference_frame(), C.get_reference_frame()));
-  EXPECT_STREQ(ds->get_parameter_value<CartesianState>("attractor").get_reference_frame().c_str(),
-               C.get_reference_frame().c_str());
+  EXPECT_STREQ(
+      ds->get_parameter_value<CartesianState>("attractor").get_reference_frame().c_str(),
+      C.get_reference_frame().c_str()
+  );
 
   // with the new base frame, setting the attractor should succeed / fail accordingly
-  EXPECT_THROW(ds->set_parameter_value("attractor", B),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->set_parameter_value("attractor", B), state_representation::exceptions::IncompatibleReferenceFramesException
+  );
   EXPECT_NO_THROW(ds->set_parameter_value("attractor", C));
 
   // now the evaluation should also succeed when matching the updated base frame

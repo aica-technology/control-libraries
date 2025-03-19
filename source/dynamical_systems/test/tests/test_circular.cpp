@@ -1,13 +1,12 @@
 #include <gtest/gtest.h>
 
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
-#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
+#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/geometry/Ellipsoid.hpp"
-#include "state_representation/parameters/Parameter.hpp"
 
 using namespace dynamical_systems;
 using namespace state_representation;
@@ -102,10 +101,13 @@ TEST_F(CircularDSTest, SetCenterAndBase) {
   auto CinB = CartesianState::Identity("C", "B");
 
   ds->set_parameter_value("limit_cycle", cycle);
-  EXPECT_STREQ(ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_name().c_str(),
-               BinA.get_name().c_str());
-  EXPECT_STREQ(ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_reference_frame().c_str(),
-               BinA.get_reference_frame().c_str());
+  EXPECT_STREQ(
+      ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_name().c_str(), BinA.get_name().c_str()
+  );
+  EXPECT_STREQ(
+      ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_reference_frame().c_str(),
+      BinA.get_reference_frame().c_str()
+  );
 
   // evaluating a state is only valid if it matches the base reference frame
   EXPECT_NO_THROW(ds->evaluate(CinA));
@@ -115,21 +117,28 @@ TEST_F(CircularDSTest, SetCenterAndBase) {
   cycle.set_center_state(CinA);
   EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", cycle));
   auto cycle2 = Ellipsoid::Unit("C", "B");
-  EXPECT_THROW(ds->set_parameter_value("limit_cycle", cycle2),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->set_parameter_value("limit_cycle", cycle2),
+      state_representation::exceptions::IncompatibleReferenceFramesException
+  );
 
   // setting the base frame should also update the reference frame of the center
   ASSERT_NO_THROW(ds->set_base_frame(CinB));
   EXPECT_STREQ(ds->get_base_frame().get_name().c_str(), CinB.get_name().c_str());
   EXPECT_STREQ(ds->get_base_frame().get_reference_frame().c_str(), CinB.get_reference_frame().c_str());
-  EXPECT_STREQ(ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_reference_frame().c_str(),
-               ds->get_base_frame().get_name().c_str());
+  EXPECT_STREQ(
+      ds->get_parameter_value<Ellipsoid>("limit_cycle").get_center_pose().get_reference_frame().c_str(),
+      ds->get_base_frame().get_name().c_str()
+  );
 
   // now the base frame is C, setting a center should only work if the reference frame of the center is also C
-  EXPECT_THROW(ds->set_parameter_value("limit_cycle", cycle),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->set_parameter_value("limit_cycle", cycle),
+      state_representation::exceptions::IncompatibleReferenceFramesException
+  );
   EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", cycle2));
-  EXPECT_THROW(ds->set_parameter_value("limit_cycle", Ellipsoid("B", "C")),
-               state_representation::exceptions::EmptyStateException);
+  EXPECT_THROW(
+      ds->set_parameter_value("limit_cycle", Ellipsoid("B", "C")), state_representation::exceptions::EmptyStateException
+  );
   EXPECT_NO_THROW(ds->set_parameter_value("limit_cycle", Ellipsoid::Unit("B", "C")));
 }

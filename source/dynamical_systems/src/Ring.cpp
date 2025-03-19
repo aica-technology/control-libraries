@@ -1,26 +1,27 @@
 #include "dynamical_systems/Ring.hpp"
 
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
+#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/InvalidParameterException.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 
 using namespace state_representation;
 
 namespace dynamical_systems {
 
-Ring::Ring() :
-    center_(std::make_shared<Parameter<CartesianPose>>("center", CartesianPose())),
-    rotation_offset_(std::make_shared<Parameter<CartesianPose>>("rotation_offset", CartesianPose())),
-    radius_(std::make_shared<Parameter<double>>("radius", 1.0)),
-    width_(std::make_shared<Parameter<double>>("width", 0.5)),
-    speed_(std::make_shared<Parameter<double>>("speed", 1.0)),
-    field_strength_(std::make_shared<Parameter<double>>("field_strength", 1.0)),
-    normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
-    angular_gain_(std::make_shared<Parameter<double>>("angular_gain", 1.0)) {
+Ring::Ring()
+    : center_(std::make_shared<Parameter<CartesianPose>>("center", CartesianPose())),
+      rotation_offset_(std::make_shared<Parameter<CartesianPose>>("rotation_offset", CartesianPose())),
+      radius_(std::make_shared<Parameter<double>>("radius", 1.0)),
+      width_(std::make_shared<Parameter<double>>("width", 0.5)),
+      speed_(std::make_shared<Parameter<double>>("speed", 1.0)),
+      field_strength_(std::make_shared<Parameter<double>>("field_strength", 1.0)),
+      normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
+      angular_gain_(std::make_shared<Parameter<double>>("angular_gain", 1.0)) {
   this->rotation_offset_->set_value(
-      CartesianPose("rotation", Eigen::Quaterniond::Identity(), this->center_->get_value().get_name()));
+      CartesianPose("rotation", Eigen::Quaterniond::Identity(), this->center_->get_value().get_name())
+  );
   this->parameters_.insert(std::make_pair("center", this->center_));
   this->parameters_.insert(std::make_pair("rotation_offset", this->rotation_offset_));
   this->parameters_.insert(std::make_pair("radius", this->radius_));
@@ -41,15 +42,16 @@ void Ring::set_center(const CartesianPose& center) {
   }
   if (this->get_base_frame().is_empty()) {
     IDynamicalSystem<CartesianState>::set_base_frame(
-        CartesianState::Identity(center.get_reference_frame(), center.get_reference_frame()));
+        CartesianState::Identity(center.get_reference_frame(), center.get_reference_frame())
+    );
   }
   // validate that the reference frame of the center is always compatible with the DS reference frame
   if (center.get_reference_frame() != this->get_base_frame().get_name()) {
     if (center.get_reference_frame() != this->get_base_frame().get_reference_frame()) {
       throw state_representation::exceptions::IncompatibleReferenceFramesException(
           "The reference frame of the center " + center.get_name() + " in frame " + center.get_reference_frame()
-              + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
-              + " in frame " + this->get_base_frame().get_reference_frame() + "."
+          + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
+          + " in frame " + this->get_base_frame().get_reference_frame() + "."
       );
     }
     this->center_->set_value(this->get_base_frame().inverse() * center);
@@ -216,9 +218,8 @@ CartesianState Ring::compute_dynamics(const CartesianState& state) const {
   double local_field_strength;
   twist.set_linear_velocity(this->calculate_local_linear_velocity(pose, local_field_strength));
   twist.set_angular_velocity(
-      this->calculate_local_angular_velocity(
-          pose, twist.get_linear_velocity(), local_field_strength
-      ));
+      this->calculate_local_angular_velocity(pose, twist.get_linear_velocity(), local_field_strength)
+  );
 
   // transform the twist back to the base reference frame
   return CartesianState(this->center_->get_value()) * twist;

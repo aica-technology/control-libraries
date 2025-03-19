@@ -57,15 +57,14 @@ private:
    */
   void set_gain(const std::shared_ptr<state_representation::ParameterInterface>& parameter, unsigned int expected_size);
 
-  std::shared_ptr<state_representation::Parameter<S>> attractor_; ///< attractor of the dynamical system in the space
-  std::shared_ptr<state_representation::Parameter<Eigen::MatrixXd>> gain_; ///< gain associate to the system
+  std::shared_ptr<state_representation::Parameter<S>> attractor_;///< attractor of the dynamical system in the space
+  std::shared_ptr<state_representation::Parameter<Eigen::MatrixXd>> gain_;///< gain associate to the system
 };
 
 template<class S>
-PointAttractor<S>::PointAttractor(
-    const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters
-) : PointAttractor<S>() {
+PointAttractor<S>::PointAttractor(const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters
+)
+    : PointAttractor<S>() {
   this->set_parameters(parameters);
 }
-
 }// namespace dynamical_systems
