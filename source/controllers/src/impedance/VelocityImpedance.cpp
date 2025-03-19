@@ -1,12 +1,12 @@
 #include "controllers/impedance/VelocityImpedance.hpp"
 
 #include "controllers/exceptions/NotImplementedException.hpp"
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointPositions.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
 
 using namespace state_representation;
 
@@ -15,7 +15,8 @@ namespace controllers::impedance {
 template<class S>
 S VelocityImpedance<S>::compute_command(const S&, const S&) {
   throw exceptions::NotImplementedException(
-      "compute_command(desired_state, feedback_state) not implemented for this input class");
+      "compute_command(desired_state, feedback_state) not implemented for this input class"
+  );
 }
 
 template<>
@@ -35,9 +36,8 @@ CartesianState VelocityImpedance<CartesianState>::compute_command(
 }
 
 template<>
-JointState VelocityImpedance<JointState>::compute_command(
-    const JointState& desired_state, const JointState& feedback_state
-) {
+JointState
+VelocityImpedance<JointState>::compute_command(const JointState& desired_state, const JointState& feedback_state) {
 
   using namespace std::chrono_literals;
   // compute the displacement by multiplying the desired velocities by the unit time period and add it to the current positions
@@ -50,4 +50,4 @@ JointState VelocityImpedance<JointState>::compute_command(
   // compute the impedance control law normally
   return this->Impedance<JointState>::compute_command(integrated_desired_state, feedback_velocities);
 }
-}// namespace controllers
+}// namespace controllers::impedance

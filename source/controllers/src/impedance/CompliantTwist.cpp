@@ -8,14 +8,17 @@ using namespace state_representation;
 
 CompliantTwist::CompliantTwist(
     double linear_principle_damping, double linear_orthogonal_damping, double angular_stiffness, double angular_damping
-) : linear_principle_damping_(
-    std::make_shared<Parameter<double>>("linear_principle_damping", linear_principle_damping)),
-    linear_orthogonal_damping_(
-        std::make_shared<Parameter<double>>("linear_orthogonal_damping", linear_orthogonal_damping)),
-    angular_stiffness_(std::make_shared<Parameter<double>>("angular_stiffness", angular_stiffness)),
-    angular_damping_(std::make_shared<Parameter<double>>("angular_damping", angular_damping)),
-    dissipative_ctrl_(ComputationalSpaceType::LINEAR),
-    velocity_impedance_ctrl_(6) {
+)
+    : linear_principle_damping_(
+          std::make_shared<Parameter<double>>("linear_principle_damping", linear_principle_damping)
+      ),
+      linear_orthogonal_damping_(
+          std::make_shared<Parameter<double>>("linear_orthogonal_damping", linear_orthogonal_damping)
+      ),
+      angular_stiffness_(std::make_shared<Parameter<double>>("angular_stiffness", angular_stiffness)),
+      angular_damping_(std::make_shared<Parameter<double>>("angular_damping", angular_damping)),
+      dissipative_ctrl_(ComputationalSpaceType::LINEAR),
+      velocity_impedance_ctrl_(6) {
   this->parameters_.insert(std::make_pair("linear_principle_damping", linear_principle_damping_));
   this->parameters_.insert(std::make_pair("linear_orthogonal_damping", linear_orthogonal_damping_));
   this->parameters_.insert(std::make_pair("angular_stiffness", angular_stiffness_));
@@ -25,9 +28,8 @@ CompliantTwist::CompliantTwist(
   set_angular_gains(angular_stiffness, angular_damping);
 }
 
-CompliantTwist::CompliantTwist(
-    const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters
-) : CompliantTwist(1, 1, 1, 1) {
+CompliantTwist::CompliantTwist(const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters)
+    : CompliantTwist(1, 1, 1, 1) {
   this->set_parameters(parameters);
 }
 
@@ -68,9 +70,8 @@ void CompliantTwist::set_angular_gains(double angular_stiffness, double angular_
   velocity_impedance_ctrl_.set_parameter_value("damping", d);
 }
 
-CartesianState CompliantTwist::compute_command(
-    const CartesianState& desired_state, const CartesianState& feedback_state
-) {
+CartesianState
+CompliantTwist::compute_command(const CartesianState& desired_state, const CartesianState& feedback_state) {
   CartesianState command = dissipative_ctrl_.compute_command(desired_state, feedback_state);
   command += velocity_impedance_ctrl_.compute_command(desired_state, feedback_state);
   return command;
@@ -81,7 +82,8 @@ void CompliantTwist::validate_and_set_parameter(
 ) {
   if (parameter->get_parameter_type() != ParameterType::DOUBLE) {
     throw state_representation::exceptions::InvalidParameterException(
-        "Parameter " + parameter->get_name() + " must be a double");
+        "Parameter " + parameter->get_name() + " must be a double"
+    );
   }
   double value = std::static_pointer_cast<Parameter<double>>(parameter)->get_value();
   if (parameter->get_name() == "linear_principle_damping") {
@@ -98,5 +100,4 @@ void CompliantTwist::validate_and_set_parameter(
     );
   }
 }
-
-}
+}// namespace controllers::impedance

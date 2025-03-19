@@ -2,7 +2,6 @@
 
 #include "controllers/impedance/Impedance.hpp"
 #include "state_representation/parameters/Parameter.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
@@ -16,9 +15,7 @@ namespace controllers::impedance {
  * DECOUPLED_TWIST (default) computes the damping matrix for the linear
  * and angular part separately
  */
-enum class ComputationalSpaceType {
-  LINEAR, ANGULAR, DECOUPLED_TWIST, FULL
-};
+enum class ComputationalSpaceType { LINEAR, ANGULAR, DECOUPLED_TWIST, FULL };
 
 /**
  * @class Dissipative
@@ -28,7 +25,6 @@ template<class S>
 class Dissipative : public Impedance<S> {
 
 public:
-
   /**
    * @brief Base constructor.
    * @param computational_space The computational space type
@@ -57,7 +53,6 @@ public:
   S compute_command(const S& command_state, const S& feedback_state) override;
 
 protected:
-
   /**
    * @brief Validate and set parameter for damping eigenvalues.
    * @param parameter A parameter interface pointer
@@ -90,22 +85,21 @@ protected:
   void compute_damping(const S& desired_velocity);
 
   std::shared_ptr<state_representation::Parameter<Eigen::VectorXd>>
-      damping_eigenvalues_; ///< coefficient of eigenvalues used in the damping matrix computation
+      damping_eigenvalues_;///< coefficient of eigenvalues used in the damping matrix computation
 
-  const ComputationalSpaceType computational_space_; ///< the space in which to compute the command vector
+  const ComputationalSpaceType computational_space_;///< the space in which to compute the command vector
 
-  Eigen::MatrixXd basis_; ///< basis matrix used to compute the damping matrix
-
+  Eigen::MatrixXd basis_;///< basis matrix used to compute the damping matrix
 };
 
 template<class S>
-Dissipative<S>::Dissipative(const ComputationalSpaceType& computational_space, unsigned int dimensions) :
-    Impedance<S>(dimensions),
-    damping_eigenvalues_(
-        state_representation::make_shared_parameter<Eigen::VectorXd>(
-            "damping_eigenvalues", Eigen::ArrayXd::Ones(dimensions))),
-    computational_space_(computational_space),
-    basis_(Eigen::MatrixXd::Random(dimensions, dimensions)) {
+Dissipative<S>::Dissipative(const ComputationalSpaceType& computational_space, unsigned int dimensions)
+    : Impedance<S>(dimensions),
+      damping_eigenvalues_(state_representation::make_shared_parameter<Eigen::VectorXd>(
+          "damping_eigenvalues", Eigen::ArrayXd::Ones(dimensions)
+      )),
+      computational_space_(computational_space),
+      basis_(Eigen::MatrixXd::Random(dimensions, dimensions)) {
   this->parameters_.erase("stiffness");
   this->stiffness_->set_value(Eigen::MatrixXd::Zero(dimensions, dimensions));
   this->parameters_.erase("inertia");
@@ -119,8 +113,8 @@ template<class S>
 Dissipative<S>::Dissipative(
     const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters,
     const ComputationalSpaceType& computational_space, unsigned int dimensions
-) :
-    Dissipative<S>(computational_space, dimensions) {
+)
+    : Dissipative<S>(computational_space, dimensions) {
   this->set_parameters(parameters);
 }
 
@@ -134,9 +128,8 @@ void Dissipative<S>::validate_and_set_parameter(
 }
 
 template<class S>
-Eigen::MatrixXd Dissipative<S>::orthonormalize_basis(
-    const Eigen::MatrixXd& basis, const Eigen::VectorXd& main_eigenvector
-) {
+Eigen::MatrixXd
+Dissipative<S>::orthonormalize_basis(const Eigen::MatrixXd& basis, const Eigen::VectorXd& main_eigenvector) {
   Eigen::MatrixXd orthonormal_basis = basis;
   uint dim = basis.rows();
   orthonormal_basis.col(0) = main_eigenvector.normalized();
@@ -150,9 +143,7 @@ Eigen::MatrixXd Dissipative<S>::orthonormalize_basis(
 }
 
 template<class S>
-S Dissipative<S>::compute_command(
-    const S& command_state, const S& feedback_state
-) {
+S Dissipative<S>::compute_command(const S& command_state, const S& feedback_state) {
   // compute the damping matrix out of the command_state twist
   this->compute_damping(command_state);
   // apply the impedance control law
@@ -165,5 +156,4 @@ void Dissipative<S>::compute_damping(const S& desired_velocity) {
   auto diagonal_eigenvalues = this->damping_eigenvalues_->get_value().asDiagonal();
   this->damping_->set_value(this->basis_ * diagonal_eigenvalues * this->basis_.transpose());
 }
-
-}// namespace controllers
+}// namespace controllers::impedance

@@ -5,10 +5,10 @@
 
 #include "controllers/ControllerFactory.hpp"
 #include "state_representation/MathTools.hpp"
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
+#include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
 
 using namespace controllers;
 using namespace state_representation;
@@ -28,7 +28,6 @@ TEST(ImpedanceControllerTest, TestCartesianImpedance) {
   // expect some non null data
   EXPECT_TRUE(command.data().norm() > 0.);
 }
-
 
 TEST(ImpedanceControllerTest, CartesianImpedanceAngularStiffness) {
   auto controller = CartesianControllerFactory::create_controller(CONTROLLER_TYPE::IMPEDANCE);
@@ -87,8 +86,10 @@ TEST(ImpedanceControllerTest, TestCartesianImpedanceLimits) {
   }
 
   // ensure the limit must match the degrees of freedom
-  EXPECT_THROW(controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
-               state_representation::exceptions::IncompatibleSizeException);
+  EXPECT_THROW(
+      controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
+      state_representation::exceptions::IncompatibleSizeException
+  );
 }
 
 TEST(ImpedanceControllerTest, TestJointImpedance) {
@@ -145,8 +146,10 @@ TEST(ImpedanceControllerTest, TestJointImpedanceLimits) {
   }
 
   // ensure the limit must match the degrees of freedom
-  EXPECT_THROW(controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
-               state_representation::exceptions::IncompatibleSizeException);
+  EXPECT_THROW(
+      controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
+      state_representation::exceptions::IncompatibleSizeException
+  );
 }
 
 TEST(ImpedanceControllerTest, TestCartesianToJointImpedance) {

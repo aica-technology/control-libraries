@@ -5,8 +5,8 @@
 
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
 
 using namespace controllers;
 using namespace controllers::impedance;
@@ -14,8 +14,8 @@ using namespace state_representation;
 
 class DissipativeWrapper : public Dissipative<CartesianState> {
 public:
-  DissipativeWrapper(const ComputationalSpaceType& computational_space) :
-      Dissipative<CartesianState>(computational_space) {}
+  DissipativeWrapper(const ComputationalSpaceType& computational_space)
+      : Dissipative<CartesianState>(computational_space) {}
 
   static Eigen::MatrixXd
   wrap_orthonormalize_basis(const Eigen::MatrixXd& basis, const Eigen::VectorXd& main_eigenvector) {
@@ -26,16 +26,12 @@ public:
     return this->compute_orthonormal_basis(desired_velocity);
   }
 
-  void wrap_compute_damping(const CartesianState& desired_velocity) {
-    return this->compute_damping(desired_velocity);
-  }
+  void wrap_compute_damping(const CartesianState& desired_velocity) { return this->compute_damping(desired_velocity); }
 };
 
 class DissipativeControllerMethodTest : public testing::Test {
 protected:
-  void SetUp() override {
-    set_controller_space(ComputationalSpaceType::FULL);
-  }
+  void SetUp() override { set_controller_space(ComputationalSpaceType::FULL); }
 
   void set_controller_space(const ComputationalSpaceType& computational_space) {
     controller_ = std::make_shared<DissipativeWrapper>(computational_space);
@@ -52,7 +48,9 @@ TEST_F(DissipativeControllerMethodTest, TestOrthonormalize) {
   Eigen::Matrix3d orthonormal_basis = controller_->wrap_orthonormalize_basis(basis, eigenvector);
   // first column should the normalized eigenvector
   Eigen::Vector3d err = orthonormal_basis.col(0) - eigenvector.normalized();
-  for (int i = 0; i < 3; ++i) { EXPECT_NEAR(err(i), 0., tolerance_); }
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_NEAR(err(i), 0., tolerance_);
+  }
   // all inner products must be equal to 0
   EXPECT_NEAR(orthonormal_basis.col(0).dot(orthonormal_basis.col(1)), 0., tolerance_);
   EXPECT_NEAR(orthonormal_basis.col(1).dot(orthonormal_basis.col(2)), 0., tolerance_);
