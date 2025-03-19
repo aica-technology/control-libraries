@@ -35,4 +35,4 @@ bool TCPSocket::on_send_bytes(const std::string& buffer) {
 void TCPSocket::on_close() {
   ::close(this->socket_fd_);
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

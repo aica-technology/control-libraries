@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <thread>
 
+#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
 #include "communication_interfaces/sockets/ZMQPublisher.hpp"
-#include "communication_interfaces/sockets/ZMQSubscriber.hpp"
 #include "communication_interfaces/sockets/ZMQPublisherSubscriber.hpp"
+#include "communication_interfaces/sockets/ZMQSubscriber.hpp"
 
 using namespace communication_interfaces;
 using namespace std::chrono_literals;
@@ -46,8 +46,9 @@ TEST_F(TestZMQSockets, SendReceiveCombined) {
   sockets::ZMQCombinedSocketsConfiguration server_config = {config_.context, config_.ip_address, "5001", "5002"};
   sockets::ZMQPublisherSubscriber server(server_config);
 
-  sockets::ZMQCombinedSocketsConfiguration
-      client_config = {config_.context, config_.ip_address, "5002", "5001", false, false};
+  sockets::ZMQCombinedSocketsConfiguration client_config = {config_.context, config_.ip_address,
+                                                            "5002",          "5001",
+                                                            false,           false};
   sockets::ZMQPublisherSubscriber client(client_config);
 
   server.open();

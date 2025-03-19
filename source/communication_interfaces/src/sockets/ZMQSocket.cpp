@@ -57,4 +57,4 @@ void ZMQSocket::on_close() {
     this->socket_->close();
   }
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

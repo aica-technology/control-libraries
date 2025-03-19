@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <thread>
 
+#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
 #include "communication_interfaces/sockets/TCPClient.hpp"
 #include "communication_interfaces/sockets/TCPServer.hpp"
 
@@ -63,10 +64,10 @@ TEST_F(TestTCPSockets, TestCommunication) {
 
 TEST_F(TestTCPSockets, TestNotOpen) {
   std::string buffer;
-  
+
   EXPECT_THROW(this->server_->receive_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(this->server_->send_bytes(buffer), exceptions::SocketConfigurationException);
-  
+
   EXPECT_THROW(this->client_->receive_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(this->client_->send_bytes(buffer), exceptions::SocketConfigurationException);
 }
