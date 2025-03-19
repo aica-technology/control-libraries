@@ -18,7 +18,6 @@ typedef std::map<std::string, std::shared_ptr<ParameterInterface>> ParameterInte
  */
 class ParameterMap {
 public:
-
   /**
    * @brief Empty constructor
    */
@@ -99,7 +98,6 @@ public:
   void remove_parameter(const std::string& name);
 
 protected:
-
   /**
    * @brief Validate and set a parameter in the map.
    * @details This virtual function should be redefined in any base class to provide proper validation of parameters
@@ -115,8 +113,7 @@ protected:
    */
   void assert_parameter_valid(const std::shared_ptr<ParameterInterface>& parameter);
 
-  ParameterInterfaceMap parameters_; ///< map of parameters by name
-
+  ParameterInterfaceMap parameters_;///< map of parameters by name
 };
 
 template<typename T>
@@ -129,4 +126,4 @@ inline void ParameterMap::set_parameter_value(const std::string& name, const T& 
   this->validate_and_set_parameter(make_shared_parameter<T>(name, value));
 }
 
-}
+}// namespace state_representation

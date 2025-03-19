@@ -12,19 +12,21 @@ JointTorques::JointTorques(const std::string& robot_name, unsigned int nb_joints
   this->set_type(StateType::JOINT_TORQUES);
 }
 
-JointTorques::JointTorques(const std::string& robot_name, const Eigen::VectorXd& torques) :
-    JointState(robot_name, torques.size()) {
+JointTorques::JointTorques(const std::string& robot_name, const Eigen::VectorXd& torques)
+    : JointState(robot_name, torques.size()) {
   this->set_type(StateType::JOINT_TORQUES);
   this->set_torques(torques);
 }
 
-JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names) {
+JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_TORQUES);
 }
 
-JointTorques::JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names,
-                           const Eigen::VectorXd& torques) : JointState(robot_name, joint_names) {
+JointTorques::JointTorques(
+    const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& torques
+)
+    : JointState(robot_name, joint_names) {
   this->set_type(StateType::JOINT_TORQUES);
   this->set_torques(torques);
 }
@@ -81,8 +83,8 @@ JointTorques JointTorques::clamped(double max_absolute_value, double noise_ratio
   return result;
 }
 
-JointTorques JointTorques::clamped(const Eigen::ArrayXd& max_absolute_value_array,
-                                   const Eigen::ArrayXd& noise_ratio_array) const {
+JointTorques
+JointTorques::clamped(const Eigen::ArrayXd& max_absolute_value_array, const Eigen::ArrayXd& noise_ratio_array) const {
   JointTorques result(*this);
   result.clamp(max_absolute_value_array, noise_ratio_array);
   return result;

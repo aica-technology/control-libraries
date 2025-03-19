@@ -1,8 +1,8 @@
 #include "controllers/impedance/Impedance.hpp"
 
 #include "controllers/exceptions/NotImplementedException.hpp"
-#include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 
 using namespace state_representation;
 
@@ -14,9 +14,8 @@ S Impedance<S>::compute_command(const S&, const S&) {
 }
 
 template<>
-CartesianState Impedance<CartesianState>::compute_command(
-    const CartesianState& command_state, const CartesianState& feedback_state
-) {
+CartesianState
+Impedance<CartesianState>::compute_command(const CartesianState& command_state, const CartesianState& feedback_state) {
   CartesianState state_error = command_state - feedback_state;
   // compute the wrench using the formula W = I * acc_desired + K * e_pose + D * e_twist
   CartesianState command(feedback_state.get_name(), feedback_state.get_reference_frame());
@@ -31,8 +30,8 @@ CartesianState Impedance<CartesianState>::compute_command(
   }
   Eigen::Vector3d orientation_control =
       this->stiffness_->get_value().bottomRightCorner<3, 3>() * state_error.get_orientation().vec()
-          + this->damping_->get_value().bottomRightCorner<3, 3>() * state_error.get_angular_velocity()
-          + this->inertia_->get_value().bottomRightCorner<3, 3>() * command_state.get_angular_acceleration();
+      + this->damping_->get_value().bottomRightCorner<3, 3>() * state_error.get_angular_velocity()
+      + this->inertia_->get_value().bottomRightCorner<3, 3>() * command_state.get_angular_acceleration();
 
   Eigen::VectorXd wrench(6);
   wrench << position_control, orientation_control;
@@ -47,9 +46,7 @@ CartesianState Impedance<CartesianState>::compute_command(
 }
 
 template<>
-JointState Impedance<JointState>::compute_command(
-    const JointState& command_state, const JointState& feedback_state
-) {
+JointState Impedance<JointState>::compute_command(const JointState& command_state, const JointState& feedback_state) {
   JointState state_error = command_state - feedback_state;
   // compute the wrench using the formula T = I * acc_desired + K * e_pos + D * e_vel
   JointState command(feedback_state.get_name(), feedback_state.get_names());
@@ -67,5 +64,4 @@ JointState Impedance<JointState>::compute_command(
   command.set_torques(torque_control);
   return command;
 }
-
-}// namespace controllers
+}// namespace controllers::impedance

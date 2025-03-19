@@ -6,6 +6,6 @@
 namespace dynamical_systems::exceptions {
 class InvalidDynamicalSystemException : public std::logic_error {
 public:
-  explicit InvalidDynamicalSystemException(const std::string& msg) : std::logic_error(msg) {};
+  explicit InvalidDynamicalSystemException(const std::string& msg) : std::logic_error(msg){};
 };
-}
+}// namespace dynamical_systems::exceptions

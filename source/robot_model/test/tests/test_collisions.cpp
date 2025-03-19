@@ -168,7 +168,8 @@ TEST_F(RobotModelCollisionTesting, MinimumDistanceComputedCollision) {
     }
 
     // Expect the minimum non-diagonal distance to be 0, indicating a collision
-    EXPECT_LE(minimum_distance, 0.01)
-        << "Did not find a minimum distance less than a threshold indicating a collision.";
+    EXPECT_LE(
+        minimum_distance, 0.01
+    ) << "Did not find a minimum distance less than a threshold indicating a collision.";
   }
 }

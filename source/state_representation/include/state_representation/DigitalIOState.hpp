@@ -170,5 +170,4 @@ protected:
 inline void swap(DigitalIOState& state1, DigitalIOState& state2) {
   swap(static_cast<IOState<bool>&>(state1), static_cast<IOState<bool>&>(state2));
 }
-
 }// namespace state_representation

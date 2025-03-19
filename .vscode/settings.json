@@ -1,6 +1,8 @@
 {
     "cmake.sourceDirectory": "/src/source",
-    "cmake.configureArgs": [ "-DBUILD_TESTING=ON" ],
+    "cmake.configureArgs": [
+        "-DBUILD_TESTING=ON"
+    ],
     "editor.rulers": [
         120
     ],

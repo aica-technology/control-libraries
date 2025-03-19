@@ -1,11 +1,12 @@
 #pragma once
 
+#include <cmath>
+#include <vector>
+
 #include "dynamical_systems/IDynamicalSystem.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include <cmath>
-#include <vector>
 
 namespace dynamical_systems {
 
@@ -34,8 +35,8 @@ public:
   /**
    * @copydoc IDynamicalSystem::compute_dynamics
    */
-  [[nodiscard]] state_representation::CartesianState
-  compute_dynamics(const state_representation::CartesianState& state) const override;
+  [[nodiscard]] state_representation::CartesianState compute_dynamics(const state_representation::CartesianState& state
+  ) const override;
 
 private:
   typedef std::shared_ptr<state_representation::Parameter<double>> ptr_param_double_t;
@@ -63,23 +64,22 @@ private:
    */
   [[nodiscard]] Eigen::Quaterniond get_rotation_offset() const;
 
-  [[nodiscard]] Eigen::Vector3d calculate_local_linear_velocity(
-      const state_representation::CartesianPose& pose, double& local_field_strength
-  ) const;
+  [[nodiscard]] Eigen::Vector3d
+  calculate_local_linear_velocity(const state_representation::CartesianPose& pose, double& local_field_strength) const;
 
   [[nodiscard]] Eigen::Vector3d calculate_local_angular_velocity(
       const state_representation::CartesianPose& pose, const Eigen::Vector3d& linear_velocity,
       double local_field_strength
   ) const;
 
-  std::shared_ptr<state_representation::Parameter<state_representation::CartesianPose>> center_; ///< ring center
+  std::shared_ptr<state_representation::Parameter<state_representation::CartesianPose>> center_;///< ring center
   std::shared_ptr<state_representation::Parameter<state_representation::CartesianPose>>
-      rotation_offset_; ///< orientation of attractor in circle frame
-  ptr_param_double_t radius_; ///< ring radius [m]
-  ptr_param_double_t width_; ///< distance around radius where field rotates [m]
-  ptr_param_double_t speed_; ///< desired linear speed when travelling along the circle radius [m/s]
-  ptr_param_double_t field_strength_; ///< scale factor for desired speed outside of radius + width
-  ptr_param_double_t normal_gain_; ///< scale factor for the speed normal to the circular plane
-  ptr_param_double_t angular_gain_; ///< scale factor for angular velocity restitution
+      rotation_offset_;              ///< orientation of attractor in circle frame
+  ptr_param_double_t radius_;        ///< ring radius [m]
+  ptr_param_double_t width_;         ///< distance around radius where field rotates [m]
+  ptr_param_double_t speed_;         ///< desired linear speed when travelling along the circle radius [m/s]
+  ptr_param_double_t field_strength_;///< scale factor for desired speed outside of radius + width
+  ptr_param_double_t normal_gain_;   ///< scale factor for the speed normal to the circular plane
+  ptr_param_double_t angular_gain_;  ///< scale factor for angular velocity restitution
 };
 }// namespace dynamical_systems

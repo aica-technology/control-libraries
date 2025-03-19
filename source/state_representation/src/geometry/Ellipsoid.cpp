@@ -13,8 +13,8 @@ Ellipsoid::Ellipsoid() : Shape(), axis_lengths_({1., 1.}), rotation_angle_(0) {
   this->set_type(StateType::GEOMETRY_ELLIPSOID);
 }
 
-Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame) :
-    Shape(name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
+Ellipsoid::Ellipsoid(const std::string& name, const std::string& reference_frame)
+    : Shape(name, reference_frame), axis_lengths_({1., 1.}), rotation_angle_(0) {
   this->set_type(StateType::GEOMETRY_ELLIPSOID);
 }
 
@@ -58,7 +58,8 @@ const CartesianPose Ellipsoid::get_rotation() const {
   Eigen::Quaterniond rotation(Eigen::AngleAxisd(this->rotation_angle_, Eigen::Vector3d::UnitZ()));
   return CartesianPose(
       this->get_center_pose().get_name() + "_rotated", Eigen::Vector3d::Zero(), rotation,
-      this->get_center_pose().get_name());
+      this->get_center_pose().get_name()
+  );
 }
 
 void Ellipsoid::set_axis_lengths(const std::vector<double>& axis_lengths) {
@@ -79,7 +80,8 @@ void Ellipsoid::set_rotation_angle(double rotation_angle) {
 void Ellipsoid::set_data(const Eigen::VectorXd& data) {
   if (data.size() != 6) {
     throw exceptions::IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
+        "Input is of incorrect size: expected 6, given " + std::to_string(data.size())
+    );
   }
   this->set_center_position(data.head(3));
   this->set_rotation_angle(data(3));
@@ -114,7 +116,7 @@ const Ellipsoid Ellipsoid::fit(
   std::normal_distribution<double> dist(0., noise_level);
   do {
     unsigned int i = 0;
-    for (const auto& p: points) {
+    for (const auto& p : points) {
       x_value[i] = p.get_position()(0) + dist(generator);
       y_value[i] = p.get_position()(1) + dist(generator);
       ++i;
@@ -181,11 +183,11 @@ const Ellipsoid Ellipsoid::from_algebraic_equation(
   double delta = b2 - 4 * coefficients[0] * coefficients[2];
 
   // store intermediate calculations
-  double tmp1 = coefficients[0] * coefficients[4] * coefficients[4] // AE2
-      + coefficients[2] * coefficients[3] * coefficients[3] // CD2
-      - coefficients[1] * coefficients[3] * coefficients[4] // BDE
-      + delta * coefficients[5]; // deltaF
-  double tmp2 = coefficients[2] - coefficients[0]; // C-A
+  double tmp1 = coefficients[0] * coefficients[4] * coefficients[4]// AE2
+      + coefficients[2] * coefficients[3] * coefficients[3]        // CD2
+      - coefficients[1] * coefficients[3] * coefficients[4]        // BDE
+      + delta * coefficients[5];                                   // deltaF
+  double tmp2 = coefficients[2] - coefficients[0];                 // C-A
   double tmp3 = sqrt(tmp2 * tmp2 + b2);
 
   // create the ellipsoid in the plan and set its center and axis
@@ -213,7 +215,9 @@ const Ellipsoid Ellipsoid::from_algebraic_equation(
   } else {
     phi = M_PI_2;
   }
-  if (r1 < r2) { phi += M_PI_2; }
+  if (r1 < r2) {
+    phi += M_PI_2;
+  }
   result.set_rotation_angle(phi);
 
   return result;

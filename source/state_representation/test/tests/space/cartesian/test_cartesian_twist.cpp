@@ -156,7 +156,7 @@ TEST(CartesianTwistTest, TestDifferentiate) {
   auto res2 = twist.differentiate(dt1);
   EXPECT_EQ(res2.get_type(), StateType::CARTESIAN_ACCELERATION);
   EXPECT_TRUE(res2.get_acceleration().isApprox(twist.get_twist() / dt1));
-  
+
   CartesianAcceleration acc(twist);
   EXPECT_TRUE(acc.get_acceleration().isApprox(twist.get_twist()));
 }

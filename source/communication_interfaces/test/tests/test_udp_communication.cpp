@@ -8,9 +8,7 @@ using namespace communication_interfaces;
 
 class TestUDPSockets : public ::testing::Test {
 public:
-  TestUDPSockets() {
-    config_ = {"127.0.0.1", 5000, 100};
-  }
+  TestUDPSockets() { config_ = {"127.0.0.1", 5000, 100}; }
 
   sockets::UDPSocketConfiguration config_;
 };
@@ -73,7 +71,7 @@ TEST_F(TestUDPSockets, OpenClose) {
   server.close();
   EXPECT_THROW(server.send_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(server.receive_bytes(buffer), exceptions::SocketConfigurationException);
-  
+
   sockets::UDPClient client(this->config_);
   EXPECT_THROW(client.send_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(client.receive_bytes(buffer), exceptions::SocketConfigurationException);

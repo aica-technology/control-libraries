@@ -73,8 +73,8 @@ TEST(EllipsoidTest, EllipsoidFitting) {
     Eigen::Vector3d position = Eigen::Vector3d::Random();
     position(2) = 0.;
     ellipse.set_center_position(position);
-    ellipse.set_center_orientation(Eigen::Quaterniond(Eigen::AngleAxisd((rand() % 10) / 10.,
-                                                                        Eigen::Vector3d::UnitZ())));
+    ellipse.set_center_orientation(Eigen::Quaterniond(Eigen::AngleAxisd((rand() % 10) / 10., Eigen::Vector3d::UnitZ()))
+    );
 
     double r1 = (rand() % 100) / 10.;
     double r2 = r1 / (rand() % 10 + 1);

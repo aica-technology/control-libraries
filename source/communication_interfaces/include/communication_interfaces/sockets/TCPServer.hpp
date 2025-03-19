@@ -40,8 +40,7 @@ private:
    */
   void on_close() override;
 
-
-  TCPServerConfiguration config_; ///< Socket configuration struct
-  int server_fd_; ///< File descriptor of the connected server socket
+  TCPServerConfiguration config_;///< Socket configuration struct
+  int server_fd_;                ///< File descriptor of the connected server socket
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

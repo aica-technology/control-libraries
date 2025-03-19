@@ -1,8 +1,8 @@
 #pragma once
 
-#include "state_representation/space/SpatialState.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/InvalidStateVariableException.hpp"
+#include "state_representation/space/SpatialState.hpp"
 
 namespace state_representation {
 
@@ -408,9 +408,8 @@ public:
    * Default ALL for full distance across all dimensions
    * @return The distance between the two states
    */
-  friend double dist(
-      const CartesianState& s1, const CartesianState& s2, const CartesianStateVariable& state_variable_type
-  );
+  friend double
+  dist(const CartesianState& s1, const CartesianState& s2, const CartesianStateVariable& state_variable_type);
 
   /**
    * @copybrief State::reset
@@ -688,5 +687,4 @@ inline std::string cartesian_state_variable_to_string(const CartesianStateVariab
   }
   __builtin_unreachable();
 }
-
 }// namespace state_representation

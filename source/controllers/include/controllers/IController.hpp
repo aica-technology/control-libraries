@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-#include <map>
 #include <memory>
 
 #include "controllers/exceptions/NoRobotModelException.hpp"
@@ -51,9 +49,8 @@ public:
    * @param jacobian The Jacobian matrix relating Cartesian forces to joint space
    * @return The output command in joint space
    */
-  [[nodiscard]] state_representation::JointState compute_command(
-      const S& command_state, const S& feedback_state, const state_representation::Jacobian& jacobian
-  );
+  [[nodiscard]] state_representation::JointState
+  compute_command(const S& command_state, const S& feedback_state, const state_representation::Jacobian& jacobian);
 
   /**
    * @brief Compute the command output in joint space from command and feedback states in task space
@@ -82,7 +79,7 @@ public:
   void set_robot_model(const robot_model::Model& robot_model);
 
 protected:
-  std::shared_ptr<robot_model::Model> robot_model_; ///< The robot model associated with the controller
+  std::shared_ptr<robot_model::Model> robot_model_;///< The robot model associated with the controller
 };
 
 template<class S>

@@ -1,5 +1,4 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
 
@@ -40,16 +39,16 @@ static unsigned long get_state_variable_size(const CartesianStateVariable& state
   }
 }
 
-CartesianState::CartesianState() :
-    SpatialState(),
-    position_(Eigen::Vector3d::Zero()),
-    orientation_(Eigen::Quaterniond::Identity()),
-    linear_velocity_(Eigen::Vector3d::Zero()),
-    angular_velocity_(Eigen::Vector3d::Zero()),
-    linear_acceleration_(Eigen::Vector3d::Zero()),
-    angular_acceleration_(Eigen::Vector3d::Zero()),
-    force_(Eigen::Vector3d::Zero()),
-    torque_(Eigen::Vector3d::Zero()) {
+CartesianState::CartesianState()
+    : SpatialState(),
+      position_(Eigen::Vector3d::Zero()),
+      orientation_(Eigen::Quaterniond::Identity()),
+      linear_velocity_(Eigen::Vector3d::Zero()),
+      angular_velocity_(Eigen::Vector3d::Zero()),
+      linear_acceleration_(Eigen::Vector3d::Zero()),
+      angular_acceleration_(Eigen::Vector3d::Zero()),
+      force_(Eigen::Vector3d::Zero()),
+      torque_(Eigen::Vector3d::Zero()) {
   this->set_type(StateType::CARTESIAN_STATE);
 }
 
@@ -58,8 +57,8 @@ CartesianState::CartesianState(const std::string& name, const std::string& refer
   this->set_reference_frame(reference);
 }
 
-CartesianState::CartesianState(const CartesianState& state) :
-    CartesianState(state.get_name(), state.get_reference_frame()) {
+CartesianState::CartesianState(const CartesianState& state)
+    : CartesianState(state.get_name(), state.get_reference_frame()) {
   if (state) {
     this->set_state_variable(state.get_state_variable(CartesianStateVariable::ALL), CartesianStateVariable::ALL);
   }
@@ -128,7 +127,7 @@ Eigen::VectorXd CartesianState::get_state_variable(const CartesianStateVariable&
     case CartesianStateVariable::ALL: {
       Eigen::VectorXd all_fields(25);
       all_fields << this->position_, quat2vec(this->orientation_), this->linear_velocity_, this->angular_velocity_,
-                    this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
+          this->linear_acceleration_, this->angular_acceleration_, this->force_, this->torque_;
       return all_fields;
     }
     default:
@@ -229,7 +228,8 @@ void CartesianState::set_state_variable(
   if (new_value.size() != expected_size) {
     throw exceptions::IncompatibleSizeException(
         "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
-            + std::to_string(new_value.size()));
+        + std::to_string(new_value.size())
+    );
   }
   switch (state_variable_type) {
     case CartesianStateVariable::POSITION:
@@ -537,14 +537,14 @@ CartesianState CartesianState::inverse() const {
   Eigen::Vector3d inverse_position = inverse_orientation * (-this->get_position());
   Eigen::Vector3d inverse_angular_velocity = inverse_orientation * (-this->get_angular_velocity());
   Eigen::Vector3d inverse_linear_velocity = inverse_orientation * (-this->get_linear_velocity());
-  inverse_linear_velocity += inverse_angular_velocity.cross(inverse_position); // radially induced velocity
+  inverse_linear_velocity += inverse_angular_velocity.cross(inverse_position);// radially induced velocity
 
   Eigen::Vector3d inverse_angular_acceleration = inverse_orientation * (-this->get_angular_acceleration());
   Eigen::Vector3d inverse_linear_acceleration = inverse_orientation * (-this->get_linear_acceleration());
-  inverse_linear_acceleration += inverse_angular_acceleration.cross(inverse_position); // Euler acceleration
-  inverse_linear_acceleration += 2 * inverse_angular_velocity.cross(inverse_linear_velocity); // Coriolis acceleration
+  inverse_linear_acceleration += inverse_angular_acceleration.cross(inverse_position);       // Euler acceleration
+  inverse_linear_acceleration += 2 * inverse_angular_velocity.cross(inverse_linear_velocity);// Coriolis acceleration
   inverse_linear_acceleration -=
-      inverse_angular_velocity.cross(inverse_angular_velocity.cross(inverse_position)); // centrifugal acceleration
+      inverse_angular_velocity.cross(inverse_angular_velocity.cross(inverse_position));// centrifugal acceleration
 
   // collect the results
   inverse.set_position(inverse_position);
@@ -686,7 +686,8 @@ CartesianState& CartesianState::operator*=(const CartesianState& state) {
   // acceleration
   this->set_linear_acceleration(
       f_a_b + f_R_b * b_a_c + f_alpha_b.cross(f_R_b * b_P_c) + 2 * f_omega_b.cross(f_R_b * b_v_c)
-          + f_omega_b.cross(f_omega_b.cross(f_R_b * b_P_c)));
+      + f_omega_b.cross(f_omega_b.cross(f_R_b * b_P_c))
+  );
   this->set_angular_acceleration(f_alpha_b + f_R_b * b_alpha_c + f_omega_b.cross(f_R_b * b_omega_c));
 
   // keep only the wrench measured at the distal frame, aligned with the new reference frame

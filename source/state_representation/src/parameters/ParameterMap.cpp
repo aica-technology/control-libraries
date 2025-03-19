@@ -49,12 +49,15 @@ void ParameterMap::assert_parameter_valid(const std::shared_ptr<ParameterInterfa
   try {
     if (this->parameters_.at(parameter->get_name())->get_parameter_type() != parameter->get_parameter_type()) {
       throw exceptions::InvalidParameterException(
-          "Parameter '" + parameter->get_name() + "' exists, but has unexpected type.");
+          "Parameter '" + parameter->get_name() + "' exists, but has unexpected type."
+      );
     }
-    if (parameter->get_parameter_type() == ParameterType::STATE && parameter->get_parameter_state_type()
-        != this->parameters_.at(parameter->get_name())->get_parameter_state_type()) {
+    if (parameter->get_parameter_type() == ParameterType::STATE
+        && parameter->get_parameter_state_type()
+            != this->parameters_.at(parameter->get_name())->get_parameter_state_type()) {
       throw exceptions::InvalidParameterException(
-          "Parameter '" + parameter->get_name() + "' exists, but has unexpected state type.");
+          "Parameter '" + parameter->get_name() + "' exists, but has unexpected state type."
+      );
     }
   } catch (const std::out_of_range&) {
     throw exceptions::InvalidParameterException("Parameter '" + parameter->get_name() + "' doesn't exist.");
@@ -72,4 +75,4 @@ void ParameterMap::remove_parameter(const std::string& name) {
   this->parameters_.erase(name);
 }
 
-}
+}// namespace state_representation

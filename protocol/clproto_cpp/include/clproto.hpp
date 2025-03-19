@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
 #include <chrono>
+#include <cstdint>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -227,4 +227,4 @@ template<typename T>
 T from_json(const std::string& json) {
   return decode<T>(from_json(json));
 }
-}
+}// namespace clproto

@@ -2,15 +2,15 @@
 
 #include <cmath>
 #include <sys/socket.h>
-#include <vector>
 #include <unistd.h>
+#include <vector>
 
 #include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
 
 namespace communication_interfaces::sockets {
 
-UDPSocket::UDPSocket(UDPSocketConfiguration configuration) :
-    server_address_(), config_(std::move(configuration)), server_fd_(), addr_len_() {
+UDPSocket::UDPSocket(UDPSocketConfiguration configuration)
+    : server_address_(), config_(std::move(configuration)), server_fd_(), addr_len_() {
   if (this->config_.buffer_size <= 0) {
     throw exceptions::SocketConfigurationException("Configuration parameter 'buffer_size' has to be greater than 0.");
   }
@@ -61,7 +61,8 @@ void UDPSocket::open_socket(bool bind_socket) {
 bool UDPSocket::recvfrom(sockaddr_in& address, std::string& buffer) {
   std::vector<char> local_buffer(this->config_.buffer_size);
   auto receive_length = ::recvfrom(
-      this->server_fd_, local_buffer.data(), this->config_.buffer_size, 0, (sockaddr*) &(address), &(this->addr_len_));
+      this->server_fd_, local_buffer.data(), this->config_.buffer_size, 0, (sockaddr*) &(address), &(this->addr_len_)
+  );
   if (receive_length < 0) {
     return false;
   }
@@ -70,8 +71,8 @@ bool UDPSocket::recvfrom(sockaddr_in& address, std::string& buffer) {
 }
 
 bool UDPSocket::sendto(const sockaddr_in& address, const std::string& buffer) const {
-  int send_length = ::sendto(
-      this->server_fd_, buffer.data(), buffer.size(), 0, (sockaddr*) &(address), this->addr_len_);
+  int send_length =
+      ::sendto(this->server_fd_, buffer.data(), buffer.size(), 0, (sockaddr*) &(address), this->addr_len_);
   return send_length == static_cast<int>(buffer.size());
 }
 
@@ -81,4 +82,4 @@ void UDPSocket::on_close() {
     this->server_fd_ = -1;
   }
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

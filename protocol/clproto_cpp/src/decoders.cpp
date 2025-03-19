@@ -31,8 +31,7 @@ Parameter<std::vector<int>> decoder(const state_representation::proto::Parameter
   if (message.state().empty()) {
     return Parameter<std::vector<int>>(message.state().name());
   }
-  return Parameter<std::vector<int>>(
-      message.state().name(), decoder(message.parameter_value().int_array().value()));
+  return Parameter<std::vector<int>>(message.state().name(), decoder(message.parameter_value().int_array().value()));
 }
 
 template<>
@@ -49,7 +48,8 @@ Parameter<std::vector<double>> decoder(const state_representation::proto::Parame
     return Parameter<std::vector<double>>(message.state().name());
   }
   return Parameter<std::vector<double>>(
-      message.state().name(), decoder(message.parameter_value().double_array().value()));
+      message.state().name(), decoder(message.parameter_value().double_array().value())
+  );
 }
 
 template<>
@@ -83,7 +83,8 @@ Parameter<std::vector<std::string>> decoder(const state_representation::proto::P
     return Parameter<std::vector<std::string>>(message.state().name());
   }
   return Parameter<std::vector<std::string>>(
-      message.state().name(), decoder(message.parameter_value().string_array().value()));
+      message.state().name(), decoder(message.parameter_value().string_array().value())
+  );
 }
 
 template<>
@@ -93,8 +94,8 @@ Parameter<Eigen::VectorXd> decoder(const state_representation::proto::Parameter&
   }
   std::vector<double> elements = decoder(message.parameter_value().vector().value());
   return Parameter<Eigen::VectorXd>(
-      message.state().name(), Eigen::Map<Eigen::VectorXd>(
-          elements.data(), static_cast<Eigen::Index>(elements.size())));
+      message.state().name(), Eigen::Map<Eigen::VectorXd>(elements.data(), static_cast<Eigen::Index>(elements.size()))
+  );
 }
 
 template<>
@@ -104,7 +105,10 @@ Parameter<Eigen::MatrixXd> decoder(const state_representation::proto::Parameter&
   }
   std::vector<double> elements = decoder(message.parameter_value().matrix().value());
   return Parameter<Eigen::MatrixXd>(
-      message.state().name(), Eigen::Map<Eigen::MatrixXd>(
-          elements.data(), message.parameter_value().matrix().rows(), message.parameter_value().matrix().cols()));
+      message.state().name(),
+      Eigen::Map<Eigen::MatrixXd>(
+          elements.data(), message.parameter_value().matrix().rows(), message.parameter_value().matrix().cols()
+      )
+  );
 }
-}
+}// namespace clproto

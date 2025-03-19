@@ -63,10 +63,10 @@ TEST_F(TestTCPSockets, TestCommunication) {
 
 TEST_F(TestTCPSockets, TestNotOpen) {
   std::string buffer;
-  
+
   EXPECT_THROW(this->server_->receive_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(this->server_->send_bytes(buffer), exceptions::SocketConfigurationException);
-  
+
   EXPECT_THROW(this->client_->receive_bytes(buffer), exceptions::SocketConfigurationException);
   EXPECT_THROW(this->client_->send_bytes(buffer), exceptions::SocketConfigurationException);
 }

@@ -29,6 +29,6 @@ private:
    */
   void on_open() override;
 
-  TCPClientConfiguration config_; ///< Socket configuration struct
+  TCPClientConfiguration config_;///< Socket configuration struct
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

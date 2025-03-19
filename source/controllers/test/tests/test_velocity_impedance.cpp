@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "controllers/ControllerFactory.hpp"
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
+#include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointTorques.hpp"
 
 using namespace controllers;
 using namespace state_representation;

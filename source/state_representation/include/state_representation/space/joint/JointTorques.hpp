@@ -1,9 +1,9 @@
 #pragma once
 
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointPositions.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
 #include "state_representation/space/joint/JointAccelerations.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+#include "state_representation/space/joint/JointState.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
 
 namespace state_representation {
 
@@ -83,8 +83,9 @@ public:
    * @brief joint_names List of joint names
    * @brief torques The vector of torques
    */
-  explicit JointTorques(const std::string& robot_name, const std::vector<std::string>& joint_names,
-                        const Eigen::VectorXd& torques);
+  explicit JointTorques(
+      const std::string& robot_name, const std::vector<std::string>& joint_names, const Eigen::VectorXd& torques
+  );
 
   /**
    * @brief Copy constructor
@@ -152,7 +153,6 @@ public:
    * @param data The torques data vector
    */
   virtual void set_data(const std::vector<double>& data) override;
-
 
   /**
    * @brief Clamp inplace the magnitude of the torque to the values in argument

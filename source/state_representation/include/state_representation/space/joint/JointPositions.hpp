@@ -1,9 +1,9 @@
 #pragma once
 
-#include "state_representation/space/joint/JointState.hpp"
-#include "state_representation/space/joint/JointVelocities.hpp"
 #include "state_representation/space/joint/JointAccelerations.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
+#include "state_representation/space/joint/JointVelocities.hpp"
 
 namespace state_representation {
 

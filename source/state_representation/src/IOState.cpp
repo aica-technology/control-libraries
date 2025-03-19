@@ -31,5 +31,4 @@ std::vector<bool> IOState<bool>::to_std_vector() const {
   }
   return vec;
 }
-
 }// namespace state_representation

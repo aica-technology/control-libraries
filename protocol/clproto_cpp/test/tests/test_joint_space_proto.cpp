@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
 #include <state_representation/space/Jacobian.hpp>
-#include <state_representation/space/joint/JointState.hpp>
-#include <state_representation/space/joint/JointPositions.hpp>
-#include <state_representation/space/joint/JointVelocities.hpp>
 #include <state_representation/space/joint/JointAccelerations.hpp>
+#include <state_representation/space/joint/JointPositions.hpp>
+#include <state_representation/space/joint/JointState.hpp>
 #include <state_representation/space/joint/JointTorques.hpp>
+#include <state_representation/space/joint/JointVelocities.hpp>
 
 #include "clproto.hpp"
 #include "test_encode_decode.hpp"
@@ -52,7 +52,9 @@ TEST(JointProtoTest, EncodeDecodeRandomJoint) {
   encode_decode_joint(JointState::Random("robot", {"one", "two", "three"}), clproto::JOINT_STATE_MESSAGE);
   encode_decode_joint(JointPositions::Random("robot", {"one", "two", "three"}), clproto::JOINT_POSITIONS_MESSAGE);
   encode_decode_joint(JointVelocities::Random("robot", {"one", "two", "three"}), clproto::JOINT_VELOCITIES_MESSAGE);
-  encode_decode_joint(JointAccelerations::Random("robot", {"one", "two", "three"}), clproto::JOINT_ACCELERATIONS_MESSAGE);
+  encode_decode_joint(
+      JointAccelerations::Random("robot", {"one", "two", "three"}), clproto::JOINT_ACCELERATIONS_MESSAGE
+  );
   encode_decode_joint(JointTorques::Random("robot", {"one", "two", "three"}), clproto::JOINT_TORQUES_MESSAGE);
 }
 

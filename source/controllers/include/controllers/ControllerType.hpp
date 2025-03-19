@@ -15,5 +15,4 @@ enum class CONTROLLER_TYPE {
   VELOCITY_IMPEDANCE,
   COMPLIANT_TWIST
 };
-
-}
+}// namespace controllers

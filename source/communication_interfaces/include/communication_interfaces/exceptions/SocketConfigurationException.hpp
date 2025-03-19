@@ -11,6 +11,6 @@ namespace communication_interfaces::exceptions {
  */
 class SocketConfigurationException : public std::runtime_error {
 public:
-  explicit SocketConfigurationException(const std::string& msg) : runtime_error(msg) {};
+  explicit SocketConfigurationException(const std::string& msg) : runtime_error(msg){};
 };
-} // namespace communication_interfaces::exceptions
+}// namespace communication_interfaces::exceptions

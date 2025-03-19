@@ -1,6 +1,4 @@
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 
 namespace state_representation {
 
@@ -10,14 +8,15 @@ CartesianTwist::CartesianTwist() {
   this->set_type(StateType::CARTESIAN_TWIST);
 }
 
-CartesianTwist::CartesianTwist(const std::string& name, const std::string& reference) :
-    CartesianState(name, reference) {
+CartesianTwist::CartesianTwist(const std::string& name, const std::string& reference)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_TWIST);
 }
 
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Vector3d& linear_velocity, const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_TWIST);
   this->set_linear_velocity(linear_velocity);
 }
@@ -25,7 +24,8 @@ CartesianTwist::CartesianTwist(
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Vector3d& linear_velocity, const Eigen::Vector3d& angular_velocity,
     const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_TWIST);
   this->set_linear_velocity(linear_velocity);
   this->set_angular_velocity(angular_velocity);
@@ -33,7 +33,8 @@ CartesianTwist::CartesianTwist(
 
 CartesianTwist::CartesianTwist(
     const std::string& name, const Eigen::Matrix<double, 6, 1>& twist, const std::string& reference
-) : CartesianState(name, reference) {
+)
+    : CartesianState(name, reference) {
   this->set_type(StateType::CARTESIAN_TWIST);
   this->set_twist(twist);
 }
@@ -46,13 +47,13 @@ CartesianTwist::CartesianTwist(const CartesianState& state) : CartesianState(sta
   }
 }
 
-CartesianTwist::CartesianTwist(const CartesianTwist& twist) :
-    CartesianTwist(static_cast<const CartesianState&>(twist)) {}
+CartesianTwist::CartesianTwist(const CartesianTwist& twist)
+    : CartesianTwist(static_cast<const CartesianState&>(twist)) {}
 
 CartesianTwist::CartesianTwist(const CartesianPose& pose) : CartesianTwist(pose.differentiate(1.0)) {}
 
-CartesianTwist::CartesianTwist(const CartesianAcceleration& acceleration) :
-    CartesianTwist(acceleration.integrate(1.0)) {}
+CartesianTwist::CartesianTwist(const CartesianAcceleration& acceleration)
+    : CartesianTwist(acceleration.integrate(1.0)) {}
 
 CartesianTwist CartesianTwist::Zero(const std::string& name, const std::string& reference) {
   return CartesianState::Identity(name, reference);
@@ -70,8 +71,7 @@ Eigen::VectorXd CartesianTwist::data() const {
 
 void CartesianTwist::set_data(const Eigen::VectorXd& data) {
   if (data.size() != 6) {
-    throw IncompatibleSizeException(
-        "Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
+    throw IncompatibleSizeException("Input is of incorrect size: expected 6, given " + std::to_string(data.size()));
   }
   this->set_twist(data);
 }
@@ -237,5 +237,4 @@ std::ostream& operator<<(std::ostream& os, const CartesianTwist& twist) {
   os << twist.to_string();
   return os;
 }
-
 }// namespace state_representation

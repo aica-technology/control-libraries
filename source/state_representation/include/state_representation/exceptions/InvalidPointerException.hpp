@@ -6,6 +6,6 @@
 namespace state_representation::exceptions {
 class InvalidPointerException : public std::runtime_error {
 public:
-  explicit InvalidPointerException(const std::string& msg) : std::runtime_error(msg) {};
+  explicit InvalidPointerException(const std::string& msg) : std::runtime_error(msg){};
 };
-}
+}// namespace state_representation::exceptions

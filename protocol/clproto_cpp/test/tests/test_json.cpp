@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <state_representation/space/Jacobian.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
 #include <state_representation/space/joint/JointState.hpp>
-#include <state_representation/space/Jacobian.hpp>
 
 #include "clproto.hpp"
 
@@ -15,7 +15,7 @@ TEST(JsonProtoTest, JsonToFromBinary) {
   ASSERT_TRUE(clproto::check_message_type(msg) == clproto::CARTESIAN_STATE_MESSAGE);
 
   auto json = clproto::to_json(msg);
-  EXPECT_GT(json.size(), 2);  // empty JSON would be "{}"
+  EXPECT_GT(json.size(), 2);// empty JSON would be "{}"
   auto msg2 = clproto::from_json(json);
 
   CartesianState recv_state;
@@ -31,7 +31,7 @@ TEST(JsonProtoTest, JsonToFromObject) {
   auto send_state = CartesianState::Random("A", "B");
 
   auto json = clproto::to_json(send_state);
-  EXPECT_GT(json.size(), 2);  // empty JSON would be "{}"
+  EXPECT_GT(json.size(), 2);// empty JSON would be "{}"
   auto recv_state = clproto::from_json<CartesianState>(json);
 
   EXPECT_STREQ(send_state.get_name().c_str(), recv_state.get_name().c_str());
@@ -54,18 +54,29 @@ TEST(JsonProtoTest, JsonToFromInvalid) {
 
 TEST(JsonProtoTest, JsonStringComparison) {
   auto json = clproto::to_json(CartesianPose("A", 1.0, 0.5, 3.0, "B"));
-  EXPECT_EQ(json, "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\"},"
-                  "\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,\"z\":3},\"orientation\":{\"w\":1,\"vec\":{}}}}");
+  EXPECT_EQ(
+      json,
+      "{\"cartesianPose\":{\"spatialState\":{\"state\":{\"name\":\"A\"},"
+      "\"referenceFrame\":\"B\"},\"position\":{\"x\":1,\"y\":0.5,\"z\":3},\"orientation\":{\"w\":1,\"vec\":{}}}}"
+  );
 
   auto joint_state = JointState("robot", 3);
   joint_state.set_velocities(Eigen::Vector3d(0.3, 0.1, 0.6));
   json = clproto::to_json(joint_state);
-  EXPECT_EQ(json, "{\"jointState\":{\"state\":{\"name\":\"robot\"},\"jointNames\":[\"joint0\","
-                  "\"joint1\",\"joint2\"],\"positions\":[0,0,0],\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":[0,0,0]}}");
+  EXPECT_EQ(
+      json,
+      "{\"jointState\":{\"state\":{\"name\":\"robot\"},\"jointNames\":[\"joint0\","
+      "\"joint1\",\"joint2\"],\"positions\":[0,0,0],\"velocities\":[0.3,0.1,0.6],\"accelerations\":[0,0,0],\"torques\":"
+      "[0,0,0]}}"
+  );
 
   json = clproto::to_json(Jacobian("robot", 3, "test"));
-  EXPECT_EQ(json, "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"empty\":true},"
-                  "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\",\"referenceFrame\":\"world\",\"rows\":6,\"cols\":3}}");
+  EXPECT_EQ(
+      json,
+      "{\"jacobian\":{\"state\":{\"name\":\"robot\",\"empty\":true},"
+      "\"jointNames\":[\"joint0\",\"joint1\",\"joint2\"],\"frame\":\"test\",\"referenceFrame\":\"world\",\"rows\":6,"
+      "\"cols\":3}}"
+  );
 }
 
 /* If a to_json template is invoked that is not implemented in clproto,

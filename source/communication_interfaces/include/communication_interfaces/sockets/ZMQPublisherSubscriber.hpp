@@ -63,6 +63,6 @@ private:
   void on_close() override;
 
   std::shared_ptr<ZMQPublisher> pub_; ///< ZMQ publisher
-  std::shared_ptr<ZMQSubscriber> sub_; ///< ZMQ subscriber
+  std::shared_ptr<ZMQSubscriber> sub_;///< ZMQ subscriber
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

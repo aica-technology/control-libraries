@@ -17,6 +17,7 @@ public:
    * @copydoc IDynamicalSystem::compute_dynamics
    */
   [[nodiscard]] S compute_dynamics(const S& state) const override;
+
 private:
   /**
    * @copydoc IDynamicalSystem::validate_and_set_parameter
@@ -25,9 +26,8 @@ private:
 };
 
 template<class S>
-void DefaultDynamicalSystem<S>::validate_and_set_parameter(
-    const std::shared_ptr<state_representation::ParameterInterface>&
-) {
+void DefaultDynamicalSystem<
+    S>::validate_and_set_parameter(const std::shared_ptr<state_representation::ParameterInterface>&) {
   throw state_representation::exceptions::InvalidParameterException("No parameter to be set on this type of DS.");
 }
 

@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
-#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
+#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 
-#include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/space/cartesian/CartesianPose.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
 
 using namespace dynamical_systems;
 using namespace state_representation;
@@ -275,7 +275,7 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
 
   current_pose.set_position(radius, 0, 0);
 
-  Eigen::Quaterniond rotation = Eigen::Quaterniond(1, 0, 1, 0).normalized(); // Eigen::Quaterniond::UnitRandom();
+  Eigen::Quaterniond rotation = Eigen::Quaterniond(1, 0, 1, 0).normalized();// Eigen::Quaterniond::UnitRandom();
 
   // if the rotation offset is the same as the current orientation, the angular velocity at
   // position {radius, 0, 0} is always zero
@@ -288,7 +288,8 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
   // it will yield the expected angular velocity of only that difference
   current_pose.set_orientation(
       Eigen::Quaterniond(1, 1, 0, 0).normalized()
-          * ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation());
+      * ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation()
+  );
   twist = ds->evaluate(current_pose);
   EXPECT_NEAR(twist.get_angular_velocity().x(), -M_PI_2 * ds->get_parameter_value<double>("angular_gain"), tol);
   EXPECT_NEAR(twist.get_angular_velocity().y(), 0, tol);
@@ -319,8 +320,10 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
   // any additional orientation in the ring frame on top of the rotation offset
   // should give the same local command, regardless of the center frame
   current_pose = CartesianPose(
-      "B", Eigen::Vector3d(radius, 0, 0), Eigen::Quaterniond(1, 1, 0, 0).normalized()
-          * ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation(), "A"
+      "B", Eigen::Vector3d(radius, 0, 0),
+      Eigen::Quaterniond(1, 1, 0, 0).normalized()
+          * ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation(),
+      "A"
   );
   current_pose = center * current_pose;
   twist = ds->evaluate(current_pose);
@@ -345,8 +348,10 @@ TEST_F(RingDSTest, BaseFrameBehaviours) {
 
   // setting the center should fail if it is incompatible with the base frame
   auto CinD = CartesianPose::Random("C", "D");
-  EXPECT_THROW(ds->set_parameter_value("center", CartesianPose(CinD)),
-               state_representation::exceptions::IncompatibleReferenceFramesException);
+  EXPECT_THROW(
+      ds->set_parameter_value("center", CartesianPose(CinD)),
+      state_representation::exceptions::IncompatibleReferenceFramesException
+  );
 
   // updating the base frame should "move" the center frame but not change its magnitude
   auto centerNorm = ds->get_parameter_value<CartesianPose>("center").get_pose().norm();
@@ -383,10 +388,13 @@ TEST_F(RingDSTest, SettersAndGetters) {
   EXPECT_NEAR(pose.get_pose().norm(), pose2.get_pose().norm(), tol);
 
   // all other setters should store the value
-  ds->set_parameter_value(
-      "rotation_offset", CartesianPose("offset", Eigen::Quaterniond(1, 2, 3, 4).normalized()));
-  EXPECT_NEAR(ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation().angularDistance(
-      Eigen::Quaterniond(1, 2, 3, 4).normalized()), 0, tol);
+  ds->set_parameter_value("rotation_offset", CartesianPose("offset", Eigen::Quaterniond(1, 2, 3, 4).normalized()));
+  EXPECT_NEAR(
+      ds->get_parameter_value<CartesianPose>("rotation_offset")
+          .get_orientation()
+          .angularDistance(Eigen::Quaterniond(1, 2, 3, 4).normalized()),
+      0, tol
+  );
 
   ds->set_parameter_value("radius", 1.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("radius"), 1.0, tol);

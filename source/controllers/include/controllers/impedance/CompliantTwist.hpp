@@ -17,14 +17,11 @@ namespace controllers::impedance {
 class CompliantTwist : public IController<state_representation::CartesianState> {
 
 public:
-
   /**
    * @brief Constructor from an initial parameter list
    * @param parameters A parameter list containing initial gain values
    */
-  explicit CompliantTwist(
-      const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters
-  );
+  explicit CompliantTwist(const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters);
 
   /**
    * @brief Constructor taking gain parameters as arguments
@@ -51,7 +48,6 @@ public:
   ) override;
 
 protected:
-
   /**
    * @brief Validate and set parameters for controller gains.
    * @param parameter A parameter interface pointer
@@ -97,14 +93,13 @@ protected:
   void set_angular_gains(double angular_stiffness, double angular_damping);
 
   std::shared_ptr<state_representation::Parameter<double>>
-      linear_principle_damping_; ///< damping along principle eigenvector of linear velocity error
+      linear_principle_damping_;///< damping along principle eigenvector of linear velocity error
   std::shared_ptr<state_representation::Parameter<double>>
-      linear_orthogonal_damping_; ///< damping along secondary eigenvectors of linear velocity error
-  std::shared_ptr<state_representation::Parameter<double>> angular_stiffness_; ///< stiffness of angular displacement
-  std::shared_ptr<state_representation::Parameter<double>> angular_damping_; ///< damping of angular velocity error
+      linear_orthogonal_damping_;///< damping along secondary eigenvectors of linear velocity error
+  std::shared_ptr<state_representation::Parameter<double>> angular_stiffness_;///< stiffness of angular displacement
+  std::shared_ptr<state_representation::Parameter<double>> angular_damping_;  ///< damping of angular velocity error
 
-  Dissipative<state_representation::CartesianState> dissipative_ctrl_; ///< controller for linear space
-  VelocityImpedance<state_representation::CartesianState> velocity_impedance_ctrl_; ///< controller for angular space
+  Dissipative<state_representation::CartesianState> dissipative_ctrl_;             ///< controller for linear space
+  VelocityImpedance<state_representation::CartesianState> velocity_impedance_ctrl_;///< controller for angular space
 };
-
-}// namespace controllers
+}// namespace controllers::impedance

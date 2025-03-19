@@ -36,8 +36,8 @@ protected:
    */
   void on_close() override;
 
-  sockaddr_in server_address_; ///< Address of the TCP server
-  int socket_fd_; ///< File descriptor of the socket
-  int buffer_size_; ///< Buffer size
+  sockaddr_in server_address_;///< Address of the TCP server
+  int socket_fd_;             ///< File descriptor of the socket
+  int buffer_size_;           ///< Buffer size
 };
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

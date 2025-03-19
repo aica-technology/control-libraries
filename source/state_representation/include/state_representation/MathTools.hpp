@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+#include <vector>
 
 namespace state_representation::math_tools {
 /**
@@ -26,4 +26,4 @@ const Eigen::Quaterniond exp(const Eigen::Quaterniond& q, double lambda = 1);
  * @param number_of_points the total number of points
  */
 const std::vector<double> linspace(double start, double end, unsigned int number_of_points);
-}
+}// namespace state_representation::math_tools

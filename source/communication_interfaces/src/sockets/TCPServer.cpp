@@ -7,9 +7,8 @@
 
 namespace communication_interfaces::sockets {
 
-TCPServer::TCPServer(TCPServerConfiguration configuration) :
-    TCPSocket(configuration.buffer_size), config_(configuration), server_fd_() {
-}
+TCPServer::TCPServer(TCPServerConfiguration configuration)
+    : TCPSocket(configuration.buffer_size), config_(configuration), server_fd_() {}
 
 TCPServer::~TCPServer() {
   TCPServer::on_close();
@@ -55,4 +54,4 @@ void TCPServer::on_close() {
   ::close(this->server_fd_);
   TCPSocket::on_close();
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

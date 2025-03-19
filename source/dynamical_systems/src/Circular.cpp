@@ -9,19 +9,19 @@ using namespace state_representation;
 
 namespace dynamical_systems {
 
-Circular::Circular() :
-    limit_cycle_(std::make_shared<Parameter<Ellipsoid>>("limit_cycle", Ellipsoid("limit_cycle", "limit_cycle"))),
-    planar_gain_(std::make_shared<Parameter<double>>("planar_gain", 1.0)),
-    normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
-    circular_velocity_(std::make_shared<Parameter<double>>("circular_velocity", M_PI / 2)) {
+Circular::Circular()
+    : limit_cycle_(std::make_shared<Parameter<Ellipsoid>>("limit_cycle", Ellipsoid("limit_cycle", "limit_cycle"))),
+      planar_gain_(std::make_shared<Parameter<double>>("planar_gain", 1.0)),
+      normal_gain_(std::make_shared<Parameter<double>>("normal_gain", 1.0)),
+      circular_velocity_(std::make_shared<Parameter<double>>("circular_velocity", M_PI / 2)) {
   this->parameters_.insert(std::make_pair("limit_cycle", this->limit_cycle_));
   this->parameters_.insert(std::make_pair("planar_gain", this->planar_gain_));
   this->parameters_.insert(std::make_pair("normal_gain", this->normal_gain_));
   this->parameters_.insert(std::make_pair("circular_velocity", this->circular_velocity_));
 }
 
-Circular::Circular(const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters) :
-    Circular() {
+Circular::Circular(const std::list<std::shared_ptr<state_representation::ParameterInterface>>& parameters)
+    : Circular() {
   this->set_parameters(parameters);
 }
 
@@ -32,15 +32,15 @@ void Circular::set_limit_cycle(Ellipsoid& limit_cycle) {
   const auto& center = limit_cycle.get_center_state();
   if (this->get_base_frame().is_empty()) {
     IDynamicalSystem<CartesianState>::set_base_frame(
-        CartesianState::Identity(
-            center.get_reference_frame(), center.get_reference_frame()));
+        CartesianState::Identity(center.get_reference_frame(), center.get_reference_frame())
+    );
   }
   if (center.get_reference_frame() != this->get_base_frame().get_name()) {
     if (center.get_reference_frame() != this->get_base_frame().get_reference_frame()) {
       throw state_representation::exceptions::IncompatibleReferenceFramesException(
           "The reference frame of the center " + center.get_name() + " in frame " + center.get_reference_frame()
-              + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
-              + " in frame " + this->get_base_frame().get_reference_frame() + "."
+          + " is incompatible with the base frame of the dynamical system " + this->get_base_frame().get_name()
+          + " in frame " + this->get_base_frame().get_reference_frame() + "."
       );
     }
     limit_cycle.set_center_state(this->get_base_frame().inverse() * center);

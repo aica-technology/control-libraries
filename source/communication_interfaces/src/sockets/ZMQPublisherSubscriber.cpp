@@ -3,18 +3,14 @@
 namespace communication_interfaces::sockets {
 
 ZMQPublisherSubscriber::ZMQPublisherSubscriber(ZMQCombinedSocketsConfiguration configuration) {
-  this->pub_ = std::make_shared<ZMQPublisher>(
-      ZMQSocketConfiguration(
-          {
-              configuration.context, configuration.ip_address, configuration.publisher_port,
-              configuration.bind_publisher, configuration.wait
-          }));
-  this->sub_ = std::make_shared<ZMQSubscriber>(
-      ZMQSocketConfiguration(
-          {
-              configuration.context, configuration.ip_address, configuration.subscriber_port,
-              configuration.bind_subscriber, configuration.wait
-          }));
+  this->pub_ = std::make_shared<ZMQPublisher>(ZMQSocketConfiguration(
+      {configuration.context, configuration.ip_address, configuration.publisher_port, configuration.bind_publisher,
+       configuration.wait}
+  ));
+  this->sub_ = std::make_shared<ZMQSubscriber>(ZMQSocketConfiguration(
+      {configuration.context, configuration.ip_address, configuration.subscriber_port, configuration.bind_subscriber,
+       configuration.wait}
+  ));
 }
 
 ZMQPublisherSubscriber::~ZMQPublisherSubscriber() {
@@ -38,4 +34,4 @@ void ZMQPublisherSubscriber::on_close() {
   this->pub_->close();
   this->sub_->close();
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

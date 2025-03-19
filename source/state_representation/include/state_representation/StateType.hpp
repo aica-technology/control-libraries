@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 /**
  * @namespace state_representation
  * @brief Core state variables and objects
@@ -93,5 +95,4 @@ enum class StateType {
       return "";
   }
 }
-
 }// namespace state_representation

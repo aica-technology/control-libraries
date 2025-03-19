@@ -9,8 +9,8 @@
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
 
-#include "state_representation/StateType.hpp"
 #include "state_representation/MathTools.hpp"
+#include "state_representation/StateType.hpp"
 
 /**
  * @namespace state_representation

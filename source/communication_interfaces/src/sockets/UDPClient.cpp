@@ -15,4 +15,4 @@ bool UDPClient::on_receive_bytes(std::string& buffer) {
 bool UDPClient::on_send_bytes(const std::string& buffer) {
   return this->sendto(this->server_address_, buffer);
 }
-} // namespace communication_interfaces::sockets
+}// namespace communication_interfaces::sockets

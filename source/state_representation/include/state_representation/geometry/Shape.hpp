@@ -1,8 +1,8 @@
 #pragma once
 
 #include "state_representation/State.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
 
 namespace state_representation {
@@ -119,7 +119,7 @@ protected:
   std::string to_string() const override;
 
 private:
-  CartesianState center_state_; ///< pose and potentially velocities and accelerations of the shape if moving
+  CartesianState center_state_;///< pose and potentially velocities and accelerations of the shape if moving
 };
 
 inline void swap(Shape& state1, Shape& state2) {

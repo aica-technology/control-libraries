@@ -1,6 +1,5 @@
 #include "state_representation/space/joint/JointState.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/InvalidCastException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"
@@ -12,7 +11,8 @@ using namespace exceptions;
 static void assert_index_in_range(unsigned int joint_index, unsigned int size) {
   if (joint_index > size) {
     throw JointNotFoundException(
-        "Index '" + std::to_string(joint_index) + "' is out of range for joint state with size" + std::to_string(size));
+        "Index '" + std::to_string(joint_index) + "' is out of range for joint state with size" + std::to_string(size)
+    );
   }
 }
 
@@ -34,19 +34,19 @@ JointState::JointState() : State() {
   this->set_type(StateType::JOINT_STATE);
 }
 
-JointState::JointState(const std::string& robot_name, unsigned int nb_joints) :
-    State(robot_name),
-    names_(nb_joints),
-    positions_(Eigen::VectorXd::Zero(nb_joints)),
-    velocities_(Eigen::VectorXd::Zero(nb_joints)),
-    accelerations_(Eigen::VectorXd::Zero(nb_joints)),
-    torques_(Eigen::VectorXd::Zero(nb_joints)) {
+JointState::JointState(const std::string& robot_name, unsigned int nb_joints)
+    : State(robot_name),
+      names_(nb_joints),
+      positions_(Eigen::VectorXd::Zero(nb_joints)),
+      velocities_(Eigen::VectorXd::Zero(nb_joints)),
+      accelerations_(Eigen::VectorXd::Zero(nb_joints)),
+      torques_(Eigen::VectorXd::Zero(nb_joints)) {
   this->set_type(StateType::JOINT_STATE);
   this->set_names(nb_joints);
 }
 
-JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names) :
-    JointState(robot_name, joint_names.size()) {
+JointState::JointState(const std::string& robot_name, const std::vector<std::string>& joint_names)
+    : JointState(robot_name, joint_names.size()) {
   this->set_names(joint_names);
 }
 
@@ -206,7 +206,8 @@ void JointState::set_state_variable(const Eigen::VectorXd& new_value, const Join
   if (new_value.size() != expected_size) {
     throw exceptions::IncompatibleSizeException(
         "Input is of incorrect size, expected " + std::to_string(expected_size) + ", got "
-            + std::to_string(new_value.size()));
+        + std::to_string(new_value.size())
+    );
   }
   switch (state_variable_type) {
     case JointStateVariable::POSITIONS:
@@ -263,7 +264,8 @@ void JointState::set_names(unsigned int nb_joints) {
   if (this->get_size() != nb_joints) {
     throw state_representation::exceptions::IncompatibleSizeException(
         "Input number of joints is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
-            + std::to_string(nb_joints));
+        + std::to_string(nb_joints)
+    );
   }
   for (unsigned int i = 0; i < nb_joints; ++i) {
     this->names_[i] = "joint" + std::to_string(i);
@@ -275,7 +277,8 @@ void JointState::set_names(const std::vector<std::string>& names) {
   if (this->get_size() != names.size()) {
     throw state_representation::exceptions::IncompatibleSizeException(
         "Input number of joints is of incorrect size, expected " + std::to_string(this->get_size()) + " got "
-            + std::to_string(names.size()));
+        + std::to_string(names.size())
+    );
   }
   this->names_ = names;
   this->reset_timestamp();
@@ -362,13 +365,15 @@ void JointState::clamp_state_variable(
   if (max_absolute_value_array.size() != expected_size) {
     throw IncompatibleSizeException(
         "Array of max values is of incorrect size: expected " + std::to_string(expected_size) + ", given "
-            + std::to_string(max_absolute_value_array.size()));
+        + std::to_string(max_absolute_value_array.size())
+    );
   }
 
   if (noise_ratio_array.size() != expected_size) {
     throw IncompatibleSizeException(
         "Array of max values is of incorrect size: expected " + std::to_string(expected_size) + ", given "
-            + std::to_string(noise_ratio_array.size()));
+        + std::to_string(noise_ratio_array.size())
+    );
   }
   for (int i = 0; i < expected_size; ++i) {
     if (noise_ratio_array(i) != 0.0 && abs(state_variable(i)) < noise_ratio_array(i) * max_absolute_value_array(i)) {
@@ -389,7 +394,8 @@ void JointState::clamp_state_variable(
   long expected_size = state_variable.size();
   this->clamp_state_variable(
       max_absolute_value * Eigen::ArrayXd::Ones(expected_size), state_variable_type,
-      noise_ratio * Eigen::ArrayXd::Ones(expected_size));
+      noise_ratio * Eigen::ArrayXd::Ones(expected_size)
+  );
 }
 
 JointState JointState::copy() const {
@@ -399,8 +405,7 @@ JointState JointState::copy() const {
 
 double JointState::dist(const JointState& state, const JointStateVariable& state_variable_type) const {
   if (this->is_incompatible(state)) {
-    throw IncompatibleStatesException(
-        "The two joint states are incompatible, check name, joint names and order or size"
+    throw IncompatibleStatesException("The two joint states are incompatible, check name, joint names and order or size"
     );
   }
   // calculation
@@ -443,7 +448,8 @@ bool JointState::is_incompatible(const State& state) const {
     return false;
   } catch (const std::bad_cast& ex) {
     throw exceptions::InvalidCastException(
-        std::string("Could not cast the given object to a JointState: ") + ex.what());
+        std::string("Could not cast the given object to a JointState: ") + ex.what()
+    );
   }
 }
 
@@ -468,8 +474,9 @@ void JointState::multiply_state_variable(const Eigen::MatrixXd& lambda, const Jo
   if (lambda.rows() != expected_size || lambda.cols() != expected_size) {
     throw IncompatibleSizeException(
         "Gain matrix is of incorrect size: expected " + std::to_string(expected_size) + "x"
-            + std::to_string(expected_size) + ", given " + std::to_string(lambda.rows()) + "x"
-            + std::to_string(lambda.cols()));
+        + std::to_string(expected_size) + ", given " + std::to_string(lambda.rows()) + "x"
+        + std::to_string(lambda.cols())
+    );
   }
   this->set_state_variable(lambda * this->get_state_variable(state_variable_type), state_variable_type);
 }
@@ -509,8 +516,7 @@ JointState JointState::operator/(double lambda) const {
 
 JointState& JointState::operator+=(const JointState& state) {
   if (this->is_incompatible(state)) {
-    throw IncompatibleStatesException(
-        "The two joint states are incompatible, check name, joint names and order or size"
+    throw IncompatibleStatesException("The two joint states are incompatible, check name, joint names and order or size"
     );
   }
   this->set_state_variable(
@@ -548,29 +554,39 @@ std::string JointState::to_string() const {
   std::stringstream s;
   s << this->State::to_string();
   s << std::endl << "joint names: [";
-  for (auto& n : this->get_names()) { s << n << ", "; }
+  for (auto& n : this->get_names()) {
+    s << n << ", ";
+  }
   s << "]";
   if (this->is_empty()) {
     return s.str();
   }
   if (this->get_type() == StateType::JOINT_POSITIONS || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "positions: [";
-    for (auto& p : this->get_positions()) { s << p << ", "; }
+    for (auto& p : this->get_positions()) {
+      s << p << ", ";
+    }
     s << "]";
   }
   if (this->get_type() == StateType::JOINT_VELOCITIES || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "velocities: [";
-    for (auto& v : this->get_velocities()) { s << v << ", "; }
+    for (auto& v : this->get_velocities()) {
+      s << v << ", ";
+    }
     s << "]";
   }
   if (this->get_type() == StateType::JOINT_ACCELERATIONS || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "accelerations: [";
-    for (auto& a : this->get_accelerations()) { s << a << ", "; }
+    for (auto& a : this->get_accelerations()) {
+      s << a << ", ";
+    }
     s << "]";
   }
   if (this->get_type() == StateType::JOINT_TORQUES || this->get_type() == StateType::JOINT_STATE) {
     s << std::endl << "torques: [";
-    for (auto& t : this->get_torques()) { s << t << ", "; }
+    for (auto& t : this->get_torques()) {
+      s << t << ", ";
+    }
     s << "]";
   }
   return s.str();
