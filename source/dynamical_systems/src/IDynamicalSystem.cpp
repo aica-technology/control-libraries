@@ -2,7 +2,6 @@
 
 #include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
 #include "dynamical_systems/exceptions/NotImplementedException.hpp"
-
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"

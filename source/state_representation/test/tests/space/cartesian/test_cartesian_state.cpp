@@ -1,8 +1,10 @@
 #include <functional>
 #include <gtest/gtest.h>
 
+#include "state_representation/MathTools.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/InvalidStateVariableException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"

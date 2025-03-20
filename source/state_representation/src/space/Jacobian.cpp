@@ -1,5 +1,6 @@
 #include "state_representation/space/Jacobian.hpp"
 
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/InvalidCastException.hpp"
 

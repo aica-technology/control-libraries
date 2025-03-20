@@ -1,6 +1,8 @@
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/space/joint/JointAccelerations.hpp"
 #include <gtest/gtest.h>
+
+#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/space/joint/JointAccelerations.hpp"
 
 using namespace state_representation;
 

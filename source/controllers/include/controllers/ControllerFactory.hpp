@@ -3,7 +3,6 @@
 #include "controllers/ControllerType.hpp"
 #include "controllers/IController.hpp"
 #include "robot_model/Model.hpp"
-
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 

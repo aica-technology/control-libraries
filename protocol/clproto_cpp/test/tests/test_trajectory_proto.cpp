@@ -2,12 +2,12 @@
 #include <gtest/gtest.h>
 #include <string>
 
+#include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/trajectory/CartesianTrajectory.hpp>
 #include <state_representation/trajectory/JointTrajectory.hpp>
 
 #include "clproto.hpp"
-#include "include/test_encode_decode.hpp"
-#include "state_representation/space/cartesian/CartesianState.hpp"
+#include "test_encode_decode.hpp"
 
 using namespace state_representation;
 
@@ -45,7 +45,8 @@ TEST(CartesianProtoTest, EncodeDecodeTrajectory) {
   jt.set_joint_names(jnames);
   for (unsigned int i = 0; i < 10; ++i) {
     ct.add_point(
-        CartesianState::Random("foo" + std::to_string(i), "reference"), std::chrono::nanoseconds((i + 1) * 10));
+        CartesianState::Random("foo" + std::to_string(i), "reference"), std::chrono::nanoseconds((i + 1) * 10)
+    );
     jt.add_point(JointState::Random("foo" + std::to_string(i), jnames), std::chrono::nanoseconds((i + 1) * 10));
   }
 
