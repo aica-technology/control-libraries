@@ -1,5 +1,6 @@
 #include "state_representation/space/joint/JointState.hpp"
 
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/exceptions/InvalidCastException.hpp"
 #include "state_representation/exceptions/JointNotFoundException.hpp"

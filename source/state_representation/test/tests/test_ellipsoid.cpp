@@ -1,5 +1,7 @@
-#include "state_representation/geometry/Ellipsoid.hpp"
 #include <gtest/gtest.h>
+
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/geometry/Ellipsoid.hpp"
 
 using namespace state_representation;
 

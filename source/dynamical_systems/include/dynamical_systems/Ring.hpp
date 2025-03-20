@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <vector>
 
 #include "dynamical_systems/IDynamicalSystem.hpp"
 #include "state_representation/parameters/Parameter.hpp"

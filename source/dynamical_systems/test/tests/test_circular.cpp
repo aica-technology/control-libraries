@@ -3,7 +3,6 @@
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
 #include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
-
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/geometry/Ellipsoid.hpp"

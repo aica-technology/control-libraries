@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include "clproto/encoders.hpp"
 
 using namespace state_representation;
