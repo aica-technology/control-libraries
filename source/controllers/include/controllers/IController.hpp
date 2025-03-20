@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "controllers/exceptions/NoRobotModelException.hpp"
-
 #include "robot_model/Model.hpp"
 #include "state_representation/parameters/ParameterMap.hpp"
 #include "state_representation/space/Jacobian.hpp"

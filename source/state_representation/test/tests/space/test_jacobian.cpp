@@ -1,7 +1,9 @@
+#include <gtest/gtest.h>
+
 #include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
 #include "state_representation/space/Jacobian.hpp"
-#include <gtest/gtest.h>
 
 using namespace state_representation;
 using namespace state_representation::exceptions;

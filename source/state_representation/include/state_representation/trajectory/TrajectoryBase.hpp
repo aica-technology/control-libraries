@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <chrono>
-#include <concepts>
 #include <deque>
 #include <eigen3/Eigen/src/Core/Matrix.h>
 #include <numeric>
@@ -213,7 +212,8 @@ protected:
    */
   template<typename T>
   void assert_points_durations_sizes_equal(
-      const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations) const;
+      const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
+  ) const;
 
   /**
    * @brief Assert that vector of State type does not contain empty elements
@@ -326,8 +326,9 @@ template<typename TrajectoryT>
 inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::get_durations() const {
   this->assert_not_empty();
   std::vector<std::chrono::nanoseconds> durations;
-  std::for_each(
-      this->points_.begin(), this->points_.end(), [&](const auto& point) { durations.push_back(point.duration); });
+  std::for_each(this->points_.begin(), this->points_.end(), [&](const auto& point) {
+    durations.push_back(point.duration);
+  });
   return durations;
 }
 
@@ -337,7 +338,8 @@ inline const std::chrono::nanoseconds TrajectoryBase<TrajectoryT>::get_time_from
   this->assert_index_in_range(index);
   return std::accumulate(
       this->points_.begin(), this->points_.begin() + index + 1, std::chrono::nanoseconds(0),
-      [&](auto acc, const auto& point) { return acc + point.duration; });
+      [&](auto acc, const auto& point) { return acc + point.duration; }
+  );
 }
 
 template<typename TrajectoryT>
@@ -346,10 +348,12 @@ inline const std::vector<std::chrono::nanoseconds> TrajectoryBase<TrajectoryT>::
   std::vector<std::chrono::nanoseconds> times_from_start;
   std::chrono::nanoseconds time_from_start = std::chrono::nanoseconds(0);
   std::transform(
-      this->points_.begin(), this->points_.end(), std::back_inserter(times_from_start), [&](const auto& point) {
+      this->points_.begin(), this->points_.end(), std::back_inserter(times_from_start),
+      [&](const auto& point) {
         time_from_start += point.duration;
         return time_from_start;
-      });
+      }
+  );
   return times_from_start;
 }
 
@@ -396,18 +400,21 @@ inline void TrajectoryBase<TrajectoryT>::assert_points_size(const std::vector<T>
   if (points.size() != this->points_.size()) {
     throw exceptions::IncompatibleSizeException(
         "The size of the provided vector (" + std::to_string(points.size())
-        + ") doesn't correspond to the size of the trajectory (" + std::to_string(this->points_.size()) + ")");
+        + ") doesn't correspond to the size of the trajectory (" + std::to_string(this->points_.size()) + ")"
+    );
   }
 }
 
 template<typename TrajectoryT>
 template<typename T>
 inline void TrajectoryBase<TrajectoryT>::assert_points_durations_sizes_equal(
-    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations) const {
+    const std::vector<T>& points, const std::vector<std::chrono::nanoseconds>& durations
+) const {
   if (points.size() != durations.size()) {
     throw exceptions::IncompatibleSizeException(
         "The size of the provided points and durations vectors are not equal (" + std::to_string(points.size())
-        + " vs. " + std::to_string(durations.size()) + ")");
+        + " vs. " + std::to_string(durations.size()) + ")"
+    );
   }
 }
 

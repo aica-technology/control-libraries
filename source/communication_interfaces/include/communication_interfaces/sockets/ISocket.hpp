@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
-
 namespace communication_interfaces::sockets {
 
 /**

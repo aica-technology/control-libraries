@@ -62,7 +62,8 @@ public:
    * @throw EmptyStateException if point is empty
    */
   explicit CartesianTrajectory(
-      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration);
+      const std::string& name, const CartesianState& point, const std::chrono::nanoseconds& duration
+  );
 
   /**
    * @brief Constructor with name, intial points, and durations provided
@@ -75,7 +76,8 @@ public:
    */
   explicit CartesianTrajectory(
       const std::string& name, const std::vector<CartesianState>& points,
-      const std::vector<std::chrono::nanoseconds>& durations);
+      const std::vector<std::chrono::nanoseconds>& durations
+  );
 
   /**
    * @brief Copy constructor of a CartesianTrajectory
@@ -180,7 +182,8 @@ public:
   friend inline void swap(CartesianTrajectory& trajectory1, CartesianTrajectory& trajectory2) {
     swap(
         static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory1),
-        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2));
+        static_cast<TrajectoryBase<CartesianTrajectoryPoint>&>(trajectory2)
+    );
     std::swap(trajectory1.reference_frame_, trajectory2.reference_frame_);
   }
 

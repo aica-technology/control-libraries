@@ -1,9 +1,10 @@
+#pragma once
 
 #include <OsqpEigen/OsqpEigen.h>
 #include <pinocchio/multibody/data.hpp>
 
-#include <state_representation/space/cartesian/CartesianPose.hpp>
-#include <state_representation/space/joint/JointPositions.hpp>
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
 
 using namespace std::chrono_literals;
 

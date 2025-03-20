@@ -2,7 +2,6 @@
 
 #include "dynamical_systems/DynamicalSystemType.hpp"
 #include "dynamical_systems/IDynamicalSystem.hpp"
-
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 

@@ -1,4 +1,7 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
+
+#include "state_representation/MathTools.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
 #include "state_representation/exceptions/NotImplementedException.hpp"
 

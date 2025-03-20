@@ -1,13 +1,16 @@
 #include "robot_model/Model.hpp"
+
+#include <regex>
+#include <set>
+#include <stdexcept>
+
+#include <pinocchio/algorithm/frames.hpp>
+#include <pinocchio/algorithm/joint-configuration.hpp>
+
 #include "robot_model/exceptions/CollisionGeometryException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
 #include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
 #include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
-#include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
-#include <regex>
-#include <set>
-#include <stdexcept>
 
 namespace robot_model {
 Model::Model(

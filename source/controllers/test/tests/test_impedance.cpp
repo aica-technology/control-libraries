@@ -5,6 +5,7 @@
 
 #include "controllers/ControllerFactory.hpp"
 #include "state_representation/MathTools.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianWrench.hpp"
 #include "state_representation/space/joint/JointState.hpp"

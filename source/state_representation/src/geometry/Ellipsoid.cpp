@@ -3,6 +3,7 @@
 #include <eigen3/Eigen/Sparse>
 #include <random>
 
+#include "state_representation/MathTools.hpp"
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/NoSolutionToFitException.hpp"

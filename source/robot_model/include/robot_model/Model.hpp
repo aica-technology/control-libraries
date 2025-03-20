@@ -11,13 +11,10 @@
 #include <pinocchio/multibody/data.hpp>
 #include <pinocchio/parsers/urdf.hpp>
 
-#include <state_representation/parameters/Parameter.hpp>
-#include <state_representation/parameters/ParameterInterface.hpp>
-#include <state_representation/space/Jacobian.hpp>
-#include <state_representation/space/cartesian/CartesianState.hpp>
-#include <state_representation/space/joint/JointState.hpp>
-
 #include "robot_model/QPSolver.hpp"
+#include "state_representation/space/Jacobian.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/joint/JointState.hpp"
 
 using namespace std::chrono_literals;
 

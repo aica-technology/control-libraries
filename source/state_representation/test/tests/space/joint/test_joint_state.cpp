@@ -1,3 +1,5 @@
+#include <gtest/gtest.h>
+
 #include "state_representation/exceptions/EmptyStateException.hpp"
 #include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/IncompatibleStatesException.hpp"
@@ -8,7 +10,6 @@
 #include "state_representation/space/joint/JointState.hpp"
 #include "state_representation/space/joint/JointTorques.hpp"
 #include "state_representation/space/joint/JointVelocities.hpp"
-#include <gtest/gtest.h>
 
 using namespace state_representation;
 

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 
 using namespace state_representation;

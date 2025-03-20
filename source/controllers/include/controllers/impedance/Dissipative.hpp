@@ -1,9 +1,10 @@
 #pragma once
 
-#include "controllers/impedance/Impedance.hpp"
-#include "state_representation/parameters/Parameter.hpp"
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Dense>
+
+#include "controllers/impedance/Impedance.hpp"
+#include "state_representation/parameters/Parameter.hpp"
 
 namespace controllers::impedance {
 

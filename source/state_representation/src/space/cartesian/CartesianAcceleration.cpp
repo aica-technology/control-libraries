@@ -1,5 +1,7 @@
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+
 using namespace state_representation::exceptions;
 
 namespace state_representation {
