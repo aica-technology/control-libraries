@@ -2,7 +2,6 @@
 
 #include "state_representation/State.hpp"
 
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/exceptions/InvalidStateVariableException.hpp"
 
 namespace state_representation {

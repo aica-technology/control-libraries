@@ -4,7 +4,7 @@
 #include <eigen3/Eigen/Dense>
 
 #include "controllers/IController.hpp"
-#include "state_representation/State.hpp"
+#include "state_representation/exceptions/IncompatibleSizeException.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 
 namespace controllers::impedance {
