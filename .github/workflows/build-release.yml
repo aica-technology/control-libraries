@@ -80,8 +80,8 @@ jobs:
         arch: [amd64, arm64]
         include:
           - image: ubuntu-latest
-          # FIXME: using 4vcpu image because of heavy RAM usage when building pinoccio on arm64
-          - image: buildjet-4vcpu-ubuntu-2204-arm
+          # FIXME: using 8vcpu image because of heavy RAM usage when building pinoccio on arm64
+          - image: buildjet-8vcpu-ubuntu-2204-arm
             arch: arm64
 
     runs-on: ${{ matrix.image }}
