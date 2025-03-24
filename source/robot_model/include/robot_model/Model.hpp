@@ -331,6 +331,12 @@ public:
   const pinocchio::Model& get_pinocchio_model() const;
 
   /**
+   * @brief Getter of the pinocchio data object tied to the model
+   * @return the pinocchio data object
+   */
+  const pinocchio::Data& get_pinocchio_data() const;
+
+  /**
    * @brief Compute the Jacobian from a given joint state at the frame given in parameter
    * @param joint_positions containing the joint positions of the robot
    * @param frame name of the frame at which to compute the Jacobian, if empty computed for the last frame
@@ -628,5 +634,9 @@ inline void Model::set_gravity_vector(const Eigen::Vector3d& gravity) {
 
 inline const pinocchio::Model& Model::get_pinocchio_model() const {
   return this->robot_model_;
+}
+
+inline const pinocchio::Data& Model::get_pinocchio_data() const {
+  return this->robot_data_;
 }
 }// namespace robot_model
