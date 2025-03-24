@@ -42,7 +42,9 @@ TEST_F(RobotModelTest, TestSetName) {
 }
 
 TEST_F(RobotModelTest, TestGetUrdfPath) {
-  EXPECT_EQ(franka->get_urdf_path(), urdf_path);
+  auto path = franka->get_urdf_path();
+  ASSERT_TRUE(path.has_value());
+  EXPECT_STREQ(path->get().c_str(), urdf_path.c_str());
 }
 
 TEST_F(RobotModelTest, TestCopyConstructor) {

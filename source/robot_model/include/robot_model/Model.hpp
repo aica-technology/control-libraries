@@ -49,6 +49,7 @@ struct InverseKinematicsParameters {
 class Model {
 private:
   std::string robot_name_;         ///< name of the robot
+  std::string urdf_;               ///< urdf file (XML string)
   std::string urdf_path_;          ///< path to the urdf file
   std::vector<std::string> frames_;///< name of the frames
   pinocchio::Model robot_model_;   ///< the robot model with pinocchio
@@ -67,6 +68,7 @@ private:
 
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
+   * @param urdf the URDF string
    */
   void init_geom_model(std::string urdf);
 
@@ -192,9 +194,9 @@ public:
    * @details If the URDF contains references to collision geometry meshes, they will not be loaded into memory.
    * To enable collision detection, use the alternate constructor.
    * @param robot_name the name to associate with the model
-   * @param urdf_path the path to the URDF file
+   * @param urdf_ the URDF (XML string) of the robot
    */
-  explicit Model(const std::string& robot_name, const std::string& urdf_path);
+  explicit Model(const std::string& robot_name, const std::string& urdf);
 
   /**
    * @brief Construct a robot model with collision geometries from a URDF file
@@ -204,11 +206,11 @@ public:
    * the optional meshloader_callback function should be defined to return an absolute path to a package
    * given the package name.
    * @param robot_name the name to associate with the model
-   * @param urdf_path the path to the URDF file
+   * @param urdf_ the URDF (XML string) of the robot
    * @param meshloader_callback optional callback to resolve the absolute package path from a package name
    */
   explicit Model(
-      const std::string& robot_name, const std::string& urdf_path,
+      const std::string& robot_name, const std::string& urdf,
       const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
   );
 
@@ -283,10 +285,16 @@ public:
   void set_robot_name(const std::string& robot_name);
 
   /**
+   * @brief Getter of the URDF string
+   * @return the URDF
+   */
+  const std::string& get_urdf() const;
+
+  /**
    * @brief Getter of the URDF path
    * @return the URDF path
    */
-  const std::string& get_urdf_path() const;
+  std::optional<std::reference_wrapper<const std::string>> get_urdf_path() const;
 
   /**
    * @brief Getter of the number of joints
@@ -593,6 +601,7 @@ inline const std::string& Model::get_robot_name() const {
 inline void swap(Model& first, Model& second) {
   using std::swap;
   swap(first.robot_name_, second.robot_name_);
+  swap(first.urdf_, second.urdf_);
   swap(first.urdf_path_, second.urdf_path_);
   swap(first.frames_, second.frames_);
   swap(first.robot_model_, second.robot_model_);
@@ -614,8 +623,16 @@ inline void Model::set_robot_name(const std::string& robot_name) {
   this->robot_name_ = robot_name;
 }
 
-inline const std::string& Model::get_urdf_path() const {
-  return this->urdf_path_;
+inline const std::string& Model::get_urdf() const {
+  return this->urdf_;
+}
+
+inline std::optional<std::reference_wrapper<const std::string>> Model::get_urdf_path() const {
+  if (this->urdf_path_.empty()) {
+    return std::nullopt;
+  } else {
+    return this->urdf_path_;
+  }
 }
 
 inline unsigned int Model::get_number_of_joints() const {

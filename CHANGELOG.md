@@ -30,6 +30,7 @@ Release Versions
 - feat: implement serialization helpers for trajectory classes (#228)
 - chore: clean up includes (#236)
 - feat: expose pinocchio::Data through getter (#238)
+- feat: add functionality to create a robot model from string (#200)
 
 ## 9.1.0
 

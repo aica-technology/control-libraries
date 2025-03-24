@@ -67,6 +67,7 @@ class TestRobotModel(unittest.TestCase):
         self.assertEqual(self.robot_model.get_robot_name(), "robot")
 
     def test_get_urdf_path(self):
+        self.assertFalse(self.robot_model.get_urdf_path() is None)
         self.assertEqual(self.robot_model.get_urdf_path(), self.urdf_path)
 
     def test_number_of_joints(self):

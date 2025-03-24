@@ -13,23 +13,23 @@
 
 namespace robot_model {
 Model::Model(
-    const std::string& robot_name, const std::string& urdf_path,
+    const std::string& robot_name, const std::string& urdf,
     const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
 )
     : robot_name_(robot_name),
-      urdf_path_(urdf_path),
+      urdf_(urdf),
       meshloader_callback_(meshloader_callback),
       load_collision_geometries_(true) {
   this->init_model();
 }
 
-Model::Model(const std::string& robot_name, const std::string& urdf_path)
-    : robot_name_(robot_name), urdf_path_(urdf_path) {
+Model::Model(const std::string& robot_name, const std::string& urdf) : robot_name_(robot_name), urdf_(urdf) {
   this->init_model();
 }
 
 Model::Model(const Model& other)
     : robot_name_(other.robot_name_),
+      urdf_(other.urdf_),
       urdf_path_(other.urdf_path_),
       frames_(other.frames_),
       robot_model_(other.robot_model_),
@@ -89,19 +89,24 @@ std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf)
 }
 
 void Model::init_model() {
-  std::ifstream file_stream(this->get_urdf_path());
-  if (!file_stream.is_open()) {
-    throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
+  std::ifstream file_stream(this->get_urdf());
+  if (file_stream.is_open()) {
+    this->urdf_path_ = this->get_urdf();
+    std::stringstream buffer;
+    buffer << file_stream.rdbuf();
+    this->urdf_ = buffer.str();
   }
-  std::stringstream buffer;
-  buffer << file_stream.rdbuf();
-  auto urdf = buffer.str();
 
-  pinocchio::urdf::buildModelFromXML(urdf, this->robot_model_);
+  pinocchio::urdf::buildModelFromXML(this->urdf_, this->robot_model_);
+  // todo: are we ok with potentially leaving empty models go through this point?
+  // todo: if urdf_ is empty here, pinocchio will still return an empty model which will eventually break things
+  //   if (this->robot_model_.nq == 0) {
+  //     throw std::runtime_error("Failed to initialize model from URDF");
+  //   }
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
   if (this->load_collision_geometries_) {
-    this->init_geom_model(urdf);
+    this->init_geom_model(this->urdf_);
   }
 
   // get the frames
