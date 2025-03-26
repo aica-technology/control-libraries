@@ -337,6 +337,12 @@ public:
   const pinocchio::Data& get_pinocchio_data() const;
 
   /**
+   * @brief Getter of the pinocchio data object tied to the model
+   * @return the pinocchio data object
+   */
+  pinocchio::Data& get_pinocchio_data();
+
+  /**
    * @brief Compute the Jacobian from a given joint state at the frame given in parameter
    * @param joint_positions containing the joint positions of the robot
    * @param frame name of the frame at which to compute the Jacobian, if empty computed for the last frame
@@ -637,6 +643,10 @@ inline const pinocchio::Model& Model::get_pinocchio_model() const {
 }
 
 inline const pinocchio::Data& Model::get_pinocchio_data() const {
+  return this->robot_data_;
+}
+
+inline pinocchio::Data& Model::get_pinocchio_data() {
   return this->robot_data_;
 }
 }// namespace robot_model
