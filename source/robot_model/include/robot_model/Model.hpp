@@ -331,6 +331,12 @@ public:
   const pinocchio::Model& get_pinocchio_model() const;
 
   /**
+   * @brief Getter of the pinocchio model
+   * @return the pinocchio model
+   */
+  pinocchio::Model& get_pinocchio_model();
+
+  /**
    * @brief Getter of the pinocchio data object tied to the model
    * @return the pinocchio data object
    */
@@ -639,6 +645,10 @@ inline void Model::set_gravity_vector(const Eigen::Vector3d& gravity) {
 }
 
 inline const pinocchio::Model& Model::get_pinocchio_model() const {
+  return this->robot_model_;
+}
+
+inline pinocchio::Model& Model::get_pinocchio_model() {
   return this->robot_model_;
 }
 
