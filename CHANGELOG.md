@@ -29,6 +29,7 @@ Release Versions
 - feat: add trajectory class bindings and python tests (#219)
 - feat: implement serialization helpers for trajectory classes (#228)
 - chore: clean up includes (#236)
+- feat: expose pinocchio::Data through getter (#238)
 
 ## 9.1.0
 
