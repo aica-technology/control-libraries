@@ -131,3 +131,8 @@ TEST_F(RobotModelTest, TestModelGetter) {
   const pinocchio::Model& robot_model = franka->get_pinocchio_model();
   EXPECT_TRUE(robot_model.existBodyName("panda_link0"));
 }
+
+TEST_F(RobotModelTest, TestDataGetter) {
+  const pinocchio::Data& robot_data = franka->get_pinocchio_data();
+  EXPECT_EQ(robot_data.M.rows(), 7);
+}
