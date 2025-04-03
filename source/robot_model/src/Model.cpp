@@ -5,6 +5,7 @@
 
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
+#include <stdexcept>
 
 #include "robot_model/exceptions/CollisionGeometryException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
@@ -97,12 +98,11 @@ void Model::init_model() {
     this->urdf_ = buffer.str();
   }
 
-  pinocchio::urdf::buildModelFromXML(this->urdf_, this->robot_model_);
-  // todo: are we ok with potentially leaving empty models go through this point?
-  // todo: if urdf_ is empty here, pinocchio will still return an empty model which will eventually break things
-  //   if (this->robot_model_.nq == 0) {
-  //     throw std::runtime_error("Failed to initialize model from URDF");
-  //   }
+  try {
+    pinocchio::urdf::buildModelFromXML(this->urdf_, this->robot_model_);
+  } catch (const std::invalid_argument& ex) {
+    throw std::runtime_error("Failed to initialize model from URDF: " + std::string(ex.what()));
+  }
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
   if (this->load_collision_geometries_) {
