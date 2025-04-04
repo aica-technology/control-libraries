@@ -45,6 +45,28 @@ TEST_F(RobotModelTest, TestGetUrdfPath) {
   auto path = franka->get_urdf_path();
   ASSERT_TRUE(path.has_value());
   EXPECT_STREQ(path->get().c_str(), urdf_path.c_str());
+
+  EXPECT_THROW(std::make_unique<Model>("invalid_path", "invalid_path.urdf"), std::runtime_error);
+
+  // clang-format off
+  auto invalid_xml = 
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    "<robot name=\"foo\">"
+    "</robot>";
+  // clang-format on
+  EXPECT_THROW(std::make_unique<Model>("invalid_path", invalid_xml), std::runtime_error);
+
+  // clang-format off
+  auto string_urdf = 
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    "<robot name=\"foo\">"
+    "  <link name=\"foo_link\"/>"
+    "</robot>";
+  // clang-format on
+  std::unique_ptr<Model> foo;
+  EXPECT_NO_THROW(foo = std::make_unique<Model>("invalid_path", string_urdf));
+  auto path2 = foo->get_urdf_path();
+  ASSERT_FALSE(path2.has_value());
 }
 
 TEST_F(RobotModelTest, TestCopyConstructor) {

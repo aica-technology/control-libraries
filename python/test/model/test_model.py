@@ -70,6 +70,23 @@ class TestRobotModel(unittest.TestCase):
         self.assertFalse(self.robot_model.get_urdf_path() is None)
         self.assertEqual(self.robot_model.get_urdf_path(), self.urdf_path)
 
+        with self.assertRaises(Exception):
+            foo_model = Model("foo", "invalid_path.urdf")
+
+        invalid_xml = '''
+            <?xml version="1.0"? encoding="UTF-8"?>
+            <robot name="foo">
+            </robot>'''
+        with self.assertRaises(Exception):
+            foo_model = Model("foo", invalid_xml)
+
+        string_urdf = '''
+            <?xml version="1.0"? encoding="UTF-8"?>
+            <robot name="foo">
+                <link name="foo_link"/>
+            </robot>'''
+        foo_model = Model("foo", string_urdf)
+
     def test_number_of_joints(self):
         self.assertEqual(self.robot_model.get_number_of_joints(), 7)
 
