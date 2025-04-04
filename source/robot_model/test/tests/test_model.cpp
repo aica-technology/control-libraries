@@ -64,7 +64,7 @@ TEST_F(RobotModelTest, TestGetUrdfPath) {
     "</robot>";
   // clang-format on
   std::unique_ptr<Model> foo;
-  EXPECT_NO_THROW(foo = std::make_unique<Model>("invalid_path", string_urdf));
+  EXPECT_NO_THROW(foo = std::make_unique<Model>("string_urdf", string_urdf));
   auto path2 = foo->get_urdf_path();
   ASSERT_FALSE(path2.has_value());
 }

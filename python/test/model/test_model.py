@@ -86,6 +86,7 @@ class TestRobotModel(unittest.TestCase):
                 <link name="foo_link"/>
             </robot>'''
         foo_model = Model("foo", string_urdf)
+        self.assertTrue(foo_model.get_urdf_path() is None)
 
     def test_number_of_joints(self):
         self.assertEqual(self.robot_model.get_number_of_joints(), 7)
