@@ -49,7 +49,7 @@ struct InverseKinematicsParameters {
 class Model {
 private:
   std::string robot_name_;         ///< name of the robot
-  std::string urdf_;               ///< urdf file (XML string)
+  std::string urdf_;               ///< urdf (XML string)
   std::string urdf_path_;          ///< path to the urdf file
   std::vector<std::string> frames_;///< name of the frames
   pinocchio::Model robot_model_;   ///< the robot model with pinocchio
@@ -194,7 +194,8 @@ public:
    * @details If the URDF contains references to collision geometry meshes, they will not be loaded into memory.
    * To enable collision detection, use the alternate constructor.
    * @param robot_name the name to associate with the model
-   * @param urdf_ the URDF (XML string) of the robot
+   * @param urdf_ the URDF (XML string of filepath) of the robot
+   * @throws std::runtime_error if the URDF file cannot be loaded or is invalid
    */
   explicit Model(const std::string& robot_name, const std::string& urdf);
 
@@ -291,7 +292,7 @@ public:
   const std::string& get_urdf() const;
 
   /**
-   * @brief Getter of the URDF path
+   * @brief Getter of the URDF path if it was provided instead of an XML string
    * @return the URDF path
    */
   std::optional<std::reference_wrapper<const std::string>> get_urdf_path() const;
