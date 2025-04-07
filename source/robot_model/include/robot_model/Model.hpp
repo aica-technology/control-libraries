@@ -68,7 +68,7 @@ private:
 
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
-   * @param urdf the URDF string
+   * @param urdf the URDF (XML string or filepath) of the robot
    */
   void init_geom_model(std::string urdf);
 
@@ -194,7 +194,7 @@ public:
    * @details If the URDF contains references to collision geometry meshes, they will not be loaded into memory.
    * To enable collision detection, use the alternate constructor.
    * @param robot_name the name to associate with the model
-   * @param urdf_ the URDF (XML string of filepath) of the robot
+   * @param urdf the URDF (XML string or filepath) of the robot
    * @throws std::runtime_error if the URDF file cannot be loaded or is invalid
    */
   explicit Model(const std::string& robot_name, const std::string& urdf);
@@ -207,7 +207,7 @@ public:
    * the optional meshloader_callback function should be defined to return an absolute path to a package
    * given the package name.
    * @param robot_name the name to associate with the model
-   * @param urdf_ the URDF (XML string) of the robot
+   * @param urdf the URDF (XML string or filepath) of the robot
    * @param meshloader_callback optional callback to resolve the absolute package path from a package name
    */
   explicit Model(
@@ -292,7 +292,7 @@ public:
   const std::string& get_urdf() const;
 
   /**
-   * @brief Getter of the URDF path if it was provided instead of an XML string
+   * @brief Getter of the URDF path if it was provided for construction instead of an XML string
    * @return the URDF path
    */
   std::optional<std::reference_wrapper<const std::string>> get_urdf_path() const;
