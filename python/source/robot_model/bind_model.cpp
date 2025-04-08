@@ -39,11 +39,11 @@ void model(py::module_& m) {
         };
   }
   return new Model(robot_name, urdf_path, callback_cpp);
-  }), "Constructor that creates a robot model instance with a name, URDF path, and an optional custom mesh loader callback. This constructor loads the Robot Geometries.", 
+  }), "Constructor that creates a robot model instance with a name, URDF XML string or path, and an optional custom mesh loader callback. This constructor loads the Robot Geometries.", 
   py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
 
 
-  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF path. This constructor doesn't loads the Robot Geometries.",
+  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF XML string or path. This constructor doesn't loads the Robot Geometries.",
         py::arg("robot_name"),
         py::arg("urdf_path")
   );
@@ -52,6 +52,7 @@ void model(py::module_& m) {
 
   c.def("get_robot_name", &Model::get_robot_name, "Getter of the robot name.");
   c.def("set_robot_name", &Model::set_robot_name, "Setter of the robot name.", "robot_name"_a);
+  c.def("get_urdf", &Model::get_urdf, "Getter of the URDF XML string.");
   c.def("get_urdf_path", &Model::get_urdf_path, "Getter of the URDF path.");
   c.def("get_number_of_joints", &Model::get_number_of_joints, "Getter of the number of joints.");
   c.def("get_joint_frames", &Model::get_joint_frames, "Getter of the joint frames of the model.");
