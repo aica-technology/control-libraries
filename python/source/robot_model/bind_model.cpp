@@ -53,7 +53,7 @@ void model(py::module_& m) {
   c.def("get_robot_name", &Model::get_robot_name, "Getter of the robot name.");
   c.def("set_robot_name", &Model::set_robot_name, "Setter of the robot name.", "robot_name"_a);
   c.def("get_urdf", &Model::get_urdf, "Getter of the URDF XML string.");
-  c.def("get_urdf_path", &Model::get_urdf_path, "Getter of the URDF path.");
+  c.def("get_urdf_path", &Model::get_urdf_path, "Getter of the URDF path if it was provided for construction instead of an XML string.");
   c.def("get_number_of_joints", &Model::get_number_of_joints, "Getter of the number of joints.");
   c.def("get_joint_frames", &Model::get_joint_frames, "Getter of the joint frames of the model.");
   c.def("get_frames", &Model::get_frames, "Getter of the frames of the model.");
