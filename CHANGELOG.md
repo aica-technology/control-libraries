@@ -27,6 +27,7 @@ Release Versions
 - feat: move up to C++20 (#220)
 - feat: expose pinocchio::Data through getter (#238)
 - build: migrate to pinoccho version 3 (#271)
+- feat: add functionality to create a robot model from string (#200)
 
 ## 9.3.2
 
@@ -38,6 +39,12 @@ This is the last planned release before control libraries X.
 ### Full changelog
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
+- feat: move up to C++20 (#220)
+- feat: split trajectory classes and implement Cartesian/JointState specializations (#216, #217, #223, #226)
+- feat: add trajectory class bindings and python tests (#219)
+- feat: implement serialization helpers for trajectory classes (#228)
+- chore: clean up includes (#236)
+- feat: expose pinocchio::Data through getter (#238)
 
 ## 9.3.1
 
