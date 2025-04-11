@@ -17,7 +17,7 @@ void bind_udp(py::module_& m) {
       .def_readwrite("timeout_duration_sec", &UDPSocketConfiguration::timeout_duration_sec);
 
   py::class_<UDPClient, std::shared_ptr<UDPClient>, ISocket>(m, "UDPClient")
-      .def(py::init<UDPSocketConfiguration>(), "Constructor taking the configuration struct", "configuration"_a),
+      .def(py::init<UDPSocketConfiguration>(), "Constructor taking the configuration struct", "configuration"_a)
       .def("set_timeout", &UDPClient::set_timeout, "Set the timeout of the socket", "timeout_duration_sec"_a);
 
   py::class_<UDPServer, std::shared_ptr<UDPServer>, ISocket>(m, "UDPServer")
