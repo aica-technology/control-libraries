@@ -44,6 +44,7 @@ TEST_F(TestUDPSockets, Timeout) {
   // Try to receive a message from client, but expect timeout
   std::string received_bytes;
   EXPECT_FALSE(server.receive_bytes(received_bytes));
+  EXPECT_NO_THROW(server.set_timeout(1.0));
 }
 
 TEST_F(TestUDPSockets, PortReuse) {

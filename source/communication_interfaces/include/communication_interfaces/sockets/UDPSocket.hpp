@@ -30,8 +30,9 @@ public:
   ~UDPSocket() override;
 
   /**
-   * @brief Set the timeout of the socket.
+   * @brief Set the timeout of the socket
    * @param timeout_duration_sec The desired timeout in seconds
+   * @throws SocketConfigurationException if the timeout could not be set
    */
   void set_timeout(double timeout_duration_sec);
 
