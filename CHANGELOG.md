@@ -24,6 +24,7 @@ Release Versions
 - feat: improve devcontainer configuration (#230)
 - chore: format code (#235)
 - ci: allow workflow dispatch for rc images (#234)
+- feat: add timeout setter for udp sockets (#728)
 
 ## 9.1.0
 
