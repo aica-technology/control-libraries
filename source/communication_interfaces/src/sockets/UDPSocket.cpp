@@ -45,17 +45,7 @@ void UDPSocket::open_socket(bool bind_socket) {
       throw exceptions::SocketConfigurationException("Binding socket failed.");
     }
   }
-
-  if (this->config_.timeout_duration_sec > 0.0
-      && this->config_.timeout_duration_sec < std::numeric_limits<double>::max()) {
-    timeval timeout{};
-    auto secs = std::floor(this->config_.timeout_duration_sec);
-    timeout.tv_sec = static_cast<long>(secs);
-    timeout.tv_usec = static_cast<long>((this->config_.timeout_duration_sec - secs) * 1e6);
-    if (setsockopt(this->server_fd_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) != 0) {
-      throw exceptions::SocketConfigurationException("Setting socket timeout failed.");
-    }
-  }
+  this->set_timeout(this->config_.timeout_duration_sec);
 }
 
 bool UDPSocket::recvfrom(sockaddr_in& address, std::string& buffer) {
@@ -80,6 +70,18 @@ void UDPSocket::on_close() {
   if (this->server_fd_ >= 0) {
     ::close(this->server_fd_);
     this->server_fd_ = -1;
+  }
+}
+
+void UDPSocket::set_timeout(double timeout_duration_sec) {
+  if (timeout_duration_sec > 0.0 && timeout_duration_sec < std::numeric_limits<double>::max()) {
+    struct timeval timeout;
+    auto secs = std::floor(timeout_duration_sec);
+    timeout.tv_sec = static_cast<long int>(secs);
+    timeout.tv_usec = static_cast<long int>((timeout_duration_sec - secs) * 1e6);
+    if (setsockopt(this->server_fd_, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) != 0) {
+      throw exceptions::SocketConfigurationException("Setting socket timeout failed: " + std::to_string(errno));
+    }
   }
 }
 }// namespace communication_interfaces::sockets

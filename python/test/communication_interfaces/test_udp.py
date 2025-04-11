@@ -49,6 +49,7 @@ def test_timeout(udp_config):
     server.open()
 
     assert server.receive_bytes() is None
+    server.set_timeout(1.0)
     server.close()
 
 
