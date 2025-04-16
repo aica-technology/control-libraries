@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.2.0](#920)
 - [9.1.0](#910)
 - [9.0.1](#901)
 - [9.0.0](#900)
@@ -17,7 +18,12 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes
+## 9.2.0
+
+Version 9.2.0 brings better support for transformation matrices in `state_representation` and adds a timeout setter for
+UDP sockets in `communication_interfaces`.
+
+### Full changelog
 
 - feat: improve support for transformation matrices (#146)
 - fix: unstable python test (#221)
