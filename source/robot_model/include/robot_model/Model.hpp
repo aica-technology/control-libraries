@@ -9,7 +9,11 @@
 #include <pinocchio/algorithm/geometry.hpp>
 #include <pinocchio/algorithm/rnea.hpp>
 #include <pinocchio/multibody/data.hpp>
+#include <pinocchio/multibody/joint/joints.hpp>
+#include <pinocchio/multibody/model.hpp>
 #include <pinocchio/parsers/urdf.hpp>
+
+#include <boost/variant.hpp>//that's because of pinocchio
 
 #include "robot_model/QPSolver.hpp"
 #include "state_representation/space/Jacobian.hpp"
@@ -23,6 +27,9 @@ using namespace std::chrono_literals;
  * @brief Robot kinematics and dynamics
  */
 namespace robot_model {
+
+enum class JointType { FIXED, REVOLUTE, CONTINUOUS, PRISMATIC, PLANAR, FLOATING, NONE };
+
 /**
  * @brief parameters for the inverse kinematics function
  * @param damp damping added to the diagonal of J*Jt in order to avoid the singularity
@@ -60,6 +67,7 @@ private:
   pinocchio::GeometryData geom_data_;     ///< the robot geometry data with pinocchio
   std::unique_ptr<QPSolver> qp_solver_;   ///< the QP solver for the inverse velocity kinematics
   bool load_collision_geometries_ = false;///< flag to load collision geometries
+  std::vector<JointType> joint_types_;    ///< vector of joint types
 
   /**
    * @brief Initialize the pinocchio model from the URDF
@@ -308,6 +316,12 @@ public:
    * @return the joint frames
    */
   std::vector<std::string> get_joint_frames() const;
+
+  /**
+   * @brief Getter of the joint types from the model
+   * @return a vector of joint types for each degree of freedom
+   */
+  std::vector<JointType> get_joint_types();
 
   /**
    * @brief Getter of the frames from the model
@@ -637,7 +651,7 @@ inline std::optional<std::reference_wrapper<const std::string>> Model::get_urdf_
 }
 
 inline unsigned int Model::get_number_of_joints() const {
-  return this->robot_model_.nq;
+  return this->robot_model_.nq;// ! todo: this is actually incorrect, that gives dofs
 }
 
 inline std::vector<std::string> Model::get_joint_frames() const {
@@ -676,5 +690,50 @@ inline const pinocchio::Data& Model::get_pinocchio_data() const {
 
 inline pinocchio::Data& Model::get_pinocchio_data() {
   return this->robot_data_;
+}
+
+struct JointTypeVisitor : public boost::static_visitor<JointType> {
+  // revolute (bounded)
+  JointType operator()(const pinocchio::JointModelRevoluteTpl<double, 0, 0>&) const { return JointType::REVOLUTE; }
+  JointType operator()(const pinocchio::JointModelRevoluteTpl<double, 0, 1>&) const { return JointType::REVOLUTE; }
+  JointType operator()(const pinocchio::JointModelRevoluteTpl<double, 0, 2>&) const { return JointType::REVOLUTE; }
+
+  // continuous (unbounded revolute)
+  JointType operator()(const pinocchio::JointModelRevoluteUnboundedTpl<double, 0, 0>&) const {
+    return JointType::CONTINUOUS;
+  }
+  JointType operator()(const pinocchio::JointModelRevoluteUnboundedTpl<double, 0, 1>&) const {
+    return JointType::CONTINUOUS;
+  }
+  JointType operator()(const pinocchio::JointModelRevoluteUnboundedTpl<double, 0, 2>&) const {
+    return JointType::CONTINUOUS;
+  }
+
+  // prismatic
+  JointType operator()(const pinocchio::JointModelPrismaticTpl<double, 0, 0>&) const { return JointType::PRISMATIC; }
+  JointType operator()(const pinocchio::JointModelPrismaticTpl<double, 0, 1>&) const { return JointType::PRISMATIC; }
+  JointType operator()(const pinocchio::JointModelPrismaticTpl<double, 0, 2>&) const { return JointType::PRISMATIC; }
+
+  // planar
+  JointType operator()(const pinocchio::JointModelPlanarTpl<double, 0>&) const { return JointType::PLANAR; }
+
+  // free-flyer
+  JointType operator()(const pinocchio::JointModelFreeFlyerTpl<double, 0>&) const { return JointType::FLOATING; }
+
+  template<typename JointModel>
+  JointType operator()(const JointModel&) const {
+    return JointType::NONE;
+  }
+};
+
+inline std::vector<JointType> Model::get_joint_types() {
+  std::vector<JointType> joint_types;
+  JointTypeVisitor classifier;
+  for (int j = 1; j < this->robot_model_.njoints; ++j) {// skips the first joint (universe)
+    const auto& jmv = this->robot_model_.joints[j];
+    JointType type = boost::apply_visitor(classifier, jmv);
+    joint_types.push_back(type);
+  }
+  return joint_types;
 }
 }// namespace robot_model

@@ -1,11 +1,12 @@
 #include "robot_model/Model.hpp"
 
+#include <algorithm>
 #include <regex>
 #include <set>
+#include <stdexcept>
 
 #include <pinocchio/algorithm/frames.hpp>
 #include <pinocchio/algorithm/joint-configuration.hpp>
-#include <stdexcept>
 
 #include "robot_model/exceptions/CollisionGeometryException.hpp"
 #include "robot_model/exceptions/FrameNotFoundException.hpp"
@@ -109,6 +110,9 @@ void Model::init_model() {
     this->init_geom_model(this->urdf_);
   }
 
+  // cache the joint types for later use
+  this->joint_types_ = this->get_joint_types();
+
   // get the frames
   std::vector<std::string> frames;
   for (auto& f : this->robot_model_.frames) {
@@ -117,11 +121,23 @@ void Model::init_model() {
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
 
+  bool has_limited_support =
+      std::any_of(this->joint_types_.begin(), this->joint_types_.end(), [](const JointType& type) {
+        return type != JointType::REVOLUTE && type != JointType::PRISMATIC;
+      });
+
   // define the QP solver
-  this->qp_solver_ = std::make_unique<QPSolver>(
-      this->get_number_of_joints(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit,
-      this->robot_model_.velocityLimit
-  );
+  if (has_limited_support) {
+    std::cerr
+        << "Continuous, planar, and floating joints are not fully supported, beware that not all 'Model' features will "
+           "be compatible or available."
+        << std::endl;
+  } else {
+    this->qp_solver_ = std::make_unique<QPSolver>(
+        this->get_number_of_joints(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit,
+        this->robot_model_.velocityLimit
+    );
+  }
 }
 
 void Model::init_geom_model(std::string urdf) {
