@@ -318,8 +318,8 @@ public:
   std::vector<std::string> get_joint_frames() const;
 
   /**
-   * @brief Getter of the joint types from the model
-   * @return a vector of joint types for each degree of freedom
+   * @brief Getter of the types of the current model's joints
+   * @return a vector of joint types
    */
   std::vector<JointType> get_joint_types();
 
