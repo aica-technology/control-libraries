@@ -279,7 +279,7 @@ Model::compute_jacobian(const state_representation::JointPositions& joint_positi
   // compute the Jacobian from the joint state
   pinocchio::Data::Matrix6x J(6, this->get_configuration_dimension());
   J.setZero();
-  if (this->get_configuration_dimension() != this->get_number_of_joints()) {
+  if (this->get_configuration_dimension() != this->get_number_of_joints()) [[unlikely]] {
     Eigen::VectorXd q = this->expand_joint_positions_to_full_configuration(joint_positions);
     Eigen::MatrixXd P(this->robot_model_.nq, this->robot_model_.nv);
     P.setZero();
@@ -312,7 +312,7 @@ Model::compute_jacobian(const state_representation::JointPositions& joint_positi
         this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, Jv,
         this->get_base_frame()
     );
-  } else {// the model does not have any reference frame
+  } else [[likely]] {// the model does not have any reference frame
     pinocchio::computeFrameJacobian(
         this->robot_model_, this->robot_data_, joint_positions.data(), frame_id, pinocchio::LOCAL_WORLD_ALIGNED, J
     );
