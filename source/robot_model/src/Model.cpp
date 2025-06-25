@@ -121,7 +121,7 @@ void Model::init_model() {
   // remove universe and root_joint frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 2, frames.end());
 
-  bool has_limited_support =
+  auto has_limited_support =
       std::any_of(this->joint_types_.begin(), this->joint_types_.end(), [](const JointType& type) {
         return type != JointType::REVOLUTE && type != JointType::PRISMATIC;
       });
