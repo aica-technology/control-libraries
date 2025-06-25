@@ -80,7 +80,7 @@ TEST_F(RobotModelTest, TestEqualityConstructor) {
 }
 
 TEST_F(RobotModelTest, TestNumberOfJoints) {
-  EXPECT_EQ(franka->get_configuration_dimension(), 7);
+  EXPECT_EQ(franka->get_number_of_joints(), 7);
 }
 
 TEST_F(RobotModelTest, TestJacobianJointNames) {
@@ -138,7 +138,7 @@ TEST_F(RobotModelTest, TestCreateURDFFromStringSuccess) {
   std::string urdf_string = strStream.str();
   EXPECT_TRUE(Model::create_urdf_from_string(urdf_string, create_urdf_test_path));
   Model fromCreatedUrdf = Model("fromCreatedUrdf", create_urdf_test_path);
-  EXPECT_EQ(fromCreatedUrdf.get_configuration_dimension(), franka->get_configuration_dimension());
+  EXPECT_EQ(fromCreatedUrdf.get_number_of_joints(), franka->get_number_of_joints());
   ASSERT_EQ(fromCreatedUrdf.get_frames().size(), franka->get_frames().size());
   for (std::size_t frame = 0; frame < franka->get_frames().size(); ++frame) {
     EXPECT_EQ(fromCreatedUrdf.get_frames().at(frame), franka->get_frames().at(frame));
