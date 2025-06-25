@@ -29,6 +29,7 @@ Release Versions
 - build: migrate to pinoccho version 3 (#271)
 - feat: add functionality to create a robot model from string (#200)
 - feat: update dependencies (#272)
+- feat: add joint types & limit some uses to supported types only (#243)
 
 ## 9.3.2
 
