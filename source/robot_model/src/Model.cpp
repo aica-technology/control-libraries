@@ -277,16 +277,50 @@ Model::compute_jacobian(const state_representation::JointPositions& joint_positi
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
   // compute the Jacobian from the joint state
-  pinocchio::Data::Matrix6x J(6, this->get_number_of_joints());
+  pinocchio::Data::Matrix6x J(6, this->get_configuration_dimension());
   J.setZero();
-  pinocchio::computeFrameJacobian(
-      this->robot_model_, this->robot_data_, joint_positions.data(), frame_id, pinocchio::LOCAL_WORLD_ALIGNED, J
-  );
-  // the model does not have any reference frame
-  return state_representation::Jacobian(
-      this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, J,
-      this->get_base_frame()
-  );
+  if (this->get_configuration_dimension() != this->get_number_of_joints()) [[unlikely]] {
+    Eigen::VectorXd q = this->expand_joint_positions_to_full_configuration(joint_positions);
+    Eigen::MatrixXd P(this->robot_model_.nq, this->robot_model_.nv);
+    P.setZero();
+    static const auto& joint_types = this->get_joint_types();
+    for (int joint_input_idx = 0, i = 1; i < this->robot_model_.njoints; ++i) {
+      const auto& joint = this->robot_model_.joints[i];
+      std::size_t idx_q = joint.idx_q();
+      std::size_t idx_v = joint.idx_v();
+      switch (joint_types[i - 1]) {
+        case JointType::CONTINUOUS: {
+          double angle = joint_positions.get_positions()[joint_input_idx++];
+          P(idx_q, idx_v) = -std::sin(angle);
+          P(idx_q + 1, idx_v) = std::cos(angle);
+          break;
+        }
+        default: {
+          for (int j = 0; j < joint.nq(); ++j) {
+            P(idx_q + j, idx_v + j) = 1.0;
+          }
+          joint_input_idx += joint.nq();
+          break;
+        }
+      }
+    }
+    Eigen::MatrixXd Jv = J * P;
+    pinocchio::computeFrameJacobian(
+        this->robot_model_, this->robot_data_, q, frame_id, pinocchio::LOCAL_WORLD_ALIGNED, Jv
+    );
+    return state_representation::Jacobian(
+        this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, Jv,
+        this->get_base_frame()
+    );
+  } else [[likely]] {
+    pinocchio::computeFrameJacobian(
+        this->robot_model_, this->robot_data_, joint_positions.data(), frame_id, pinocchio::LOCAL_WORLD_ALIGNED, J
+    );
+    return state_representation::Jacobian(
+        this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, J,
+        this->get_base_frame()
+    );
+  }
 }
 
 state_representation::Jacobian
@@ -373,8 +407,10 @@ std::vector<state_representation::CartesianPose> Model::forward_kinematics(
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
   }
+
+  Eigen::VectorXd q = this->expand_joint_positions_to_full_configuration(joint_positions);
   std::vector<state_representation::CartesianPose> pose_vector;
-  pinocchio::forwardKinematics(this->robot_model_, this->robot_data_, joint_positions.data());
+  pinocchio::forwardKinematics(this->robot_model_, this->robot_data_, q);
   for (unsigned int id : frame_ids) {
     if (id >= static_cast<unsigned int>(this->robot_model_.nframes)) {
       throw exceptions::FrameNotFoundException(std::to_string(id));

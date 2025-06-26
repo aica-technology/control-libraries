@@ -28,6 +28,7 @@ Release Versions
 - feat: expose pinocchio::Data through getter (#238)
 - feat: add functionality to create a robot model from string (#200)
 - feat: add joint types & limit some uses to supported types only (#243)
+- feat: restructure joint getters and support continuous joints (#245, #246)
 
 ## 9.2.0
 

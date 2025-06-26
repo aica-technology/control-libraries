@@ -196,6 +196,10 @@ private:
   */
   std::vector<pinocchio::CollisionPair> generate_joint_exclusion_list();
 
+protected:
+  Eigen::VectorXd
+  expand_joint_positions_to_full_configuration(const state_representation::JointPositions& joint_positions) const;
+
 public:
   /**
    * @brief Construct with robot name and path to URDF file
@@ -307,9 +311,21 @@ public:
 
   /**
    * @brief Getter of the number of joints
-   * @return the number of joints
+   * @return the number of joints (minus pinocchio's universe root joint and fixed joints)
    */
   unsigned int get_number_of_joints() const;
+
+  /**
+   * @brief Getter of the degrees of freedom (dof) of the model
+   * @return the number of degrees of freedom (dof) of the model
+   */
+  unsigned int get_dof() const;
+
+  /**
+   * @brief Getter of the configuration dimension of the model
+   * @return the number of configuration dimensions of the model
+   */
+  unsigned int get_configuration_dimension() const;
 
   /**
    * @brief Getter of the joint frames from the model
@@ -321,7 +337,7 @@ public:
    * @brief Getter of the types of the current model's joints
    * @return a vector of joint types
    */
-  std::vector<JointType> get_joint_types();
+  std::vector<JointType> get_joint_types() const;
 
   /**
    * @brief Getter of the frames from the model
@@ -651,7 +667,15 @@ inline std::optional<std::reference_wrapper<const std::string>> Model::get_urdf_
 }
 
 inline unsigned int Model::get_number_of_joints() const {
-  return this->robot_model_.nq;// ! todo: this is actually incorrect, that gives dofs
+  return this->robot_model_.njoints - 1;
+}
+
+inline unsigned int Model::get_dof() const {
+  return this->robot_model_.nv;
+}
+
+inline unsigned int Model::get_configuration_dimension() const {
+  return this->robot_model_.nq;
 }
 
 inline std::vector<std::string> Model::get_joint_frames() const {
@@ -726,7 +750,7 @@ struct JointTypeVisitor : public boost::static_visitor<JointType> {
   }
 };
 
-inline std::vector<JointType> Model::get_joint_types() {
+inline std::vector<JointType> Model::get_joint_types() const {
   std::vector<JointType> joint_types;
   JointTypeVisitor classifier;
   for (int j = 1; j < this->robot_model_.njoints; ++j) {// skips the first joint (universe)
@@ -735,5 +759,35 @@ inline std::vector<JointType> Model::get_joint_types() {
     joint_types.push_back(type);
   }
   return joint_types;
+}
+
+inline Eigen::VectorXd
+Model::expand_joint_positions_to_full_configuration(const state_representation::JointPositions& joint_positions) const {
+  if (this->get_number_of_joints() == this->get_configuration_dimension()) {
+    return joint_positions.get_positions();
+  }
+  Eigen::VectorXd q(this->get_configuration_dimension());
+  const auto& joint_types = this->get_joint_types();
+  const Eigen::VectorXd& positions = joint_positions.get_positions();
+  std::size_t joint_input_idx = 0;
+  for (int i = 1; i < this->robot_model_.njoints; ++i) {
+    const auto& joint = this->robot_model_.joints[i];
+    std::size_t idx_q = joint.idx_q();
+    switch (joint_types[i - 1]) {
+      case JointType::CONTINUOUS: {
+        double angle = positions[joint_input_idx++];
+        q[idx_q + 0] = std::cos(angle);
+        q[idx_q + 1] = std::sin(angle);
+        break;
+      }
+      default: {
+        for (int j = 0; j < joint.nq(); ++j) {
+          q[idx_q + j] = positions[joint_input_idx++];
+        }
+        break;
+      }
+    }
+  }
+  return q;
 }
 }// namespace robot_model

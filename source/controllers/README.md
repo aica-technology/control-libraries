@@ -150,7 +150,7 @@ auto ctrl = CartesianControllerFactory::create_controller(CONTROLLER_TYPE::IMPED
 auto robot = robot_model::Model("my_robot", "/path/to/robot.urdf");
 
 // create some state variables
-auto current_joints = JointState::Random(robot.get_robot_name(), robot.get_number_of_joints());
+auto current_joints = JointState::Random(robot.get_robot_name(), robot.get_configuration_dimension());
 auto command_state = CartesianState::Random("command");
 auto feedback_state = CartesianState::Random("feedback");
 

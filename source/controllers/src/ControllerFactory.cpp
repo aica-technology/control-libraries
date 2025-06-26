@@ -88,7 +88,8 @@ std::shared_ptr<IController<JointState>> ControllerFactory<JointState>::create_c
     CONTROLLER_TYPE type, const std::list<std::shared_ptr<ParameterInterface>>& parameters,
     const robot_model::Model& robot_model
 ) {
-  auto ctrl = ControllerFactory<JointState>::create_controller(type, parameters, robot_model.get_number_of_joints());
+  auto ctrl =
+      ControllerFactory<JointState>::create_controller(type, parameters, robot_model.get_configuration_dimension());
   if (ctrl == nullptr) {
     throw exceptions::InvalidControllerException("Cannot assign robot model to this controller!");
   }
