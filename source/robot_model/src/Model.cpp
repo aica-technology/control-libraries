@@ -312,7 +312,7 @@ Model::compute_jacobian(const state_representation::JointPositions& joint_positi
         this->get_robot_name(), this->get_joint_frames(), this->robot_model_.frames[frame_id].name, Jv,
         this->get_base_frame()
     );
-  } else [[likely]] {// the model does not have any reference frame
+  } else [[likely]] {
     pinocchio::computeFrameJacobian(
         this->robot_model_, this->robot_data_, joint_positions.data(), frame_id, pinocchio::LOCAL_WORLD_ALIGNED, J
     );
