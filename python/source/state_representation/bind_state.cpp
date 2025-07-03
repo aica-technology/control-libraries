@@ -26,6 +26,8 @@ void state_type(py::module_& m) {
       .value("DIGITAL_IO_STATE", StateType::DIGITAL_IO_STATE)
       .value("ANALOG_IO_STATE", StateType::ANALOG_IO_STATE)
       .export_values();
+
+  m.def("get_state_type_name", &get_state_type_name, "Convert state type enum to its corresponding name");
 }
 
 void state(py::module_& m) {
