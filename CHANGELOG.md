@@ -2,7 +2,6 @@
 
 Release Versions
 
-- [9.3.0](#930)
 - [9.2.0](#920)
 - [9.1.0](#910)
 - [9.0.1](#901)
@@ -19,12 +18,7 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## 9.3.0
-
-Version 9.3.0 is a minor update that installs the protocol files of `clproto` along with the other generated files.
-Additionally, it adds a missing Python binding for a `state_representation` helper.
-
-### Full changelog
+## Upcoming changes
 
 - feat: add state type name getter to python bindings (#248)
 - feat: install proto files (#250)
