@@ -81,8 +81,6 @@ else()
     COMMENT "Running C++ protocol buffer compiler on ${PROTO_FILES_TEXT}"
     VERBATIM
   )
-
-  install(FILES ${PROTO_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}/proto)
 endif()
 
 add_library(${PROJECT_NAME}_bindings STATIC ${GENERATED_PROTO_BINDINGS})
