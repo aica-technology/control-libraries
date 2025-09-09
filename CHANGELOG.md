@@ -21,6 +21,7 @@ Release Versions
 ## Upcoming changes
 
 - feat: add state type name getter to python bindings (#248)
+- feat: install proto files (#250)
 
 ## 9.2.0
 
