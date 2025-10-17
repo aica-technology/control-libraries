@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     git \
     libgtest-dev \
+    python3.11 \
     python3-pip \
     ssh \
     sudo \ 
