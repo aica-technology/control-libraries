@@ -3,7 +3,7 @@ name: Build and Push Multi-Arch Images
 on:
   push:
     branches:
-      - main
+      - release/v9.2.0-jammy-py311
   workflow_dispatch:
 
 jobs:
@@ -19,12 +19,7 @@ jobs:
           fetch-depth: 2
       - id: versions
         run: |
-          git show HEAD^:VERSION 2>/dev/null
-            if [[ $? == 0 ]]; then
-              PREV_VERSION=$(git show HEAD^:VERSION)
-            else
-              PREV_VERSION=0.0.0
-            fi
+          PREV_VERSION=0.0.0
           NEW_VERSION=$(git show HEAD:VERSION)
           echo "prev_version=${PREV_VERSION}" >> $GITHUB_OUTPUT
           echo "new_version=${NEW_VERSION}" >> $GITHUB_OUTPUT
@@ -53,17 +48,7 @@ jobs:
       - run: |
           CREATE_TAG=false
           GIT_TAG=""
-          if [ ${{ needs.check-version.outputs.has_changed }} = 'true' ]; then
-            if [[ "${{ needs.check-version.outputs.version }}" == *"-rc"* ]]; then
-              IMAGE_TAGS="v${{ needs.check-version.outputs.version }}"
-            else
-              CREATE_TAG=true
-              GIT_TAG="v${{ needs.check-version.outputs.version }}"
-              IMAGE_TAGS=latest,"${GIT_TAG}",rolling
-            fi
-          else
-            IMAGE_TAGS=rolling
-          fi
+          IMAGE_TAGS="v9.2.0-jammy-py311"
           echo "Image tags: ${IMAGE_TAGS}"
           echo "Create tag: ${CREATE_TAG}"
           echo "Git tag: ${GIT_TAG}"
