@@ -3,15 +3,23 @@ FROM ubuntu:${BASE_TAG} AS base
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
+    software-properties-common \
     cmake \
     g++ \
     git \
     libgtest-dev \
-    python3-pip \
     ssh \
     sudo \ 
     clangd \
-    clang-format
+    clang-format \
+  && add-apt-repository ppa:deadsnakes/ppa -y \
+  && apt-get update && apt-get install -y \
+    python3.11 python3.11-dev python3.11-venv \
+  && python3.11 -m ensurepip --upgrade \
+  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10 \
+  && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 20 \
+  && ln -sf /usr/local/bin/pip3.11 /usr/bin/pip \
+  && ln -sf /usr/local/bin/pip3.11 /usr/bin/pip3
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -258,7 +266,7 @@ COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=install /tmp/cl /usr
 COPY --from=python /tmp/python-usr /usr
-COPY --from=python-stubs /tmp/python-usr /usr
+# COPY --from=python-stubs /tmp/python-usr /usr
 
 ARG VERSION
 LABEL org.opencontainers.image.title="AICA control-libraries"
