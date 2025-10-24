@@ -7,6 +7,7 @@
 #include <pinocchio/algorithm/joint-configuration.hpp>
 #include <regex>
 #include <set>
+#include <stdexcept>
 
 namespace robot_model {
 Model::Model(
@@ -430,6 +431,13 @@ state_representation::JointPositions Model::inverse_kinematics(
   if (!this->robot_model_.existFrame(actual_frame)) {
     throw exceptions::FrameNotFoundException(actual_frame);
   }
+  if (cartesian_pose.get_reference_frame() != this->get_base_frame()) {
+    throw std::runtime_error(
+        "The reference frame of the desired Cartesian pose does not match the robot base frame '"
+        + cartesian_pose.get_reference_frame() + "' vs. '" + this->get_base_frame() + "'."
+    );
+  }
+
   const auto pinocchio_frame = this->robot_model_.frames.at(this->robot_model_.getFrameId(actual_frame));
   const auto joint_id = pinocchio_frame.parent;
   const auto oMdes = pinocchio::SE3(cartesian_pose.get_orientation().matrix(), cartesian_pose.get_position())
@@ -510,6 +518,14 @@ void Model::check_inverse_velocity_arguments(
   }
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
+  }
+  for (auto& twist : cartesian_twists) {
+    if (twist.get_reference_frame() != this->get_base_frame()) {
+      throw std::runtime_error(
+          "The reference frame of the provided Cartesian twist does not match the robot base frame '"
+          + twist.get_reference_frame() + "' vs. '" + this->get_base_frame() + "'."
+      );
+    }
   }
   for (auto& frame : frames) {
     if (!this->robot_model_.existFrame(frame)) {

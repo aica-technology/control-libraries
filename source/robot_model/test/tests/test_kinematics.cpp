@@ -47,7 +47,7 @@ protected:
     state_representation::JointState config1(franka->get_robot_name(), franka->get_joint_frames());
     config1.set_positions(std::vector<double>{-1.957518, 1.037530, -1.093933, -1.485144, -1.937432, 2.251972, -1.373487});
     config1.set_velocities(std::vector<double>{0.308158, 0.378429, 0.496303, -0.098917, -0.832357, -0.542046, 0.826675});
-    state_representation::CartesianTwist test_ee_velocity1("franka");
+    state_representation::CartesianTwist test_ee_velocity1("franka", franka->get_base_frame());
     test_ee_velocity1.set_data(std::vector<double>{-0.695244, 0.651634, 0.076685, 0.992269, -0.843649, -0.114643});
     test_ee_velocities.push_back(test_ee_velocity1);
     test_dls_lambdas.push_back(0.782253);
@@ -81,7 +81,7 @@ protected:
     state_representation::JointState config2(franka->get_robot_name(), franka->get_joint_frames());
     config2.set_positions(std::vector<double>{2.676515, -1.746462, 1.592996, -0.618256, 2.136438, 0.300823, -0.580719});
     config2.set_velocities(std::vector<double>{-0.480259, 0.600137, -0.137172, 0.821295, -0.636306, -0.472394, -0.708922});
-    state_representation::CartesianTwist test_ee_velocity2("franka");
+    state_representation::CartesianTwist test_ee_velocity2("franka", franka->get_base_frame());
     test_ee_velocity2.set_data(std::vector<double>{-0.727863, 0.738584, 0.159409, 0.099720, -0.710090, 0.706062});
     test_ee_velocities.push_back(test_ee_velocity2);
     test_dls_lambdas.push_back(0.238751);
@@ -115,7 +115,7 @@ protected:
     state_representation::JointState config3(franka->get_robot_name(), franka->get_joint_frames());
     config3.set_positions(std::vector<double>{-0.863671, 0.046713, -0.568983, -2.843748, -1.507082, 0.447412, -1.831628});
     config3.set_velocities(std::vector<double>{-0.520095, -0.165466, -0.900691, 0.805432, 0.889574, -0.018272, -0.021495});
-    state_representation::CartesianTwist test_ee_velocity3("franka");
+    state_representation::CartesianTwist test_ee_velocity3("franka", franka->get_base_frame());
     test_ee_velocity3.set_data(std::vector<double>{-0.324561, 0.800108, -0.261506, -0.777594, 0.560504, -0.220522});
     test_ee_velocities.push_back(test_ee_velocity3);
     test_dls_lambdas.push_back(0.573203);
@@ -201,6 +201,10 @@ TEST_F(RobotModelKinematicsTest, TestInverseVelocity) {
     state.set_velocities(joint_velocities2.data());
     state_representation::CartesianTwist act_ee_twist2 = franka->forward_velocity(state);
   }
+
+  // Test with target that has different base frame than the robot base
+  auto target = state_representation::CartesianTwist::Random("target", "base");
+  EXPECT_ANY_THROW(franka->inverse_velocity(target, test_configs.at(0)));
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseVelocityConstraints) {
@@ -302,10 +306,13 @@ TEST_F(RobotModelKinematicsTest, TestInverseKinematicsPanda) {
     state_representation::CartesianPose X = franka->forward_kinematics(q, "panda_link8");
     EXPECT_TRUE(((reference - X) / dt).data().cwiseAbs().maxCoeff() < tol);
   }
+
+  // Test with target that has different base frame than the robot base
+  auto target = state_representation::CartesianPose::Random("target", "base");
+  EXPECT_ANY_THROW(franka->inverse_kinematics(target, param, "panda_link8"));
 }
 
 TEST_F(RobotModelKinematicsTest, TestInverseKinematics) {
-  std::chrono::nanoseconds dt(static_cast<int>(1e9));
   double tol = 1e-3;
   InverseKinematicsParameters param = InverseKinematicsParameters();
   param.tolerance = tol;
