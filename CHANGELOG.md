@@ -19,6 +19,10 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- fix(model): IK compatibility check (#257)
+
 ## 9.3.0
 
 Version 9.3.0 is a minor update that installs the protocol files of `clproto` along with the other generated files.
