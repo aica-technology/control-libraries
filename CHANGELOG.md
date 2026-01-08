@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.3.1](#931)
 - [9.3.0](#930)
 - [9.2.0](#920)
 - [9.1.0](#910)
@@ -19,9 +20,14 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes
+## 9.3.1
 
-- fix(model): IK compatibility check (#257)
+Version 9.3.1 is a patch that introduces a reference frame compatibility check in the inverse kinematics functions of
+the robot model.
+
+### Full changelog 
+
+- fix: IK compatibility check (#257)
 
 ## 9.3.0
 
