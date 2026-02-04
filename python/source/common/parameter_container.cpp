@@ -2,6 +2,7 @@
 
 #include <state_representation/exceptions/InvalidCastException.hpp>
 #include <state_representation/exceptions/InvalidParameterException.hpp>
+#include <state_representation/exceptions/EmptyStateException.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
 #include <state_representation/space/joint/JointState.hpp>
@@ -51,9 +52,6 @@ ParameterContainer::ParameterContainer(const ParameterContainer& parameter) :
 }
 
 void ParameterContainer::set_value(py::object value) {
-  if (this->is_empty()) {
-    throw exceptions::EmptyStateException("Parameter '" + this->get_name() + "' is empty.");
-  }
   try {
     switch (this->get_parameter_type()) {
       case ParameterType::INT:
@@ -119,6 +117,9 @@ void ParameterContainer::set_value(py::object value) {
 }
 
 py::object ParameterContainer::get_value() const {
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException("Parameter '" + this->get_name() + "' is empty.");
+  }
   try {
     switch (this->get_parameter_type()) {
       case ParameterType::INT:
