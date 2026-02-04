@@ -49,6 +49,8 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
     assert param.get_parameter_state_type() == state_type
     assert param.is_empty()
     assert not param
+    with pytest.raises(sr.exceptions.EmptyStateError):
+        param.get_value()
 
     new_param = sr.Parameter(param)
     assert new_param.is_empty()
@@ -69,6 +71,9 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
 
     param.reset()
     assert param.is_empty()
+    with pytest.raises(sr.exceptions.EmptyStateError):
+        param.get_value()
+
 
 
 def param_map_equal(param_dict, param_map):
@@ -127,26 +132,3 @@ def test_param_map():
         m.remove_parameter("int")
     with pytest.raises(sr.exceptions.InvalidParameterError):
         m.get_parameter("int")
-
-@pytest.mark.parametrize("name,parameter_type,state_type", [
-    ("int", sr.ParameterType.INT, sr.StateType.NONE),
-    ("int_arr", sr.ParameterType.INT_ARRAY, sr.StateType.NONE),
-    ("double", sr.ParameterType.DOUBLE, sr.StateType.NONE),
-    ("double_arr", sr.ParameterType.DOUBLE_ARRAY, sr.StateType.NONE),
-    ("bool", sr.ParameterType.BOOL, sr.StateType.NONE),
-    ("bool_arr", sr.ParameterType.BOOL_ARRAY, sr.StateType.NONE),
-    ("string", sr.ParameterType.STRING, sr.StateType.NONE),
-    ("string_arr", sr.ParameterType.STRING_ARRAY, sr.StateType.NONE),
-    ("vector", sr.ParameterType.VECTOR, sr.StateType.NONE),
-    ("matrix", sr.ParameterType.MATRIX, sr.StateType.NONE),
-    ("cart_state", sr.ParameterType.STATE, sr.StateType.CARTESIAN_STATE),
-    ("cart_pose", sr.ParameterType.STATE, sr.StateType.CARTESIAN_POSE),
-    ("joint_state", sr.ParameterType.STATE, sr.StateType.JOINT_STATE),
-    ("joint_pos", sr.ParameterType.STATE, sr.StateType.JOINT_POSITIONS),
-    ("ellipsoid", sr.ParameterType.STATE, sr.StateType.GEOMETRY_ELLIPSOID),
-])
-def test_empty_parameter_raises_on_get_value(name, parameter_type, state_type):
-    param = sr.Parameter(name, parameter_type, state_type)
-    assert param.is_empty()
-    with pytest.raises(sr.exceptions.EmptyStateError):
-        param.get_value()
