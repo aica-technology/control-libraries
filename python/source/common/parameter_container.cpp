@@ -51,6 +51,9 @@ ParameterContainer::ParameterContainer(const ParameterContainer& parameter) :
 }
 
 void ParameterContainer::set_value(py::object value) {
+  if (this->is_empty()) {
+    throw exceptions::EmptyStateException("Parameter '" + this->get_name() + "' is empty.");
+  }
   try {
     switch (this->get_parameter_type()) {
       case ParameterType::INT:
