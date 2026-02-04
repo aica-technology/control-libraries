@@ -75,7 +75,6 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
         param.get_value()
 
 
-
 def param_map_equal(param_dict, param_map):
     def simple_param_equal(param1, param2):
         assert param1.get_name() == param2.get_name()
