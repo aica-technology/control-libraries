@@ -22,7 +22,7 @@ Release Versions
 
 ## Upcoming changes
 
-- fix: raise exception error when accessing an empty parameter in python (#260)
+- fix: raise exception when accessing an empty parameter value in python (#260)
 
 ## 9.3.1
 
