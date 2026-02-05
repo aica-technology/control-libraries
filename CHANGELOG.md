@@ -20,6 +20,10 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
+## Upcoming changes
+
+- fix: raise exception when accessing an empty parameter value in python (#260)
+
 ## 9.3.1
 
 Version 9.3.1 is a patch that introduces a reference frame compatibility check in the inverse kinematics functions of

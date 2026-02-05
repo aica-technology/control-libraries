@@ -49,6 +49,8 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
     assert param.get_parameter_state_type() == state_type
     assert param.is_empty()
     assert not param
+    with pytest.raises(sr.exceptions.EmptyStateError):
+        param.get_value()
 
     new_param = sr.Parameter(param)
     assert new_param.is_empty()
@@ -69,6 +71,8 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
 
     param.reset()
     assert param.is_empty()
+    with pytest.raises(sr.exceptions.EmptyStateError):
+        param.get_value()
 
 
 def param_map_equal(param_dict, param_map):
