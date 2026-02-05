@@ -117,9 +117,8 @@ void ParameterContainer::set_value(py::object value) {
 }
 
 py::object ParameterContainer::get_value() const {
-  if (this->is_empty()) {
-    throw exceptions::EmptyStateException("Parameter '" + this->get_name() + "' is empty.");
-  }
+  this->assert_not_empty();
+
   try {
     switch (this->get_parameter_type()) {
       case ParameterType::INT:
