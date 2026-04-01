@@ -26,6 +26,7 @@ set(CORE_SOURCES
   src/parameters/Parameter.cpp
   src/parameters/ParameterInterface.cpp
   src/parameters/ParameterMap.cpp
+  src/parameters/StrictParameterMap.cpp
   src/parameters/Predicate.cpp
   src/geometry/Shape.cpp
   src/geometry/Ellipsoid.cpp
