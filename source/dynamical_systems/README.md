@@ -81,7 +81,7 @@ methods:
 - `get_parameter_value<T>(name)`
 - `set_parameters(parameters)`
 - `set_parameter(parameter)`
-- `set_parameter(name, value)` (deprecated as of v9.4.0)
+- `set_parameter_value(name, value)` (deprecated as of v9.4.0)
 - `set_parameter(name, value)`
 
 These methods can be used after construction to get or set dynamical system parameters. Refer to the documentation
