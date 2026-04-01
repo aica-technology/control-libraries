@@ -108,7 +108,7 @@ def test_param_map():
 
     m = sr.ParameterMap()
     for name, param in param_dict.items():
-        m.set_parameter_value(param.get_name(), param.get_value(), param.get_parameter_type(),
+        m.set_parameter(param.get_name(), param.get_value(), param.get_parameter_type(),
                               param.get_parameter_state_type())
     param_map_equal(param_dict, m)
 

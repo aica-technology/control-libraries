@@ -38,7 +38,7 @@ TEST_F(RingDSTest, EmptyConstructor) {
   CartesianPose center = CartesianPose::Identity("CAttractor", "A");
   // base frame and attractor should be empty
   EXPECT_TRUE(ds->get_parameter_value<CartesianPose>("center").is_empty());
-  ds->set_parameter_value("center", center);
+  ds->set_parameter("center", center);
   EXPECT_FALSE(ds->get_parameter_value<CartesianPose>("center").is_empty());
   EXPECT_FALSE(ds->get_base_frame().is_empty());
   // when attractor was set without a base frame, expect base frame to be identity with name / reference_frame of attractor
@@ -63,7 +63,7 @@ TEST_F(RingDSTest, EvaluateComptability) {
   // if no attractor is set, an exception is thrown
   EXPECT_THROW(ds->evaluate(state4), dynamical_systems::exceptions::EmptyAttractorException);
 
-  ds->set_parameter_value("center", center);
+  ds->set_parameter("center", center);
   EXPECT_TRUE(ds->is_compatible(state1));
   EXPECT_FALSE(ds->is_compatible(state2));
   EXPECT_TRUE(ds->is_compatible(state3));
@@ -71,10 +71,10 @@ TEST_F(RingDSTest, EvaluateComptability) {
 }
 
 TEST_F(RingDSTest, PointsOnRadius) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
-  ds->set_parameter_value("width", width);
-  ds->set_parameter_value("speed", speed);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
+  ds->set_parameter("width", width);
+  ds->set_parameter("speed", speed);
   CartesianTwist twist;
 
   // zero output at center
@@ -108,11 +108,11 @@ TEST_F(RingDSTest, PointsOnRadius) {
 }
 
 TEST_F(RingDSTest, PointsNearRadius) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
-  ds->set_parameter_value("width", width);
-  ds->set_parameter_value("speed", speed);
-  ds->set_parameter_value("field_strength", field_strength);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
+  ds->set_parameter("width", width);
+  ds->set_parameter("speed", speed);
+  ds->set_parameter("field_strength", field_strength);
   CartesianTwist twist;
 
   current_pose.set_position(radius + width, 0, 0);
@@ -142,11 +142,11 @@ TEST_F(RingDSTest, PointsNearRadius) {
 }
 
 TEST_F(RingDSTest, BehaviourNearBoundaryAtHighSpeeds) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", 1.0);
-  ds->set_parameter_value("width", 0.1);
-  ds->set_parameter_value("speed", 10.0);
-  ds->set_parameter_value("field_strength", 2.0);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", 1.0);
+  ds->set_parameter("width", 0.1);
+  ds->set_parameter("speed", 10.0);
+  ds->set_parameter("field_strength", 2.0);
   CartesianTwist twist;
 
   current_pose.set_position(0, radius + 1.001 * width, 0);
@@ -161,8 +161,8 @@ TEST_F(RingDSTest, BehaviourNearBoundaryAtHighSpeeds) {
 }
 
 TEST_F(RingDSTest, ConvergenceOnRadius) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
 
   for (unsigned int i = 0; i < nb_steps; ++i) {
     CartesianTwist twist = ds->evaluate(current_pose);
@@ -176,8 +176,8 @@ TEST_F(RingDSTest, ConvergenceOnRadius) {
 TEST_F(RingDSTest, ConvergenceOnRadiusRandomCenter) {
   center.set_position(Eigen::Vector3d::Random());
   center.set_orientation(Eigen::Quaterniond::UnitRandom());
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
 
   for (unsigned int i = 0; i < nb_steps; ++i) {
     CartesianTwist twist = ds->evaluate(current_pose);
@@ -189,8 +189,8 @@ TEST_F(RingDSTest, ConvergenceOnRadiusRandomCenter) {
 }
 
 TEST_F(RingDSTest, ZeroNormalGain) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("normal_gain", 0.0);
+  ds->set_parameter("center", center);
+  ds->set_parameter("normal_gain", 0.0);
 
   double startingHeight = current_pose.get_position().z();
   for (unsigned int i = 0; i < nb_steps; ++i) {
@@ -202,10 +202,10 @@ TEST_F(RingDSTest, ZeroNormalGain) {
 }
 
 TEST_F(RingDSTest, OrientationAroundCircle) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
-  ds->set_parameter_value("width", width);
-  ds->set_parameter_value("speed", 0.0);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
+  ds->set_parameter("width", width);
+  ds->set_parameter("speed", 0.0);
   CartesianTwist twist;
 
   // at the position {radius, 0, 0}, the orientation attractor is by default null,
@@ -235,10 +235,10 @@ TEST_F(RingDSTest, OrientationAroundCircle) {
 }
 
 TEST_F(RingDSTest, OrientationRestitutionAtZeroAngle) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
-  ds->set_parameter_value("width", width);
-  ds->set_parameter_value("speed", 0.0);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
+  ds->set_parameter("width", width);
+  ds->set_parameter("speed", 0.0);
   CartesianTwist twist;
 
   // at the position {radius, 0, 0}, the orientation attractor is by default null (angle around circle is 0)
@@ -267,10 +267,10 @@ TEST_F(RingDSTest, OrientationRestitutionAtZeroAngle) {
 }
 
 TEST_F(RingDSTest, OrientationRotationOffset) {
-  ds->set_parameter_value("center", center);
-  ds->set_parameter_value("radius", radius);
-  ds->set_parameter_value("width", width);
-  ds->set_parameter_value("speed", 0.0);
+  ds->set_parameter("center", center);
+  ds->set_parameter("radius", radius);
+  ds->set_parameter("width", width);
+  ds->set_parameter("speed", 0.0);
   CartesianTwist twist;
 
   current_pose.set_position(radius, 0, 0);
@@ -280,7 +280,7 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
   // if the rotation offset is the same as the current orientation, the angular velocity at
   // position {radius, 0, 0} is always zero
   current_pose.set_orientation(rotation);
-  ds->set_parameter_value("rotation_offset", current_pose);
+  ds->set_parameter("rotation_offset", current_pose);
   twist = ds->evaluate(current_pose);
   EXPECT_NEAR(twist.get_angular_velocity().norm(), 0, tol);
 
@@ -298,17 +298,17 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
   // rotate the center plane in the base frame, and set the current position to have the same relative
   // offset that gives a zero command (no rotation offset)
   center.set_orientation(Eigen::Quaterniond::UnitRandom());
-  ds->set_parameter_value("center", center);
+  ds->set_parameter("center", center);
   current_pose = CartesianPose("B", Eigen::Vector3d(radius, 0, 0), "A");
   current_pose = center * current_pose;
-  ds->set_parameter_value("rotation_offset", CartesianPose::Identity("offset"));
+  ds->set_parameter("rotation_offset", CartesianPose::Identity("offset"));
   twist = ds->evaluate(current_pose);
   EXPECT_NEAR(twist.get_angular_velocity().norm(), 0, tol);
 
   // for any rotation offset in a rotated center plane, the output will
   // still be zero if the current position and orientation matches the rotation offset
   rotation = Eigen::Quaterniond::UnitRandom();
-  ds->set_parameter_value("rotation_offset", CartesianPose("offset", rotation));
+  ds->set_parameter("rotation_offset", CartesianPose("offset", rotation));
   current_pose = CartesianPose(
       "B", Eigen::Vector3d(radius, 0, 0), ds->get_parameter_value<CartesianPose>("rotation_offset").get_orientation(),
       "A"
@@ -337,7 +337,7 @@ TEST_F(RingDSTest, OrientationRotationOffset) {
 
 TEST_F(RingDSTest, BaseFrameBehaviours) {
   auto AinB = CartesianPose::Random("A", "B");
-  ds->set_parameter_value("center", AinB);
+  ds->set_parameter("center", AinB);
 
   // setting the center through the constructor should also set the base frame (as Identity frame)
   EXPECT_STREQ(ds->get_parameter_value<CartesianPose>("center").get_name().c_str(), "A");
@@ -349,7 +349,7 @@ TEST_F(RingDSTest, BaseFrameBehaviours) {
   // setting the center should fail if it is incompatible with the base frame
   auto CinD = CartesianPose::Random("C", "D");
   EXPECT_THROW(
-      ds->set_parameter_value("center", CartesianPose(CinD)),
+      ds->set_parameter("center", CartesianPose(CinD)),
       state_representation::exceptions::IncompatibleReferenceFramesException
   );
 
@@ -365,30 +365,30 @@ TEST_F(RingDSTest, BaseFrameBehaviours) {
 
   // setting the center should succeed if it is expressed relative to the base frame
   auto BinC = CartesianPose::Random("B", "C");
-  EXPECT_NO_THROW(ds->set_parameter_value("center", BinC));
+  EXPECT_NO_THROW(ds->set_parameter("center", BinC));
   EXPECT_STREQ(ds->get_parameter_value<CartesianPose>("center").get_name().c_str(), "B");
   EXPECT_STREQ(ds->get_parameter_value<CartesianPose>("center").get_reference_frame().c_str(), "C");
 
   // setting the center should also succeed if it shares the same reference frame as the base frame
   auto BinD = CartesianPose::Random("B", "D");
-  EXPECT_NO_THROW(ds->set_parameter_value("center", BinD));
+  EXPECT_NO_THROW(ds->set_parameter("center", BinD));
   EXPECT_STREQ(ds->get_parameter_value<CartesianPose>("center").get_name().c_str(), "B");
   // the reference frame is still C, not D, because the center is internally represented relative to the base frame (C)
   EXPECT_STREQ(ds->get_parameter_value<CartesianPose>("center").get_reference_frame().c_str(), "C");
 }
 
 TEST_F(RingDSTest, SettersAndGetters) {
-  ds->set_parameter_value("center", center);
+  ds->set_parameter("center", center);
 
   auto pose = CartesianState::Random("C");
-  ds->set_parameter_value("center", CartesianPose(pose));
+  ds->set_parameter("center", CartesianPose(pose));
   auto pose2 = ds->get_parameter_value<CartesianPose>("center");
   EXPECT_STREQ(pose.get_name().c_str(), pose2.get_name().c_str());
   EXPECT_STREQ(pose.get_reference_frame().c_str(), pose2.get_reference_frame().c_str());
   EXPECT_NEAR(pose.get_pose().norm(), pose2.get_pose().norm(), tol);
 
   // all other setters should store the value
-  ds->set_parameter_value("rotation_offset", CartesianPose("offset", Eigen::Quaterniond(1, 2, 3, 4).normalized()));
+  ds->set_parameter("rotation_offset", CartesianPose("offset", Eigen::Quaterniond(1, 2, 3, 4).normalized()));
   EXPECT_NEAR(
       ds->get_parameter_value<CartesianPose>("rotation_offset")
           .get_orientation()
@@ -396,21 +396,21 @@ TEST_F(RingDSTest, SettersAndGetters) {
       0, tol
   );
 
-  ds->set_parameter_value("radius", 1.0);
+  ds->set_parameter("radius", 1.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("radius"), 1.0, tol);
 
-  ds->set_parameter_value("width", 2.0);
+  ds->set_parameter("width", 2.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("width"), 2.0, tol);
 
-  ds->set_parameter_value("speed", 3.0);
+  ds->set_parameter("speed", 3.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("speed"), 3.0, tol);
 
-  ds->set_parameter_value("field_strength", 4.0);
+  ds->set_parameter("field_strength", 4.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("field_strength"), 4.0, tol);
 
-  ds->set_parameter_value("normal_gain", 5.0);
+  ds->set_parameter("normal_gain", 5.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("normal_gain"), 5.0, tol);
 
-  ds->set_parameter_value("angular_gain", 6.0);
+  ds->set_parameter("angular_gain", 6.0);
   EXPECT_NEAR(ds->get_parameter_value<double>("angular_gain"), 6.0, tol);
 }

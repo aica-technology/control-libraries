@@ -16,10 +16,10 @@ protected:
   }
 
   void set_gains(double lpd, double lod, double as, double ad) {
-    controller_->set_parameter_value("linear_principle_damping", lpd);
-    controller_->set_parameter_value("linear_orthogonal_damping", lod);
-    controller_->set_parameter_value("angular_stiffness", as);
-    controller_->set_parameter_value("angular_damping", ad);
+    controller_->set_parameter("linear_principle_damping", lpd);
+    controller_->set_parameter("linear_orthogonal_damping", lod);
+    controller_->set_parameter("angular_stiffness", as);
+    controller_->set_parameter("angular_damping", ad);
   }
 
   std::shared_ptr<IController<CartesianState>> controller_;
@@ -61,28 +61,28 @@ TEST_F(CompliantTwistControllerTest, GetAndSetParameters) {
       EXPECT_NEAR(controller_->get_parameter_value<double>("linear_principle_damping"), 1, 1e-5);
       param->set_value(11);
       EXPECT_NEAR(controller_->get_parameter_value<double>("linear_principle_damping"), 11, 1e-5);
-      controller_->set_parameter_value<double>("linear_principle_damping", 21);
+      controller_->set_parameter<double>("linear_principle_damping", 21);
       EXPECT_NEAR(param->get_value(), 21, 1e-5);
     } else if (param->get_name() == "linear_orthogonal_damping") {
       EXPECT_NEAR(param->get_value(), 2, 1e-5);
       EXPECT_NEAR(controller_->get_parameter_value<double>("linear_orthogonal_damping"), 2, 1e-5);
       param->set_value(12);
       EXPECT_NEAR(controller_->get_parameter_value<double>("linear_orthogonal_damping"), 12, 1e-5);
-      controller_->set_parameter_value<double>("linear_orthogonal_damping", 22);
+      controller_->set_parameter<double>("linear_orthogonal_damping", 22);
       EXPECT_NEAR(param->get_value(), 22, 1e-5);
     } else if (param->get_name() == "angular_stiffness") {
       EXPECT_NEAR(param->get_value(), 3, 1e-5);
       EXPECT_NEAR(controller_->get_parameter_value<double>("angular_stiffness"), 3, 1e-5);
       param->set_value(13);
       EXPECT_NEAR(controller_->get_parameter_value<double>("angular_stiffness"), 13, 1e-5);
-      controller_->set_parameter_value<double>("angular_stiffness", 23);
+      controller_->set_parameter<double>("angular_stiffness", 23);
       EXPECT_NEAR(param->get_value(), 23, 1e-5);
     } else if (param->get_name() == "angular_damping") {
       EXPECT_NEAR(param->get_value(), 4, 1e-5);
       EXPECT_NEAR(controller_->get_parameter_value<double>("angular_damping"), 4, 1e-5);
       param->set_value(14);
       EXPECT_NEAR(controller_->get_parameter_value<double>("angular_damping"), 14, 1e-5);
-      controller_->set_parameter_value<double>("angular_damping", 24);
+      controller_->set_parameter<double>("angular_damping", 24);
       EXPECT_NEAR(param->get_value(), 24, 1e-5);
     }
   }

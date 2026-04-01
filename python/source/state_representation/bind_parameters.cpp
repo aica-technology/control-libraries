@@ -167,6 +167,12 @@ void parameter_map(py::module_& m) {
   c.def("set_parameter", [](ParameterMap& self, const ParameterContainer& parameter) {
     self.set_parameter(container_to_interface_ptr(parameter));
   }, "Set a parameter", "parameter"_a);
+  c.def(
+      "set_parameter", [](ParameterMap& self, const std::string& name, const py::object& value, const ParameterType& type, const StateType& parameter_state_type) -> void {
+        auto param = ParameterContainer(name, value, type, parameter_state_type);
+        self.set_parameter(container_to_interface_ptr(param));
+      }, "Set a parameter value by its name", "name"_a, "value"_a, "type"_a, "parameter_state_type"_a=StateType::NONE
+  );
   c.def("set_parameters", [](ParameterMap& self, const std::list<ParameterContainer>& parameters) {
     self.set_parameters(container_to_interface_ptr_list(parameters));
   }, "Set parameters from a list of parameters", "parameters"_a);
@@ -175,6 +181,7 @@ void parameter_map(py::module_& m) {
   }, "Set parameters from a map with <name, parameter> pairs", "parameters"_a);
   c.def(
       "set_parameter_value", [](ParameterMap& self, const std::string& name, const py::object& value, const ParameterType& type, const StateType& parameter_state_type) -> void {
+        PyErr_WarnEx(PyExc_DeprecationWarning, "set_parameter_value(name, value) is deprecated, use set_parameter(name, value) instead.", 1);
         auto param = ParameterContainer(name, value, type, parameter_state_type);
         self.set_parameter(container_to_interface_ptr(param));
       }, "Set a parameter value by its name", "name"_a, "value"_a, "type"_a, "parameter_state_type"_a=StateType::NONE

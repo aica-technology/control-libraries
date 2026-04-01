@@ -46,7 +46,7 @@ TEST_F(PointAttractorTest, EmptyConstructorCartesianState) {
   // base frame and attractor should be empty
   EXPECT_TRUE(ds->get_parameter_value<CartesianState>("attractor").is_empty());
   EXPECT_TRUE(ds->get_base_frame().is_empty());
-  ds->set_parameter_value<CartesianState>("attractor", attractor);
+  ds->set_parameter<CartesianState>("attractor", attractor);
   EXPECT_FALSE(ds->get_parameter_value<CartesianState>("attractor").is_empty());
   EXPECT_FALSE(ds->get_base_frame().is_empty());
   // when attractor was set without a base frame, expect base frame to be identity with name / reference_frame of attractor
@@ -70,7 +70,7 @@ TEST_F(PointAttractorTest, EmptyIsCompatible) {
   // if no attractor is set, an exception is thrown
   EXPECT_THROW(ds->evaluate(state4), dynamical_systems::exceptions::EmptyAttractorException);
 
-  ds->set_parameter_value("attractor", CartesianState::Identity("CAttractor", "A"));
+  ds->set_parameter("attractor", CartesianState::Identity("CAttractor", "A"));
   EXPECT_TRUE(ds->is_compatible(state1));
   EXPECT_FALSE(ds->is_compatible(state2));
   EXPECT_TRUE(ds->is_compatible(state3));
@@ -83,7 +83,7 @@ TEST_F(PointAttractorTest, IsCompatible) {
   CartesianState state3("C", "D");
 
   CartesianPose attractor_frame = CartesianPose::Identity("CAttractor", "A");
-  ds->set_parameter_value<CartesianState>("attractor", attractor_frame);
+  ds->set_parameter<CartesianState>("attractor", attractor_frame);
   EXPECT_TRUE(ds->is_compatible(state1));
   EXPECT_FALSE(ds->is_compatible(state2));
   EXPECT_FALSE(ds->is_compatible(state3));
@@ -99,7 +99,7 @@ TEST_F(PointAttractorTest, IsCompatible) {
 TEST_F(PointAttractorTest, PositionOnly) {
   current_pose.set_orientation(Eigen::Quaterniond::Identity());
   target_pose.set_orientation(Eigen::Quaterniond::Identity());
-  ds->set_parameter_value<CartesianState>("attractor", target_pose);
+  ds->set_parameter<CartesianState>("attractor", target_pose);
 
   for (unsigned int i = 0; i < nb_steps; ++i) {
     CartesianTwist twist = ds->evaluate(current_pose);
@@ -111,7 +111,7 @@ TEST_F(PointAttractorTest, PositionOnly) {
 TEST_F(PointAttractorTest, OrientationOnly) {
   current_pose.set_position(Eigen::Vector3d::Zero());
   target_pose.set_position(Eigen::Vector3d::Zero());
-  ds->set_parameter_value<CartesianState>("attractor", target_pose);
+  ds->set_parameter<CartesianState>("attractor", target_pose);
 
   for (unsigned int i = 0; i < nb_steps; ++i) {
     CartesianTwist twist = ds->evaluate(current_pose);
@@ -121,7 +121,7 @@ TEST_F(PointAttractorTest, OrientationOnly) {
 }
 
 TEST_F(PointAttractorTest, PositionAndOrientation) {
-  ds->set_parameter_value<CartesianState>("attractor", target_pose);
+  ds->set_parameter<CartesianState>("attractor", target_pose);
 
   for (unsigned int i = 0; i < nb_steps; ++i) {
     CartesianTwist twist = ds->evaluate(current_pose);
@@ -139,7 +139,7 @@ TEST_F(PointAttractorTest, FixedReferenceFrames) {
   CinA.set_pose(Eigen::Vector3d::Random(), Eigen::Quaterniond::UnitRandom());
   CinB.set_pose(Eigen::Vector3d::Random(), Eigen::Quaterniond::UnitRandom());
 
-  ds->set_parameter_value("attractor", BinA);
+  ds->set_parameter("attractor", BinA);
 
   // evaluating a current pose B in reference frame A should give zero twist (coincident with attractor)
   CartesianTwist twist = ds->evaluate(BinA);
@@ -159,7 +159,7 @@ TEST_F(PointAttractorTest, FixedReferenceFrames) {
 
 TEST_F(PointAttractorTest, UpdateBaseReferenceFrames) {
   auto BinA = CartesianState::Random("B", "A");
-  ds->set_parameter_value("attractor", BinA);
+  ds->set_parameter("attractor", BinA);
 
   // the base frame of the default constructed DS should be an identity frame
   // with the same name as the attractor reference frame
@@ -205,7 +205,7 @@ TEST_F(PointAttractorTest, StackedMovingReferenceFrames) {
   auto CinA = CartesianState::Identity("C", "A");
   CinA.set_pose(Eigen::Vector3d::Random(), Eigen::Quaterniond::UnitRandom());
 
-  ds->set_parameter_value("attractor", BinA);
+  ds->set_parameter("attractor", BinA);
 
   // evaluate the twist for a fixed state C in reference frame A
   CartesianTwist twist = ds->evaluate(CinA);
@@ -240,7 +240,7 @@ TEST_F(PointAttractorTest, UpdateAttractorFrame) {
   C = CartesianState::Random("C", "robot");
   D = CartesianState::Random("D", "robot");
 
-  ds->set_parameter_value("attractor", A);
+  ds->set_parameter("attractor", A);
 
   // state being evaluated must match the DS base frame, which is by default the attractor reference frame
   EXPECT_NO_THROW(ds->evaluate(B));
@@ -248,9 +248,9 @@ TEST_F(PointAttractorTest, UpdateAttractorFrame) {
 
   // setting the attractor to another point in the same base frame should be fine,
   // but setting it with a different base frame should give an error
-  EXPECT_NO_THROW(ds->set_parameter_value("attractor", B));
+  EXPECT_NO_THROW(ds->set_parameter("attractor", B));
   EXPECT_THROW(
-      ds->set_parameter_value("attractor", C), state_representation::exceptions::IncompatibleReferenceFramesException
+      ds->set_parameter("attractor", C), state_representation::exceptions::IncompatibleReferenceFramesException
   );
 
   // after updating the base frame, the attractor reference frame should also be updated
@@ -262,9 +262,9 @@ TEST_F(PointAttractorTest, UpdateAttractorFrame) {
 
   // with the new base frame, setting the attractor should succeed / fail accordingly
   EXPECT_THROW(
-      ds->set_parameter_value("attractor", B), state_representation::exceptions::IncompatibleReferenceFramesException
+      ds->set_parameter("attractor", B), state_representation::exceptions::IncompatibleReferenceFramesException
   );
-  EXPECT_NO_THROW(ds->set_parameter_value("attractor", C));
+  EXPECT_NO_THROW(ds->set_parameter("attractor", C));
 
   // now the evaluation should also succeed when matching the updated base frame
   EXPECT_THROW(ds->evaluate(B), state_representation::exceptions::IncompatibleReferenceFramesException);
@@ -279,7 +279,7 @@ TEST(JointPointAttractorTest, Constructor) {
   // base frame and attractor should be empty
   EXPECT_TRUE(ds->get_parameter_value<JointState>("attractor").is_empty());
   EXPECT_TRUE(ds->get_base_frame().is_empty());
-  ds->set_parameter_value("attractor", attractor);
+  ds->set_parameter("attractor", attractor);
   EXPECT_FALSE(ds->get_parameter_value<JointState>("attractor").is_empty());
   EXPECT_TRUE(ds->get_base_frame().is_empty());
 
@@ -299,7 +299,7 @@ TEST(JointPointAttractorTest, EmptyCompatible) {
 
   // if no attractor is set, an exception is thrown
   EXPECT_THROW(ds->evaluate(state2), dynamical_systems::exceptions::EmptyAttractorException);
-  ds->set_parameter_value("attractor", state1);
+  ds->set_parameter("attractor", state1);
 
   EXPECT_THROW(ds->evaluate(state2), state_representation::exceptions::EmptyStateException);
   EXPECT_THROW(ds->evaluate(state3), state_representation::exceptions::IncompatibleStatesException);
@@ -316,7 +316,7 @@ TEST(JointPointAttractorTest, Convergence) {
   auto current_state = JointPositions::Random("robot", 3);
   current_state.set_data(10 * current_state.data());
 
-  ds->set_parameter_value<JointState>("attractor", attractor);
+  ds->set_parameter<JointState>("attractor", attractor);
   for (unsigned int i = 0; i < 100; ++i) {
     JointVelocities velocities = ds->evaluate(current_state);
     current_state += 100ms * velocities;
