@@ -31,7 +31,7 @@ public:
 
   /**
    * @brief Construct the parameter map with an initial map of parameters
-   * @param parameters A amp of Parameter pointers
+   * @param parameters A map of Parameter pointers
    */
   explicit ParameterMap(const ParameterInterfaceMap& parameters);
 
@@ -70,6 +70,15 @@ public:
   void set_parameter(const std::shared_ptr<ParameterInterface>& parameter);
 
   /**
+   * @brief Set a parameter value by its name.
+   * @tparam T Type of the parameter value
+   * @param name The name of the parameter
+   * @param value The new value of the parameter
+   */
+  template<typename T>
+  void set_parameter(const std::string& name, const T& value);
+
+  /**
    * @brief Set parameters from a list of parameters.
    * @param parameters The list of parameters
    */
@@ -88,7 +97,7 @@ public:
    * @param value The new value of the parameter
    */
   template<typename T>
-  void set_parameter_value(const std::string& name, const T& value);
+  [[deprecated]] void set_parameter_value(const std::string& name, const T& value);
 
   /**
    * @brief Remove a parameter from the parameter map.
@@ -123,6 +132,11 @@ inline T ParameterMap::get_parameter_value(const std::string& name) const {
 
 template<typename T>
 inline void ParameterMap::set_parameter_value(const std::string& name, const T& value) {
+  this->validate_and_set_parameter(make_shared_parameter<T>(name, value));
+}
+
+template<typename T>
+inline void ParameterMap::set_parameter(const std::string& name, const T& value) {
   this->validate_and_set_parameter(make_shared_parameter<T>(name, value));
 }
 
