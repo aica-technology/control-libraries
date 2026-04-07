@@ -2,6 +2,7 @@
 
 Release Versions
 
+- [9.3.2](#932)
 - [9.3.1](#931)
 - [9.3.0](#930)
 - [9.2.0](#920)
@@ -20,7 +21,14 @@ Release Versions
 - [6.3.0](#630)
 - [6.2.0](#620)
 
-## Upcoming changes
+## 9.3.2
+
+Version 9.3.2 is a patch that makes an empty parameter object throw when accessing its value in Python to make it behave
+like a C++ object.
+
+This is the last planned release before control libraries X.
+
+### Full changelog
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
 
