@@ -91,15 +91,6 @@ public:
   void set_parameters(const ParameterInterfaceMap& parameters);
 
   /**
-   * @brief Set a parameter value by its name.
-   * @tparam T Type of the parameter value
-   * @param name The name of the parameter
-   * @param value The new value of the parameter
-   */
-  template<typename T>
-  [[deprecated]] void set_parameter_value(const std::string& name, const T& value);
-
-  /**
    * @brief Remove a parameter from the parameter map.
    * @param name The name of the parameter that should be removed
    * @raise InvalidParameterException if the parameter does not exist
@@ -128,11 +119,6 @@ protected:
 template<typename T>
 inline T ParameterMap::get_parameter_value(const std::string& name) const {
   return this->get_parameter(name)->get_parameter_value<T>();
-}
-
-template<typename T>
-inline void ParameterMap::set_parameter_value(const std::string& name, const T& value) {
-  this->validate_and_set_parameter(make_shared_parameter<T>(name, value));
 }
 
 template<typename T>

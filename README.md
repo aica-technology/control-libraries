@@ -7,6 +7,9 @@
 
 # Control Libraries
 
+:warning: Control libraries are currently undergoing breaking changes and the main branch may not be stable until the
+next official release! :warning:
+
 The `control-libraries` project is a collection of modules to facilitate the creation of control loop algorithms for
 robotics, including trajectory planning, kinematics, dynamics and control.
 

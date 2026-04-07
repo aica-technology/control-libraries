@@ -179,13 +179,6 @@ void parameter_map(py::module_& m) {
   c.def("set_parameters", [](ParameterMap& self, const std::map<std::string, ParameterContainer>& parameters) {
     self.set_parameters(container_to_interface_ptr_map(parameters));
   }, "Set parameters from a map with <name, parameter> pairs", "parameters"_a);
-  c.def(
-      "set_parameter_value", [](ParameterMap& self, const std::string& name, const py::object& value, const ParameterType& type, const StateType& parameter_state_type) -> void {
-        PyErr_WarnEx(PyExc_DeprecationWarning, "set_parameter_value(name, value) is deprecated, use set_parameter(name, value) instead.", 1);
-        auto param = ParameterContainer(name, value, type, parameter_state_type);
-        self.set_parameter(container_to_interface_ptr(param));
-      }, "Set a parameter value by its name", "name"_a, "value"_a, "type"_a, "parameter_state_type"_a=StateType::NONE
-  );
   c.def("remove_parameter", &ParameterMap::remove_parameter, "Remove a parameter from the parameter map.", "name"_a);
 }
 
