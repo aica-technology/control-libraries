@@ -71,7 +71,9 @@ public:
 
   /**
    * @brief Set a parameter by name and value.
-   * @details If a parameter by the same name already exists in the parameter map, it will be overwritten and any existing ParameterInterface pointer references will be invalidated. Consumers should call get_parameter() or get_parameters() after calling this method to update any references.
+   * @details If a parameter by the same name already exists in the parameter map, it will be overwritten and any
+   * existing ParameterInterface pointer references will be invalidated. Consumers should call get_parameter() or
+   * get_parameters() after calling this method to update any references.
    * @tparam T Type of the parameter value
    * @param name The name of the parameter
    * @param value The new value of the parameter
@@ -94,7 +96,7 @@ public:
   /**
    * @brief Remove a parameter from the parameter map.
    * @param name The name of the parameter that should be removed
-   * @raise InvalidParameterException if the parameter does not exist
+   * @throw InvalidParameterException if the parameter does not exist
    */
   void remove_parameter(const std::string& name);
 
