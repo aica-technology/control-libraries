@@ -171,7 +171,7 @@ void parameter_map(py::module_& m) {
       "set_parameter", [](ParameterMap& self, const std::string& name, const py::object& value, const ParameterType& type, const StateType& parameter_state_type) -> void {
         auto param = ParameterContainer(name, value, type, parameter_state_type);
         self.set_parameter(container_to_interface_ptr(param));
-      }, "Set a parameter value by its name", "name"_a, "value"_a, "type"_a, "parameter_state_type"_a=StateType::NONE
+      }, "Set a parameter by name and value", "name"_a, "value"_a, "type"_a, "parameter_state_type"_a=StateType::NONE
   );
   c.def("set_parameters", [](ParameterMap& self, const std::list<ParameterContainer>& parameters) {
     self.set_parameters(container_to_interface_ptr_list(parameters));
