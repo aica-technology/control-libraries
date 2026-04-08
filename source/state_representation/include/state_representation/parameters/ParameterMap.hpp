@@ -70,7 +70,8 @@ public:
   void set_parameter(const std::shared_ptr<ParameterInterface>& parameter);
 
   /**
-   * @brief Set a parameter value by its name.
+   * @brief Set a parameter by name and value.
+   * @details If a parameter by the same name already exists in the parameter map, it will be overwritten and any existing ParameterInterface pointer references will be invalidated. Consumers should call get_parameter() or get_parameters() after calling this method to update any references.
    * @tparam T Type of the parameter value
    * @param name The name of the parameter
    * @param value The new value of the parameter
