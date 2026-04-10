@@ -57,28 +57,29 @@ public:
    * @param validate_pointer If true, throw an exception when downcasting fails
    * @return A pointer to a derived Parameter instance of the desired state type, or a null pointer
    * if downcasting failed and validate_pointer was set to false.
+   * @throw exceptions::InvalidParameterCastException if downcasting fails and validate_pointer is true
    */
   template<typename T>
   std::shared_ptr<Parameter<T>> get_parameter(bool validate_pointer = true) const;
 
   /**
    * @brief Get the parameter value of a derived Parameter instance through the ParameterInterface pointer.
-   * @details This throws an InvalidParameterCastException if the ParameterInterface does not point to
-   * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @return The value contained in the underlying Parameter instance
+   * @throw exceptions::InvalidParameterCastException if the ParameterInterface does not point to
+   * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
   T get_parameter_value() const;
 
   /**
    * @brief Set the parameter value of a derived Parameter instance through the ParameterInterface pointer.
-   * @details This throws an InvalidParameterCastException if the ParameterInterface does not point to
-   * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @param value The value to set in the underlying Parameter instance
+   * @throw exceptions::InvalidParameterCastException if the ParameterInterface does not point to
+   * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
   void set_parameter_value(const T& value);

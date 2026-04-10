@@ -1,5 +1,10 @@
 #include "state_representation/parameters/Parameter.hpp"
 
+#include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/space/cartesian/CartesianPose.hpp"
+#include "state_representation/space/joint/JointPositions.hpp"
+
+
 namespace state_representation {
 
 template<>
@@ -220,5 +225,86 @@ std::ostream& operator<<(std::ostream& os, const Parameter<std::vector<std::stri
     os << "]";
   }
   return os;
+}
+
+void copy_parameter_value(
+    const std::shared_ptr<const ParameterInterface>& source_parameter,
+    const std::shared_ptr<ParameterInterface>& parameter
+) {
+  if (parameter->get_parameter_type() != source_parameter->get_parameter_type()) {
+    throw exceptions::IncompatibleStatesException(
+        "Source parameter " + source_parameter->get_name()
+        + " to be copied does not have the same type as destination parameter " + parameter->get_name() + "("
+        + get_parameter_type_name(source_parameter->get_parameter_type()) + " vs. "
+        + get_parameter_type_name(parameter->get_parameter_type()) + ")"
+    );
+  }
+  switch (parameter->get_parameter_type()) {
+    case ParameterType::BOOL:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<bool>());
+      return;
+    case ParameterType::BOOL_ARRAY:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<std::vector<bool>>());
+      return;
+    case ParameterType::INT:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<int>());
+      return;
+    case ParameterType::INT_ARRAY:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<std::vector<int>>());
+      return;
+    case ParameterType::DOUBLE:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<double>());
+      return;
+    case ParameterType::DOUBLE_ARRAY:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<std::vector<double>>());
+      return;
+    case ParameterType::STRING:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<std::string>());
+      return;
+    case ParameterType::STRING_ARRAY:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<std::vector<std::string>>());
+      return;
+    case ParameterType::VECTOR:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<Eigen::VectorXd>());
+      return;
+    case ParameterType::MATRIX:
+      parameter->set_parameter_value(source_parameter->get_parameter_value<Eigen::MatrixXd>());
+      return;
+    case ParameterType::STATE:
+      if (parameter->get_parameter_state_type() != source_parameter->get_parameter_state_type()) {
+        throw exceptions::IncompatibleStatesException(
+            "Source parameter " + source_parameter->get_name()
+            + " to be copied does not have the same parameter state type as destination parameter "
+            + parameter->get_name() + "(" + get_state_type_name(source_parameter->get_parameter_state_type()) + " vs. "
+            + get_state_type_name(parameter->get_parameter_state_type()) + ")"
+        );
+      }
+      switch (parameter->get_parameter_state_type()) {
+        case StateType::CARTESIAN_STATE:
+          parameter->set_parameter_value(source_parameter->get_parameter_value<CartesianState>());
+          return;
+        case StateType::CARTESIAN_POSE:
+          parameter->set_parameter_value(source_parameter->get_parameter_value<CartesianPose>());
+          return;
+        case StateType::JOINT_STATE:
+          parameter->set_parameter_value(source_parameter->get_parameter_value<JointState>());
+          return;
+        case StateType::JOINT_POSITIONS:
+          parameter->set_parameter_value(source_parameter->get_parameter_value<JointPositions>());
+          return;
+        case StateType::GEOMETRY_ELLIPSOID:
+          parameter->set_parameter_value(source_parameter->get_parameter_value<Ellipsoid>());
+          return;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
+  throw exceptions::IncompatibleStatesException(
+      "Could not copy the value from source parameter " + source_parameter->get_name() + " into parameter "
+      + parameter->get_name()
+  );
 }
 }// namespace state_representation
