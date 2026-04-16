@@ -145,7 +145,7 @@ $(function() {
 <li><code>get_parameter_value&lt;T&gt;(name)</code></li>
 <li><code>set_parameters(parameters)</code></li>
 <li><code>set_parameter(parameter)</code></li>
-<li><code>set_parameter_value(name, value)</code></li>
+<li><code>set_parameter(name, value)</code></li>
 </ul>
 <p>These methods can be used after construction to get or set controller parameters. Refer to the documentation on <code><a class="el" href="classcontrollers_1_1_i_controller.html" title="Abstract class to define a controller in a desired state type, such as joint or Cartesian spaces.">controllers::IController</a>&lt;&gt;</code> and <code><a class="el" href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods.">state_representation::ParameterMap</a></code> for more information.</p>
 <p>For controllers that use a <code><a class="el" href="classrobot__model_1_1_model.html" title="The Model class is a wrapper around pinocchio dynamic computation library with state_representation e...">robot_model::Model</a></code> object, there are additional interface methods that can be used to get or set the current robot model. Note that changing the robot model dimensionality, reference frame or joint frames at runtime could cause unexpected behaviour.</p><ul>

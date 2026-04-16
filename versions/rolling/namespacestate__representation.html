@@ -154,6 +154,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_state.html">State</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class to represent a state.  <a href="classstate__representation_1_1_state.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_strict_parameter_map.html">StrictParameterMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A strict version of <a class="el" href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods.">ParameterMap</a> that enforces type safety for parameters.  <a href="classstate__representation_1_1_strict_parameter_map.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_trajectory.html">Trajectory</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -255,6 +258,9 @@ Functions</h2></td></tr>
 <tr class="separator:a3cc6f20db28f849d2e0bcd2bc47642df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df0e0655f0519f24d028708997205f2" id="r_a1df0e0655f0519f24d028708997205f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a1df0e0655f0519f24d028708997205f2">swap</a> (<a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state1, <a class="el" href="classstate__representation_1_1_shape.html">Shape</a> &amp;state2)</td></tr>
 <tr class="separator:a1df0e0655f0519f24d028708997205f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab51d7c79f65eefc05b68672d96a374dd" id="r_ab51d7c79f65eefc05b68672d96a374dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#ab51d7c79f65eefc05b68672d96a374dd">copy_parameter_value</a> (const std::shared_ptr&lt; const <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;source_parameter, const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;target_parameter)</td></tr>
+<tr class="memdesc:ab51d7c79f65eefc05b68672d96a374dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the value from one parameter to another through their <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> pointers.  <br /></td></tr>
+<tr class="separator:ab51d7c79f65eefc05b68672d96a374dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19d515e5b5252641cf0796315baef1f6" id="r_a19d515e5b5252641cf0796315baef1f6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestate__representation.html#a19d515e5b5252641cf0796315baef1f6">dist</a> (const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;s1, const <a class="el" href="classstate__representation_1_1_cartesian_state.html">CartesianState</a> &amp;s2, const CartesianStateVariable &amp;state_variable_type=CartesianStateVariable::ALL)</td></tr>
 <tr class="memdesc:a19d515e5b5252641cf0796315baef1f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the distance between two Cartesian states.  <br /></td></tr>
 <tr class="separator:a19d515e5b5252641cf0796315baef1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -614,6 +620,53 @@ template std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><
 <dl class="section return"><dt>Returns</dt><dd>A string corresponding to the CartesianStateVariable enum </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="_cartesian_state_8hpp_source.html#l00659">659</a> of file <a class="el" href="_cartesian_state_8hpp_source.html">CartesianState.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab51d7c79f65eefc05b68672d96a374dd" name="ab51d7c79f65eefc05b68672d96a374dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab51d7c79f65eefc05b68672d96a374dd">&#9670;&#160;</a></span>copy_parameter_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::copy_parameter_value </td>
+          <td>(</td>
+          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>source_parameter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>target_parameter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy the value from one parameter to another through their <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> pointers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source_parameter</td><td>A pointer to the <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> of the parameter to copy from </td></tr>
+    <tr><td class="paramname">target_parameter</td><td>A pointer to the <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> of the parameter to copy to </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_parameter_cast_exception.html">exceptions::InvalidParameterCastException</a></td><td>if the <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> does not point to a valid <a class="el" href="classstate__representation_1_1_parameter.html" title="Class to represent name-value pairs of different types.">Parameter</a> instance </td></tr>
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_empty_state_exception.html">exceptions::EmptyStateException</a></td><td>if the source parameter is empty </td></tr>
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_incompatible_states_exception.html">exceptions::IncompatibleStatesException</a></td><td>if the parameter type of the source and target parameters do not match </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00230">230</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>
@@ -2591,7 +2644,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00200">200</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00205">205</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>
@@ -2623,7 +2676,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00187">187</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00192">192</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>
@@ -2655,7 +2708,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00174">174</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00179">179</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>
@@ -2687,7 +2740,7 @@ template&lt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00213">213</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00218">218</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>
@@ -2719,7 +2772,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00153">153</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_8cpp_source.html#l00158">158</a> of file <a class="el" href="_parameter_8cpp_source.html">Parameter.cpp</a>.</p>
 
 </div>
 </div>

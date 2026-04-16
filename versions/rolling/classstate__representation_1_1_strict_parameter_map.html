@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Control Libraries: dynamical_systems::DefaultDynamicalSystem&lt; S &gt; Class Template Reference</title>
+<title>Control Libraries: state_representation::StrictParameterMap Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -69,54 +69,44 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacedynamical__systems.html">dynamical_systems</a></li><li class="navelem"><a class="el" href="classdynamical__systems_1_1_default_dynamical_system.html">DefaultDynamicalSystem</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacestate__representation.html">state_representation</a></li><li class="navelem"><a class="el" href="classstate__representation_1_1_strict_parameter_map.html">StrictParameterMap</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classdynamical__systems_1_1_default_dynamical_system-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">dynamical_systems::DefaultDynamicalSystem&lt; S &gt; Class Template Reference</div></div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classstate__representation_1_1_strict_parameter_map-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">state_representation::StrictParameterMap Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>A default dynamical system that just returns an empty state.  
- <a href="classdynamical__systems_1_1_default_dynamical_system.html#details">More...</a></p>
+<p>A strict version of <a class="el" href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods.">ParameterMap</a> that enforces type safety for parameters.  
+ <a href="classstate__representation_1_1_strict_parameter_map.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="_default_dynamical_system_8hpp_source.html">DefaultDynamicalSystem.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_strict_parameter_map_8hpp_source.html">StrictParameterMap.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for dynamical_systems::DefaultDynamicalSystem&lt; S &gt;:</div>
+Inheritance diagram for state_representation::StrictParameterMap:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classdynamical__systems_1_1_default_dynamical_system.png" usemap="#dynamical_5Fsystems::DefaultDynamicalSystem_3C_20S_20_3E_map" alt=""/>
-  <map id="dynamical_5Fsystems::DefaultDynamicalSystem_3C_20S_20_3E_map" name="dynamical_5Fsystems::DefaultDynamicalSystem_3C_20S_20_3E_map">
-<area href="classdynamical__systems_1_1_i_dynamical_system.html" title="Abstract class for a dynamical system." alt="dynamical_systems::IDynamicalSystem&lt; S &gt;" shape="rect" coords="0,56,297,80"/>
-<area href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods." alt="state_representation::ParameterMap" shape="rect" coords="0,0,297,24"/>
+  <img src="classstate__representation_1_1_strict_parameter_map.png" usemap="#state_5Frepresentation::StrictParameterMap_map" alt=""/>
+  <map id="state_5Frepresentation::StrictParameterMap_map" name="state_5Frepresentation::StrictParameterMap_map">
+<area href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods." alt="state_representation::ParameterMap" shape="rect" coords="0,0,244,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0f3a59afbba9394a82912faf4a753c54" id="r_a0f3a59afbba9394a82912faf4a753c54"><td class="memItemLeft" align="right" valign="top">S&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdynamical__systems_1_1_default_dynamical_system.html#a0f3a59afbba9394a82912faf4a753c54">compute_dynamics</a> (const S &amp;state) const override</td></tr>
-<tr class="memdesc:a0f3a59afbba9394a82912faf4a753c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the dynamics of the input state. Internal function, to be redefined based on the type of dynamical system, called by the evaluate function.    <br /></td></tr>
-<tr class="separator:a0f3a59afbba9394a82912faf4a753c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdynamical__systems_1_1_i_dynamical_system')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html">dynamical_systems::IDynamicalSystem&lt; S &gt;</a></td></tr>
-<tr class="memitem:a6e2c81a41a725ca1c1ffdda202fdd435 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system" id="r_a6e2c81a41a725ca1c1ffdda202fdd435"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>IDynamicalSystem</b> ()=default</td></tr>
-<tr class="memdesc:a6e2c81a41a725ca1c1ffdda202fdd435 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor. <br /></td></tr>
-<tr class="separator:a6e2c81a41a725ca1c1ffdda202fdd435 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03adb17e4b267fe9f9a8d15d35f23d8d inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system" id="r_a03adb17e4b267fe9f9a8d15d35f23d8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html#a03adb17e4b267fe9f9a8d15d35f23d8d">is_compatible</a> (const S &amp;state) const</td></tr>
-<tr class="memdesc:a03adb17e4b267fe9f9a8d15d35f23d8d inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check compatibility between a state and the dynamical system.  <br /></td></tr>
-<tr class="separator:a03adb17e4b267fe9f9a8d15d35f23d8d inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a201376292929fc5388a08a527d6b281a inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system" id="r_a201376292929fc5388a08a527d6b281a"><td class="memItemLeft" align="right" valign="top">S&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html#a201376292929fc5388a08a527d6b281a">evaluate</a> (const S &amp;state) const</td></tr>
-<tr class="memdesc:a201376292929fc5388a08a527d6b281a inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the value of the dynamical system at a given state.  <br /></td></tr>
-<tr class="separator:a201376292929fc5388a08a527d6b281a inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60c160372951d9af1b7cdba5cf47fb07 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system" id="r_a60c160372951d9af1b7cdba5cf47fb07"><td class="memItemLeft" align="right" valign="top">S&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html#a60c160372951d9af1b7cdba5cf47fb07">get_base_frame</a> () const</td></tr>
-<tr class="memdesc:a60c160372951d9af1b7cdba5cf47fb07 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the base frame of the dynamical system.  <br /></td></tr>
-<tr class="separator:a60c160372951d9af1b7cdba5cf47fb07 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad69ac90444dec624d0bde9711c287ff6 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system" id="r_ad69ac90444dec624d0bde9711c287ff6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html#ad69ac90444dec624d0bde9711c287ff6">set_base_frame</a> (const S &amp;base_frame)</td></tr>
-<tr class="memdesc:ad69ac90444dec624d0bde9711c287ff6 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the base frame of the dynamical system.  <br /></td></tr>
-<tr class="separator:ad69ac90444dec624d0bde9711c287ff6 inherit pub_methods_classdynamical__systems_1_1_i_dynamical_system"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fc28ec25fb07e77b0185457229413e6" id="r_a3fc28ec25fb07e77b0185457229413e6"><td class="memItemLeft" align="right" valign="top"><a id="a3fc28ec25fb07e77b0185457229413e6" name="a3fc28ec25fb07e77b0185457229413e6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>StrictParameterMap</b> ()=default</td></tr>
+<tr class="memdesc:a3fc28ec25fb07e77b0185457229413e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor. <br /></td></tr>
+<tr class="separator:a3fc28ec25fb07e77b0185457229413e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2250433694688e70d26419c0ab00f46" id="r_ae2250433694688e70d26419c0ab00f46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_strict_parameter_map.html#ae2250433694688e70d26419c0ab00f46">StrictParameterMap</a> (const ParameterInterfaceList &amp;parameters)</td></tr>
+<tr class="memdesc:ae2250433694688e70d26419c0ab00f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the parameter map with an initial list of parameters.  <br /></td></tr>
+<tr class="separator:ae2250433694688e70d26419c0ab00f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee98c155a71235c4f89c32b04970ba08" id="r_aee98c155a71235c4f89c32b04970ba08"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_strict_parameter_map.html#aee98c155a71235c4f89c32b04970ba08">StrictParameterMap</a> (const ParameterInterfaceMap &amp;parameters)</td></tr>
+<tr class="memdesc:aee98c155a71235c4f89c32b04970ba08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct the parameter map with an initial map of parameters.  <br /></td></tr>
+<tr class="separator:aee98c155a71235c4f89c32b04970ba08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classstate__representation_1_1_parameter_map"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classstate__representation_1_1_parameter_map')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classstate__representation_1_1_parameter_map.html">state_representation::ParameterMap</a></td></tr>
 <tr class="memitem:a0fb131fa973d2c0dc69b466c8532530c inherit pub_methods_classstate__representation_1_1_parameter_map" id="r_a0fb131fa973d2c0dc69b466c8532530c"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>ParameterMap</b> ()=default</td></tr>
@@ -158,72 +148,148 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8d519c36de2255a867d31f016b3cf33b inherit pub_methods_classstate__representation_1_1_parameter_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a parameter from the parameter map.  <br /></td></tr>
 <tr class="separator:a8d519c36de2255a867d31f016b3cf33b inherit pub_methods_classstate__representation_1_1_parameter_map"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a02e5e96b902378be5cbf0292e0c3555f" id="r_a02e5e96b902378be5cbf0292e0c3555f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_strict_parameter_map.html#a02e5e96b902378be5cbf0292e0c3555f">validate_and_set_parameter</a> (const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;parameter) override</td></tr>
+<tr class="memdesc:a02e5e96b902378be5cbf0292e0c3555f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validate and set a parameter in the map.  <br /></td></tr>
+<tr class="separator:a02e5e96b902378be5cbf0292e0c3555f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classstate__representation_1_1_parameter_map"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classstate__representation_1_1_parameter_map')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classstate__representation_1_1_parameter_map.html">state_representation::ParameterMap</a></td></tr>
 <tr class="memitem:a286f53a5cc2969d171bdff9d86ebf8e6 inherit pro_methods_classstate__representation_1_1_parameter_map" id="r_a286f53a5cc2969d171bdff9d86ebf8e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#a286f53a5cc2969d171bdff9d86ebf8e6">assert_parameter_valid</a> (const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;parameter)</td></tr>
 <tr class="memdesc:a286f53a5cc2969d171bdff9d86ebf8e6 inherit pro_methods_classstate__representation_1_1_parameter_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a parameter exists and has the expected type, throw an exception otherwise.  <br /></td></tr>
 <tr class="separator:a286f53a5cc2969d171bdff9d86ebf8e6 inherit pro_methods_classstate__representation_1_1_parameter_map"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classstate__representation_1_1_parameter_map"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classstate__representation_1_1_parameter_map')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classstate__representation_1_1_parameter_map.html">state_representation::ParameterMap</a></td></tr>
 <tr class="memitem:ae21b3939eaca725c5592b62b1fa2848f inherit pro_attribs_classstate__representation_1_1_parameter_map" id="r_ae21b3939eaca725c5592b62b1fa2848f"><td class="memItemLeft" align="right" valign="top">ParameterInterfaceMap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#ae21b3939eaca725c5592b62b1fa2848f">parameters_</a></td></tr>
 <tr class="memdesc:ae21b3939eaca725c5592b62b1fa2848f inherit pro_attribs_classstate__representation_1_1_parameter_map"><td class="mdescLeft">&#160;</td><td class="mdescRight">map of parameters by name  <br /></td></tr>
 <tr class="separator:ae21b3939eaca725c5592b62b1fa2848f inherit pro_attribs_classstate__representation_1_1_parameter_map"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class S&gt;<br />
-class dynamical_systems::DefaultDynamicalSystem&lt; S &gt;</div><p>A default dynamical system that just returns an empty state. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">S</td><td>Underlying state type of the dynamical system </td></tr>
-  </table>
-  </dd>
-</dl>
+<div class="textblock"><p>A strict version of <a class="el" href="classstate__representation_1_1_parameter_map.html" title="A wrapper class to contain a map of Parameter pointers by name and provide robust access methods.">ParameterMap</a> that enforces type safety for parameters. </p>
 
-<p class="definition">Definition at line <a class="el" href="_default_dynamical_system_8hpp_source.html#l00014">14</a> of file <a class="el" href="_default_dynamical_system_8hpp_source.html">DefaultDynamicalSystem.hpp</a>.</p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0f3a59afbba9394a82912faf4a753c54" name="a0f3a59afbba9394a82912faf4a753c54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f3a59afbba9394a82912faf4a753c54">&#9670;&#160;</a></span>compute_dynamics()</h2>
+<p class="definition">Definition at line <a class="el" href="_strict_parameter_map_8hpp_source.html#l00011">11</a> of file <a class="el" href="_strict_parameter_map_8hpp_source.html">StrictParameterMap.hpp</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ae2250433694688e70d26419c0ab00f46" name="ae2250433694688e70d26419c0ab00f46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2250433694688e70d26419c0ab00f46">&#9670;&#160;</a></span>StrictParameterMap() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class S &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">S <a class="el" href="classdynamical__systems_1_1_default_dynamical_system.html">dynamical_systems::DefaultDynamicalSystem</a>&lt; S &gt;::compute_dynamics </td>
+          <td class="memname">state_representation::StrictParameterMap::StrictParameterMap </td>
           <td>(</td>
-          <td class="paramtype">const S &amp;&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">const ParameterInterfaceList &amp;&#160;</td>
+          <td class="paramname"><em>parameters</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Compute the dynamics of the input state. Internal function, to be redefined based on the type of dynamical system, called by the evaluate function.   </p>
+<p>Construct the parameter map with an initial list of parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">state</td><td>The input state </td></tr>
+    <tr><td class="paramname">parameters</td><td>A list of <a class="el" href="classstate__representation_1_1_parameter.html" title="Class to represent name-value pairs of different types.">Parameter</a> pointers </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The output state   </dd></dl>
 
-<p>Implements <a class="el" href="classdynamical__systems_1_1_i_dynamical_system.html#acb7e59ea3a3029997692f385865b6d2f">dynamical_systems::IDynamicalSystem&lt; S &gt;</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="_default_dynamical_system_8hpp_source.html#l00035">35</a> of file <a class="el" href="_default_dynamical_system_8hpp_source.html">DefaultDynamicalSystem.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_strict_parameter_map_8cpp_source.html#l00005">5</a> of file <a class="el" href="_strict_parameter_map_8cpp_source.html">StrictParameterMap.cpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>/github/workspace/source/dynamical_systems/include/dynamical_systems/<a class="el" href="_default_dynamical_system_8hpp_source.html">DefaultDynamicalSystem.hpp</a></li>
+<a id="aee98c155a71235c4f89c32b04970ba08" name="aee98c155a71235c4f89c32b04970ba08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee98c155a71235c4f89c32b04970ba08">&#9670;&#160;</a></span>StrictParameterMap() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">state_representation::StrictParameterMap::StrictParameterMap </td>
+          <td>(</td>
+          <td class="paramtype">const ParameterInterfaceMap &amp;&#160;</td>
+          <td class="paramname"><em>parameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Construct the parameter map with an initial map of parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parameters</td><td>A map of <a class="el" href="classstate__representation_1_1_parameter.html" title="Class to represent name-value pairs of different types.">Parameter</a> pointers </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_strict_parameter_map_8cpp_source.html#l00007">7</a> of file <a class="el" href="_strict_parameter_map_8cpp_source.html">StrictParameterMap.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a02e5e96b902378be5cbf0292e0c3555f" name="a02e5e96b902378be5cbf0292e0c3555f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02e5e96b902378be5cbf0292e0c3555f">&#9670;&#160;</a></span>validate_and_set_parameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void state_representation::StrictParameterMap::validate_and_set_parameter </td>
+          <td>(</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>parameter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Validate and set a parameter in the map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">parameter</td><td>The parameter to be validated and set in the map. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname"><a class="el" href="classstate__representation_1_1exceptions_1_1_invalid_parameter_exception.html">exceptions::InvalidParameterException</a></td><td>if a parameter with the same name already exists in the map but has a different type or state type than the provided parameter. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="classstate__representation_1_1_parameter_map.html#a60130b3a8e2914579dbd96a03810b5b0">state_representation::ParameterMap</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="_strict_parameter_map_8cpp_source.html#l00009">9</a> of file <a class="el" href="_strict_parameter_map_8cpp_source.html">StrictParameterMap.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/github/workspace/source/state_representation/include/state_representation/parameters/<a class="el" href="_strict_parameter_map_8hpp_source.html">StrictParameterMap.hpp</a></li>
+<li>/github/workspace/source/state_representation/src/parameters/<a class="el" href="_strict_parameter_map_8cpp_source.html">StrictParameterMap.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

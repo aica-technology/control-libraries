@@ -96,6 +96,7 @@ Inheritance diagram for state_representation::ParameterMap:</div>
 <area href="classdynamical__systems_1_1_i_dynamical_system.html" alt="dynamical_systems::IDynamicalSystem&lt; state_representation::CartesianState &gt;" shape="rect" coords="732,56,1210,80"/>
 <area href="classcontrollers_1_1_i_controller.html" title="Abstract class to define a controller in a desired state type, such as joint or Cartesian spaces." alt="controllers::IController&lt; S &gt;" shape="rect" coords="1708,56,2186,80"/>
 <area href="classdynamical__systems_1_1_i_dynamical_system.html" title="Abstract class for a dynamical system." alt="dynamical_systems::IDynamicalSystem&lt; S &gt;" shape="rect" coords="2684,56,3162,80"/>
+<area href="classstate__representation_1_1_strict_parameter_map.html" title="A strict version of ParameterMap that enforces type safety for parameters." alt="state_representation::StrictParameterMap" shape="rect" coords="3172,56,3650,80"/>
 <area href="classcontrollers_1_1impedance_1_1_compliant_twist.html" title="A concrete controller class specifically for controlling 6 degree of freedom Cartesian twist with a c..." alt="controllers::impedance::CompliantTwist" shape="rect" coords="0,112,478,136"/>
 <area href="classdynamical__systems_1_1_circular.html" title="Represent a Circular dynamical system to move around an center." alt="dynamical_systems::Circular" shape="rect" coords="488,112,966,136"/>
 <area href="classdynamical__systems_1_1_ring.html" title="Represent a Ring dynamical system limit cycle to move around a radius within a fixed width." alt="dynamical_systems::Ring" shape="rect" coords="976,112,1454,136"/>
@@ -138,16 +139,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af9c75cf1d9cbc4fb527df0dda617ed56" id="r_af9c75cf1d9cbc4fb527df0dda617ed56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#af9c75cf1d9cbc4fb527df0dda617ed56">set_parameter</a> (const std::shared_ptr&lt; <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> &gt; &amp;parameter)</td></tr>
 <tr class="memdesc:af9c75cf1d9cbc4fb527df0dda617ed56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter.  <br /></td></tr>
 <tr class="separator:af9c75cf1d9cbc4fb527df0dda617ed56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564af907d04dfdaeaf65acd18e77c30a" id="r_a564af907d04dfdaeaf65acd18e77c30a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a564af907d04dfdaeaf65acd18e77c30a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#a564af907d04dfdaeaf65acd18e77c30a">set_parameter</a> (const std::string &amp;name, const T &amp;value)</td></tr>
+<tr class="memdesc:a564af907d04dfdaeaf65acd18e77c30a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter by name and value.  <br /></td></tr>
+<tr class="separator:a564af907d04dfdaeaf65acd18e77c30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadc29950f2c269eb0d031e6ba3da1396" id="r_aadc29950f2c269eb0d031e6ba3da1396"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#aadc29950f2c269eb0d031e6ba3da1396">set_parameters</a> (const ParameterInterfaceList &amp;parameters)</td></tr>
 <tr class="memdesc:aadc29950f2c269eb0d031e6ba3da1396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters from a list of parameters.  <br /></td></tr>
 <tr class="separator:aadc29950f2c269eb0d031e6ba3da1396"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c469977355c5249cba65bbae7507773" id="r_a7c469977355c5249cba65bbae7507773"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#a7c469977355c5249cba65bbae7507773">set_parameters</a> (const ParameterInterfaceMap &amp;parameters)</td></tr>
 <tr class="memdesc:a7c469977355c5249cba65bbae7507773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters from a map with &lt;name, parameter&gt; pairs.  <br /></td></tr>
 <tr class="separator:a7c469977355c5249cba65bbae7507773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd8aeaee4640bacfe948b3403e0820a9" id="r_afd8aeaee4640bacfe948b3403e0820a9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:afd8aeaee4640bacfe948b3403e0820a9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#afd8aeaee4640bacfe948b3403e0820a9">set_parameter_value</a> (const std::string &amp;name, const T &amp;value)</td></tr>
-<tr class="memdesc:afd8aeaee4640bacfe948b3403e0820a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a parameter value by its name.  <br /></td></tr>
-<tr class="separator:afd8aeaee4640bacfe948b3403e0820a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d519c36de2255a867d31f016b3cf33b" id="r_a8d519c36de2255a867d31f016b3cf33b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstate__representation_1_1_parameter_map.html#a8d519c36de2255a867d31f016b3cf33b">remove_parameter</a> (const std::string &amp;name)</td></tr>
 <tr class="memdesc:a8d519c36de2255a867d31f016b3cf33b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove a parameter from the parameter map.  <br /></td></tr>
 <tr class="separator:a8d519c36de2255a867d31f016b3cf33b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,7 +236,7 @@ Protected Attributes</h2></td></tr>
 <p>Construct the parameter map with an initial map of parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parameters</td><td>A amp of <a class="el" href="classstate__representation_1_1_parameter.html" title="Class to represent name-value pairs of different types.">Parameter</a> pointers </td></tr>
+    <tr><td class="paramname">parameters</td><td>A map of <a class="el" href="classstate__representation_1_1_parameter.html" title="Class to represent name-value pairs of different types.">Parameter</a> pointers </td></tr>
   </table>
   </dd>
 </dl>
@@ -379,7 +380,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The value of the parameter, if the parameter exists </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00120">120</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00123">123</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
 
 </div>
 </div>
@@ -424,17 +425,23 @@ template&lt;typename T &gt; </div>
 <p>Remove a parameter from the parameter map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">name</td><td>The name of the parameter that should be removed @raise InvalidParameterException if the parameter does not exist </td></tr>
+    <tr><td class="paramname">name</td><td>The name of the parameter that should be removed </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">InvalidParameterException</td><td>if the parameter does not exist </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_parameter_map_8cpp_source.html#l00071">71</a> of file <a class="el" href="_parameter_map_8cpp_source.html">ParameterMap.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_map_8cpp_source.html#l00074">74</a> of file <a class="el" href="_parameter_map_8cpp_source.html">ParameterMap.cpp</a>.</p>
 
 </div>
 </div>
 <a id="af9c75cf1d9cbc4fb527df0dda617ed56" name="af9c75cf1d9cbc4fb527df0dda617ed56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9c75cf1d9cbc4fb527df0dda617ed56">&#9670;&#160;</a></span>set_parameter()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af9c75cf1d9cbc4fb527df0dda617ed56">&#9670;&#160;</a></span>set_parameter() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -461,8 +468,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="afd8aeaee4640bacfe948b3403e0820a9" name="afd8aeaee4640bacfe948b3403e0820a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd8aeaee4640bacfe948b3403e0820a9">&#9670;&#160;</a></span>set_parameter_value()</h2>
+<a id="a564af907d04dfdaeaf65acd18e77c30a" name="a564af907d04dfdaeaf65acd18e77c30a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564af907d04dfdaeaf65acd18e77c30a">&#9670;&#160;</a></span>set_parameter() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -473,7 +480,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ParameterMap::set_parameter_value </td>
+          <td class="memname">void ParameterMap::set_parameter </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -497,8 +504,8 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Set a parameter value by its name. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Set a parameter by name and value. </p>
+<p>If a parameter by the same name already exists in the parameter map, it will be overwritten and any existing <a class="el" href="classstate__representation_1_1_parameter_interface.html">ParameterInterface</a> pointer references will be invalidated. Consumers should call <a class="el" href="classstate__representation_1_1_parameter_map.html#a6a45a75510836cdb7121c195f0940a2e" title="Get a parameter by its name.">get_parameter()</a> or <a class="el" href="classstate__representation_1_1_parameter_map.html#a11155fd20296e3212607c7d086215101" title="Get a map of all the &lt;name, parameter&gt; pairs.">get_parameters()</a> after calling this method to update any references. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>Type of the parameter value </td></tr>
   </table>
@@ -512,7 +519,7 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00125">125</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00128">128</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
 
 </div>
 </div>
@@ -604,6 +611,8 @@ template&lt;typename T &gt; </div>
   </dd>
 </dl>
 
+<p>Reimplemented in <a class="el" href="classstate__representation_1_1_strict_parameter_map.html#a02e5e96b902378be5cbf0292e0c3555f">state_representation::StrictParameterMap</a>.</p>
+
 <p class="definition">Definition at line <a class="el" href="_parameter_map_8cpp_source.html#l00067">67</a> of file <a class="el" href="_parameter_map_8cpp_source.html">ParameterMap.cpp</a>.</p>
 
 </div>
@@ -631,7 +640,7 @@ template&lt;typename T &gt; </div>
 
 <p>map of parameters by name </p>
 
-<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00116">116</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parameter_map_8hpp_source.html#l00119">119</a> of file <a class="el" href="_parameter_map_8hpp_source.html">ParameterMap.hpp</a>.</p>
 
 </div>
 </div>
