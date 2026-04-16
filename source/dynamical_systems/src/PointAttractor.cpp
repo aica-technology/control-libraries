@@ -150,6 +150,8 @@ void PointAttractor<CartesianState>::validate_and_set_parameter(const std::share
       this->set_attractor(parameter->get_parameter_value<CartesianState>());
     } else if (parameter->get_parameter_state_type() == StateType::CARTESIAN_POSE) {
       this->set_attractor(parameter->get_parameter_value<CartesianPose>());
+    } else {
+      throw state_representation::exceptions::InvalidParameterException("Parameter 'attractor' has incorrect type");
     }
   } else if (parameter->get_name() == "gain") {
     this->set_gain(parameter, 6);

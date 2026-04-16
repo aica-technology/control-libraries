@@ -81,7 +81,7 @@ methods:
 - `get_parameter_value<T>(name)`
 - `set_parameters(parameters)`
 - `set_parameter(parameter)`
-- `set_parameter_value(name, value)`
+- `set_parameter(name, value)`
 
 These methods can be used after construction to get or set dynamical system parameters. Refer to the documentation
 on `dynamical_systems::IDynamicalSystem<S>` and `state_representation::ParameterMap` for more
@@ -328,14 +328,14 @@ length, or as a scalar (which sets the value along the diagonal elements of the 
 ```c++
 // set a gain (scalar, vector or matrix)
 double gain = 10;
-ds->set_parameter_value("gain", gain);
+ds->set_parameter("gain", gain);
 // or
 std::vector<double> gains = {1, 2, 3, 4, 5, 6};
-ds->set_parameter_value("gain", gain);
+ds->set_parameter("gain", gain);
 
 // update the attractor
 state_representation::CartesianState csB = state_representation::CartesianState::Random("B");
-ds->set_parameter_value("attractor", csB);
+ds->set_parameter("attractor", csB);
 ```
 
 ### Evaluating the Point Attractor DS
@@ -345,7 +345,7 @@ To get the velocity from a state, simply call the `evaluate()` function.
 ```c++
 auto ds = CartesianDynamicalSystemFactory::create_dynamical_system(DYNAMICAL_SYSTEM_TYPE::POINT_ATTRACTOR);
 state_representation::CartesianState csA = state_representation::CartesianState::Identity("A");
-ds->set_parameter_value("attractor", csA);
+ds->set_parameter("attractor", csA);
 
 state_representation::CartesianState csB = state_representation::CartesianState::Random("B");
 // note: the return type of evaluate() is a CartesianState, but
@@ -395,13 +395,13 @@ double radius = 2.0;
 state_representation::Ellipsoid ellipse("limit_cycle");
 ellipse.set_center_state(center);
 ellipse.set_axis_lengths({radius, 2 * radius});
-ds->set_parameter_value("limit_cycle", ellipse);
+ds->set_parameter("limit_cycle", ellipse);
 
 double planar_gain = 1.0;
-ds->set_parameter_value("planar_gain", planar_gain);
+ds->set_parameter("planar_gain", planar_gain);
 
 double circular_velocity = M_PI / 2;
-ds->set_parameter_value("circular_velocity", circular_velocity);
+ds->set_parameter("circular_velocity", circular_velocity);
 ```
 
 ## Ring
@@ -442,17 +442,17 @@ The constructor takes additional optional arguments to define the ring DS parame
 ```c++
 // update the ring DS parameters
 state_representation::CartesianState center = state_representation::CartesianState::Identity("center");
-ds->set_parameter_value("center", center);
+ds->set_parameter("center", center);
 double radius = 1.0;
-ds->set_parameter_value("radius", radius);
+ds->set_parameter("radius", radius);
 double width = 0.5;
-ds->set_parameter_value("width", width);
+ds->set_parameter("width", width);
 double speed = 1.0;
-ds->set_parameter_value("speed", speed);
+ds->set_parameter("speed", speed);
 double field_strength = 1.0;
-ds->set_parameter_value("field_strength", field_strength);
+ds->set_parameter("field_strength", field_strength);
 double normal_gain = 1.0;
-ds->set_parameter_value("normal_gain", normal_gain);
+ds->set_parameter("normal_gain", normal_gain);
 double angular_gain = 1.0;
-ds->set_parameter_value("angular_gain", angular_gain);
+ds->set_parameter("angular_gain", angular_gain);
 ```

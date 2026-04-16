@@ -195,7 +195,7 @@ TEST(DissipativeControllerTest, TestComputeCommandWithColinearVelocity) {
   // set different damping
   auto eigenvalues = controller->get_parameter_value<Eigen::VectorXd>("damping_eigenvalues");
   eigenvalues(0) = 10.0;
-  controller->set_parameter_value("damping_eigenvalues", eigenvalues);
+  controller->set_parameter("damping_eigenvalues", eigenvalues);
 
   // set a desired and feeadback velocity
   CartesianTwist desired_twist("test", Eigen::Vector3d(1, 0, 0));

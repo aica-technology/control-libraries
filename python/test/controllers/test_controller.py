@@ -15,8 +15,7 @@ CONTROLLER_METHOD_EXPECTS = [
     'get_parameter_value',
     'get_parameter_list',
     'set_parameter',
-    'set_parameters',
-    'set_parameter_value'
+    'set_parameters'
 ]
 
 

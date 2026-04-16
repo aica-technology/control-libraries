@@ -3,6 +3,7 @@
 #include "state_representation/exceptions/InvalidParameterException.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/parameters/ParameterMap.hpp"
+#include "state_representation/parameters/StrictParameterMap.hpp"
 
 using namespace state_representation;
 
@@ -31,7 +32,7 @@ TEST(ParameterMapTest, ValidateSetParameter) {
   EXPECT_NO_THROW(value = map.get_parameter_value<int>("int"));
   EXPECT_EQ(1, value);
   map.validate_called = false;
-  map.set_parameter_value<int>("int", 2);
+  map.set_parameter<int>("int", 2);
   EXPECT_TRUE(map.validate_called);
   EXPECT_NO_THROW(value = map.get_parameter("int")->get_parameter_value<int>());
   EXPECT_EQ(2, value);
@@ -55,4 +56,11 @@ TEST(ParameterMapTest, AssertParameterValid) {
       map.assert_parameter_valid(make_shared_parameter("joint", CartesianState::Random("test"))),
       exceptions::InvalidParameterException
   );
+}
+
+TEST(ParameterMapTest, StrictParameterMap) {
+  StrictParameterMap map;
+  EXPECT_NO_THROW(map.set_parameter(make_shared_parameter("int", 1)));
+  EXPECT_NO_THROW(map.set_parameter<int>("int", 2));
+  EXPECT_THROW(map.set_parameter(make_shared_parameter("int", 1.0)), exceptions::InvalidParameterException);
 }

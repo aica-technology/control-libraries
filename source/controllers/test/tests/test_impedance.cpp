@@ -68,7 +68,7 @@ TEST(ImpedanceControllerTest, TestCartesianImpedanceLimits) {
 
   // set a scalar force limit
   double limit = 1.0;
-  EXPECT_NO_THROW(controller->set_parameter_value("force_limit", limit));
+  EXPECT_NO_THROW(controller->set_parameter("force_limit", limit));
   // expect all degrees of freedom to have the same force limit
   command = controller->compute_command(desired_state, feedback_state);
   for (int index = 0; index < 6; ++index) {
@@ -77,7 +77,7 @@ TEST(ImpedanceControllerTest, TestCartesianImpedanceLimits) {
 
   // set a force limit on each degree of freedom
   std::vector<double> limits = {0.5, 1.0, 1.5, 2.0, 3.5, 4.0};
-  EXPECT_NO_THROW(controller->set_parameter_value("force_limit", limits));
+  EXPECT_NO_THROW(controller->set_parameter("force_limit", limits));
 
   // expect all degrees of freedom to respect the individual force limits
   command = controller->compute_command(desired_state, feedback_state);
@@ -87,7 +87,7 @@ TEST(ImpedanceControllerTest, TestCartesianImpedanceLimits) {
 
   // ensure the limit must match the degrees of freedom
   EXPECT_THROW(
-      controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
+      controller->set_parameter("force_limit", std::vector<double>({1.0, 2.0})),
       state_representation::exceptions::IncompatibleSizeException
   );
 }
@@ -128,7 +128,7 @@ TEST(ImpedanceControllerTest, TestJointImpedanceLimits) {
 
   // set a scalar force limit
   double limit = 1.0;
-  EXPECT_NO_THROW(controller->set_parameter_value("force_limit", limit));
+  EXPECT_NO_THROW(controller->set_parameter("force_limit", limit));
   // expect all degrees of freedom to have the same force limit
   command = controller->compute_command(desired_state, feedback_state);
   for (int index = 0; index < nb_joints; ++index) {
@@ -137,7 +137,7 @@ TEST(ImpedanceControllerTest, TestJointImpedanceLimits) {
 
   // set a force limit on each degree of freedom
   std::vector<double> limits = {0.5, 1.0, 1.5};
-  EXPECT_NO_THROW(controller->set_parameter_value("force_limit", limits));
+  EXPECT_NO_THROW(controller->set_parameter("force_limit", limits));
 
   // expect all degrees of freedom to respect the individual force limits
   command = controller->compute_command(desired_state, feedback_state);
@@ -147,7 +147,7 @@ TEST(ImpedanceControllerTest, TestJointImpedanceLimits) {
 
   // ensure the limit must match the degrees of freedom
   EXPECT_THROW(
-      controller->set_parameter_value("force_limit", std::vector<double>({1.0, 2.0})),
+      controller->set_parameter("force_limit", std::vector<double>({1.0, 2.0})),
       state_representation::exceptions::IncompatibleSizeException
   );
 }

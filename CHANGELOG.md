@@ -31,6 +31,7 @@ This is the last planned release before control libraries X.
 ### Full changelog
 
 - fix: raise exception when accessing an empty parameter value in python (#260)
+- feat!: rename set_parameter_value to set_parameter and add strict parameter map (#259)
 
 ## 9.3.1
 

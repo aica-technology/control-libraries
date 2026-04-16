@@ -47,7 +47,7 @@ void CompliantTwist::set_linear_gains(double linear_principle_damping, double li
 
   Eigen::VectorXd damping(6);
   damping << linear_principle_damping, linear_orthogonal_damping, linear_orthogonal_damping, 0, 0, 0;
-  dissipative_ctrl_.set_parameter_value("damping_eigenvalues", damping);
+  dissipative_ctrl_.set_parameter("damping_eigenvalues", damping);
 }
 
 void CompliantTwist::set_angular_stiffness(double angular_stiffness) {
@@ -66,8 +66,8 @@ void CompliantTwist::set_angular_gains(double angular_stiffness, double angular_
   Eigen::MatrixXd d = Eigen::MatrixXd::Zero(6, 6);
   k.diagonal() << 0, 0, 0, angular_stiffness, angular_stiffness, angular_stiffness;
   d.diagonal() << 0, 0, 0, angular_damping, angular_damping, angular_damping;
-  velocity_impedance_ctrl_.set_parameter_value("stiffness", k);
-  velocity_impedance_ctrl_.set_parameter_value("damping", d);
+  velocity_impedance_ctrl_.set_parameter("stiffness", k);
+  velocity_impedance_ctrl_.set_parameter("damping", d);
 }
 
 CartesianState

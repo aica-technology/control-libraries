@@ -31,7 +31,7 @@ public:
 
   /**
    * @brief Construct the parameter map with an initial map of parameters
-   * @param parameters A amp of Parameter pointers
+   * @param parameters A map of Parameter pointers
    */
   explicit ParameterMap(const ParameterInterfaceMap& parameters);
 
@@ -70,6 +70,18 @@ public:
   void set_parameter(const std::shared_ptr<ParameterInterface>& parameter);
 
   /**
+   * @brief Set a parameter by name and value.
+   * @details If a parameter by the same name already exists in the parameter map, it will be overwritten and any
+   * existing ParameterInterface pointer references will be invalidated. Consumers should call get_parameter() or
+   * get_parameters() after calling this method to update any references.
+   * @tparam T Type of the parameter value
+   * @param name The name of the parameter
+   * @param value The new value of the parameter
+   */
+  template<typename T>
+  void set_parameter(const std::string& name, const T& value);
+
+  /**
    * @brief Set parameters from a list of parameters.
    * @param parameters The list of parameters
    */
@@ -82,18 +94,9 @@ public:
   void set_parameters(const ParameterInterfaceMap& parameters);
 
   /**
-   * @brief Set a parameter value by its name.
-   * @tparam T Type of the parameter value
-   * @param name The name of the parameter
-   * @param value The new value of the parameter
-   */
-  template<typename T>
-  void set_parameter_value(const std::string& name, const T& value);
-
-  /**
    * @brief Remove a parameter from the parameter map.
    * @param name The name of the parameter that should be removed
-   * @raise InvalidParameterException if the parameter does not exist
+   * @throw InvalidParameterException if the parameter does not exist
    */
   void remove_parameter(const std::string& name);
 
@@ -122,7 +125,7 @@ inline T ParameterMap::get_parameter_value(const std::string& name) const {
 }
 
 template<typename T>
-inline void ParameterMap::set_parameter_value(const std::string& name, const T& value) {
+inline void ParameterMap::set_parameter(const std::string& name, const T& value) {
   this->validate_and_set_parameter(make_shared_parameter<T>(name, value));
 }
 

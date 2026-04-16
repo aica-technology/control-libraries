@@ -99,7 +99,7 @@ methods:
 - `get_parameter_value<T>(name)`
 - `set_parameters(parameters)`
 - `set_parameter(parameter)`
-- `set_parameter_value(name, value)`
+- `set_parameter(name, value)`
 
 These methods can be used after construction to get or set controller parameters. Refer to the documentation
 on `controllers::IController<>` and `state_representation::ParameterMap` for more information.
