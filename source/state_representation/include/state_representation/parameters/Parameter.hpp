@@ -219,7 +219,7 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
 /**
  * @brief Copy the value from one parameter to another through their ParameterInterface pointers
  * @param source_parameter A pointer to the ParameterInterface of the parameter to copy from
- * @param parameter A pointer to the ParameterInterface of the parameter to copy to
+ * @param target_parameter A pointer to the ParameterInterface of the parameter to copy to
  * @throw exceptions::InvalidParameterCastException if the ParameterInterface does not point to a valid Parameter 
  * instance
  * @throw exceptions::EmptyStateException if the source parameter is empty
@@ -227,6 +227,6 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
  */
 [[maybe_unused]] void copy_parameter_value(
     const std::shared_ptr<const ParameterInterface>& source_parameter,
-    const std::shared_ptr<ParameterInterface>& parameter
+    const std::shared_ptr<ParameterInterface>& target_parameter
 );
 }// namespace state_representation

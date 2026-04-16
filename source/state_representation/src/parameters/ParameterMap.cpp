@@ -65,7 +65,7 @@ void ParameterMap::assert_parameter_valid(const std::shared_ptr<ParameterInterfa
 }
 
 void ParameterMap::validate_and_set_parameter(const std::shared_ptr<ParameterInterface>& parameter) {
-  if (this->parameters_.count(parameter->get_name())) {
+  if (this->parameters_.find(parameter->get_name()) != this->parameters_.cend()) {
     this->parameters_.at(parameter->get_name())->reset();
   }
   this->parameters_.insert_or_assign(parameter->get_name(), parameter);
