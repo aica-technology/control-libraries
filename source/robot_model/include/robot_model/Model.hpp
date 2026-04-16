@@ -630,7 +630,7 @@ inline const std::string& Model::get_urdf() const {
   return this->urdf_;
 }
 
-inline std::optional<std::reference_wrapper<const std::string>> Model::get_urdf_path() const {
+inline std::optional<const std::string&> Model::get_urdf_path() const {
   if (this->urdf_path_.empty()) {
     return std::nullopt;
   } else {
