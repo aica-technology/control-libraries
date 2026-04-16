@@ -71,9 +71,8 @@ private:
 
   /**
    * @brief Initialize the pinocchio geometry model from the URDF and the package paths
-   * @param urdf the URDF (XML string or filepath) of the robot
    */
-  void init_geom_model(std::string urdf);
+  void init_geom_model();
 
   /**
    * @brief Check if frames exist in robot model and return its ids
@@ -298,7 +297,7 @@ public:
    * @brief Getter of the URDF path if it was provided for construction instead of an XML string
    * @return the URDF path
    */
-  std::optional<std::reference_wrapper<const std::string>> get_urdf_path() const;
+  std::optional<const std::string&> get_urdf_path() const;
 
   /**
    * @brief Getter of the number of joints

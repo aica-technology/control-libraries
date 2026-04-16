@@ -108,7 +108,7 @@ void Model::init_model() {
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
   if (this->load_collision_geometries_) {
-    this->init_geom_model(this->urdf_);
+    this->init_geom_model();
   }
 
   // get the frames
@@ -126,7 +126,8 @@ void Model::init_model() {
   );
 }
 
-void Model::init_geom_model(std::string urdf) {
+void Model::init_geom_model() {
+  auto urdf = this->get_urdf();
   try {
     auto package_paths = this->resolve_package_paths_in_urdf(urdf);
     pinocchio::urdf::buildGeom(
