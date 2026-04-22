@@ -1,4 +1,7 @@
 ARG BASE_TAG=24.04
+ARG PINOCCHIO_TAG=v0.1.0
+FROM ghcr.io/aica-technology/pinocchio:${PINOCCHIO_TAG} AS pinocchio
+
 FROM ubuntu:${BASE_TAG} AS base
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -79,71 +82,42 @@ xargs -a /tmp/new-packages.txt dpkg-query -L \
 # this root can then be copied to / to install everything globally or use LD_LIBRARY_PATH to use it locally
 HEREDOC
 
-FROM base AS base-dependencies
-ARG TARGETPLATFORM
-ARG CACHEID
-COPY dependencies/base_dependencies.cmake CMakeLists.txt
-RUN --mount=type=cache,target=/build,id=cmake-base-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build && cmake --install build --prefix /tmp/deps
-
-FROM base AS pinocchio-dependencies
-COPY --from=apt-dependencies /tmp/apt /
-COPY --from=base-dependencies /tmp/deps /usr
-ARG TARGETPLATFORM
-ARG CACHEID
-ARG PINOCCHIO_TAG=v2.6.20
-ARG HPP_FCL_TAG=v2.4.4
-# FIXME: it would be nicer to have it all in the root CMakelists.txt but:
-#  * `pinocchio` doesn't provide an include directory we can easily plug into `target_include_directories` and thus needs to be installed first
-#  * `pinocchio` uses hacks relying on undocumented CMake quirks which break if you use `FetchContent`
-# FIXME: it needs `CMAKE_INSTALL_PREFIX` and `--prefix` because it doesn't install to the right place otherwise
-RUN --mount=type=cache,target=/hpp-fcl,id=cmake-hpp-fcl-src-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=/pinocchio,id=cmake-pinocchio-src-${PINOCCHIO_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  --mount=type=cache,target=/build,id=cmake-pinocchio-${PINOCCHIO_TAG}-${HPP_FCL_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-<<EOF
-set -e
-
-if [ ! -f hpp-fcl/CMakeLists.txt ]; then
-  rm -rf hpp-fcl/*
-  git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl
-fi
-
-cmake -B build/hpp-fcl -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DCMAKE_INSTALL_PREFIX=/tmp/deps
-cmake --build build/hpp-fcl --target all install
-
-if [ ! -f pinocchio/CMakeLists.txt ]; then
-  rm -rf pinocchio/*
-  git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio
-fi
-
-cmake -B build/pinocchio -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON -DCMAKE_INSTALL_PREFIX=/tmp/deps
-cmake --build build/pinocchio --target all install
-
-# FIXME: pinocchio produces non-portable paths
-find /tmp/deps -type f -exec sed -i 's#/tmp/deps#/usr#g' '{}' \;
-EOF
-
 FROM base AS dependencies
 ARG TARGETPLATFORM
 ARG CACHEID
-# Needed to build `osqp-eigen`
+ARG OSQP_TAG=v0.6.3
 COPY --from=apt-dependencies /tmp/apt /
-COPY --from=base-dependencies /tmp/deps /usr
+
+RUN --mount=type=cache,target=/build,id=cmake-osqp-${OSQP_TAG}-${TARGETPLATFORM}-${CACHEID},uid=1000 \
+<<EOF
+set -e
+
+if [ ! -f osqp/CMakeLists.txt ]; then
+  rm -rf osqp/*
+  git clone --depth 1 -b ${OSQP_TAG} --recursive https://github.com/oxfordcontrol/osqp
+fi
+
+cmake -B build/osqp -S osqp -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=/tmp/deps
+cmake --build build/osqp --target all install
+EOF
+
 COPY dependencies/dependencies.cmake CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} \
+  cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DCMAKE_PREFIX_PATH=/tmp/deps \
   && cmake --build build && cmake --install build --prefix /tmp/deps
-COPY --from=base-dependencies /tmp/deps /tmp/deps
-COPY --from=pinocchio-dependencies /tmp/deps /tmp/deps
 
 FROM base AS code
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
+COPY --from=pinocchio / /
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
+ENV PYTHONPATH=/usr/lib/python3.12/site-packages:$PYTHONPATH
 
 FROM code AS development
+ARG USER=ubuntu
 
-RUN usermod -a -G dialout ubuntu
-RUN echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
+RUN usermod -a -G dialout ${USER}
+RUN echo "${USER} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/99_aptget
 RUN chmod 0440 /etc/sudoers.d/99_aptget && chown root:root /etc/sudoers.d/99_aptget
 
 # Configure sshd server settings
@@ -154,7 +128,7 @@ RUN ( \
   ) > /etc/ssh/sshd_config_development \
   && mkdir /run/sshd
 
-# Configure sshd entrypoint to authorise the new user for ssh access and
+# Configure sshd entrypoint to authorize the new user for ssh access and
 # optionally update UID and GID when invoking the container with the entrypoint script
 COPY ./docker/sshd_entrypoint.sh /sshd_entrypoint.sh
 RUN chmod 744 /sshd_entrypoint.sh

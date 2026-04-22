@@ -67,15 +67,15 @@ apt update
 xargs -a <(awk '! /^ *(#|$)/' "${SCRIPT_DIR}/apt-packages.txt") -r -- apt install "${AUTO_INSTALL}"
 
 cd "${SCRIPT_DIR}"/tmp
-cp "${SCRIPT_DIR}"/dependencies/base_dependencies.cmake CMakeLists.txt || exit 1
-cmake -B build -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build || exit 1
-rm -rf build
-git clone --depth 1 -b ${HPP_FCL_TAG} --recursive https://github.com/humanoid-path-planner/hpp-fcl || exit 1
-cmake -B build -S hpp-fcl -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF && cmake --build build --target all install || exit 1
-rm -rf build
-git clone --depth 1 -b ${PINOCCHIO_TAG} --recursive https://github.com/stack-of-tasks/pinocchio
-cmake -B build -S pinocchio -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_INTERFACE=OFF -DBUILD_WITH_COLLISION_SUPPORT=ON && cmake --build build --target all install || exit 1
-rm -rf build
+echo ">>> INSTALLING PINOCCHIO"
+apt install -qqy lsb-release curl
+mkdir -p /etc/apt/keyrings
+curl http://robotpkg.openrobots.org/packages/debian/robotpkg.asc | tee /etc/apt/keyrings/robotpkg.asc
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/robotpkg.asc] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg" \
+  | tee /etc/apt/sources.list.d/robotpkg.list
+apt update
+apt install -qqy robotpkg-py3*-pinocchio
+echo ">>> INSTALLING DEPENDENCIES"
 cp "${SCRIPT_DIR}"/dependencies/dependencies.cmake CMakeLists.txt || exit 1
 cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build || exit 1
 rm -rf build

@@ -7,8 +7,8 @@ project(control-libraries-deps)
 include(FetchContent)
 FetchContent_Declare(
   OsqpEigen
-  GIT_REPOSITORY https://github.com/robotology/osqp-eigen.git
-  GIT_TAG        v0.8.1
+  GIT_REPOSITORY https://github.com/gbionics/osqp-eigen
+  GIT_TAG        v0.11.0
 )
 
 FetchContent_Declare(
