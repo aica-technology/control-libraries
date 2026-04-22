@@ -78,6 +78,14 @@ dependencies. It can be run with several optional arguments:
 - `--cleandir [path]`: Any previously installed header files shared library files from `[path]` will be deleted before
   the installation.
 
+Following the normal installation, make sure to run the following commands to fully configure Pinocchio:
+
+```bash
+export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=/opt/openrobots/lib/python3.12/site-packages:$PYTHONPATH # adapt your python version here
+```
+
 ### Advanced options
 
 Users who prefer to perform the installation manually and/or have already installed some dependencies can selectively
