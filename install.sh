@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 INSTALL_DESTINATION="/usr/local"
@@ -58,7 +60,8 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-mkdir -p "${SCRIPT_DIR}"/tmp || exit 1
+rm -rf "${SCRIPT_DIR}"/tmp
+mkdir -p "${SCRIPT_DIR}"/tmp
 
 echo ">>> INSTALLING DEPENDENCIES"
 
@@ -74,22 +77,20 @@ echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/robotpkg.asc] http://robotpkg.
   | tee /etc/apt/sources.list.d/robotpkg.list
 apt update
 apt install "${AUTO_INSTALL}" robotpkg-py3*-pinocchio
-#export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
-#export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
 export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH
 
 echo ">>> INSTALLING OSQP"
 rm -rf osqp
-git clone --depth 1 -b ${OSQP_TAG} --recursive https://github.com/oxfordcontrol/osqp || exit 1
-cmake -B build -S osqp -DCMAKE_BUILD_TYPE=Release && cmake --build build --target all install || exit 1
+git clone --depth 1 -b ${OSQP_TAG} --recursive https://github.com/oxfordcontrol/osqp
+cmake -B build -S osqp -DCMAKE_BUILD_TYPE=Release && cmake --build build --target all install
 rm -rf build
 
 echo ">>> INSTALLING PROTOBUF"
-cp "${SCRIPT_DIR}"/dependencies/dependencies.cmake CMakeLists.txt || exit 1
-cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build || exit 1
+cp "${SCRIPT_DIR}"/dependencies/dependencies.cmake CMakeLists.txt
+cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build
 rm -rf build
 
 echo ">>> INSTALLING CONTROL LIBRARIES"
 cd "${SCRIPT_DIR}" && rm -rf "${SCRIPT_DIR}"/tmp
-cmake -B build -DCMAKE_CXX_FLAGS=-I\ /opt/openrobots/include -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix "${INSTALL_DESTINATION}" || exit 1
+cmake -B build -DCMAKE_CXX_FLAGS=-I\ /opt/openrobots/include -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix "${INSTALL_DESTINATION}"
 rm -rf build
