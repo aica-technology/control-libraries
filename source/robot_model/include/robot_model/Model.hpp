@@ -297,7 +297,7 @@ public:
    * @brief Getter of the URDF path if it was provided for construction instead of an XML string
    * @return the URDF path
    */
-  std::optional<const std::string&> get_urdf_path() const;
+  std::optional<std::reference_wrapper<const std::string>> get_urdf_path() const;
 
   /**
    * @brief Getter of the number of joints
@@ -630,7 +630,7 @@ inline const std::string& Model::get_urdf() const {
   return this->urdf_;
 }
 
-inline std::optional<const std::string&> Model::get_urdf_path() const {
+inline std::optional<std::reference_wrapper<const std::string>> Model::get_urdf_path() const {
   if (this->urdf_path_.empty()) {
     return std::nullopt;
   } else {
