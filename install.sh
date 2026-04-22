@@ -94,3 +94,8 @@ echo ">>> INSTALLING CONTROL LIBRARIES"
 cd "${SCRIPT_DIR}" && rm -rf "${SCRIPT_DIR}"/tmp
 cmake -B build -DCMAKE_CXX_FLAGS=-I\ /opt/openrobots/include -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix "${INSTALL_DESTINATION}"
 rm -rf build
+
+ldconfig
+cd "${SCRIPT_DIR}"
+rm -rf "${SCRIPT_DIR}"/tmp
+echo ">>> INSTALLATION COMPLETE"
