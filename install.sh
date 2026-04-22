@@ -5,8 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 INSTALL_DESTINATION="/usr/local"
 AUTO_INSTALL=""
 
-PINOCCHIO_TAG=v2.9.0
-HPP_FCL_TAG=v1.8.1
+OSQP_TAG=v0.6.3
 
 FAIL_MESSAGE="The provided input arguments are not valid.
 Run the script with the '--help' argument."
@@ -68,19 +67,29 @@ xargs -a <(awk '! /^ *(#|$)/' "${SCRIPT_DIR}/apt-packages.txt") -r -- apt instal
 
 cd "${SCRIPT_DIR}"/tmp
 echo ">>> INSTALLING PINOCCHIO"
-apt install -qqy lsb-release curl
+apt install "${AUTO_INSTALL}" lsb-release curl
 mkdir -p /etc/apt/keyrings
 curl http://robotpkg.openrobots.org/packages/debian/robotpkg.asc | tee /etc/apt/keyrings/robotpkg.asc
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/robotpkg.asc] http://robotpkg.openrobots.org/packages/debian/pub $(lsb_release -cs) robotpkg" \
   | tee /etc/apt/sources.list.d/robotpkg.list
 apt update
-apt install -qqy robotpkg-py3*-pinocchio
-echo ">>> INSTALLING DEPENDENCIES"
+apt install "${AUTO_INSTALL}" robotpkg-py3*-pinocchio
+#export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+#export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
+export CMAKE_PREFIX_PATH=/opt/openrobots:$CMAKE_PREFIX_PATH
+
+echo ">>> INSTALLING OSQP"
+rm -rf osqp
+git clone --depth 1 -b ${OSQP_TAG} --recursive https://github.com/oxfordcontrol/osqp || exit 1
+cmake -B build -S osqp -DCMAKE_BUILD_TYPE=Release && cmake --build build --target all install || exit 1
+rm -rf build
+
+echo ">>> INSTALLING PROTOBUF"
 cp "${SCRIPT_DIR}"/dependencies/dependencies.cmake CMakeLists.txt || exit 1
-cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build || exit 1
+cmake -B build -Dprotobuf_BUILD_TESTS=OFF -DCPPZMQ_BUILD_TESTS=OFF -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build || exit 1
 rm -rf build
 
 echo ">>> INSTALLING CONTROL LIBRARIES"
 cd "${SCRIPT_DIR}" && rm -rf "${SCRIPT_DIR}"/tmp
-cmake -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix "${INSTALL_DESTINATION}" || exit 1
+cmake -B build -DCMAKE_CXX_FLAGS=-I\ /opt/openrobots/include -DCMAKE_BUILD_TYPE=Release && cmake --build build && cmake --install build --prefix "${INSTALL_DESTINATION}" || exit 1
 rm -rf build
