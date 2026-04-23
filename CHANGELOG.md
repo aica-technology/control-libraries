@@ -26,6 +26,7 @@ Release Versions
 - feat!: rename set_parameter_value to set_parameter and add strict parameter map (#259)
 - feat: move up to C++20 (#220)
 - feat: expose pinocchio::Data through getter (#238)
+- build: migrate to pinoccho version 3 (#271)
 
 ## 9.3.2
 

@@ -78,6 +78,14 @@ dependencies. It can be run with several optional arguments:
 - `--cleandir [path]`: Any previously installed header files shared library files from `[path]` will be deleted before
   the installation.
 
+Following the normal installation, make sure to run the following commands to fully configure Pinocchio:
+
+```bash
+export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH
+export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH
+export PYTHONPATH=/opt/openrobots/lib/python3.12/site-packages:$PYTHONPATH # adapt your python version here
+```
+
 ### Advanced options
 
 Users who prefer to perform the installation manually and/or have already installed some dependencies can selectively
@@ -118,15 +126,16 @@ bindings requires the following prerequisites:
 
 The installation itself is then quite straightforward:
 ```shell
-python3 pip install ./python
+python3 -m pip install ./python --break-system-packages
 ```
 
 If the installation fails, it may be because of non-default installation directories for some dependencies. In this
-case, the include path for OSQP can be set through environment variables before the pip install.
+case, the include paths for OSQP and Pinocchio can be set through environment variables before the pip install.
 
 ```shell
 export OSQP_INCLUDE_DIR='/path/to/include/osqp' # replace /path/to/include with installation directory
-python3 pip install ./python
+export OPENROBOTS_INCLUDE_DIR='/opt/openrobots/include'
+python3 -m pip install ./python --break-system-packages
 ```
 
 The example above installs the module to the default dist-packages location. You can see more information about the
