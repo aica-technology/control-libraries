@@ -108,7 +108,11 @@ $(function() {
 <li><code>--clean</code>: Any previously installed header files from <code>/usr/local/include</code> and any shared library files from <code>/usr/local/lib</code> will be deleted before the installation.</li>
 <li><code>--cleandir [path]</code>: Any previously installed header files shared library files from <code>[path]</code> will be deleted before the installation.</li>
 </ul>
-<h3>Advanced options</h3>
+<p>Following the normal installation, make sure to run the following commands to fully configure Pinocchio:</p>
+<div class="fragment"><div class="line">export PKG_CONFIG_PATH=/opt/openrobots/lib/pkgconfig:$PKG_CONFIG_PATH</div>
+<div class="line">export LD_LIBRARY_PATH=/opt/openrobots/lib:$LD_LIBRARY_PATH</div>
+<div class="line">export PYTHONPATH=/opt/openrobots/lib/python3.12/site-packages:$PYTHONPATH # adapt your python version here</div>
+</div><!-- fragment --><h3>Advanced options</h3>
 <p>Users who prefer to perform the installation manually and/or have already installed some dependencies can selectively do the steps from the install script.</p>
 <p>The CMake configuration flags for control libraries <code>BUILD_CONTROLLERS</code>, <code>BUILD_DYNAMICAL_SYSTEMS</code> and <code>BUILD_ROBOT_MODEL</code> determine which modules are built, and are all defined as <code>ON</code> by default. The building of the <code><a class="el" href="namespacestate__representation.html" title="Core state variables and objects.">state_representation</a></code> library cannot be disabled, as all other libraries depend on it. To selectively disable the build of a particular module, set the flag to <code>=OFF</code>. For example, the following flags will prevent the <code><a class="el" href="namespacerobot__model.html" title="Robot kinematics and dynamics.">robot_model</a></code> module from being built, which is useful if the Pinocchio dependency is not fulfilled on your system.</p>
 <div class="fragment"><div class="line"> script</div>
@@ -124,10 +128,11 @@ $(function() {
 <li><code>python3</code> &gt;= 3.0</li>
 <li><code>pip3</code> &gt;= 10.0.0</li>
 </ul>
-<p>The installation itself is then quite straightforward: </p><div class="fragment"><div class="line">python3 pip install ./python</div>
-</div><!-- fragment --><p>If the installation fails, it may be because of non-default installation directories for some dependencies. In this case, the include path for OSQP can be set through environment variables before the pip install.</p>
+<p>The installation itself is then quite straightforward: </p><div class="fragment"><div class="line">python3 -m pip install ./python --break-system-packages</div>
+</div><!-- fragment --><p>If the installation fails, it may be because of non-default installation directories for some dependencies. In this case, the include paths for OSQP and Pinocchio can be set through environment variables before the pip install.</p>
 <div class="fragment"><div class="line">export OSQP_INCLUDE_DIR=&#39;/path/to/include/osqp&#39; # replace /path/to/include with installation directory</div>
-<div class="line">python3 pip install ./python</div>
+<div class="line">export OPENROBOTS_INCLUDE_DIR=&#39;/opt/openrobots/include&#39;</div>
+<div class="line">python3 -m pip install ./python --break-system-packages</div>
 </div><!-- fragment --><p>The example above installs the module to the default dist-packages location. You can see more information about the installed module using <code>pip3 show control-libraries</code>.</p>
 <p>The process also works with Python virtual environments. For example, with <code>pipenv</code>:</p>
 <div class="fragment"><div class="line"> script</div>
