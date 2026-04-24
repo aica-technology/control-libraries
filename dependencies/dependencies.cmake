@@ -14,8 +14,7 @@ FetchContent_Declare(
 FetchContent_Declare(
   protobuf
   GIT_REPOSITORY https://github.com/protocolbuffers/protobuf.git
-  GIT_TAG        v3.17.0
-  SOURCE_SUBDIR  cmake
+  GIT_TAG        v6.31.1
 )
 
 FetchContent_Declare(
