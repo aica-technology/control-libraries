@@ -27,6 +27,7 @@ Release Versions
 - feat: move up to C++20 (#220)
 - feat: expose pinocchio::Data through getter (#238)
 - build: migrate to pinoccho version 3 (#271)
+- feat: update dependencies (#272)
 
 ## 9.3.2
 
