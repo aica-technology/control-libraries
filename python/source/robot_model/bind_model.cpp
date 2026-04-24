@@ -43,7 +43,7 @@ void model(py::module_& m) {
   py::arg("robot_name"), py::arg("urdf_path"), py::arg("meshloader_callback"));
 
 
-  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF XML string or path. This constructor doesn't loads the Robot Geometries.",
+  c.def(py::init<const std::string&, const std::string&>(), "Constructor that creates a robot model instance with a name and URDF XML string or path. This constructor doesn't load the Robot Geometries.",
         py::arg("robot_name"),
         py::arg("urdf_path")
   );
