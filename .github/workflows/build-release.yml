@@ -95,11 +95,22 @@ jobs:
           suffixes: ${{ matrix.arch }}
           glue_separator: "-"
 
+      - id: arch
+        run: |
+          BUILD_FLAGS=()
+          BUILD_FLAGS+=(--build-arg=VERSION=${{ needs.check-version.outputs.version }})
+          if [[ "${{ matrix.arch }}" == "arm64" ]]; then
+            BUILD_FLAGS+=(--build-arg=ARCH=aarch64)
+          elif [[ "${{ matrix.arch }}" == "amd64" ]]; then
+            BUILD_FLAGS+=(--build-arg=ARCH=x86_64)
+          fi
+          echo "build_flags=${BUILD_FLAGS[@]}" >> $GITHUB_OUTPUT
+
       - uses: aica-technology/.github/.github/actions/ghcr-build@v0.6.1
         with:
           image_name: ${{ needs.metadata.outputs.image_name }}
           image_tags: ${{ steps.merge-tags.outputs.list }}
-          build_flags: --build-arg VERSION=${{ needs.check-version.outputs.version }}
+          build_flags: ${{ steps.arch.outputs.build_flags }}
           dockerfile_path: Dockerfile
           token: ${{ secrets.GITHUB_TOKEN }}
 
