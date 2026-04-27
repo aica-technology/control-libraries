@@ -28,6 +28,7 @@ Release Versions
 - feat: expose pinocchio::Data through getter (#238)
 - build: migrate to pinoccho version 3 (#271)
 - feat: add functionality to create a robot model from string (#200)
+- feat: update dependencies (#272)
 
 ## 9.3.2
 

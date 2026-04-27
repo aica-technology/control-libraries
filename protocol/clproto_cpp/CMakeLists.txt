@@ -25,7 +25,7 @@ if(NOT ${PKG_CONFIG_FOUND})
 endif()
 
 include(FindProtobuf)
-find_package(Protobuf 3.17 REQUIRED)
+find_package(Protobuf 6.31 REQUIRED)
 if (NOT TARGET state_representation)
   # if we can't find the state_representation target, we are the top-level project and need to find it,
   # otherwise, we are a subproject and the state_representation target is already available

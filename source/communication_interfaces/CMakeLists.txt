@@ -1,6 +1,6 @@
 set(LIBRARY_NAME communication_interfaces)
 
-set(CPPZMQ_VERSION 4.7.1)
+set(CPPZMQ_VERSION 4.11.0)
 find_package(cppzmq ${CPPZMQ_VERSION} REQUIRED)
 
 set(CORE_SOURCES

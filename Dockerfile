@@ -107,10 +107,11 @@ RUN --mount=type=cache,target=/build,id=cmake-deps-${TARGETPLATFORM}-${CACHEID},
   && cmake --build build && cmake --install build --prefix /tmp/deps
 
 FROM base AS code
+ARG ARCH=x86_64
 COPY --from=apt-dependencies /tmp/apt /
 COPY --from=dependencies /tmp/deps /usr
 COPY --from=pinocchio / /
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/lib/${ARCH}-linux-gnu/openblas-pthread:$LD_LIBRARY_PATH
 ENV PYTHONPATH=/usr/lib/python3.12/site-packages:$PYTHONPATH
 
 FROM code AS development
@@ -148,7 +149,7 @@ COPY protocol protocol
 COPY source source
 COPY CMakeLists.txt CMakeLists.txt
 RUN --mount=type=cache,target=/build,id=cmake-build-${TARGETPLATFORM}-${CACHEID},uid=1000 \
-  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} && cmake --build build
+  cmake -B build -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DPYTHON_EXECUTABLE=$(which python3) && cmake --build build
 
 FROM build AS cpp-test
 ARG TARGETPLATFORM
