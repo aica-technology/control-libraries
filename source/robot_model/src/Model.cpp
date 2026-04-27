@@ -1,44 +1,47 @@
 #include "robot_model/Model.hpp"
-#include "robot_model/exceptions/CollisionGeometryException.hpp"
-#include "robot_model/exceptions/FrameNotFoundException.hpp"
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
-#include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
-#include <pinocchio/algorithm/frames.hpp>
-#include <pinocchio/algorithm/joint-configuration.hpp>
-#include <pinocchio/collision/collision.hpp>
-#include <pinocchio/collision/distance.hpp>
+
 #include <regex>
 #include <set>
 #include <stdexcept>
 
+#include <pinocchio/algorithm/frames.hpp>
+#include <pinocchio/algorithm/joint-configuration.hpp>
+#include <pinocchio/collision/collision.hpp>
+#include <pinocchio/collision/distance.hpp>
+
+#include "robot_model/exceptions/CollisionGeometryException.hpp"
+#include "robot_model/exceptions/FrameNotFoundException.hpp"
+#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
+
 namespace robot_model {
 Model::Model(
-    const std::string& robot_name, const std::string& urdf_path,
+    const std::string& robot_name, const std::string& urdf,
     const std::optional<std::function<std::string(const std::string&)>>& meshloader_callback
 )
     : robot_name_(robot_name),
-      urdf_path_(urdf_path),
+      urdf_(urdf),
       meshloader_callback_(meshloader_callback),
       load_collision_geometries_(true) {
   this->init_model();
 }
 
-Model::Model(const std::string& robot_name, const std::string& urdf_path)
-    : robot_name_(robot_name), urdf_path_(urdf_path) {
+Model::Model(const std::string& robot_name, const std::string& urdf) : robot_name_(robot_name), urdf_(urdf) {
   this->init_model();
 }
 
-Model::Model(const Model& other)
-    : robot_name_(other.robot_name_),
-      urdf_path_(other.urdf_path_),
-      frames_(other.frames_),
-      robot_model_(other.robot_model_),
-      robot_data_(other.robot_data_),
-      meshloader_callback_(other.meshloader_callback_),
-      geom_model_(other.geom_model_),
-      geom_data_(other.geom_data_),
-      qp_solver_(std::make_unique<QPSolver>(*other.qp_solver_)),
-      load_collision_geometries_(other.load_collision_geometries_) {}
+Model::Model(const Model& model)
+    : robot_name_(model.robot_name_),
+      urdf_(model.urdf_),
+      urdf_path_(model.urdf_path_),
+      frames_(model.frames_),
+      robot_model_(model.robot_model_),
+      robot_data_(model.robot_data_),
+      meshloader_callback_(model.meshloader_callback_),
+      geom_model_(model.geom_model_),
+      geom_data_(model.geom_data_),
+      qp_solver_(std::make_unique<QPSolver>(*model.qp_solver_)),
+      load_collision_geometries_(model.load_collision_geometries_) {}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);
@@ -89,19 +92,23 @@ std::vector<std::string> Model::resolve_package_paths_in_urdf(std::string& urdf)
 }
 
 void Model::init_model() {
-  std::ifstream file_stream(this->get_urdf_path());
-  if (!file_stream.is_open()) {
-    throw std::runtime_error("Unable to open file: " + this->get_urdf_path());
+  std::ifstream file_stream(this->get_urdf());
+  if (file_stream.is_open()) {
+    this->urdf_path_ = this->get_urdf();
+    std::stringstream buffer;
+    buffer << file_stream.rdbuf();
+    this->urdf_ = buffer.str();
   }
-  std::stringstream buffer;
-  buffer << file_stream.rdbuf();
-  auto urdf = buffer.str();
 
-  pinocchio::urdf::buildModelFromXML(urdf, this->robot_model_);
+  try {
+    pinocchio::urdf::buildModelFromXML(this->urdf_, this->robot_model_);
+  } catch (const std::invalid_argument& ex) {
+    throw std::runtime_error("Failed to initialize model from URDF: " + std::string(ex.what()));
+  }
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
   if (this->load_collision_geometries_) {
-    this->init_geom_model(urdf);
+    this->init_geom_model();
   }
 
   // get the frames
@@ -119,7 +126,8 @@ void Model::init_model() {
   );
 }
 
-void Model::init_geom_model(std::string urdf) {
+void Model::init_geom_model() {
+  auto urdf = this->get_urdf();
   try {
     auto package_paths = this->resolve_package_paths_in_urdf(urdf);
     pinocchio::urdf::buildGeom(
