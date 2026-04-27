@@ -27,6 +27,7 @@ Release Versions
 - feat: move up to C++20 (#220)
 - feat: expose pinocchio::Data through getter (#238)
 - build: migrate to pinoccho version 3 (#271)
+- feat: add functionality to create a robot model from string (#200)
 
 ## 9.3.2
 
