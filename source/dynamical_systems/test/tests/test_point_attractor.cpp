@@ -1,6 +1,5 @@
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
-#include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
-#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
+#include "dynamical_systems/exceptions.hpp"
 #include <gtest/gtest.h>
 #include <vector>
 

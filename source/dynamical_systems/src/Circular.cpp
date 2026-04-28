@@ -1,6 +1,6 @@
 #include "dynamical_systems/Circular.hpp"
 
-#include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
+#include "dynamical_systems/exceptions.hpp"
 #include "state_representation/exceptions.hpp"
 
 using namespace state_representation;

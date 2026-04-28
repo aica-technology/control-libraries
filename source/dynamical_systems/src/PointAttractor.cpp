@@ -1,8 +1,6 @@
 #include "dynamical_systems/PointAttractor.hpp"
 
-#include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
-#include "dynamical_systems/exceptions/IncompatibleSizeException.hpp"
-#include "dynamical_systems/exceptions/NotImplementedException.hpp"
+#include "dynamical_systems/exceptions.hpp"
 #include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
@@ -59,7 +57,7 @@ void PointAttractor<S>::set_gain(const std::shared_ptr<ParameterInterface>& para
   } else if (parameter->get_parameter_type() == ParameterType::DOUBLE_ARRAY) {
     auto gain = parameter->get_parameter_value<std::vector<double>>();
     if (gain.size() != expected_size) {
-      throw exceptions::IncompatibleSizeException(
+      throw state_representation::exceptions::IncompatibleSizeException(
           "The provided diagonal coefficients do not correspond to the expected size of the attractor"
       );
     }
@@ -68,7 +66,7 @@ void PointAttractor<S>::set_gain(const std::shared_ptr<ParameterInterface>& para
   } else if (parameter->get_parameter_type() == ParameterType::MATRIX) {
     auto gain = parameter->get_parameter_value<Eigen::MatrixXd>();
     if (gain.rows() != expected_size && gain.cols() != expected_size) {
-      throw exceptions::IncompatibleSizeException(
+      throw state_representation::exceptions::IncompatibleSizeException(
           "The provided gain matrix do not have the expected size (" + std::to_string(expected_size) + "x"
           + std::to_string(expected_size) + ")"
       );
@@ -81,7 +79,7 @@ void PointAttractor<S>::set_gain(const std::shared_ptr<ParameterInterface>& para
 
 template<class S>
 void PointAttractor<S>::set_attractor(const S&) {
-  throw exceptions::NotImplementedException("set_attractor is not implemented for this type of DS");
+  throw state_representation::exceptions::NotImplementedException("set_attractor is not implemented for this type of DS");
 }
 
 template<>
@@ -181,7 +179,7 @@ void PointAttractor<JointState>::validate_and_set_parameter(const std::shared_pt
 
 template<class S>
 S PointAttractor<S>::compute_dynamics(const S&) const {
-  throw exceptions::NotImplementedException("compute_dynamics is not implemented for this type of DS");
+  throw state_representation::exceptions::NotImplementedException("compute_dynamics is not implemented for this type of DS");
 }
 
 template<>
