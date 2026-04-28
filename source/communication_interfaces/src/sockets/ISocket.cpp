@@ -1,6 +1,6 @@
 #include "communication_interfaces/sockets/ISocket.hpp"
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
+#include "communication_interfaces/exceptions.hpp"
 
 namespace communication_interfaces::sockets {
 
