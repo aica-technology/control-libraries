@@ -141,7 +141,7 @@ def test_param_map():
 def test_strict_param_map():
     param_map = sr.StrictParameterMap()
     param_map.set_parameter(sr.Parameter("int", 1, sr.ParameterType.INT))
-    param_map.set_parameter("int", 2)
+    param_map.set_parameter("int", 2, sr.ParameterType.INT)
     assert_value_equal(param_map.get_parameter_value("int"), 2)
-    with pytest.raises(sr.exceptions.InvalidParameterException):
+    with pytest.raises(sr.exceptions.InvalidParameterError):
         param_map.set_parameter(sr.Parameter("int", 1.0, sr.ParameterType.DOUBLE))
