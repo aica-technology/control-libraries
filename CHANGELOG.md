@@ -30,6 +30,7 @@ Release Versions
 - feat: add functionality to create a robot model from string (#200)
 - feat: update dependencies (#272)
 - feat: add joint types & limit some uses to supported types only (#243)
+- refactor: use common base class for all exceptions (#222)
 
 ## 9.3.2
 
