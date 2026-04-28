@@ -67,4 +67,6 @@ interface_ptr_to_container_list(const std::list<std::shared_ptr<ParameterInterfa
 std::list<std::shared_ptr<ParameterInterface>>
 container_to_interface_ptr_list(const std::list<ParameterContainer>& parameters);
 
+void copy_parameter_value(const ParameterContainer& source_parameter, ParameterContainer& target_parameter);
+
 }// namespace py_parameter

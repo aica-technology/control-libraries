@@ -1,5 +1,6 @@
 #include "parameter_container.hpp"
 
+#include <state_representation/exceptions/IncompatibleStatesException.hpp>
 #include <state_representation/exceptions/InvalidCastException.hpp>
 #include <state_representation/exceptions/InvalidParameterException.hpp>
 #include <state_representation/exceptions/EmptyStateException.hpp>
@@ -332,5 +333,57 @@ container_to_interface_ptr_list(const std::list<ParameterContainer>& parameters)
     parameter_list.emplace_back(container_to_interface_ptr(param_it));
   }
   return parameter_list;
+}
+
+void copy_parameter_value(const ParameterContainer& source_parameter, ParameterContainer& target_parameter) {
+  if (target_parameter.get_parameter_type() != source_parameter.get_parameter_type()) {
+    throw exceptions::IncompatibleStatesException(
+        "Source parameter " + source_parameter.get_name()
+        + " to be copied does not have the same type as target parameter " + target_parameter.get_name() + "("
+        + get_parameter_type_name(source_parameter.get_parameter_type()) + " vs. "
+        + get_parameter_type_name(target_parameter.get_parameter_type()) + ")"
+    );
+  }
+  switch (target_parameter.get_parameter_type()) {
+    case ParameterType::BOOL:
+    case ParameterType::BOOL_ARRAY:
+    case ParameterType::INT:
+    case ParameterType::INT_ARRAY:
+    case ParameterType::DOUBLE:
+    case ParameterType::DOUBLE_ARRAY:
+    case ParameterType::STRING:
+    case ParameterType::STRING_ARRAY:
+    case ParameterType::VECTOR:
+    case ParameterType::MATRIX:
+      target_parameter.set_value(source_parameter.get_value());
+      return;
+    case ParameterType::STATE:
+      if (target_parameter.get_parameter_state_type() != source_parameter.get_parameter_state_type()) {
+        throw exceptions::IncompatibleStatesException(
+            "Source parameter " + source_parameter.get_name()
+            + " to be copied does not have the same parameter state type as target parameter "
+            + target_parameter.get_name() + "(" + get_state_type_name(source_parameter.get_parameter_state_type())
+            + " vs. " + get_state_type_name(target_parameter.get_parameter_state_type()) + ")"
+        );
+      }
+      switch (target_parameter.get_parameter_state_type()) {
+        case StateType::CARTESIAN_STATE:
+        case StateType::CARTESIAN_POSE:
+        case StateType::JOINT_STATE:
+        case StateType::JOINT_POSITIONS:
+        case StateType::GEOMETRY_ELLIPSOID:
+          target_parameter.set_value(source_parameter.get_value());
+          return;
+        default:
+          break;
+      }
+      break;
+    default:
+      break;
+  }
+  throw exceptions::IncompatibleStatesException(
+      "Could not copy the value from source parameter " + source_parameter.get_name() + " into target parameter "
+      + target_parameter.get_name()
+  );
 }
 }// namespace py_parameter

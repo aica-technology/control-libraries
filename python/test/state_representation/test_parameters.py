@@ -2,6 +2,7 @@ import pytest
 
 import numpy as np
 import state_representation as sr
+from state_representation import copy_parameter_value
 from numpy.testing import assert_array_almost_equal
 from ..conftest import Helpers
 
@@ -73,6 +74,11 @@ def test_parameter_construction(name, value, parameter_type, state_type, test_fu
     assert param.is_empty()
     with pytest.raises(sr.exceptions.EmptyStateError):
         param.get_value()
+    with pytest.raises(sr.exceptions.EmptyStateError):
+        copy_parameter_value(param, new_param)
+    
+    copy_parameter_value(param1, param)
+    test_func(value, param.get_value())
 
 
 def param_map_equal(param_dict, param_map):
@@ -131,3 +137,11 @@ def test_param_map():
         m.remove_parameter("int")
     with pytest.raises(sr.exceptions.InvalidParameterError):
         m.get_parameter("int")
+
+def test_strict_param_map():
+    param_map = sr.StrictParameterMap()
+    param_map.set_parameter(sr.Parameter("int", 1, sr.ParameterType.INT))
+    param_map.set_parameter("int", 2)
+    assert_value_equal(param_map.get_parameter_value("int"), 2)
+    with pytest.raises(sr.exceptions.InvalidParameterException):
+        param_map.set_parameter(sr.Parameter("int", 1.0, sr.ParameterType.DOUBLE))
