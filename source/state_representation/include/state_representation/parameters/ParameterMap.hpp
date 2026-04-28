@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 
 namespace state_representation {

@@ -3,9 +3,7 @@
 #include <eigen3/Eigen/Sparse>
 #include <random>
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
-#include "state_representation/exceptions/NoSolutionToFitException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 
@@ -150,7 +148,7 @@ const Ellipsoid Ellipsoid::fit(
 
     // no solution case
     if (eigenvalue < 0) {
-      throw exceptions::NoSolutionToFitException("No solution found for the ellipse fitting");
+      throw exceptions::Exception("No solution found for the ellipse fitting");
     }
 
     // extract the solution

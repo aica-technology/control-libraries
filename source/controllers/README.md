@@ -208,7 +208,7 @@ protected:
 // MyCartesianController.cpp
 #include "MyCartesianController.hpp"
 
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 
 using namespace state_representation;
 

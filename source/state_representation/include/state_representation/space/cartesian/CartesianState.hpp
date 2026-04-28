@@ -1,7 +1,6 @@
 #pragma once
 
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
-#include "state_representation/exceptions/InvalidStateVariableException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/SpatialState.hpp"
 
 namespace state_representation {

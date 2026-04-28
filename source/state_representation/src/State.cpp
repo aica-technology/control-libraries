@@ -1,6 +1,5 @@
 #include "state_representation/State.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 

@@ -1,6 +1,5 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 

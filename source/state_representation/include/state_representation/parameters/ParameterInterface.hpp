@@ -3,8 +3,7 @@
 #include <memory>
 
 #include "state_representation/State.hpp"
-#include "state_representation/exceptions/InvalidParameterCastException.hpp"
-#include "state_representation/exceptions/InvalidPointerException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/parameters/ParameterType.hpp"
 
 namespace state_representation {
@@ -50,14 +49,14 @@ public:
    * this method will return a pointer to that derived instance through dynamic down-casting.
    * The downcast will fail if the base ParameterInterface object has no reference count
    * (if the object is not owned by any pointer), or if the derived object is not a correctly
-   * typed instance of a Parameter. By default, an InvalidParameterCastException is thrown when
+   * typed instance of a Parameter. By default, an InvalidCastException is thrown when
    * the downcast fails. If this validation is disabled by setting the validate_pointer flag to false,
    * it will not throw an exception and instead return a null pointer.
    * @tparam T The state type of the Parameter
    * @param validate_pointer If true, throw an exception when downcasting fails
    * @return A pointer to a derived Parameter instance of the desired state type, or a null pointer
    * if downcasting failed and validate_pointer was set to false.
-   * @throw exceptions::InvalidParameterCastException if downcasting fails and validate_pointer is true
+   * @throw exceptions::InvalidCastException if downcasting fails and validate_pointer is true
    */
   template<typename T>
   std::shared_ptr<Parameter<T>> get_parameter(bool validate_pointer = true) const;
@@ -67,7 +66,7 @@ public:
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @return The value contained in the underlying Parameter instance
-   * @throw exceptions::InvalidParameterCastException if the ParameterInterface does not point to
+   * @throw exceptions::InvalidCastException if the ParameterInterface does not point to
    * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
@@ -78,7 +77,7 @@ public:
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @param value The value to set in the underlying Parameter instance
-   * @throw exceptions::InvalidParameterCastException if the ParameterInterface does not point to
+   * @throw exceptions::InvalidCastException if the ParameterInterface does not point to
    * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
@@ -117,7 +116,7 @@ inline std::shared_ptr<Parameter<T>> ParameterInterface::get_parameter(bool vali
   }
   if (parameter_ptr == nullptr && validate_pointer) {
     std::string type_name(typeid(T).name());
-    throw exceptions::InvalidParameterCastException(
+    throw exceptions::InvalidCastException(
         "Unable to cast parameter interface \"" + get_name() + "\" to a parameter pointer of requested type "
         + type_name
     );

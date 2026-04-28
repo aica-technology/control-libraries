@@ -1,9 +1,7 @@
 #include "dynamical_systems/Ring.hpp"
 
 #include "dynamical_systems/exceptions/EmptyAttractorException.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
 
 using namespace state_representation;

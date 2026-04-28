@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "dynamical_systems/DynamicalSystemFactory.hpp"
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 
 #include "state_representation/parameters/Parameter.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"

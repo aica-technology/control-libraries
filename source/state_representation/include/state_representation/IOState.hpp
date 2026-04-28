@@ -2,9 +2,7 @@
 
 #include "state_representation/State.hpp"
 
-#include "state_representation/exceptions/IONotFoundException.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
-#include "state_representation/exceptions/InvalidCastException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 

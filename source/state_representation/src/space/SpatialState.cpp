@@ -1,6 +1,6 @@
 #include "state_representation/space/SpatialState.hpp"
 
-#include "state_representation/exceptions/InvalidCastException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 
