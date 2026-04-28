@@ -3,6 +3,7 @@
 #include <controllers/exceptions.hpp>
 
 void bind_exceptions(py::module_& m) {
-  py::register_exception<controllers::exceptions::InvalidControllerException>(m, "InvalidControllerError", PyExc_RuntimeError);
-  py::register_exception<controllers::exceptions::NoRobotModelException>(m, "NoRobotModelError", PyExc_RuntimeError);
+  py::object error = py::module_::import("state_representation.exceptions").attr("Error");
+  py::register_exception<controllers::exceptions::InvalidControllerException>(m, "InvalidControllerError", error.ptr());
+  py::register_exception<controllers::exceptions::NoRobotModelException>(m, "NoRobotModelError", error.ptr());
 }

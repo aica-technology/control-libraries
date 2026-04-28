@@ -1,7 +1,6 @@
 import state_representation as sr
 import unittest
 from dynamical_systems import ICartesianDS, DYNAMICAL_SYSTEM_TYPE, create_cartesian_ds, create_joint_ds
-from dynamical_systems.exceptions import InvalidDynamicalSystemError
 
 DS_METHOD_EXPECTS = [
     'is_compatible',
@@ -63,7 +62,7 @@ class TestDynamicalSystems(unittest.TestCase):
         with self.assertRaises(sr.exceptions.InvalidParameterError):
             joint_ds.set_parameters(param_list)
 
-        with self.assertRaises(InvalidDynamicalSystemError):
+        with self.assertRaises(sr.exceptions.Error):
             joint_ds = create_joint_ds(DYNAMICAL_SYSTEM_TYPE.RING)
 
     def test_joint_ds(self):

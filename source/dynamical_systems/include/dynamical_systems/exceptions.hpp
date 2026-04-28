@@ -25,14 +25,4 @@ class EmptyBaseFrameException : public state_representation::exceptions::Excepti
 public:
   explicit EmptyBaseFrameException(const std::string& msg) : Exception("EmptyBaseFrameException", msg) {}
 };
-
-/**
- * @class InvalidDynamicalSystemException
- * @brief Exception thrown when a dynamical system is invalid.
- */
-class InvalidDynamicalSystemException : public state_representation::exceptions::Exception {
-public:
-  explicit InvalidDynamicalSystemException(const std::string& msg)
-      : Exception("InvalidDynamicalSystemException", msg) {}
-};
 }// namespace dynamical_systems::exceptions

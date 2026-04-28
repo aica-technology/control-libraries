@@ -1,13 +1,11 @@
 #include "robot_model_bindings.hpp"
 
-#include <robot_model/exceptions/FrameNotFoundException.hpp>
-#include <robot_model/exceptions/InvalidJointStateSizeException.hpp>
-#include <robot_model/exceptions/InverseKinematicsNotConvergingException.hpp>
-#include <robot_model/exceptions/CollisionGeometryException.hpp>
+#include <robot_model/exceptions.hpp>
 
 void bind_exceptions(py::module_& m) {
-  py::register_exception<robot_model::exceptions::FrameNotFoundException>(m, "FrameNotFoundError", PyExc_RuntimeError);
-  py::register_exception<robot_model::exceptions::InvalidJointStateSizeException>(m, "InvalidJointStateSizeError", PyExc_RuntimeError);
-  py::register_exception<robot_model::exceptions::InverseKinematicsNotConvergingException>(m, "InverseKinematicsNotConvergingErrors", PyExc_RuntimeError);
-  py::register_exception<robot_model::exceptions::CollisionGeometryException>(m, "CollisionGeometryError", PyExc_RuntimeError);
+  py::object error = py::module_::import("state_representation.exceptions").attr("Error");
+  py::register_exception<robot_model::exceptions::FrameNotFoundException>(m, "FrameNotFoundError", error.ptr());
+  py::register_exception<robot_model::exceptions::InvalidJointStateSizeException>(m, "InvalidJointStateSizeError", error.ptr());
+  py::register_exception<robot_model::exceptions::InverseKinematicsNotConvergingException>(m, "InverseKinematicsNotConvergingErrors", error.ptr());
+  py::register_exception<robot_model::exceptions::CollisionGeometryException>(m, "CollisionGeometryError", error.ptr());
 }
