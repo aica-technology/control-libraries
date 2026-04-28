@@ -14,7 +14,7 @@ namespace controllers::exceptions {
  */
 class InvalidControllerException : public state_representation::exceptions::Exception {
 public:
-  explicit InvalidControllerException(const std::string& msg) : Exception("InvalidControllerException", msg){};
+  explicit InvalidControllerException(const std::string& msg) : Exception("InvalidControllerException", msg) {}
 };
 
 /**
@@ -23,6 +23,6 @@ public:
  */
 class NoRobotModelException : public state_representation::exceptions::Exception {
 public:
-  explicit NoRobotModelException(const std::string& msg) : Exception("NoRobotModelException", msg){};
+  explicit NoRobotModelException(const std::string& msg) : Exception("NoRobotModelException", msg) {}
 };
 }// namespace controllers::exceptions

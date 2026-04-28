@@ -16,7 +16,7 @@ namespace state_representation::exceptions {
  */
 class Exception : public std::runtime_error {
 public:
-  explicit Exception(const std::string& msg) : Exception("Exception", msg){};
+  explicit Exception(const std::string& msg) : Exception("Exception", msg) {}
 
 protected:
   Exception(const std::string& prefix, const std::string& msg) : std::runtime_error(prefix + ": " + msg) {}
@@ -28,7 +28,7 @@ protected:
  */
 class EmptyStateException : public Exception {
 public:
-  explicit EmptyStateException(const std::string& msg) : Exception("EmptyStateException", msg){};
+  explicit EmptyStateException(const std::string& msg) : Exception("EmptyStateException", msg) {}
 };
 
 /**
@@ -38,7 +38,7 @@ public:
 class IncompatibleReferenceFramesException : public Exception {
 public:
   explicit IncompatibleReferenceFramesException(const std::string& msg)
-      : Exception("IncompatibleReferenceFramesException", msg){};
+      : Exception("IncompatibleReferenceFramesException", msg) {}
 };
 
 /**
@@ -47,7 +47,7 @@ public:
  */
 class IncompatibleSizeException : public Exception {
 public:
-  explicit IncompatibleSizeException(const std::string& msg) : Exception("IncompatibleSizeException", msg){};
+  explicit IncompatibleSizeException(const std::string& msg) : Exception("IncompatibleSizeException", msg) {}
 };
 
 /**
@@ -56,7 +56,7 @@ public:
  */
 class IncompatibleStatesException : public Exception {
 public:
-  explicit IncompatibleStatesException(const std::string& msg) : Exception("IncompatibleStatesException", msg){};
+  explicit IncompatibleStatesException(const std::string& msg) : Exception("IncompatibleStatesException", msg) {}
 };
 
 /**
@@ -65,7 +65,7 @@ public:
  */
 class InvalidCastException : public Exception {
 public:
-  explicit InvalidCastException(const std::string& msg) : Exception("InvalidCastException", msg){};
+  explicit InvalidCastException(const std::string& msg) : Exception("InvalidCastException", msg) {}
 };
 
 /**
@@ -74,7 +74,7 @@ public:
  */
 class InvalidParameterException : public Exception {
 public:
-  explicit InvalidParameterException(const std::string& msg) : Exception("InvalidParameterException", msg){};
+  explicit InvalidParameterException(const std::string& msg) : Exception("InvalidParameterException", msg) {}
 };
 
 /**
@@ -83,7 +83,7 @@ public:
  */
 class InvalidPointerException : public Exception {
 public:
-  explicit InvalidPointerException(const std::string& msg) : Exception("InvalidPointerException", msg){};
+  explicit InvalidPointerException(const std::string& msg) : Exception("InvalidPointerException", msg) {}
 };
 
 /**
@@ -92,7 +92,7 @@ public:
  */
 class InvalidStateVariableException : public Exception {
 public:
-  explicit InvalidStateVariableException(const std::string& msg) : Exception("InvalidStateVariableException", msg){};
+  explicit InvalidStateVariableException(const std::string& msg) : Exception("InvalidStateVariableException", msg) {}
 };
 
 /**
@@ -101,7 +101,7 @@ public:
  */
 class IONotFoundException : public Exception {
 public:
-  explicit IONotFoundException(const std::string& msg) : Exception("IONotFoundException", msg){};
+  explicit IONotFoundException(const std::string& msg) : Exception("IONotFoundException", msg) {}
 };
 
 /**
@@ -110,7 +110,7 @@ public:
  */
 class JointNotFoundException : public Exception {
 public:
-  explicit JointNotFoundException(const std::string& msg) : Exception("JointNotFoundException", msg){};
+  explicit JointNotFoundException(const std::string& msg) : Exception("JointNotFoundException", msg) {}
 };
 
 /**
@@ -119,6 +119,6 @@ public:
  */
 class NotImplementedException : public Exception {
 public:
-  explicit NotImplementedException(const std::string& msg) : Exception("NotImplementedException", msg){};
+  explicit NotImplementedException(const std::string& msg) : Exception("NotImplementedException", msg) {}
 };
 }// namespace state_representation::exceptions

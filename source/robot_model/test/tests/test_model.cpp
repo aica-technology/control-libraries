@@ -4,8 +4,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "robot_model/exceptions/FrameNotFoundException.hpp"
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include "robot_model/exceptions.hpp"
 
 using namespace robot_model;
 

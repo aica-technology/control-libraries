@@ -14,7 +14,7 @@ namespace dynamical_systems::exceptions {
  */
 class EmptyAttractorException : public state_representation::exceptions::Exception {
 public:
-  explicit EmptyAttractorException(const std::string& msg) : Exception("EmptyAttractorException", msg){};
+  explicit EmptyAttractorException(const std::string& msg) : Exception("EmptyAttractorException", msg) {}
 };
 
 /**
@@ -23,7 +23,7 @@ public:
  */
 class EmptyBaseFrameException : public state_representation::exceptions::Exception {
 public:
-  explicit EmptyBaseFrameException(const std::string& msg) : Exception("EmptyBaseFrameException", msg){};
+  explicit EmptyBaseFrameException(const std::string& msg) : Exception("EmptyBaseFrameException", msg) {}
 };
 
 /**
@@ -32,6 +32,7 @@ public:
  */
 class InvalidDynamicalSystemException : public state_representation::exceptions::Exception {
 public:
-  explicit InvalidDynamicalSystemException(const std::string& msg) : Exception("InvalidDynamicalSystemException", msg){};
+  explicit InvalidDynamicalSystemException(const std::string& msg)
+      : Exception("InvalidDynamicalSystemException", msg) {}
 };
 }// namespace dynamical_systems::exceptions

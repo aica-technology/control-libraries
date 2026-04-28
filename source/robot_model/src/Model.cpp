@@ -9,10 +9,7 @@
 #include <pinocchio/collision/collision.hpp>
 #include <pinocchio/collision/distance.hpp>
 
-#include "robot_model/exceptions/CollisionGeometryException.hpp"
-#include "robot_model/exceptions/FrameNotFoundException.hpp"
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
-#include "robot_model/exceptions/InverseKinematicsNotConvergingException.hpp"
+#include "robot_model/exceptions.hpp"
 
 namespace robot_model {
 Model::Model(
