@@ -1,7 +1,6 @@
 #include "controllers_bindings.hpp"
 
-#include <controllers/exceptions/InvalidControllerException.hpp>
-#include <controllers/exceptions/NoRobotModelException.hpp>
+#include <controllers/exceptions.hpp>
 
 void bind_exceptions(py::module_& m) {
   py::register_exception<controllers::exceptions::InvalidControllerException>(m, "InvalidControllerError", PyExc_RuntimeError);

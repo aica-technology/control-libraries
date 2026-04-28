@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "controllers/ControllerFactory.hpp"
-#include "controllers/exceptions/InvalidControllerException.hpp"
-#include "controllers/exceptions/NoRobotModelException.hpp"
+#include "controllers/exceptions.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 
 using namespace state_representation;

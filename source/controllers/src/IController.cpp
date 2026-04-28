@@ -1,6 +1,6 @@
 #include "controllers/IController.hpp"
 
-#include "controllers/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 
 using namespace state_representation;
 
@@ -8,14 +8,14 @@ namespace controllers {
 
 template<class S>
 JointState IController<S>::compute_command(const S&, const S&, const Jacobian&) {
-  throw exceptions::NotImplementedException(
+  throw state_representation::exceptions::NotImplementedException(
       "Computation of a joint-space command with a Jacobian is not implemented for this controller."
   );
 }
 
 template<class S>
 JointState IController<S>::compute_command(const S&, const S&, const JointPositions&, const std::string&) {
-  throw exceptions::NotImplementedException(
+  throw state_representation::exceptions::NotImplementedException(
       "Computation of a joint-space command from joint positions is not implemented for this controller."
   );
 }

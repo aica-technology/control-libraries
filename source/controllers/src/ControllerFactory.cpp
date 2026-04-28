@@ -1,6 +1,6 @@
 #include "controllers/ControllerFactory.hpp"
 
-#include "controllers/exceptions/InvalidControllerException.hpp"
+#include "controllers/exceptions.hpp"
 #include "controllers/impedance/CompliantTwist.hpp"
 #include "controllers/impedance/Dissipative.hpp"
 #include "controllers/impedance/Impedance.hpp"
