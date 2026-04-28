@@ -774,7 +774,7 @@ TEST(CartesianStateTest, ScalarDivision) {
   cs /= scalar;
   EXPECT_TRUE(cscaled.data().isApprox(cs.data()));
 
-  EXPECT_THROW(cs / 0.0, std::runtime_error);
+  EXPECT_THROW(cs / 0.0, exceptions::Exception);
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);

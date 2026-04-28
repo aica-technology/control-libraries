@@ -205,7 +205,7 @@ public:
    * To enable collision detection, use the alternate constructor.
    * @param robot_name the name to associate with the model
    * @param urdf the URDF (XML string or filepath) of the robot
-   * @throws std::runtime_error if the URDF file cannot be loaded or is invalid
+   * @throws state_representation::exceptions::Exception if the URDF file cannot be loaded or is invalid
    */
   explicit Model(const std::string& robot_name, const std::string& urdf);
 

@@ -104,7 +104,9 @@ void Model::init_model() {
   try {
     pinocchio::urdf::buildModelFromXML(this->urdf_, this->robot_model_);
   } catch (const std::invalid_argument& ex) {
-    throw std::runtime_error("Failed to initialize model from URDF: " + std::string(ex.what()));
+    throw state_representation::exceptions::Exception(
+        "Failed to initialize model from URDF: " + std::string(ex.what())
+    );
   }
   this->robot_data_ = pinocchio::Data(this->robot_model_);
 
@@ -458,7 +460,7 @@ state_representation::JointPositions Model::inverse_kinematics(
     throw exceptions::FrameNotFoundException(actual_frame);
   }
   if (cartesian_pose.get_reference_frame() != this->get_base_frame()) {
-    throw std::runtime_error(
+    throw state_representation::exceptions::IncompatibleReferenceFramesException(
         "The reference frame of the desired Cartesian pose does not match the robot base frame '"
         + cartesian_pose.get_reference_frame() + "' vs. '" + this->get_base_frame() + "'."
     );
@@ -486,7 +488,7 @@ state_representation::JointPositions Model::inverse_kinematics(
       err = pinocchio::log6(iMd).toVector();
       if (err.norm() < parameters.tolerance) {
         if (!this->in_range(q)) {
-          throw std::runtime_error(
+          throw state_representation::exceptions::Exception(
               "The inverse kinematics algorithm converged to a configuration that is not within joint limits."
           );
         }
@@ -547,7 +549,7 @@ void Model::check_inverse_velocity_arguments(
   }
   for (auto& twist : cartesian_twists) {
     if (twist.get_reference_frame() != this->get_base_frame()) {
-      throw std::runtime_error(
+      throw state_representation::exceptions::IncompatibleReferenceFramesException(
           "The reference frame of the provided Cartesian twist does not match the robot base frame '"
           + twist.get_reference_frame() + "' vs. '" + this->get_base_frame() + "'."
       );
