@@ -628,6 +628,7 @@ inline void swap(Model& first, Model& second) {
   swap(first.geom_data_, second.geom_data_);
   swap(first.qp_solver_, second.qp_solver_);
   swap(first.load_collision_geometries_, second.load_collision_geometries_);
+  swap(first.joint_types_, second.joint_types_);
 }
 
 inline Model& Model::operator=(const Model& model) {

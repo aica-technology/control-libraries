@@ -1,6 +1,7 @@
 #include "robot_model/Model.hpp"
 
 #include <algorithm>
+#include <boost/mpl/list/list30.hpp>
 #include <regex>
 #include <set>
 #include <stdexcept>
@@ -41,8 +42,12 @@ Model::Model(const Model& model)
       meshloader_callback_(model.meshloader_callback_),
       geom_model_(model.geom_model_),
       geom_data_(model.geom_data_),
-      qp_solver_(std::make_unique<QPSolver>(*model.qp_solver_)),
-      load_collision_geometries_(model.load_collision_geometries_) {}
+      load_collision_geometries_(model.load_collision_geometries_),
+      joint_types_(model.joint_types_) {
+  if (model.qp_solver_) {
+    this->qp_solver_ = std::make_unique<QPSolver>(*model.qp_solver_);
+  }
+}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);
@@ -622,6 +627,12 @@ state_representation::JointVelocities Model::inverse_velocity(
     const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
     const std::vector<std::string>& frames
 ) {
+  if (!this->qp_solver_) {
+    throw std::runtime_error(
+        "QP solver not initialized for robot " + this->get_robot_name()
+        + ". This might be due to the presence of unsupported joint types (e.g. continuous, planar, or floating)."
+    );
+  }
   using namespace state_representation;
   using namespace std::chrono;
   // sanity check
