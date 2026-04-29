@@ -71,6 +71,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">robot_model Namespace Reference</div></div>
 </div><!--header-->
@@ -84,6 +85,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrobot__model_1_1_inverse_kinematics_parameters.html">InverseKinematicsParameters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">parameters for the inverse kinematics function  <a href="structrobot__model_1_1_inverse_kinematics_parameters.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrobot__model_1_1_joint_type_visitor.html">JointTypeVisitor</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrobot__model_1_1_model.html">Model</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="classrobot__model_1_1_model.html" title="The Model class is a wrapper around pinocchio dynamic computation library with state_representation e...">Model</a> class is a wrapper around pinocchio dynamic computation library with <a class="el" href="namespacestate__representation.html" title="Core state variables and objects.">state_representation</a> encapsulations.  <a href="classrobot__model_1_1_model.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,6 +97,21 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class to solve the Quadratic Programming problem (QP) for the robot model.  <a href="classrobot__model_1_1_q_p_solver.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a653516b70a1eff0a3f7f2ec4e740d5a3" id="r_a653516b70a1eff0a3f7f2ec4e740d5a3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>JointType</b> { <br />
+&#160;&#160;<b>FIXED</b>
+, <b>REVOLUTE</b>
+, <b>CONTINUOUS</b>
+, <b>PRISMATIC</b>
+, <br />
+&#160;&#160;<b>PLANAR</b>
+, <b>FLOATING</b>
+, <b>NONE</b>
+<br />
+ }</td></tr>
+<tr class="separator:a653516b70a1eff0a3f7f2ec4e740d5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afc8a5734687ee49e6b40744da308ad32" id="r_afc8a5734687ee49e6b40744da308ad32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerobot__model.html#afc8a5734687ee49e6b40744da308ad32">swap</a> (<a class="el" href="classrobot__model_1_1_model.html">Model</a> &amp;first, <a class="el" href="classrobot__model_1_1_model.html">Model</a> &amp;second)</td></tr>
@@ -101,7 +119,32 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Robot kinematics and dynamics. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+</div><h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a653516b70a1eff0a3f7f2ec4e740d5a3" name="a653516b70a1eff0a3f7f2ec4e740d5a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a653516b70a1eff0a3f7f2ec4e740d5a3">&#9670;&#160;</a></span>JointType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class robot_model::JointType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00034">34</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="afc8a5734687ee49e6b40744da308ad32" name="afc8a5734687ee49e6b40744da308ad32"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc8a5734687ee49e6b40744da308ad32">&#9670;&#160;</a></span>swap()</h2>
 
@@ -143,7 +186,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00604">604</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_model_8hpp_source.html#l00618">618</a> of file <a class="el" href="_model_8hpp_source.html">Model.hpp</a>.</p>
 
 </div>
 </div>
