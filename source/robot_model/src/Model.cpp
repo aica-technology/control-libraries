@@ -40,8 +40,12 @@ Model::Model(const Model& model)
       meshloader_callback_(model.meshloader_callback_),
       geom_model_(model.geom_model_),
       geom_data_(model.geom_data_),
-      qp_solver_(std::make_unique<QPSolver>(*model.qp_solver_)),
-      load_collision_geometries_(model.load_collision_geometries_) {}
+      load_collision_geometries_(model.load_collision_geometries_),
+      joint_types_(model.joint_types_) {
+  if (model.qp_solver_) {
+    this->qp_solver_ = std::make_unique<QPSolver>(*model.qp_solver_);
+  }
+}
 
 bool Model::create_urdf_from_string(const std::string& urdf_string, const std::string& desired_path) {
   std::ofstream file(desired_path);
@@ -111,6 +115,9 @@ void Model::init_model() {
     this->init_geom_model();
   }
 
+  // cache the joint types for later use
+  this->joint_types_ = this->get_joint_types();
+
   // get the frames
   std::vector<std::string> frames;
   for (auto& f : this->robot_model_.frames) {
@@ -119,11 +126,23 @@ void Model::init_model() {
   // remove first frame added by Pinocchio
   this->frames_ = std::vector<std::string>(frames.begin() + 1, frames.end());
 
+  auto has_limited_support =
+      std::any_of(this->joint_types_.begin(), this->joint_types_.end(), [](const JointType& type) {
+        return type != JointType::REVOLUTE && type != JointType::PRISMATIC;
+      });
+
   // define the QP solver
-  this->qp_solver_ = std::make_unique<QPSolver>(
-      this->get_number_of_joints(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit,
-      this->robot_model_.velocityLimit
-  );
+  if (has_limited_support) {
+    std::cerr
+        << "Continuous, planar, and floating joints are not fully supported, beware that not all 'Model' features will "
+           "be compatible or available."
+        << std::endl;
+  } else {
+    this->qp_solver_ = std::make_unique<QPSolver>(
+        this->get_number_of_joints(), this->robot_model_.lowerPositionLimit, this->robot_model_.upperPositionLimit,
+        this->robot_model_.velocityLimit
+    );
+  }
 }
 
 void Model::init_geom_model() {
@@ -606,6 +625,12 @@ state_representation::JointVelocities Model::inverse_velocity(
     const state_representation::JointPositions& joint_positions, const QPInverseVelocityParameters& parameters,
     const std::vector<std::string>& frames
 ) {
+  if (!this->qp_solver_) {
+    throw std::runtime_error(
+        "QP solver not initialized for robot " + this->get_robot_name()
+        + ". This might be due to the presence of unsupported joint types (e.g. continuous, planar, or floating)."
+    );
+  }
   using namespace state_representation;
   using namespace std::chrono;
   // sanity check
