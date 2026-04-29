@@ -1,7 +1,5 @@
 #include "robot_model/Model.hpp"
 
-#include <algorithm>
-#include <boost/mpl/list/list30.hpp>
 #include <regex>
 #include <set>
 #include <stdexcept>
