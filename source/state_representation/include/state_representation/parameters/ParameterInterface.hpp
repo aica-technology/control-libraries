@@ -117,7 +117,7 @@ inline std::shared_ptr<Parameter<T>> ParameterInterface::get_parameter(bool vali
   if (parameter_ptr == nullptr && validate_pointer) {
     throw exceptions::InvalidCastException(
         "Unable to cast parameter interface " + get_name() + " to a parameter pointer of requested type "
-        + get_parameter_type_name(parameter_ptr->get_parameter_type())
+        + get_parameter_type_name(Parameter<T>().get_parameter_type())
     );
   }
   return parameter_ptr;
