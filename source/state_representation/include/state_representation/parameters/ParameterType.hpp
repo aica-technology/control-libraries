@@ -51,7 +51,7 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
   try {
     return parameter_type_map.at(name);
   } catch (...) {
-    throw state_representation::exceptions::InvalidStateVariable("The " + name + " ParameterType does not exist.");
+    throw state_representation::exceptions::InvalidStateVariableException("The " + name + " ParameterType does not exist.");
   }
 }
 
@@ -86,7 +86,7 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
     case ParameterType::MATRIX:
       return "Matrix";
     default:
-      throw state_representation::exceptions::InvalidStateVariable("This ParameterType does not exist.");
+      throw state_representation::exceptions::InvalidStateVariableException("This ParameterType does not exist.");
   }
 }
 
