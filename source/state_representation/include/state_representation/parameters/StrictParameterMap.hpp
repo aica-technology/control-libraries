@@ -31,7 +31,7 @@ protected:
   /**
    * @brief Validate and set a parameter in the map.
    * @param parameter The parameter to be validated and set in the map.
-   * @throw exceptions::InvalidParameterException if a parameter with the same name already exists in the map but has
+   * @throws exceptions::InvalidParameterException if a parameter with the same name already exists in the map but has
    * a different type or state type than the provided parameter.
    */
   void validate_and_set_parameter(const std::shared_ptr<ParameterInterface>& parameter) override;

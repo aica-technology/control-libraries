@@ -266,7 +266,7 @@ public:
   /**
    * @brief Check if the links of the robot are in collision
    * @param joint_positions containing the joint positions of the robot
-   * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
+   * @throws exceptions::CollisionGeometryException if collision geometry is not initialized
    * @return true if the robot is in collision, false otherwise
    */
   bool check_collision(const state_representation::JointPositions& joint_positions);

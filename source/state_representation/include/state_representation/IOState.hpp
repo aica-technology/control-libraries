@@ -23,7 +23,7 @@ public:
   /**
    * @brief Get IO index by the name of the IO, if it exists
    * @param io_name The name of the desired IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The index of the IO, if it exists
    */
   unsigned int get_io_index(const std::string& io_name) const;
@@ -31,7 +31,7 @@ public:
   /**
    * @brief Get the value of an IO by its name, if it exists
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   T get_value(const std::string& name) const;
@@ -39,7 +39,7 @@ public:
   /**
    * @brief Get the value of an IO by its index, if it exists
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   T get_value(unsigned int io_index) const;
@@ -70,7 +70,7 @@ public:
    * @brief Set the value of an IO by its name
    * @param value The value of the IO
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_value(T value, const std::string& name);
 
@@ -78,7 +78,7 @@ public:
    * @brief Set the value of an IO by its index
    * @param value The value of the IO
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_value(T value, unsigned int io_index);
 

@@ -220,10 +220,10 @@ static std::shared_ptr<Parameter<T>> make_shared_parameter(const std::string& na
  * @brief Copy the value from one parameter to another through their ParameterInterface pointers
  * @param source_parameter A pointer to the ParameterInterface of the parameter to copy from
  * @param target_parameter A pointer to the ParameterInterface of the parameter to copy to
- * @throw exceptions::InvalidCastException if the ParameterInterface does not point to a valid Parameter 
+ * @throws exceptions::InvalidCastException if the ParameterInterface does not point to a valid Parameter 
  * instance
- * @throw exceptions::EmptyStateException if the source parameter is empty
- * @throw exceptions::IncompatibleStatesException if the parameter type of the source and target parameters do not match
+ * @throws exceptions::EmptyStateException if the source parameter is empty
+ * @throws exceptions::IncompatibleStatesException if the parameter type of the source and target parameters do not match
  */
 [[maybe_unused]] void copy_parameter_value(
     const std::shared_ptr<const ParameterInterface>& source_parameter,

@@ -56,7 +56,7 @@ public:
    * @param validate_pointer If true, throw an exception when downcasting fails
    * @return A pointer to a derived Parameter instance of the desired state type, or a null pointer
    * if downcasting failed and validate_pointer was set to false.
-   * @throw exceptions::InvalidCastException if downcasting fails and validate_pointer is true
+   * @throws exceptions::InvalidCastException if downcasting fails and validate_pointer is true
    */
   template<typename T>
   std::shared_ptr<Parameter<T>> get_parameter(bool validate_pointer = true) const;
@@ -66,7 +66,7 @@ public:
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @return The value contained in the underlying Parameter instance
-   * @throw exceptions::InvalidCastException if the ParameterInterface does not point to
+   * @throws exceptions::InvalidCastException if the ParameterInterface does not point to
    * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
@@ -77,7 +77,7 @@ public:
    * @see ParameterInterface::get_parameter()
    * @tparam T The state type of the Parameter
    * @param value The value to set in the underlying Parameter instance
-   * @throw exceptions::InvalidCastException if the ParameterInterface does not point to
+   * @throws exceptions::InvalidCastException if the ParameterInterface does not point to
    * a valid Parameter instance or if the specified type does not match the type of the Parameter instance.
    */
   template<typename T>
@@ -110,14 +110,14 @@ inline std::shared_ptr<Parameter<T>> ParameterInterface::get_parameter(bool vali
   } catch (const std::exception&) {
     if (validate_pointer) {
       throw exceptions::InvalidPointerException(
-          "Parameter interface \"" + get_name() + "\" is not managed by a valid pointer"
+          "Parameter interface " + get_name() + " is not managed by a valid pointer"
       );
     }
   }
   if (parameter_ptr == nullptr && validate_pointer) {
     std::string type_name(typeid(T).name());
     throw exceptions::InvalidCastException(
-        "Unable to cast parameter interface \"" + get_name() + "\" to a parameter pointer of requested type "
+        "Unable to cast parameter interface " + get_name() + " to a parameter pointer of requested type "
         + type_name
     );
   }

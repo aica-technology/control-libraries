@@ -1,7 +1,8 @@
 #pragma once
 
 #include <map>
-#include <stdexcept>
+
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 
@@ -43,14 +44,14 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
 /**
  * @brief Return the ParameterType that corresponds to a name
  * @param name The name for lookup
- * @throws std:out_of_range Exception if the name does not correspond to a ParameterType
+ * @throws state_representation::exceptions::InvalidStateVariable if the name does not correspond to a ParameterType
  * @return ParameterType that corresponds to the (std::string) name
  */
 [[maybe_unused]] static ParameterType parameter_type_from_name(const std::string& name) {
   try {
     return parameter_type_map.at(name);
   } catch (...) {
-    throw std::out_of_range("The \"" + name + "\" ParameterType does not exist.");
+    throw state_representation::exceptions::InvalidStateVariable("The " + name + " ParameterType does not exist.");
   }
 }
 
@@ -85,7 +86,7 @@ static const std::map<std::string, ParameterType> parameter_type_map = {
     case ParameterType::MATRIX:
       return "Matrix";
     default:
-      throw std::out_of_range("This ParameterType does not exist.");
+      throw state_representation::exceptions::InvalidStateVariable("This ParameterType does not exist.");
   }
 }
 

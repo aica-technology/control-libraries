@@ -542,7 +542,7 @@ void Model::check_inverse_velocity_arguments(
     const state_representation::JointPositions& joint_positions, const std::vector<std::string>& frames
 ) {
   if (cartesian_twists.size() != frames.size()) {
-    throw std::invalid_argument("The number of provided twists and frames does not match");
+    throw state_representation::exceptions::Exception("The number of provided twists and frames does not match");
   }
   if (joint_positions.get_size() != this->get_number_of_joints()) {
     throw exceptions::InvalidJointStateSizeException(joint_positions.get_size(), this->get_number_of_joints());
@@ -625,7 +625,7 @@ state_representation::JointVelocities Model::inverse_velocity(
     const std::vector<std::string>& frames
 ) {
   if (!this->qp_solver_) {
-    throw std::runtime_error(
+    throw state_representation::exceptions::Exception(
         "QP solver not initialized for robot " + this->get_robot_name()
         + ". This might be due to the presence of unsupported joint types (e.g. continuous, planar, or floating)."
     );
