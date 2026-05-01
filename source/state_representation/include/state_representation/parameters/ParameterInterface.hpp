@@ -115,10 +115,9 @@ inline std::shared_ptr<Parameter<T>> ParameterInterface::get_parameter(bool vali
     }
   }
   if (parameter_ptr == nullptr && validate_pointer) {
-    std::string type_name(typeid(T).name());
     throw exceptions::InvalidCastException(
         "Unable to cast parameter interface " + get_name() + " to a parameter pointer of requested type "
-        + type_name
+        + get_parameter_type_name(parameter_ptr->get_parameter_type())
     );
   }
   return parameter_ptr;
