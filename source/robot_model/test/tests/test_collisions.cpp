@@ -1,5 +1,5 @@
 #include "robot_model/Model.hpp"
-#include "robot_model/exceptions/CollisionGeometryException.hpp"
+#include "robot_model/exceptions.hpp"
 
 #include <gtest/gtest.h>
 #include <memory>

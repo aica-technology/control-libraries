@@ -1,6 +1,6 @@
 #include "controllers/impedance/Dissipative.hpp"
 
-#include "controllers/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 
 using namespace state_representation;
 
@@ -8,7 +8,7 @@ namespace controllers::impedance {
 
 template<class S>
 Eigen::MatrixXd Dissipative<S>::compute_orthonormal_basis(const S&) {
-  throw exceptions::NotImplementedException(
+  throw state_representation::exceptions::NotImplementedException(
       "compute_orthonormal_basis(desired_velocity) not implemented for this input class"
   );
 }

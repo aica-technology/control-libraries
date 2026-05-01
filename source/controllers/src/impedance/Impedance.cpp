@@ -1,6 +1,6 @@
 #include "controllers/impedance/Impedance.hpp"
 
-#include "controllers/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 
@@ -10,7 +10,7 @@ namespace controllers::impedance {
 
 template<class S>
 S Impedance<S>::compute_command(const S&, const S&) {
-  throw exceptions::NotImplementedException("compute_command is not implemented for this state variable");
+  throw state_representation::exceptions::NotImplementedException("compute_command is not implemented for this state variable");
 }
 
 template<>

@@ -1,6 +1,6 @@
 #include "communication_interfaces/sockets/ZMQSocket.hpp"
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
+#include "communication_interfaces/exceptions.hpp"
 
 namespace communication_interfaces::sockets {
 

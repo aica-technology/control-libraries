@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
+#include "communication_interfaces/exceptions.hpp"
 #include "communication_interfaces/sockets/UDPClient.hpp"
 #include "communication_interfaces/sockets/UDPServer.hpp"
 

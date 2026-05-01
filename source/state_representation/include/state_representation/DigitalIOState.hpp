@@ -73,7 +73,7 @@ public:
   /**
    * @brief Check if a digital IO is true by its name, if it exists
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   bool is_true(const std::string& name) const;
@@ -81,7 +81,7 @@ public:
   /**
    * @brief Check if a digital IO is true by its index, if it exists
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   bool is_true(unsigned int io_index) const;
@@ -89,7 +89,7 @@ public:
   /**
    * @brief Check if a digital IO is false by its name, if it exists
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   bool is_false(const std::string& name) const;
@@ -97,7 +97,7 @@ public:
   /**
    * @brief Check if a digital IO is false by its index, if it exists
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    * @return The value of the IO, if it exists
    */
   bool is_false(unsigned int io_index) const;
@@ -105,28 +105,28 @@ public:
   /**
    * @brief Set the a digital IO to true by its name
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_true(const std::string& name);
 
   /**
    * @brief Set the a digital IO to true by its index
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_true(unsigned int io_index);
 
   /**
    * @brief Set the a digital IO to false by its name
    * @param name The name of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_false(const std::string& name);
 
   /**
    * @brief Set the a digital IO to false by its index
    * @param io_index The index of the IO
-   * @throws IONotFoundException if the desired IO doesn't exist
+   * @throws exceptions::IONotFoundException if the desired IO doesn't exist
    */
   void set_false(unsigned int io_index);
 

@@ -1,6 +1,5 @@
 #include "state_representation/space/cartesian/CartesianState.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 
@@ -735,7 +734,7 @@ Eigen::Vector3d CartesianState::operator*(const Eigen::Vector3d& vector) const {
 
 CartesianState& CartesianState::operator/=(double lambda) {
   if (std::abs(lambda) < std::numeric_limits<double>::min()) {
-    throw std::runtime_error("Division by zero is not allowed");
+    throw Exception("Division by zero is not allowed");
   }
   lambda = 1.0 / lambda;
   return this->operator*=(lambda);

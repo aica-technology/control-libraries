@@ -39,7 +39,7 @@ public:
 private:
   /**
    * @brief Open the internal ZMQ Publisher and Subscriber sockets for communication
-   * @throws SocketConfigurationException if opening fails
+   * @throws exceptions::SocketConfigurationException if opening fails
    */
   void on_open() override;
 

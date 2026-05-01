@@ -4,7 +4,8 @@
 #include "dynamical_systems/DefaultDynamicalSystem.hpp"
 #include "dynamical_systems/PointAttractor.hpp"
 #include "dynamical_systems/Ring.hpp"
-#include "dynamical_systems/exceptions/InvalidDynamicalSystemException.hpp"
+
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 
 using namespace state_representation;
@@ -37,7 +38,7 @@ std::shared_ptr<IDynamicalSystem<JointState>> DynamicalSystemFactory<JointState>
       return std::make_shared<PointAttractor<JointState>>(parameters);
     case DYNAMICAL_SYSTEM_TYPE::CIRCULAR:
     case DYNAMICAL_SYSTEM_TYPE::RING:
-      throw exceptions::InvalidDynamicalSystemException("This JointState DS is not valid");
+      throw state_representation::exceptions::Exception("This JointState DS is not valid");
     default:
     case DYNAMICAL_SYSTEM_TYPE::NONE:
       return std::make_shared<DefaultDynamicalSystem<JointState>>();

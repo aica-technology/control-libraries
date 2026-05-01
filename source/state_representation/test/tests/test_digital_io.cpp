@@ -1,7 +1,5 @@
 #include "state_representation/DigitalIOState.hpp"
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IONotFoundException.hpp"
-#include "state_representation/exceptions/IncompatibleSizeException.hpp"
+#include "state_representation/exceptions.hpp"
 #include <gtest/gtest.h>
 
 using namespace state_representation;

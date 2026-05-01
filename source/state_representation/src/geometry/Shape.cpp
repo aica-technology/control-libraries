@@ -1,7 +1,6 @@
 #include "state_representation/geometry/Shape.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 

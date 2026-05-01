@@ -205,7 +205,7 @@ public:
    * To enable collision detection, use the alternate constructor.
    * @param robot_name the name to associate with the model
    * @param urdf the URDF (XML string or filepath) of the robot
-   * @throws std::runtime_error if the URDF file cannot be loaded or is invalid
+   * @throws state_representation::exceptions::Exception if the URDF file cannot be loaded or is invalid
    */
   explicit Model(const std::string& robot_name, const std::string& urdf);
 
@@ -266,7 +266,7 @@ public:
   /**
    * @brief Check if the links of the robot are in collision
    * @param joint_positions containing the joint positions of the robot
-   * @throws robot_model::exceptions::CollisionGeometryException if collision geometry is not initialized
+   * @throws exceptions::CollisionGeometryException if collision geometry is not initialized
    * @return true if the robot is in collision, false otherwise
    */
   bool check_collision(const state_representation::JointPositions& joint_positions);

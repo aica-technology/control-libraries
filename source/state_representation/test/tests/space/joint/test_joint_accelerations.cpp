@@ -1,4 +1,4 @@
-#include "state_representation/exceptions/EmptyStateException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/joint/JointAccelerations.hpp"
 #include <gtest/gtest.h>
 

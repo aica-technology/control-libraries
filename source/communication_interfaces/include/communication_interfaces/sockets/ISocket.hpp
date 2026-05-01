@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
-
 namespace communication_interfaces::sockets {
 
 /**
@@ -23,7 +21,7 @@ public:
 
   /**
    * @brief Perform configuration steps to open the socket for communication
-   * @throws SocketConfigurationException if opening fails
+   * @throws exceptions::SocketConfigurationException if opening fails
    */
   void open();
 
@@ -31,7 +29,7 @@ public:
    * @brief Receive bytes from the socket
    * @param buffer The buffer to fill with the received bytes
    * @return True if bytes were received, false otherwise
-   * @throws SocketConfigurationException if socket has not been opened yet
+   * @throws exceptions::SocketConfigurationException if socket has not been opened yet
    */
   bool receive_bytes(std::string& buffer);
 
@@ -39,7 +37,7 @@ public:
    * @brief Send bytes to the socket
    * @param buffer The buffer with the bytes to send
    * @return True if bytes were sent, false otherwise
-   * @throws SocketConfigurationException if socket has not been opened yet
+   * @throws exceptions::SocketConfigurationException if socket has not been opened yet
    */
   bool send_bytes(const std::string& buffer);
 
@@ -51,7 +49,7 @@ public:
 protected:
   /**
    * @brief Perform configuration steps to open the socket for communication
-   * @throws SocketConfigurationException if opening fails
+   * @throws exceptions::SocketConfigurationException if opening fails
    */
   virtual void on_open() = 0;
 

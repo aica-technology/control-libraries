@@ -1,10 +1,7 @@
 #include <functional>
 #include <gtest/gtest.h>
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/InvalidStateVariableException.hpp"
-#include "state_representation/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianAcceleration.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
@@ -777,7 +774,7 @@ TEST(CartesianStateTest, ScalarDivision) {
   cs /= scalar;
   EXPECT_TRUE(cscaled.data().isApprox(cs.data()));
 
-  EXPECT_THROW(cs / 0.0, std::runtime_error);
+  EXPECT_THROW(cs / 0.0, exceptions::Exception);
 
   CartesianState empty;
   EXPECT_THROW(empty / scalar, exceptions::EmptyStateException);

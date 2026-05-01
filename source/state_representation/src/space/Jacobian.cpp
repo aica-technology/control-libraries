@@ -1,7 +1,6 @@
 #include "state_representation/space/Jacobian.hpp"
 
-#include "state_representation/exceptions/IncompatibleStatesException.hpp"
-#include "state_representation/exceptions/InvalidCastException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace state_representation {
 
@@ -317,10 +316,10 @@ Jacobian operator*(const CartesianPose& pose, const Jacobian& jacobian) {
 double& Jacobian::operator()(unsigned int row, unsigned int col) {
   this->assert_not_empty();
   if (row > this->rows()) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
+    throw exceptions::Exception("Given row is out of range: number of rows is " + std::to_string(this->rows()));
   }
   if (col > this->cols()) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
+    throw exceptions::Exception("Given column is out of range: number of columns is " + std::to_string(this->cols()));
   }
   this->reset_timestamp();
   return this->data_(row, col);
@@ -329,10 +328,10 @@ double& Jacobian::operator()(unsigned int row, unsigned int col) {
 const double& Jacobian::operator()(unsigned int row, unsigned int col) const {
   this->assert_not_empty();
   if (row > this->rows()) {
-    throw std::out_of_range("Given row is out of range: number of rows is " + std::to_string(this->rows()));
+    throw exceptions::Exception("Given row is out of range: number of rows is " + std::to_string(this->rows()));
   }
   if (col > this->cols()) {
-    throw std::out_of_range("Given column is out of range: number of columns is " + std::to_string(this->cols()));
+    throw exceptions::Exception("Given column is out of range: number of columns is " + std::to_string(this->cols()));
   }
   return this->data_(row, col);
 }

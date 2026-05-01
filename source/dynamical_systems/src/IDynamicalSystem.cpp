@@ -1,10 +1,8 @@
 #include "dynamical_systems/IDynamicalSystem.hpp"
 
-#include "dynamical_systems/exceptions/EmptyBaseFrameException.hpp"
-#include "dynamical_systems/exceptions/NotImplementedException.hpp"
+#include "dynamical_systems/exceptions.hpp"
 
-#include "state_representation/exceptions/IncompatibleReferenceFramesException.hpp"
-#include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/joint/JointState.hpp"
 
@@ -13,7 +11,7 @@ using namespace state_representation;
 namespace dynamical_systems {
 template<class S>
 bool IDynamicalSystem<S>::is_compatible(const S&) const {
-  throw exceptions::NotImplementedException("is_compatible(state) not implemented for this type of state.");
+  throw state_representation::exceptions::NotImplementedException("is_compatible(state) not implemented for this type of state.");
 }
 
 template<>

@@ -13,7 +13,7 @@ QPSolver::QPSolver(
       velocity_limit_(velocity_limit) {
 
   if (!this->init_solver()) {
-    throw std::runtime_error("QP solver initialization failed");
+    throw state_representation::exceptions::Exception("QP solver initialization failed");
   }
 }
 
@@ -29,7 +29,7 @@ QPSolver::QPSolver(const QPSolver& other)
       upper_bound_constraints_(other.upper_bound_constraints_) {
 
   if (!this->init_solver()) {
-    throw std::runtime_error("QP solver initialization failed");
+    throw state_representation::exceptions::Exception("QP solver initialization failed");
   }
 }
 

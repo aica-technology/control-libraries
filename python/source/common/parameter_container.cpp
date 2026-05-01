@@ -1,9 +1,6 @@
 #include "parameter_container.hpp"
 
-#include <state_representation/exceptions/IncompatibleStatesException.hpp>
-#include <state_representation/exceptions/InvalidCastException.hpp>
-#include <state_representation/exceptions/InvalidParameterException.hpp>
-#include <state_representation/exceptions/EmptyStateException.hpp>
+#include <state_representation/exceptions.hpp>
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
 #include <state_representation/space/joint/JointState.hpp>

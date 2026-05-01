@@ -1,6 +1,6 @@
 #include "controllers/impedance/CompliantTwist.hpp"
 
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace controllers::impedance {
 

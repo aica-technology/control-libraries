@@ -1,6 +1,6 @@
 #include "communication_interfaces_bindings.hpp"
 
-#include <communication_interfaces/exceptions/SocketConfigurationException.hpp>
+#include <communication_interfaces/exceptions.hpp>
 #include <communication_interfaces/sockets/ISocket.hpp>
 
 #define STRINGIFY(x) #x

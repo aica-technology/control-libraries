@@ -1,6 +1,6 @@
 #include "controllers/impedance/VelocityImpedance.hpp"
 
-#include "controllers/exceptions/NotImplementedException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/cartesian/CartesianState.hpp"
 #include "state_representation/space/cartesian/CartesianTwist.hpp"
@@ -14,7 +14,7 @@ namespace controllers::impedance {
 
 template<class S>
 S VelocityImpedance<S>::compute_command(const S&, const S&) {
-  throw exceptions::NotImplementedException(
+  throw state_representation::exceptions::NotImplementedException(
       "compute_command(desired_state, feedback_state) not implemented for this input class"
   );
 }

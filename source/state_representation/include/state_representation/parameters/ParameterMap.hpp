@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/parameters/Parameter.hpp"
 
 namespace state_representation {
@@ -38,6 +38,7 @@ public:
   /**
    * @brief Get a parameter by its name.
    * @param name The name of the parameter
+   * @throws exceptions::InvalidParameterException if the parameter does not exist
    * @return The parameter, if it exists
    */
   [[nodiscard]] std::shared_ptr<ParameterInterface> get_parameter(const std::string& name) const;
@@ -52,6 +53,7 @@ public:
    * @brief Get a parameter value by its name.
    * @tparam T Type of the parameter value
    * @param name The name of the parameter
+   * @throws exceptions::InvalidParameterException if the parameter does not exist
    * @return The value of the parameter, if the parameter exists
    */
   template<typename T>
@@ -96,7 +98,7 @@ public:
   /**
    * @brief Remove a parameter from the parameter map.
    * @param name The name of the parameter that should be removed
-   * @throw InvalidParameterException if the parameter does not exist
+   * @throws exceptions::InvalidParameterException if the parameter does not exist
    */
   void remove_parameter(const std::string& name);
 
@@ -112,7 +114,7 @@ protected:
   /**
    * @brief Check if a parameter exists and has the expected type, throw an exception otherwise.
    * @param parameter The parameter to be validated
-   * @throws InvalidParameterException if the parameter doesn't exist or has unexpected type
+   * @throws exceptions::InvalidParameterException if the parameter doesn't exist or has unexpected type
    */
   void assert_parameter_valid(const std::shared_ptr<ParameterInterface>& parameter);
 

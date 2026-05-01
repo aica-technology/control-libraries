@@ -4,8 +4,7 @@
 #include <memory>
 #include <stdexcept>
 
-#include "robot_model/exceptions/FrameNotFoundException.hpp"
-#include "robot_model/exceptions/InvalidJointStateSizeException.hpp"
+#include "robot_model/exceptions.hpp"
 
 using namespace robot_model;
 
@@ -46,7 +45,9 @@ TEST_F(RobotModelTest, TestGetUrdfPath) {
   ASSERT_TRUE(path.has_value());
   EXPECT_STREQ(path->get().c_str(), urdf_path.c_str());
 
-  EXPECT_THROW(std::make_unique<Model>("invalid_path", "invalid_path.urdf"), std::runtime_error);
+  EXPECT_THROW(
+      std::make_unique<Model>("invalid_path", "invalid_path.urdf"), state_representation::exceptions::Exception
+  );
 
   // clang-format off
   auto invalid_xml = 
@@ -54,7 +55,7 @@ TEST_F(RobotModelTest, TestGetUrdfPath) {
     "<robot name=\"foo\">"
     "</robot>";
   // clang-format on
-  EXPECT_THROW(std::make_unique<Model>("invalid_path", invalid_xml), std::runtime_error);
+  EXPECT_THROW(std::make_unique<Model>("invalid_path", invalid_xml), state_representation::exceptions::Exception);
 
   // clang-format off
   auto string_urdf = 

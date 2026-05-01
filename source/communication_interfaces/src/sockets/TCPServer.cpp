@@ -3,7 +3,7 @@
 #include <cstring>
 #include <unistd.h>
 
-#include "communication_interfaces/exceptions/SocketConfigurationException.hpp"
+#include "communication_interfaces/exceptions.hpp"
 
 namespace communication_interfaces::sockets {
 

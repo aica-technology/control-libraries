@@ -1,6 +1,6 @@
 #include "state_representation/parameters/Parameter.hpp"
 
-#include "state_representation/exceptions/IncompatibleStatesException.hpp"
+#include "state_representation/exceptions.hpp"
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
 

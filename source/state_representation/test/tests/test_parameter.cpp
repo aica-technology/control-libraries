@@ -4,9 +4,7 @@
 #include "state_representation/space/cartesian/CartesianPose.hpp"
 #include "state_representation/space/joint/JointPositions.hpp"
 
-#include "state_representation/exceptions/EmptyStateException.hpp"
-#include "state_representation/exceptions/InvalidParameterCastException.hpp"
-#include "state_representation/exceptions/InvalidPointerException.hpp"
+#include "state_representation/exceptions.hpp"
 
 #include <gtest/gtest.h>
 
@@ -299,10 +297,10 @@ TYPED_TEST_P(ParameterTest, ParameterInterfaceNullCast) {
 
     // by default (validate_pointer = true), throw when the pointer does not address a Parameter instance
     EXPECT_THROW(
-        parameter_interface_ptr->template get_parameter<TypeParam>(), exceptions::InvalidParameterCastException
+        parameter_interface_ptr->template get_parameter<TypeParam>(), exceptions::InvalidCastException
     );
     EXPECT_THROW(
-        parameter_interface_ptr->template get_parameter<TypeParam>(true), exceptions::InvalidParameterCastException
+        parameter_interface_ptr->template get_parameter<TypeParam>(true), exceptions::InvalidCastException
     );
 
     // using validate_pointer = false catches the exception but returns a null pointer
@@ -325,25 +323,25 @@ TYPED_TEST_P(ParameterTest, ParameterInterfaceWrongTypeCast) {
 
     if (std::get<1>(test_case) == ParameterType::STRING) {
       std::shared_ptr<Parameter<int>> parameter_int;
-      EXPECT_THROW(parameter_interface_ptr->get_parameter<int>(), exceptions::InvalidParameterCastException);
-      EXPECT_THROW(parameter_interface_ptr->get_parameter<int>(true), exceptions::InvalidParameterCastException);
+      EXPECT_THROW(parameter_interface_ptr->get_parameter<int>(), exceptions::InvalidCastException);
+      EXPECT_THROW(parameter_interface_ptr->get_parameter<int>(true), exceptions::InvalidCastException);
       EXPECT_NO_THROW(parameter_int = parameter_interface_ptr->get_parameter<int>(false));
       EXPECT_EQ(parameter_int, nullptr);
 
       EXPECT_NO_THROW(parameter_interface_ptr->get_parameter_value<TypeParam>());
-      EXPECT_THROW(parameter_interface_ptr->get_parameter_value<int>(), exceptions::InvalidParameterCastException);
+      EXPECT_THROW(parameter_interface_ptr->get_parameter_value<int>(), exceptions::InvalidCastException);
     } else {
       std::shared_ptr<Parameter<std::string>> parameter_string;
-      EXPECT_THROW(parameter_interface_ptr->get_parameter<std::string>(), exceptions::InvalidParameterCastException);
+      EXPECT_THROW(parameter_interface_ptr->get_parameter<std::string>(), exceptions::InvalidCastException);
       EXPECT_THROW(
-          parameter_interface_ptr->get_parameter<std::string>(true), exceptions::InvalidParameterCastException
+          parameter_interface_ptr->get_parameter<std::string>(true), exceptions::InvalidCastException
       );
       EXPECT_NO_THROW(parameter_string = parameter_interface_ptr->get_parameter<std::string>(false));
       EXPECT_EQ(parameter_string, nullptr);
 
       EXPECT_NO_THROW(parameter_interface_ptr->get_parameter_value<TypeParam>());
       EXPECT_THROW(
-          parameter_interface_ptr->get_parameter_value<std::string>(), exceptions::InvalidParameterCastException
+          parameter_interface_ptr->get_parameter_value<std::string>(), exceptions::InvalidCastException
       );
     }
   }

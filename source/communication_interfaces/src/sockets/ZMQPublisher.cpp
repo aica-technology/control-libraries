@@ -1,5 +1,7 @@
 #include "communication_interfaces/sockets/ZMQPublisher.hpp"
 
+#include "communication_interfaces/exceptions.hpp"
+
 namespace communication_interfaces::sockets {
 
 ZMQPublisher::ZMQPublisher(ZMQSocketConfiguration configuration) : ZMQSocket(std::move(configuration)) {}
@@ -10,6 +12,6 @@ void ZMQPublisher::on_open() {
 }
 
 bool ZMQPublisher::on_receive_bytes(std::string&) {
-  throw std::runtime_error("Receive not available for socket of type ZMQPublisher");
+  throw exceptions::SocketException("Receive not available for socket of type ZMQPublisher");
 }
 }// namespace communication_interfaces::sockets

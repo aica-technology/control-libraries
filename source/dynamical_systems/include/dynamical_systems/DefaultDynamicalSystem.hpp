@@ -1,7 +1,7 @@
 #pragma once
 
 #include "dynamical_systems/IDynamicalSystem.hpp"
-#include "state_representation/exceptions/InvalidParameterException.hpp"
+#include "state_representation/exceptions.hpp"
 
 namespace dynamical_systems {
 
