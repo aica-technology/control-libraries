@@ -3,6 +3,7 @@
 #include <state_representation/parameters/ParameterType.hpp>
 #include <state_representation/parameters/Parameter.hpp>
 #include <state_representation/parameters/ParameterMap.hpp>
+#include <state_representation/parameters/StrictParameterMap.hpp>
 
 #include <state_representation/space/cartesian/CartesianState.hpp>
 #include <state_representation/space/cartesian/CartesianPose.hpp>
@@ -125,6 +126,8 @@ void parameter(py::module_& m) {
     }
     return buffer.str();
   });
+
+  m.def("copy_parameter_value", &py_parameter::copy_parameter_value, "Copy the value from one parameter to another", "source_parameter"_a, "target_parameter"_a);
 }
 
 void parameter_map(py::module_& m) {
@@ -132,16 +135,16 @@ void parameter_map(py::module_& m) {
 
   c.def(py::init(), "Empty constructor");
   c.def(
-      py::init([](const std::map<std::string, ParameterContainer>& parameters) {
-        auto parameter_map = container_to_interface_ptr_map(parameters);
-        return ParameterMap(parameter_map);
-      }), "Construct the parameter map with an initial list of parameters", "parameters"_a
-  );
-  c.def(
       py::init([](const std::list<ParameterContainer>& parameters) {
         auto parameter_list = container_to_interface_ptr_list(parameters);
         return ParameterMap(parameter_list);
-      }), "Construct the parameter map with an initial map of parameters", "parameters"_a);
+      }), "Construct the parameter map with an initial list of parameters", "parameters"_a);
+  c.def(
+      py::init([](const std::map<std::string, ParameterContainer>& parameters) {
+        auto parameter_map = container_to_interface_ptr_map(parameters);
+        return ParameterMap(parameter_map);
+      }), "Construct the parameter map with an initial map of parameters", "parameters"_a
+  );
 
   c.def(
       "get_parameter", [](ParameterMap& self, const std::string& name) -> ParameterContainer {
@@ -182,9 +185,27 @@ void parameter_map(py::module_& m) {
   c.def("remove_parameter", &ParameterMap::remove_parameter, "Remove a parameter from the parameter map.", "name"_a);
 }
 
+void strict_parameter_map(py::module_& m) {
+  py::class_<StrictParameterMap, std::shared_ptr<StrictParameterMap>, ParameterMap> c(m, "StrictParameterMap");
+
+  c.def(py::init(), "Empty constructor");
+  c.def(
+      py::init([](const std::list<ParameterContainer>& parameters) {
+        auto parameter_list = container_to_interface_ptr_list(parameters);
+        return StrictParameterMap(parameter_list);
+      }), "Construct the parameter map with an initial list of parameters", "parameters"_a
+  );
+  c.def(
+      py::init([](const std::map<std::string, ParameterContainer>& parameters) {
+        auto parameter_map = container_to_interface_ptr_map(parameters);
+        return StrictParameterMap(parameter_map);
+      }), "Construct the parameter map with an initial map of parameters", "parameters"_a);
+}
+
 void bind_parameters(py::module_& m) {
   parameter_type(m);
   parameter_interface(m);
   parameter(m);
   parameter_map(m);
+  strict_parameter_map(m);
 }

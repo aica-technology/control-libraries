@@ -169,6 +169,8 @@ void PointAttractor<JointState>::validate_and_set_parameter(const std::shared_pt
       this->set_attractor(parameter->get_parameter_value<JointState>());
     } else if (parameter->get_parameter_state_type() == StateType::JOINT_POSITIONS) {
       this->set_attractor(parameter->get_parameter_value<JointPositions>());
+    } else {
+      throw state_representation::exceptions::InvalidParameterException("Parameter 'attractor' has incorrect type");
     }
   } else if (parameter->get_name() == "gain") {
     this->set_gain(parameter, this->attractor_->get_value().get_size());
