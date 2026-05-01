@@ -180,7 +180,7 @@ TEST(ControllerFactoryTest, CreateControllerWithRobot) {
 
   auto command_state = CartesianState::Identity(robot.get_frames().back(), robot.get_base_frame());
   auto feedback_state = CartesianState::Identity(robot.get_frames().back(), robot.get_base_frame());
-  auto joint_state = JointState::Zero(robot_name, robot.get_number_of_joints());
+  auto joint_state = JointState::Zero(robot_name, robot.get_configuration_dimension());
 
   EXPECT_THROW(
       CartesianControllerFactory::create_controller(CONTROLLER_TYPE::NONE, robot),
@@ -203,7 +203,7 @@ TEST(ControllerFactoryTest, CreateControllerWithRobot) {
   EXPECT_NO_THROW(joint_ctrl->compute_command(joint_state, joint_state));
   EXPECT_EQ(
       joint_ctrl->get_parameter_value<Eigen::MatrixXd>("stiffness").size(),
-      robot.get_number_of_joints() * robot.get_number_of_joints()
+      robot.get_configuration_dimension() * robot.get_configuration_dimension()
   );
 }
 
@@ -221,8 +221,8 @@ TEST(ControllerFactoryTest, CreateControllerWithRobotAndParams) {
   ASSERT_NE(ctrl, nullptr);
   EXPECT_EQ(
       ctrl->get_parameter_value<Eigen::MatrixXd>("damping").size(),
-      robot.get_number_of_joints() * robot.get_number_of_joints()
+      robot.get_configuration_dimension() * robot.get_configuration_dimension()
   );
 
-  EXPECT_EQ(ctrl->get_parameter_value<Eigen::MatrixXd>("damping").sum(), 5.0 * robot.get_number_of_joints());
+  EXPECT_EQ(ctrl->get_parameter_value<Eigen::MatrixXd>("damping").sum(), 5.0 * robot.get_configuration_dimension());
 }
